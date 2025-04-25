@@ -1,5 +1,5 @@
 import  {RouteObject} from "react-router-dom";
-import {AboutPage, HomePage} from '@pages/index'
+import {RKOPage} from '@pages/index'
 import React, {JSX, Suspense} from "react";
 import {Loader} from "@shared/index";
 import {MainLayout} from "@layouts/index";
@@ -16,8 +16,7 @@ export const routes:RouteObject[] = [
     path:'/' ,
     element: <MainLayout />,
     children:[
-      {path:'home', element:withSuspense(HomePage)},
-      {path:'about', element:withSuspense(AboutPage)},
+      {path:'/', element:withSuspense(RKOPage)},
     ]
   }
 ];

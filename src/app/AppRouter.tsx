@@ -8,7 +8,7 @@ export const AppRouter: React.FC = () => {
 
   return (
     <ErrorBoundary>
-      <RouterProvider router={appRouter}/>
+      <RouterProvider router={appRouter} />
     </ErrorBoundary>
   )
 }

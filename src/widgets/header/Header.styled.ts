@@ -9,10 +9,11 @@ export const StyledHeader = styled.header`
     height: 100px;
     background-color: #1D6F95;
 `
+
 export const StyledLink = styled(Link)`
     text-decoration: none;
     color:#ffffff;
     font-size: 40px;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     font-weight: 600;
 `

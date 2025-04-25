@@ -22,6 +22,7 @@ export default defineConfig({
       '@shared': path.resolve(process.cwd(), 'src/shared'),
       '@widgets': path.resolve(process.cwd(), 'src/widgets'),
       '@layouts': path.resolve(process.cwd(), 'src/layouts'),
+      '@mocks': path.resolve(process.cwd(), 'src/mocks'),
     },
     extensions: ['.tsx', '.ts', '.js'],
   }

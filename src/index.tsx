@@ -9,7 +9,12 @@ import {ThemeProvider} from "styled-components";
 import {Loader} from "@shared/index";
 import './index.css'
 
-const isShowDevTools = import.meta.env.IS_ENABLED_REACT_QUERY_DEV_TOOLS;
+const isShowDevTools = import.meta.env.VITE_IS_ENABLED_REACT_QUERY_DEV_TOOLS === 'true';
+
+if(import.meta.env.VITE_NODE_ENV === 'development') {
+  import('@mocks/msw/browser').then(({worker})=>worker.start())
+}
+
 
 const queryClient = new QueryClient()
 
