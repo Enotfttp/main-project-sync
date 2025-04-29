@@ -1,4 +1,5 @@
-export interface IServicePackagesList {
+export interface IServicePackageList {
+    id:string;
     idRKO:string,
     idServiceConnect:string,
     idServicePackages:string,
@@ -6,9 +7,9 @@ export interface IServicePackagesList {
     idNewServicePackages:string,
     comStatusPrd:string,
     orderType:string,
-    dataReg:string,
-    dataExec:string,
-    dataPay:string,
+    dateReg:string,
+    dateExec:string,
+    datePay:string,
     idFolderPay:string,
     ctbCloseRKO:string,
     bankAccount:string,

@@ -1,2 +1,2 @@
 export {AppRouter} from "./AppRouter";
-export {ErrorBoundary, routes} from "./providers";
+export {ErrorBoundary, routes, routesPath} from "./providers";

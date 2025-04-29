@@ -44,31 +44,29 @@ export const Search = ({
 
 
   return (
-    <ThemeProvider theme={LIGHT_THEME}>
-      <MultiInputField
-        data-container-id="MultiSearchFieldId"
-        {...props}
-        label={label}
-        extraText={extraText}
-        value={value}
-        onInputComplete={handleKeyDown}
-        onClearOptions={handleClearListValue}
-        onChange={handleChange}
-        displayClearIcon={displayClearIcon && listValue.length !== 0}
-      >
-        {listValue.map((item, index) => (
-          <StyledChip
-            {...item}
-            key={index}
-            onClose={props.readOnly || props.disableCopying ? undefined : handleDeleteChip}
-            tabIndex={-1}
-            dimension="s"
-            appearance="filled"
-            readOnly={props.readOnly}
-            disabled={props.disabled}
-          />
-        ))}
-      </MultiInputField>
-    </ThemeProvider>
+    <MultiInputField
+      data-container-id="MultiSearchFieldId"
+      {...props}
+      label={label}
+      extraText={extraText}
+      value={value}
+      onInputComplete={handleKeyDown}
+      onClearOptions={handleClearListValue}
+      onChange={handleChange}
+      displayClearIcon={displayClearIcon && listValue.length !== 0}
+    >
+      {listValue.map((item, index) => (
+        <StyledChip
+          {...item}
+          key={index}
+          onClose={props.readOnly || props.disableCopying ? undefined : handleDeleteChip}
+          tabIndex={-1}
+          dimension="s"
+          appearance="filled"
+          readOnly={props.readOnly}
+          disabled={props.disabled}
+        />
+      ))}
+    </MultiInputField>
   )
 }

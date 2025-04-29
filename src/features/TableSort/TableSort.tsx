@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Table, TableRow} from '@admiral-ds/react-ui';
+import {RowId, Table, TableRow} from '@admiral-ds/react-ui';
 import type { TableProps, Column } from '@admiral-ds/react-ui';
 
 
