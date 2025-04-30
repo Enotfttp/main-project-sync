@@ -1,6 +1,8 @@
 import * as React from 'react';
-import {RowId, Table, TableRow} from '@admiral-ds/react-ui';
+import {Table, TableRow} from '@admiral-ds/react-ui';
 import type { TableProps, Column } from '@admiral-ds/react-ui';
+import {useIsFetching} from "@tanstack/react-query";
+import {Loader} from "@shared/index";
 
 
 const StrToTime = (str: string) => {
@@ -12,7 +14,8 @@ const MAX_SORT_LEVEL = 2;
 
 type SortColumn = { [key: string]: { sort: 'asc' | 'desc'; type?: string } };
 
-export const TableSort = (props: TableProps) => {
+export const TableSort = ({queryKey, ...props}:TableProps & { queryKey: string}) => {
+  const isFetching = useIsFetching({queryKey:[queryKey]})
   const [rows, setRows] = React.useState([...props.rowList]);
   const [cols, setCols] = React.useState([...props.columnList]);
   const [sortLevel, setSortLevel] = React.useState<number>(0);
@@ -130,6 +133,12 @@ export const TableSort = (props: TableProps) => {
     const newCols = cols.map((col) => (col.name === name ? { ...col, width } : col));
     setCols(newCols);
   };
+
+  if(isFetching){
+    return (
+      <Loader/>
+    )
+  }
 
   return (
     <Table {...props}  onSortChange={handleSort} onColumnResize={handleResize} />

@@ -4,8 +4,7 @@ import {StyledPackagesPage} from "./PackagesPage.styled.ts";
 import {T} from "@admiral-ds/react-ui";
 import {columnList} from "./PackagesTable.columns.tsx";
 import {TableSort} from "@features/TableSort/TableSort.tsx";
-import {useNavigate, useParams} from "react-router-dom";
-import {routesPath} from "@app/index";
+import {useParams} from "react-router-dom";
 import {useGetPackagesList} from "@entities/servicePackage";
 
 const PackagesPage = () =>{
@@ -14,19 +13,13 @@ const PackagesPage = () =>{
     throw new Error('Вы не выбрали документ РКО')
   }
 
-  const navigate = useNavigate();
   const {data} = useGetPackagesList(id);
-
-
-  const onRowClick = (rowId: string | number) =>{
-    navigate(routesPath.service.packages.fullPath(rowId))
-  }
 
   return (
     <StyledPackagesPage>
       <T font="Header/H1">Пакеты услуг</T>
-      <Search placeholder="Введите номер документа РКО"/>
-      <TableSort columnList={columnList} rowList={data || []} onRowClick={onRowClick} />
+      <Search placeholder="Введите номер подписки"/>
+      <TableSort columnList={columnList} rowList={data || []}  queryKey="servicePackage-list"/>
     </StyledPackagesPage>
   )
 }

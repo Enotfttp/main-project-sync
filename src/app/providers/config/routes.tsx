@@ -1,9 +1,9 @@
 import  {RouteObject} from "react-router-dom";
 import {RKOPage, ConnectionsPage, PackagesPage} from '@pages/index'
 import React, {JSX, Suspense} from "react";
-import {Loader} from "@shared/index";
 import {MainLayout, ServiceTabsLayout} from "@layouts/index";
 import {routesPath} from "./routesPath";
+import {Loader} from "@shared/index";
 
 const withSuspense = (Component: React.LazyExoticComponent<()=>JSX.Element>) => (
   <Suspense fallback={<Loader />}>

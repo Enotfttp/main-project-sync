@@ -3,5 +3,6 @@ export function uid(): string {
 }
 
 export function additionalHover<T>(arr?:T[]):T[] | [] {
+  console.log('arr = ', arr)
   return arr?.length ? arr.map((item)=>({...item, hover:true})): []
 }

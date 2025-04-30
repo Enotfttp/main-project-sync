@@ -14,14 +14,14 @@ const RKOPage = () =>{
   const {data} = useGetRKOList();
 
   const onRowClick = (rowId: string | number) =>{
-    navigate(routesPath.service.packages.fullPath(rowId))
+    navigate(routesPath.service.connections.fullPath(rowId))
   }
 
   return (
     <StyledRKOPage>
       <T font="Header/H1">Договора РКО</T>
       <Search placeholder="Введите номер документа РКО"/>
-      <TableSort columnList={columnList} rowList={additionalHover(data)} onRowClick={onRowClick} />
+      <TableSort columnList={columnList} rowList={additionalHover(data)} onRowClick={onRowClick} queryKey="rko-list"/>
     </StyledRKOPage>
   )
 }
