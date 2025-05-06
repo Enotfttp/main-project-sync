@@ -1,10 +1,10 @@
-import {IRKOList} from "../index.ts";
+import {IFiltersRKO, IRKOList} from "../index.ts";
 import {axiosInstance} from "@shared/index.ts";
 
 class RKOService{
 
-  async getRKOList ():Promise<IRKOList[]>{
-    const response =  await axiosInstance.get("api/rko-list");
+  async getRKOList (filters?:IFiltersRKO):Promise<IRKOList[]>{
+    const response =  await axiosInstance.post("api/rko-list", filters);
     return response.data;
   }
 }

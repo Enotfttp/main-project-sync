@@ -3,8 +3,8 @@ import {axiosInstance} from "@shared/index.ts";
 
 class EventsService {
 
-  async getEventsList ():Promise<IEventsList[]>{
-    const response =  await axiosInstance.get("api/events-list");
+  async getEventsList (id:string):Promise<IEventsList[]>{
+    const response =  await axiosInstance.get(`api/events-list/${id}`);
     return response.data;
   }
 }

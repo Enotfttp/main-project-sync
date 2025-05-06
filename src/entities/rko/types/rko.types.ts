@@ -8,3 +8,8 @@ export interface IRKOList {
     idServicePackages:string,
     curRemainder:string
 }
+
+/** Расшириить для большего фильтрования */
+export type IFiltersRKO = {
+    [K in keyof Omit<IRKOList,'id'>]: IRKOList[K] | null
+}

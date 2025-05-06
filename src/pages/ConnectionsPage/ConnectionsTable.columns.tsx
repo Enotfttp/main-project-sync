@@ -14,8 +14,9 @@ export const columnList: Column[] = [
     width: '16.5%',
   },
   {
-    name: 'nameConnection',
-    title: 'Название подключения',
+    name: 'srvPackages',
+    title: 'Пакет услуг/ Опции ПУ',
+    type: 'date',
     width: '16.5%',
   },
   {

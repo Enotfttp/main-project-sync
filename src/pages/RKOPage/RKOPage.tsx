@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useGetRKOList} from "@entities/rko";
+import {IFiltersRKO, useGetRKOList} from "@entities/rko";
 import {Search} from "@features/Search/Search.tsx";
 import {StyledRKOPage} from "./RKOPage.styled";
 import {T} from "@admiral-ds/react-ui";
@@ -9,9 +9,17 @@ import {useNavigate} from "react-router-dom";
 import {routesPath} from "@app/index";
 import {additionalHover} from "@shared/index";
 
+const startRKOFilters = columnList.reduce((acc,elem)=>{
+  acc[elem.name] = null
+  return acc
+},{} as IFiltersRKO)
+
+
 const RKOPage = () =>{
   const navigate = useNavigate();
-  const {data} = useGetRKOList();
+  const [filters, setfilters] = React.useState<IFiltersRKO>(startRKOFilters);
+
+  const {data} = useGetRKOList(filters);
 
   const onRowClick = (rowId: string | number) =>{
     navigate(routesPath.service.connections.fullPath(rowId))
@@ -20,7 +28,7 @@ const RKOPage = () =>{
   return (
     <StyledRKOPage>
       <T font="Header/H1">Договора РКО</T>
-      <Search placeholder="Введите номер документа РКО"/>
+      <Search placeholder="Введите номер документа РКО" />
       <TableSort columnList={columnList} rowList={additionalHover(data)} onRowClick={onRowClick} queryKey="rko-list"/>
     </StyledRKOPage>
   )

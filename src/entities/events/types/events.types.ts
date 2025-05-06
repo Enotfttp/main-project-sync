@@ -1,10 +1,9 @@
 export interface IEventsList {
     id:string,
-    idRKO:string,
-    typeDoc:string,
-    regNum:string,
-    client:string,
-    bankAccount:string,
-    idServicePackages:string,
-    curRemainder:string
+    eventDate:string,
+    eventType:string,
+    execDate:string,
+    docs:string,
+    order:string,
+    reqHist:string,
 }

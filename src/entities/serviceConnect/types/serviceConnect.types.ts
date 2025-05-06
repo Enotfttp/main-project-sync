@@ -4,7 +4,7 @@ export interface IServiceConnectionList {
     idSrvPackage:string,
     conNumber:string,
     conDate:string,
-    nameConnection:string,
+    srvPackages:string,
     dateBeg:string,
     dateEnd:string,
     dateClose:string,

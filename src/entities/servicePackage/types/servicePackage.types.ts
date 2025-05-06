@@ -12,6 +12,8 @@ export interface IServicePackageList {
     datePay:string,
     idFolderPay:string,
     ctbCloseRKO:string,
+    servPackages:string,
+    newServPackages:string,
     bankAccount:string,
     ctbSumComiss:string,
     curRemainder:string,

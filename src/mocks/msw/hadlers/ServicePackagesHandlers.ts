@@ -15,7 +15,9 @@ const mockedServicePackagesList = [
     dateExec:'24.06.25',
     datePay:'22.06.25',
     idFolderPay:'21',
-    ctbCloseRKO:'Хз, что за тип)',
+    ctbCloseRKO:'Да',
+    servPackages:'Текущий ПУ 1',
+    newServPackages:'Новый ПУ 1',
     bankAccount:'001232131231',
     ctbSumComiss:'100',
     curRemainder:'3000'
@@ -33,7 +35,9 @@ const mockedServicePackagesList = [
     dateExec:'24.06.25',
     datePay:'22.06.25',
     idFolderPay:'21',
-    ctbCloseRKO:'Хз, что за тип)',
+    ctbCloseRKO:'Да',
+    servPackages:'Текущий ПУ 2',
+    newServPackages:'Новый ПУ 2',
     bankAccount:'001232131231',
     ctbSumComiss:'100',
     curRemainder:'3000'

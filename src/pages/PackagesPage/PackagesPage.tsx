@@ -18,7 +18,7 @@ const PackagesPage = () =>{
   return (
     <StyledPackagesPage>
       <T font="Header/H1">Пакеты услуг</T>
-      <Search placeholder="Введите номер подписки"/>
+      <Search placeholder="Введите номер пакета услуг"/>
       <TableSort columnList={columnList} rowList={data || []}  queryKey="servicePackage-list"/>
     </StyledPackagesPage>
   )

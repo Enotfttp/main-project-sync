@@ -3,8 +3,8 @@ import {axiosInstance} from "@shared/index.ts";
 
 class PeriodsService {
 
-  async getPeriodsList ():Promise<IPeriodsList[]>{
-    const response =  await axiosInstance.get("api/periods-list");
+  async getPeriodsList (id: string):Promise<IPeriodsList[]>{
+    const response =  await axiosInstance.get(`api/periods-list/${id}`);
     return response.data;
   }
 }

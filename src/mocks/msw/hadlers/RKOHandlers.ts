@@ -1,5 +1,5 @@
 import {HttpResponse, http} from "msw";
-import {IRKOList} from "@entities/rko";
+import {IRKOList, IFiltersRKO} from "@entities/rko";
 
 const mockedRKOList = [
   {
@@ -26,7 +26,15 @@ const mockedRKOList = [
 
 
 export const RKOHandlers = [
-  http.get('/api/rko-list', ()=>{
-    return HttpResponse.json<IRKOList[]>(mockedRKOList)
+  http.post('/api/rko-list', async ({request})=> {
+    const body = await request.json();
+    const {idRKO} = body as IFiltersRKO;
+    let filtered = mockedRKOList
+
+    if(idRKO?.length){
+      filtered = filtered.filter((item)=>idRKO?.includes(item.idRKO))
+    }
+
+    return HttpResponse.json<IRKOList[]>(filtered)
   })
 ]
