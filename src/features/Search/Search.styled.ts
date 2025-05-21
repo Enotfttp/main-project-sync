@@ -1,5 +1,5 @@
-import styled, {css} from "styled-components";
-import {Chips, typography} from "@admiral-ds/react-ui";
+import styled, { css } from 'styled-components';
+import { Chips, typography } from '@admiral-ds/react-ui';
 
 export const disabledChipStyle = css`
   pointer-events: auto;
@@ -10,7 +10,7 @@ export const disabledChipStyle = css`
 
 export const hoverChipStyle = css`
   &:hover {
-    background-color:var(Neutral/Neutral 10, ${(p) => p.theme.color['Neutral/Neutral 10']});
+    background-color: var(Neutral/Neutral 10, ${(p) => p.theme.color['Neutral/Neutral 10']});
   }
 `;
 

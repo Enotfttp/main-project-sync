@@ -1,19 +1,16 @@
 import { useState } from 'react';
 import type { ChangeEvent } from 'react';
 import { ThemeProvider } from 'styled-components';
-import {Select as SelectTemplate, LIGHT_THEME, Option,  SelectProps} from '@admiral-ds/react-ui';
+import { Select as SelectTemplate, LIGHT_THEME, Option, SelectProps } from '@admiral-ds/react-ui';
+import { ISearchWithFilter } from '@features/SearchWithFilter/SearchWithFilter.types.ts';
 
-interface ISelect extends SelectProps{
-    placeholder:string,
-    options:{key:string, value:string}[],
+interface ISelect extends SelectProps {
+  placeholder: string;
+  options: ISearchWithFilter[];
+  setCurOption: (value: string | Array<string>) => void;
 }
 
-
-export const Select = ({
-  placeholder = '',
-  options,
-  ...props
-}: ISelect) => {
+export const Select = ({ placeholder = '', options, setCurOption, ...props }: ISelect) => {
   const clearButtonProps = { 'data-testid': 'selectClearButton' };
   const openButtonProps = { 'data-testid': 'selectOpenButton' };
   const [selectValue, setSelectValue] = useState('');
@@ -21,8 +18,7 @@ export const Select = ({
   const onChange = (e: ChangeEvent<HTMLSelectElement>) => setSelectValue(e.target.value);
 
   const handleSelectedChange = (value: string | Array<string>) => {
-
-    console.log(value);
+    setCurOption(value);
   };
 
   return (
@@ -37,8 +33,10 @@ export const Select = ({
         clearButtonPropsConfig={() => clearButtonProps}
         openButtonPropsConfig={() => openButtonProps}
       >
-        {options.map(({key, value})=>(
-          <Option value={value} key={key}>{value}</Option>
+        {options.map(({ key, value }) => (
+          <Option value={key} key={key}>
+            {value}
+          </Option>
         ))}
       </SelectTemplate>
     </ThemeProvider>

@@ -5,7 +5,6 @@ export const useEventsPeriodsModalState = () => {
   const [eventsPeriodsId, setEventsPeriodsId] = useState<string | number | null>(null);
   // let isOpen, eventsPeriodsId
   const openModal = (id: string | number) => {
-    console.log(id)
     setEventsPeriodsId(id);
     setIsOpen(true);
   };
@@ -22,6 +21,7 @@ let modalState: ReturnType<typeof useEventsPeriodsModalState>;
 
 export const useEventsPeriodsModal = () => {
   if (!modalState) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     modalState = useEventsPeriodsModalState();
   }
   return modalState;

@@ -1,9 +1,9 @@
-import {useQuery} from "@tanstack/react-query";
-import {serviceConnectionService} from "../index";
+import { useQuery } from '@tanstack/react-query';
+import { serviceConnectionService, TFiltersServiceConnection } from '../index';
 
-export const useGetConnectionList = (id:string) =>{
+export const useGetConnectionList = (filters?: TFiltersServiceConnection) => {
   return useQuery({
-    queryKey:['serviceConnection-list'],
-    queryFn: ()=>serviceConnectionService.getServiceConnectionList(id),
-  })
-}
+    queryKey: ['serviceConnection-list'],
+    queryFn: () => serviceConnectionService.getServiceConnectionList(filters),
+  });
+};

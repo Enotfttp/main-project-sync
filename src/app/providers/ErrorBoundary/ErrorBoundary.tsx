@@ -2,11 +2,11 @@ import React, { Component, ReactNode } from 'react';
 import { ErrorFallback } from '@shared/index';
 
 interface Props {
-    children: ReactNode;
+  children: ReactNode;
 }
 
 interface State {
-    hasError: boolean;
+  hasError: boolean;
 }
 
 export class ErrorBoundary extends Component<Props, State> {
@@ -19,7 +19,8 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error("Uncaught error:", error, errorInfo);
+    // eslint-disable-next-line no-console
+    console.error('Uncaught error:', error, errorInfo);
   }
 
   render() {

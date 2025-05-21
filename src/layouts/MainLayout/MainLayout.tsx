@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
+import { StyledMainLayout } from './MainLayout.styled';
 import { Header } from '@widgets/index';
-import {StyledMainLayout} from "./MainLayout.styled";
 
 export const MainLayout = () => (
   <>
@@ -10,4 +10,3 @@ export const MainLayout = () => (
     </StyledMainLayout>
   </>
 );
-

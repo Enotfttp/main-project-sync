@@ -1,20 +1,25 @@
 export interface IServicePackageList {
-    id:string;
-    idRKO:string,
-    idServiceConnect:string,
-    idServicePackages:string,
-    idServiceOrder:string,
-    idNewServicePackages:string,
-    comStatusPrd:string,
-    orderType:string,
-    dateReg:string,
-    dateExec:string,
-    datePay:string,
-    idFolderPay:string,
-    ctbCloseRKO:string,
-    servPackages:string,
-    newServPackages:string,
-    bankAccount:string,
-    ctbSumComiss:string,
-    curRemainder:string,
+  id: string;
+  idRKO: string;
+  idServiceConnect: string;
+  idServicePackages: string;
+  idServiceOrder: string;
+  idNewServicePackages: string;
+  comStatusPrd: string;
+  orderType: string;
+  dateReg: string;
+  dateExec: string;
+  datePay: string;
+  idFolderPay: string;
+  ctbCloseRKO: string;
+  servPackages: string;
+  newServPackages: string;
+  bankAccount: string;
+  ctbSumComiss: string;
+  curRemainder: string;
 }
+
+/** TODO.FIX Расшириить для большего фильтрования */
+export type TFiltersServicePackage = {
+  [K in keyof IServicePackageList]?: Array<IServicePackageList[K]> | IServicePackageList[K] | null;
+};

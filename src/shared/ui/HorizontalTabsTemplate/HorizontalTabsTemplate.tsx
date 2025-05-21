@@ -1,42 +1,24 @@
 import { forwardRef, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import { ThemeProvider } from 'styled-components';
-import { HorizontalTabProps, HorizontalTabsProps, LIGHT_THEME} from '@admiral-ds/react-ui';
-import {
-  HorizontalTabs,
-  HorizontalTab,
-  TabIcon,
-  TabBadge,
-  TabText,
-} from '@admiral-ds/react-ui';
-import {useLocation, useNavigate} from "react-router-dom";
-
+import { HorizontalTabProps, HorizontalTabsProps, LIGHT_THEME } from '@admiral-ds/react-ui';
+import { HorizontalTabs, HorizontalTab, TabIcon, TabBadge, TabText } from '@admiral-ds/react-ui';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface TabContentProps extends HorizontalTabProps {
-    text: string;
-    tabId: string;
-    badge?: number;
-    disabled?: boolean;
-    icon?: ReactNode;
-    path?: string;
+  text: string;
+  tabId: string;
+  badge?: number;
+  disabled?: boolean;
+  icon?: ReactNode;
+  path?: string;
 }
 
-interface CustomHorizontalTabProps extends TabContentProps {}
+type CustomHorizontalTabProps = TabContentProps;
 const CustomHorizontalTab = forwardRef<HTMLButtonElement, CustomHorizontalTabProps>(
-  (
-    { dimension = 'l', disabled, selected, onSelectTab, tabId, text, icon, badge, ...props }: CustomHorizontalTabProps,
-    ref,
-  ) => {
+  ({ dimension = 'l', disabled, selected, onSelectTab, tabId, text, icon, badge, ...props }: CustomHorizontalTabProps, ref) => {
     return (
-      <HorizontalTab
-        {...props}
-        ref={ref}
-        tabId={tabId}
-        dimension={dimension}
-        disabled={disabled}
-        selected={selected}
-        onSelectTab={onSelectTab}
-      >
+      <HorizontalTab {...props} ref={ref} tabId={tabId} dimension={dimension} disabled={disabled} selected={selected} onSelectTab={onSelectTab}>
         {icon && (
           <TabIcon $dimension={dimension} $disabled={disabled}>
             {icon}
@@ -53,18 +35,16 @@ const CustomHorizontalTab = forwardRef<HTMLButtonElement, CustomHorizontalTabPro
   },
 );
 
-
-
 export const HorizontalTabsTemplate = ({
   dimension = 'l',
   showUnderline = true,
-  defaultSelectedTabId ,
+  defaultSelectedTabId,
   isRedirect = false,
   tabs,
   ...props
-}:Omit<HorizontalTabsProps, 'renderTab'|'tabsId'| 'tabIsDisabled'> & {
-    tabs: TabContentProps[];
-    isRedirect?:boolean
+}: Omit<HorizontalTabsProps, 'renderTab' | 'tabsId' | 'tabIsDisabled'> & {
+  tabs: TabContentProps[];
+  isRedirect?: boolean;
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -73,8 +53,10 @@ export const HorizontalTabsTemplate = ({
     return tabs.map((tab) => tab.tabId);
   }, [tabs]);
 
-  const [selectedTab, setSelectedTab] = useState<string | undefined>(isRedirect ? (tabs.find((item)=>location.pathname.includes(String(item?.path))))!.tabId : defaultSelectedTabId);
-  const handleSelectTab = (tabId: string) =>  setSelectedTab(tabId)
+  const [selectedTab, setSelectedTab] = useState<string | undefined>(
+    isRedirect ? tabs.find((item) => location.pathname.includes(String(item?.path)))!.tabId : defaultSelectedTabId,
+  );
+  const handleSelectTab = (tabId: string) => setSelectedTab(tabId);
 
   const tabIsDisabled = (tabId: string) => {
     const currentTab = tabs.find((tab) => tab.tabId === tabId);
@@ -97,12 +79,12 @@ export const HorizontalTabsTemplate = ({
         key={tabId}
         selected={selected}
         disabled={disabled}
-        onSelectTab={(tabId: string)=>{
-          if(path){
-            navigate(path)
+        onSelectTab={(tabId: string) => {
+          if (path) {
+            navigate(path);
           }
           if (onSelectTab) {
-            onSelectTab(tabId)
+            onSelectTab(tabId);
           }
         }}
       />

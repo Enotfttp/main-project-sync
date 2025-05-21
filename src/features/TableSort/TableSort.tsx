@@ -1,9 +1,8 @@
 import * as React from 'react';
-import {Table, TableRow} from '@admiral-ds/react-ui';
+import { Table, TableRow } from '@admiral-ds/react-ui';
 import type { TableProps, Column } from '@admiral-ds/react-ui';
-import {useIsFetching} from "@tanstack/react-query";
-import {Loader} from "@shared/index";
-
+import { useIsFetching } from '@tanstack/react-query';
+import { Loader } from '@shared/index';
 
 const StrToTime = (str: string) => {
   const res = str.split('.').reverse().join('-');
@@ -14,8 +13,8 @@ const MAX_SORT_LEVEL = 2;
 
 type SortColumn = { [key: string]: { sort: 'asc' | 'desc'; type?: string } };
 
-export const TableSort = ({queryKey, ...props}:TableProps & { queryKey: string}) => {
-  const isFetching = useIsFetching({queryKey:[queryKey]})
+export const TableSort = ({ queryKey, ...props }: TableProps & { queryKey: string }) => {
+  const isFetching = useIsFetching({ queryKey: [queryKey] });
   const [rows, setRows] = React.useState([...props.rowList]);
   const [cols, setCols] = React.useState([...props.columnList]);
   const [sortLevel, setSortLevel] = React.useState<number>(0);
@@ -57,9 +56,7 @@ export const TableSort = ({queryKey, ...props}:TableProps & { queryKey: string})
 
   const handleSort = ({ name, sort }: { name: string; sort: 'asc' | 'desc' | 'initial' }) => {
     if (sort === 'initial') {
-      const newCols = [...cols].map((col) =>
-        col.name === name ? { ...col, sort: undefined, sortOrder: undefined } : { ...col },
-      );
+      const newCols = [...cols].map((col) => (col.name === name ? { ...col, sort: undefined, sortOrder: undefined } : { ...col }));
       setCols(calcSortOrder(newCols));
     } else {
       if (sort === 'asc') {
@@ -87,8 +84,8 @@ export const TableSort = ({queryKey, ...props}:TableProps & { queryKey: string})
       }
     }
   };
-
-  const compare = (a: any , b: any, colName: string, sort: 'asc' | 'desc', colType?: string) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const compare = (a: any, b: any, colName: string, sort: 'asc' | 'desc', colType?: string) => {
     if (sort === 'asc') {
       switch (colType) {
         case 'date':
@@ -127,6 +124,7 @@ export const TableSort = ({queryKey, ...props}:TableProps & { queryKey: string})
 
       setRows(newRows);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.rowList, cols]);
 
   const handleResize = ({ name, width }: { name: string; width: string }) => {
@@ -134,13 +132,9 @@ export const TableSort = ({queryKey, ...props}:TableProps & { queryKey: string})
     setCols(newCols);
   };
 
-  if(isFetching){
-    return (
-      <Loader/>
-    )
+  if (isFetching) {
+    return <Loader />;
   }
 
-  return (
-    <Table {...props}  onSortChange={handleSort} onColumnResize={handleResize} />
-  );
+  return <Table {...props} onSortChange={handleSort} onColumnResize={handleResize} />;
 };

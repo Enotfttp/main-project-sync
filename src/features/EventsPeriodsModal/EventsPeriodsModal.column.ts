@@ -1,4 +1,4 @@
-import {Column} from "@admiral-ds/react-ui";
+import { Column } from '@admiral-ds/react-ui';
 
 export const columnEventsList: Column[] = [
   {
@@ -41,98 +41,97 @@ export const columnEventsList: Column[] = [
   },
 ];
 
-
 export const columnPeriodsList: Column[] = [
   {
     name: 'serviceName',
     title: 'Пакеты услуг/ Опции ПУ',
-    width:"13%"
+    width: '13%',
   },
   {
     name: 'dateBegin',
     title: 'Дата начала',
     type: 'date',
-    width:"13%"
+    width: '13%',
   },
   {
     name: 'dateEnd',
     title: 'Дата окончания',
     type: 'date',
-    width:"13%"
+    width: '13%',
   },
   {
     name: 'datePayBeg',
     title: 'Дата начала оплаты',
     type: 'date',
-    width:"13%"
+    width: '13%',
   },
   {
     name: 'datePayEnd',
     title: 'Дата окончания оплаты',
     sortable: true,
     type: 'date',
-    width:"13%"
+    width: '13%',
   },
   {
     name: 'datePayFact',
     title: 'Дата оплаты фактическая',
     sortable: true,
     type: 'date',
-    width:"13%"
+    width: '13%',
   },
   {
     name: 'dateReg',
     title: 'Дата учёта',
     sortable: true,
     type: 'date',
-    width:"13%"
+    width: '13%',
   },
   {
     name: 'status',
     title: 'Состояние',
     sortable: true,
-    width:"13%"
+    width: '13%',
   },
   {
     name: 'sumPay',
     title: 'Сумма оплаты',
     sortable: true,
-    width:"13%"
+    width: '13%',
   },
   {
     name: 'bnkBaseSumPay',
     title: 'Базовая сумма оплаты',
     sortable: true,
-    width:"13%"
+    width: '13%',
   },
   {
     name: 'sumInc',
     title: 'Доход',
     sortable: true,
-    width:"13%"
+    width: '13%',
   },
   {
     name: 'sumDbp',
     title: 'ДБП',
     sortable: true,
-    width:"13%"
+    width: '13%',
   },
   {
     name: 'ctbSumRegDest',
     title: 'Сумма учёта требований',
     sortable: true,
-    width:"13%"
+    width: '13%',
   },
   {
     name: 'ctbSumRgDtAd',
     title: 'Сумма доучёта требований',
     sortable: true,
-    width:"13%"
+    width: '13%',
   },
   {
     name: 'docs',
     title: 'Документы оплаты',
     sortable: true,
-    width:"13%"
+    width: '13%',
   },
 ];

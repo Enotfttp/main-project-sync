@@ -1,4 +1,4 @@
-import {Column} from "@admiral-ds/react-ui";
+import { Column } from '@admiral-ds/react-ui';
 
 export const columnList: Column[] = [
   {
@@ -10,7 +10,7 @@ export const columnList: Column[] = [
     name: 'typeDoc',
     title: 'Вид договтора',
     type: 'date',
-    width: '14%'
+    width: '14%',
   },
   {
     name: 'regNum',

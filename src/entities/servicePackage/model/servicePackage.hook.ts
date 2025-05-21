@@ -1,9 +1,10 @@
-import {useQuery} from "@tanstack/react-query";
-import {servicePackagesService} from '../index'
+import { useQuery } from '@tanstack/react-query';
+import { servicePackagesService } from '../index';
+import { TFiltersServicePackage } from '@entities/servicePackage';
 
-export const useGetPackagesList = (id:string) =>{
+export const useGetPackagesList = (filters?: TFiltersServicePackage) => {
   return useQuery({
-    queryKey:['servicePackage-list'],
-    queryFn: ()=> servicePackagesService.getServicePackagesList(id),
-  })
-}
+    queryKey: ['servicePackage-list', filters],
+    queryFn: () => servicePackagesService.getServicePackagesList(filters),
+  });
+};

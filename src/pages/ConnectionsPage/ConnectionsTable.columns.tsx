@@ -1,4 +1,4 @@
-import {Column} from "@admiral-ds/react-ui";
+import { Column } from '@admiral-ds/react-ui';
 
 export const columnList: Column[] = [
   {

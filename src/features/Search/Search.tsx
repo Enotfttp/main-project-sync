@@ -1,19 +1,18 @@
 import { useState } from 'react';
 import type { ChangeEvent } from 'react';
-import  {  ThemeProvider } from 'styled-components';
-import {LIGHT_THEME, MultiInputField} from '@admiral-ds/react-ui';
+import { MultiInputField } from '@admiral-ds/react-ui';
 import type { InputExFieldProps } from '@admiral-ds/react-ui';
-import {StyledChip} from "@features/Search/Search.styled.ts";
-import {uid} from "@shared/index.ts";
+import { StyledChip } from '@features/Search/Search.styled.ts';
+import { uid } from '@shared/index.ts';
 
-export const Search = ({
-  label = '',
-  extraText = '',
-  displayClearIcon = true,
-  ...props
-}: InputExFieldProps )   =>{
+interface ISearch extends InputExFieldProps {
+  listValue: React.ComponentProps<typeof StyledChip>[];
+  // setListValue: React.Dispatch<React.SetStateAction<{id:string, children:unknown[]}[]>>
+  setListValue: React.Dispatch<React.SetStateAction<React.ComponentProps<typeof StyledChip>[]>>;
+}
+
+export const Search = ({ label = '', extraText = '', displayClearIcon = true, listValue, setListValue, ...props }: ISearch) => {
   const [value, setValue] = useState('');
-  const [listValue, setListValue] = useState<React.ComponentProps<typeof StyledChip>[]>([]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const currentValue = e.currentTarget.value;
@@ -42,7 +41,6 @@ export const Search = ({
     setListValue([]);
   };
 
-
   return (
     <MultiInputField
       data-container-id="MultiSearchFieldId"
@@ -68,5 +66,5 @@ export const Search = ({
         />
       ))}
     </MultiInputField>
-  )
-}
+  );
+};

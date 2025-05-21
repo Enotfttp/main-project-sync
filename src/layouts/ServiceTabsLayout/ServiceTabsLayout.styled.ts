@@ -1,5 +1,5 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const StyledUnderTabsLayout = styled.main`
-    padding: 40px 0;
-`
+  padding: 40px 0;
+`;
