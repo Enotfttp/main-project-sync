@@ -1,1 +1,2 @@
-export { Header } from './header/Header.tsx';
+export { Header } from './header/Header';
+export { Breadcrumbs } from './breadcrumbs/Breadcrumbs';
