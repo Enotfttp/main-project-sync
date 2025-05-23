@@ -3,7 +3,8 @@ import { T } from '@admiral-ds/react-ui';
 import { useParams } from 'react-router-dom';
 import { StyledPackagesPage } from './PackagesPage.styled';
 import { columnList } from './PackagesTable.columns';
-import { TableSort, SearchWithFilter } from '@features/index';
+import { TableSort } from '@shared/index';
+import { SearchWithFilter } from '@features/index';
 import { useGetPackagesList, TFiltersServicePackage } from '@entities/servicePackage';
 
 const PackagesPage = () => {

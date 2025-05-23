@@ -5,7 +5,7 @@ import { columnPeriodsList, columnEventsList } from './EventsPeriodsModal.column
 import { Modal } from '@shared/index';
 import { useGetEventsList } from '@entities/events';
 import { useGetPeriodsList } from '@entities/periods';
-import { TableSort } from '@features/TableSort/TableSort.tsx';
+import { TableSort } from '@shared/index';
 
 export const EventsPeriodsModal = ({ eventsPeriodsId, closeModal, isOpen }: ReturnType<typeof useEventsPeriodsModalState>) => {
   const { data: dataEvents } = useGetEventsList(eventsPeriodsId as string, {

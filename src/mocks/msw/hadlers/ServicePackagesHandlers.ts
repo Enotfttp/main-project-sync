@@ -73,7 +73,7 @@ export const servicePackagesHandlers = [
 
     Object.entries(filters).forEach(([key, value]) => {
       if (value?.length) {
-        filtered = filtered.filter((item) => value?.includes(item[key]));
+        filtered = filtered.filter((item) => item[key]?.includes(value));
       }
     });
 

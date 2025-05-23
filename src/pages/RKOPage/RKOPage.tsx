@@ -5,9 +5,10 @@ import { useCallback } from 'react';
 import { StyledRKOPage } from './RKOPage.styled';
 import { columnList } from './RKOTable.columns.tsx';
 import { TFiltersRKO, useGetRKOList } from '@entities/rko';
-import { TableSort, SearchWithFilter } from '@features/index';
+import { TableSort } from '@shared/index';
 import { routesPath } from '@app/index';
 import { additionalHover } from '@shared/index';
+import { SearchWithFilter } from '@features/index';
 
 const RKOPage = () => {
   const navigate = useNavigate();

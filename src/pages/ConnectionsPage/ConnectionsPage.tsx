@@ -5,7 +5,8 @@ import { StyledConnectionsPage } from './ConnectionsPage.styled';
 import { columnList } from './ConnectionsTable.columns';
 import { useGetConnectionList, TFiltersServiceConnection } from '@entities/serviceConnect';
 import { additionalHover } from '@shared/index';
-import { EventsPeriodsModal, SearchWithFilter, useEventsPeriodsModalState, TableSort } from '@features/index';
+import { TableSort } from '@shared/index';
+import { SearchWithFilter, EventsPeriodsModal, useEventsPeriodsModalState } from '@features/index';
 
 const ConnectionsPage = () => {
   const { id } = useParams();

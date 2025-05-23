@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { ChangeEvent } from 'react';
 import { MultiInputField } from '@admiral-ds/react-ui';
 import type { InputExFieldProps } from '@admiral-ds/react-ui';
-import { StyledChip } from '@features/Search/Search.styled.ts';
+import { StyledChip } from './Search.styled';
 import { uid } from '@shared/index.ts';
 
 interface ISearch extends InputExFieldProps {

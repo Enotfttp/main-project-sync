@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { ChangeEvent } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { Select as SelectTemplate, LIGHT_THEME, Option, SelectProps } from '@admiral-ds/react-ui';
-import { ISearchWithFilter } from '@features/SearchWithFilter/SearchWithFilter.types.ts';
+import { ISearchWithFilter } from '@features/SearchWithFilter/SearchWithFilter.types';
 
 interface ISelect extends SelectProps {
   placeholder: string;

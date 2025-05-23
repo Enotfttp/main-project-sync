@@ -1,10 +1,11 @@
 import { Column, InputExFieldProps } from '@admiral-ds/react-ui';
 import * as React from 'react';
 import { useState } from 'react';
-import { Search, Select } from '../index';
 import { ISearchWithFilter } from './SearchWithFilter.types';
 import { StyledSearchWithFilter } from './SearchWithFilter.styled';
-import { StyledChip } from '@features/Search/Search.styled.ts';
+import { StyledChip } from '@shared/ui/Search/Search.styled.ts';
+import { Search, Select } from '@shared/index';
+import { usePrevious } from '@shared/index';
 
 interface ISearchWithFilterProps<T = Record<string, React.ReactNode | string[] | undefined>> extends InputExFieldProps {
   columnList: Column[];
@@ -25,6 +26,7 @@ export const SearchWithFilter = <T,>({
   //TODO.FIX расширить для мультеселекта
   const [curOption, setCurOption] = React.useState<string | Array<string>>('');
   const [listValue, setListValue] = useState<React.ComponentProps<typeof StyledChip>[]>([]);
+  const previousOption = usePrevious(curOption);
 
   const options = columnList.reduce((acc, elem) => {
     acc.push({ key: elem.name, value: String(elem.title) });
@@ -32,15 +34,15 @@ export const SearchWithFilter = <T,>({
   }, [] as ISearchWithFilter[]);
 
   React.useEffect(() => {
-    if (!listValue.length) return;
-    if (!Array.isArray(curOption)) {
+    // if (!listValue.length) return;
+    if (curOption && !Array.isArray(curOption)) {
       setFilters({ [curOption]: listValue.map((item) => item?.children) } as T);
     }
   }, [curOption, listValue, setFilters]);
 
   React.useEffect(() => {
-    if (curOption) setListValue([]);
-  }, [curOption]);
+    if (previousOption) setListValue([]);
+  }, [previousOption]);
 
   return (
     <StyledSearchWithFilter>
