@@ -6,6 +6,7 @@ export interface IServiceConnectionList {
   conNumber: string;
   conDate: string;
   srvPackages: string;
+  srvOptions: string;
   dateBeg: string;
   dateEnd: string;
   dateClose: string;

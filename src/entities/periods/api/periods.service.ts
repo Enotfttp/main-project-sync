@@ -1,9 +1,9 @@
-import { IPeriodsList } from '../index.ts';
+import { IPeriodsList, TFiltersPeriods } from '../index.ts';
 import { axiosInstance } from '@shared/index.ts';
 
 class PeriodsService {
-  async getPeriodsList(id: string): Promise<IPeriodsList[]> {
-    const response = await axiosInstance.get(`api/periods-list/${id}`);
+  async getPeriodsList(filters?: TFiltersPeriods): Promise<IPeriodsList[]> {
+    const response = await axiosInstance.post(`api/periods-list/${filters?.serviceId}`, { filters: filters });
     return response.data;
   }
 }

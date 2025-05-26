@@ -1,9 +1,9 @@
-import { IEventsList } from '../index.ts';
+import { IEventsList, TFiltersEvents } from '../index.ts';
 import { axiosInstance } from '@shared/index.ts';
 
 class EventsService {
-  async getEventsList(id: string): Promise<IEventsList[]> {
-    const response = await axiosInstance.get(`api/events-list/${id}`);
+  async getEventsList(filters?: TFiltersEvents): Promise<IEventsList[]> {
+    const response = await axiosInstance.post(`api/events-list/${filters?.serviceId}`, { filters: filters });
     return response.data;
   }
 }

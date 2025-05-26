@@ -5,6 +5,7 @@ export const usePrevious = (value: unknown) => {
 
   useEffect(() => {
     ref.current = value;
+    // eslint-disabled-next-line
   }, []);
 
   return ref.current;

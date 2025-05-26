@@ -11,6 +11,7 @@ const mockedServiceConnectsList = [
     conNumber: '1',
     conDate: '28.04.2025',
     srvPackages: 'Название ПУ 1',
+    srvOptions: 'Название опции 1',
     dateBeg: '28.04.2025',
     dateEnd: '28.05.2025',
     dateClose: '28.06.2025',
@@ -22,7 +23,8 @@ const mockedServiceConnectsList = [
     idSrvPackage: '2',
     conNumber: '2',
     conDate: '29.04.2025',
-    srvPackages: 'Название опции ПУ 1',
+    srvPackages: 'Название ПУ 2',
+    srvOptions: 'Название опции ПУ 2',
     dateBeg: '29.04.2025',
     dateEnd: '29.05.2025',
     dateClose: '29.06.2025',
@@ -34,7 +36,8 @@ const mockedServiceConnectsList = [
     idSrvPackage: '3',
     conNumber: '3',
     conDate: '30.04.2025',
-    srvPackages: 'Название опции ПУ 2',
+    srvPackages: 'Название ПУ 3',
+    srvOptions: 'Название опции ПУ 3',
     dateBeg: '28.04.2025',
     dateEnd: '28.05.2025',
     dateClose: '28.06.2025',
@@ -49,7 +52,7 @@ export const serviceConnectsHandlers = [
 
     Object.entries(filters).forEach(([key, value]) => {
       if (value?.length) {
-        filtered = filtered.filter((item) => item[key]?.includes(value));
+        filtered = filtered.filter((item) => value?.includes(item[key]));
       }
     });
 

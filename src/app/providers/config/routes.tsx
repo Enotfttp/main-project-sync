@@ -1,7 +1,7 @@
 import { RouteObject } from 'react-router-dom';
 import React, { JSX, Suspense } from 'react';
 import { routesPath } from './routesPath';
-import { RKOPage, ConnectionsPage, PackagesPage } from '@pages/index';
+import { RKOPage, ConnectionsPage, PeriodsPage, EventsPage } from '@pages/index';
 import { MainLayout, ServiceTabsLayout } from '@layouts/index';
 import { Loader } from '@shared/index';
 import TestUIPage from '@pages/TestUI/TestUIPage.tsx';
@@ -20,10 +20,14 @@ export const routes: RouteObject[] = [
       { path: routesPath.root, element: withSuspense(RKOPage) },
       {
         path: routesPath.service.root,
+        element: withSuspense(ConnectionsPage),
+        index: true,
+      },
+      {
         element: <ServiceTabsLayout />,
         children: [
-          { path: routesPath.service.connections.root, element: withSuspense(ConnectionsPage) },
-          { path: routesPath.service.packages.root, element: withSuspense(PackagesPage) },
+          { path: routesPath.service.events.root, element: withSuspense(EventsPage) },
+          { path: routesPath.service.periods.root, element: withSuspense(PeriodsPage) },
         ],
       },
     ],

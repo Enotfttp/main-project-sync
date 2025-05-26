@@ -53,7 +53,7 @@ export default tseslint.config(
             'react/prop-types': 'off', // используем TypeScript
             // хуки
             'react-hooks/rules-of-hooks': 'error',
-            'react-hooks/exhaustive-deps': 'warn',
+            'react-hooks/exhaustive-deps': 'off',
             // импорты
             'import/order': 'warn',
             // 'simple-import-sort/imports': 'error',

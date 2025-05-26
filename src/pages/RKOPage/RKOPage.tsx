@@ -17,7 +17,7 @@ const RKOPage = () => {
 
   const onRowClick = useCallback(
     (rowId: string | number) => {
-      navigate(routesPath.service.connections.fullPath(rowId));
+      navigate(routesPath.service.fullPath(rowId));
     },
     [navigate],
   );
@@ -29,7 +29,7 @@ const RKOPage = () => {
         selectPlaceholder="Выберите поле из выпадающего списка"
         columnList={columnList}
         setFilters={setFilters}
-        searchPlaceholder="Введите номер документа РКО"
+        searchPlaceholder="Введите значение для поиска"
       />
       <TableSort columnList={columnList} rowList={additionalHover(data)} onRowClick={onRowClick} queryKey="rko-list" />
     </StyledRKOPage>

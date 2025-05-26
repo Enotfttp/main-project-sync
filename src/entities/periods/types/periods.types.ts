@@ -1,18 +1,24 @@
 export interface IPeriodsList {
   id: string;
-  serviceName: string;
+  serviceId: string;
   dateBegin: string;
   dateEnd: string;
   datePayBeg: string;
   datePayEnd: string;
   datePayFact: string;
-  dateReg: string;
   status: string;
+  chargeAmount: string;
+  additionalChargeAmount: string;
+  amountAccountRequirements: string;
   sumPay: string;
-  bnkBaseSumPay: string;
   sumInc: string;
   sumDbp: string;
-  ctbSumRegDest: string;
-  ctbSumRgDtAd: string;
-  docs: string;
+  paymentBehavior: string;
+  paymentPriorities: string;
+  orderMeaning: string;
 }
+
+/** TODO.FIX Расшириить для большего фильтрования */
+export type TFiltersPeriods = {
+  [K in keyof IPeriodsList]?: Array<IPeriodsList[K]> | IPeriodsList[K] | null;
+};

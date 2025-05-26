@@ -24,14 +24,13 @@ export const useBreadcrumbs = (): BreadcrumbItem[] => {
 
   while (currentPathIndex < pathParts.length) {
     const part = pathParts[currentPathIndex];
-
     // Находим совпадающий узел среди потомков текущего
     const matchingKey = Object.keys(currentNode).find((key) => {
       const child = currentNode[key];
       if (typeof child !== 'object' || !child.root) return false;
 
       const childSegments = child.root.split('/').filter(Boolean);
-      const expectedSegment = childSegments[0];
+      const expectedSegment = childSegments[childSegments.length - 2];
 
       return (
         expectedSegment === part || expectedSegment?.startsWith(':') // динамический сегмент

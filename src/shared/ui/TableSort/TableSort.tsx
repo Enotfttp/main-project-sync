@@ -124,7 +124,6 @@ export const TableSort = ({ queryKey, ...props }: TableProps & { queryKey: strin
 
       setRows(newRows);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.rowList, cols]);
 
   const handleResize = ({ name, width }: { name: string; width: string }) => {

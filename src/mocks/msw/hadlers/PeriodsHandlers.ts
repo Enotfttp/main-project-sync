@@ -1,90 +1,98 @@
 import { HttpResponse, http } from 'msw';
 import { IPeriodsList } from '@entities/periods';
+import { TFiltersBodyMSW } from '@mocks/msw/types/filters.types.ts';
 
-const mockedPeriodsList1 = [
+const mockedPeriodsList: IPeriodsList[] = [
   {
     id: '1',
-    serviceName: 'Пакет услуг "Самое важное 1',
+    serviceId: '1',
     dateBegin: '07.04.2025',
     dateEnd: '30.04.2025',
     datePayBeg: '07.04.2025',
     datePayEnd: '31.04.2025',
-    datePayFact: '',
-    dateReg: '',
-    status: 'Действует',
+    datePayFact: '31.04.2025',
+    status: 'Неоплачено',
+    chargeAmount: '1000',
+    additionalChargeAmount: '2000',
+    amountAccountRequirements: '4000',
     sumPay: '2000',
-    bnkBaseSumPay: '',
-    sumInc: '',
-    sumDbp: '',
-    ctbSumRegDest: '4000',
-    ctbSumRgDtAd: '',
-    docs: 'Документы 1',
+    sumInc: '20000',
+    sumDbp: '10000',
+    paymentBehavior: 'Пени',
+    paymentPriorities: '40',
+    orderMeaning: 'Оплаты услуги',
   },
   {
     id: '2',
-    serviceName: 'Пакет услуг "Самое важное 2',
+    serviceId: '1',
     dateBegin: '10.04.2025',
     dateEnd: '30.04.2025',
     datePayBeg: '10.04.2025',
     datePayEnd: '31.04.2025',
-    datePayFact: '',
-    dateReg: '',
-    status: 'Действует',
-    sumPay: '1500',
-    bnkBaseSumPay: '',
-    sumInc: '',
-    sumDbp: '',
-    ctbSumRegDest: '3000',
-    ctbSumRgDtAd: '',
-    docs: 'Документы 2',
+    datePayFact: '31.04.2025',
+    status: 'Ожидает оплаты',
+    chargeAmount: '2000',
+    additionalChargeAmount: '3000',
+    amountAccountRequirements: '5000',
+    sumPay: '4000',
+    sumInc: '30000',
+    sumDbp: '15000',
+    paymentBehavior: 'Пени',
+    paymentPriorities: '20',
+    orderMeaning: 'Оплаты услуги',
   },
-];
-
-const mockedPeriodsList2 = [
   {
     id: '3',
-    serviceName: 'Пакет услуг "Не самое важное 1',
+    serviceId: '2',
     dateBegin: '20.02.2025',
     dateEnd: '30.02.2025',
     datePayBeg: '20.02.2025',
     datePayEnd: '29.02.2025',
-    datePayFact: '',
-    dateReg: '',
-    status: 'Не действует',
-    sumPay: '15000',
-    bnkBaseSumPay: '',
-    sumInc: '',
-    sumDbp: '',
-    ctbSumRegDest: '40000',
-    ctbSumRgDtAd: '',
-    docs: 'Документы 3',
+    datePayFact: '29.02.2025',
+    status: 'Ожидает оплаты',
+    chargeAmount: '500',
+    additionalChargeAmount: '1000',
+    amountAccountRequirements: '3000',
+    sumPay: '200',
+    sumInc: '25000',
+    sumDbp: '5000',
+    paymentBehavior: 'Пени',
+    paymentPriorities: '90',
+    orderMeaning: 'Оплаты услуги',
   },
   {
     id: '4',
-    serviceName: 'Пакет услуг "Не самое важное 2',
+    serviceId: '1',
     dateBegin: '20.03.2025',
     dateEnd: '30.03.2025',
     datePayBeg: '20.03.2025',
     datePayEnd: '31.03.2025',
-    datePayFact: '',
-    dateReg: '',
-    status: 'Не действует',
-    sumPay: '500',
-    bnkBaseSumPay: '',
-    sumInc: '',
-    sumDbp: '',
-    ctbSumRegDest: '10000',
-    ctbSumRgDtAd: '',
-    docs: 'Документы 4',
+    datePayFact: '31.03.2025',
+    status: 'Оплачено',
+    chargeAmount: '1000',
+    additionalChargeAmount: '2000',
+    amountAccountRequirements: '4000',
+    sumPay: '2000',
+    sumInc: '20000',
+    sumDbp: '10000',
+    paymentBehavior: 'Пени',
+    paymentPriorities: '10',
+    orderMeaning: 'Оплаты услуги',
   },
 ];
 
 export const periodsHandlers = [
-  http.get('/api/periods-list/:id', ({ params }) => {
-    const { id } = params;
-    if (id === '1') {
-      return HttpResponse.json<IPeriodsList[]>(mockedPeriodsList1);
-    }
-    return HttpResponse.json<IPeriodsList[]>(mockedPeriodsList2);
+  http.post('/api/periods-list/:id', async ({ request }) => {
+    const body = (await request.json()) as TFiltersBodyMSW<IPeriodsList>;
+    const filters = body?.filters || {};
+    let filtered = mockedPeriodsList;
+
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value?.length) {
+        filtered = filtered.filter((item) => value?.includes(item[key]));
+      }
+    });
+
+    return HttpResponse.json<IPeriodsList[]>(filtered);
   }),
 ];

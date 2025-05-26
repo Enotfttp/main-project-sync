@@ -7,17 +7,17 @@ import { routesPath } from '@app/index';
 import { Breadcrumbs } from '@widgets/breadcrumbs/Breadcrumbs.tsx';
 
 export const ServiceTabsLayout = () => {
-  const { id } = useParams();
-  if (!id) {
+  const { id, serviceId } = useParams();
+  if (!id || !serviceId) {
     throw new Error('Вы не выбрали документ РКО');
   }
 
   const tabs = useMemo(
     () => [
-      { text: 'Подписки', tabId: '1', path: routesPath.service.connections.shortPath(id) },
-      { text: 'Пакеты услуг', tabId: '2', path: routesPath.service.packages.shortPath(id) },
+      { text: 'Периоды', tabId: '1', path: routesPath.service.periods.fullPath(id, serviceId) },
+      { text: 'События', tabId: '2', path: routesPath.service.events.fullPath(id, serviceId) },
     ],
-    [id],
+    [id, serviceId],
   );
 
   return (
