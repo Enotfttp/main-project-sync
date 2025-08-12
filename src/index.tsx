@@ -11,7 +11,7 @@ import './index.css';
 
 const isShowDevTools = import.meta.env.VITE_IS_ENABLED_REACT_QUERY_DEV_TOOLS === 'true';
 
-if (import.meta.env.VITE_NODE_ENV === 'development') {
+if (import.meta.env.VITE_APP_ENV === 'development') {
   import('@mocks/msw/browser').then(({ worker }) => worker.start());
 }
 
