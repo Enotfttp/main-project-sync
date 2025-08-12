@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { Table, TableRow } from '@admiral-ds/react-ui';
+import { PaginationOneProps, Table, TableRow } from '@admiral-ds/react-ui';
 import type { TableProps, Column } from '@admiral-ds/react-ui';
 import { useIsFetching } from '@tanstack/react-query';
+import { PaginationTable } from './component/PaginationTable';
+import { StyledTableSort } from './TableSort.styled';
 import { Loader } from '@shared/index';
 
 const StrToTime = (str: string) => {
@@ -13,7 +15,19 @@ const MAX_SORT_LEVEL = 2;
 
 type SortColumn = { [key: string]: { sort: 'asc' | 'desc'; type?: string } };
 
-export const TableSort = ({ queryKey, ...props }: TableProps & { queryKey: string }) => {
+
+type TableSortProps =
+  | {
+  queryKey: string;
+  isPagination: true;
+} & TableProps &
+ PaginationOneProps
+  | {
+  queryKey: string;
+  isPagination?: false;
+} & TableProps;
+
+export const TableSort = ({ queryKey, ...props }: TableSortProps) => {
   const isFetching = useIsFetching({ queryKey: [queryKey] });
   const [rows, setRows] = React.useState([...props.rowList]);
   const [cols, setCols] = React.useState([...props.columnList]);
@@ -135,5 +149,11 @@ export const TableSort = ({ queryKey, ...props }: TableProps & { queryKey: strin
     return <Loader />;
   }
 
-  return <Table {...props} onSortChange={handleSort} onColumnResize={handleResize} />;
+  return <StyledTableSort>
+
+    <Table {...props} onSortChange={handleSort} onColumnResize={handleResize} />
+    {props?.isPagination && (
+      <PaginationTable {...props}/>
+    )}
+  </StyledTableSort>;
 };
