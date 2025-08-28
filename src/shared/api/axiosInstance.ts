@@ -6,3 +6,9 @@ export const axiosInstance = axios.create({
     'Content-Type': 'application/json',
   },
 });
+
+declare module 'axios' {
+  export interface AxiosRequestConfig {
+    skipAuthRefresh?: boolean
+  }
+}
