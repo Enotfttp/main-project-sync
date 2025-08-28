@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { userService, User } from '../index';
+import { userService, IUser } from '../index';
 import { storage } from '@shared/utils/storage.ts';
 
 export const useGetUser = () => {
@@ -11,7 +11,7 @@ export const useGetUser = () => {
   });
 };
 
-export const useUpdateUser = (data: Partial<User>) => {
+export const useUpdateUser = (data: Partial<IUser>) => {
   return useQuery({
     queryKey: ['user'],
     queryFn: () => userService.updateProfile(data),

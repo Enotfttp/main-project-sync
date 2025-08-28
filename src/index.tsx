@@ -41,14 +41,14 @@ createRoot(document.getElementById('root')!).render(
         <FontsVTBGroup />
         <QueryClientProvider client={queryClient}>
           <AuthProvider>
-          <AppRouter />
-          <ReactQueryDevtools initialIsOpen />
-          {isShowDevTools && (
-            <React.Suspense fallback={<Loader />}>
-              <ReactQueryDevtoolsProduction />
-            </React.Suspense>
-          )}
-            </AuthProvider>
+            <AppRouter />
+            <ReactQueryDevtools initialIsOpen />
+            {isShowDevTools && (
+              <React.Suspense fallback={<Loader />}>
+                <ReactQueryDevtoolsProduction />
+              </React.Suspense>
+            )}
+          </AuthProvider>
         </QueryClientProvider>
       </DropdownProvider>
     </ThemeProvider>

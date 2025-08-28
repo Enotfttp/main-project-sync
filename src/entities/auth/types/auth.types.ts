@@ -1,4 +1,4 @@
-import { User } from '@entities/user';
+import { IUser } from '@entities/user';
 
 export interface LoginCredentials {
   email: string
@@ -12,6 +12,6 @@ export interface RegisterData extends LoginCredentials {
 
 export interface AuthResponse {
   token: string
-  user: User
+  user: IUser
 }
 

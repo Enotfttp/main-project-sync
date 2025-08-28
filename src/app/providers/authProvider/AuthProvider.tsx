@@ -1,5 +1,5 @@
-import {  useGetUser } from '@entities/user';
-import { ReactNode, useEffect } from 'react'
+import { ReactNode, useEffect } from 'react';
+import { useGetUser } from '@entities/user';
 import { useRefreshTokenMutation } from '@entities/auth';
 import { setupInterceptors } from '@shared/api/interceptors';
 import { storage } from '@shared/utils/storage';
@@ -9,34 +9,35 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const {  mutateAsync: refreshToken } = useRefreshTokenMutation()
-  const { refetch: refetchUser  } = useGetUser()
+  const { mutateAsync: refreshToken } = useRefreshTokenMutation();
+  const { refetch: refetchUser } = useGetUser();
 
   useEffect(() => {
     // Настраиваем интерцепторы
-    setupInterceptors()
+    setupInterceptors();
 
     // Автоматически обновляем токен каждые 10 минут
-    let refreshInterval: number | null = null
+    let refreshInterval: number | null = null;
 
     if (storage.getToken()) {
-      refetchUser()
+      refetchUser();
 
       refreshInterval = window.setInterval(async () => {
         try {
-          await refreshToken()
+          await refreshToken();
         } catch (error) {
-          console.error('Scheduled token refresh failed:', error)
+          // eslint-disable-next-line no-console
+          console.error('Scheduled token refresh failed:', error);
         }
-      }, 10 * 60 * 1000) // 10 минут
+      }, 10 * 60 * 1000); // 10 минут
     }
 
     return () => {
       if (refreshInterval) {
-        clearInterval(refreshInterval)
+        clearInterval(refreshInterval);
       }
-    }
-  }, [refetchUser, refreshToken])
+    };
+  }, [refetchUser, refreshToken]);
 
-  return <>{children}</>
-}
+  return <>{children}</>;
+};

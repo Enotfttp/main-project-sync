@@ -1,13 +1,13 @@
+import { IUser } from '../index';
 import { axiosInstance } from '@shared/index.ts';
-import { User } from '../index';
 
 class UserService {
-  async getProfile(): Promise<User> {
+  async getProfile(): Promise<IUser> {
     const response = await axiosInstance.get('/auth/profile');
     return response.data;
   }
 
-  async updateProfile(data: Partial<User>): Promise<User> {
+  async updateProfile(data: Partial<IUser>): Promise<IUser> {
     const response = await axiosInstance.put('/auth/profile', data);
     return response.data;
   }

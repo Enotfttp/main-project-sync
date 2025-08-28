@@ -1,5 +1,5 @@
-import { ReactNode } from 'react'
-import { Navigate } from 'react-router-dom'
+import { ReactNode } from 'react';
+import { Navigate } from 'react-router-dom';
 import { useGetUser } from '@entities/user';
 import { Loader } from '@shared/ui/Loader/Loader.tsx';
 
@@ -9,14 +9,14 @@ interface ProtectedRouteProps {
 }
 
 export const ProtectedRoute = ({
-                                 children,
-                                 redirectTo = '/login'
-                               }: ProtectedRouteProps) => {
+  children,
+  redirectTo = '/login'
+}: ProtectedRouteProps) => {
   const { data, isLoading } = useGetUser();
 
   if (isLoading) {
-    return <Loader />
+    return <Loader />;
   }
 
-  return data ? <>{children}</> : <Navigate to={redirectTo} replace />
-}
+  return data ? <>{children}</> : <Navigate to={redirectTo} replace />;
+};
