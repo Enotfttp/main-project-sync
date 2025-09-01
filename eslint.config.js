@@ -4,7 +4,6 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import tseslint from 'typescript-eslint';
 import reactRefresh from 'eslint-plugin-react-refresh'
 import importPlugin from 'eslint-plugin-import';
-import prettierConfig from 'eslint-plugin-prettier';
 
 
 export default tseslint.config(
@@ -36,14 +35,12 @@ export default tseslint.config(
             'react-hooks': reactHooks,
             'react-refresh': reactRefresh,
             import: importPlugin,
-            'prettier':prettierConfig
         },
         rules: {
             ...reactHooks.configs.recommended.rules,
             'import/no-unresolved': 'error',
             "no-multi-spaces": 'error',
             "no-console":'warn',
-            "prettier/prettier": 'error',
             // отступы
             // кавычки
             'quotes': ['error', 'single'],

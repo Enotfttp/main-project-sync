@@ -2,7 +2,7 @@
 
 interface ImportMetaEnv {
   readonly VITE_IS_ENABLED_REACT_QUERY_DEV_TOOLS: string;
-  readonly VITE_NODE_ENV: 'development' | 'production';
+  readonly VITE_APP_ENV: 'development' | 'production';
   readonly BASE_URL: string;
 }
 
