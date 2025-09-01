@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import { IAuthResponse, authService } from '../index';
 import { storage } from '@shared/utils';
+import { routesPath } from '@app/providers';
 
 export const useLoginMutation = () => {
   const queryClient = useQueryClient();
@@ -28,12 +30,14 @@ export const useRegisterMutation = () => {
 
 export const useLogoutMutation = () => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   return useMutation({
     mutationFn: authService.logout,
     onSuccess: () => {
       storage.removeToken();
       queryClient.removeQueries({ queryKey: ['user'] });
+      navigate(routesPath.enter.root);
     },
   });
 };
