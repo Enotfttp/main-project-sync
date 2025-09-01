@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { AuthResponse, authService } from '../index';
-import { storage } from '@shared/utils/storage';
+import { IAuthResponse, authService } from '../index';
+import { storage } from '@shared/utils';
 
 export const useLoginMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: authService.login,
-    onSuccess: (data: AuthResponse) => {
+    onSuccess: (data: IAuthResponse) => {
       storage.setToken(data.token);
       queryClient.setQueryData(['user'], data.user);
     },
@@ -19,7 +19,7 @@ export const useRegisterMutation = () => {
 
   return useMutation({
     mutationFn: authService.register,
-    onSuccess: (data: AuthResponse) => {
+    onSuccess: (data: IAuthResponse) => {
       storage.setToken(data.token);
       queryClient.setQueryData(['user'], data.user);
     },

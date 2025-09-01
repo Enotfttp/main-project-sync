@@ -2,7 +2,7 @@ import { Outlet, useParams } from 'react-router-dom';
 import { useMemo } from 'react';
 import * as React from 'react';
 import { StyledUnderTabsLayout } from './ServiceTabsLayout.styled';
-import { HorizontalTabsTemplate } from '@shared/index';
+import { HorizontalTabsTemplate } from '@shared/ui';
 import { routesPath } from '@app/index';
 import { Breadcrumbs } from '@widgets/breadcrumbs/Breadcrumbs.tsx';
 

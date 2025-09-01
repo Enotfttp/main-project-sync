@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { ISearchWithFilter } from './SearchWithFilter.types';
 import { StyledSearchWithFilter } from './SearchWithFilter.styled';
 import { StyledChip } from '@shared/ui/Search/Search.styled.ts';
-import { Search, Select } from '@shared/index';
-import { usePrevious } from '@shared/index';
+import { Search, Select } from '@shared/ui';
+import { usePrevious } from '@shared/common';
 
 interface ISearchWithFilterProps<T = Record<string, React.ReactNode | string[] | undefined>> extends InputExFieldProps {
   columnList: Column[];

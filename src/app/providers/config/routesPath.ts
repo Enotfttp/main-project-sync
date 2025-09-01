@@ -1,13 +1,9 @@
 export const routesPath = {
   root: '/',
   label: 'Документы РКО',
-  login:{
-    root: 'login',
-    label: 'Авторизация',
-  },
-  registration:{
-    root: 'registration',
-    label: 'Регистрация',
+  enter:{
+    root: 'enter',
+    label: 'Вход',
   },
   service: {
     root: 'service/:id',

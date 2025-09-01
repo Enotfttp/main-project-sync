@@ -1,8 +1,8 @@
 import { ReactNode, useEffect } from 'react';
 import { useGetUser } from '@entities/user';
 import { useRefreshTokenMutation } from '@entities/auth';
-import { setupInterceptors } from '@shared/api/interceptors';
-import { storage } from '@shared/utils/storage';
+import { setupInterceptors } from '@shared/api';
+import { storage } from '@shared/utils';
 
 interface AuthProviderProps {
   children: ReactNode

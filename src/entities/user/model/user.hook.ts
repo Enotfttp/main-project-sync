@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { userService, IUser } from '../index';
-import { storage } from '@shared/utils/storage.ts';
+import { storage } from '@shared/utils';
 
 export const useGetUser = () => {
   return useQuery({

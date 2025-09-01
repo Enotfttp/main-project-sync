@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { authService } from '../index';
-import { storage } from '@shared/utils/storage';
+import { storage } from '@shared/utils';
 import { IUser } from '@entities/user';
 
 export const useRefreshTokenMutation = () => {

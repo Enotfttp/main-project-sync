@@ -6,7 +6,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { LIGHT_THEME, FontsVTBGroup, DropdownProvider } from '@admiral-ds/react-ui';
 import { ThemeProvider } from 'styled-components';
 import { AppRouter } from '@app/index';
-import { Loader } from '@shared/index';
+import { Loader } from '@shared/ui';
 import './index.css';
 import { AuthProvider } from '@app/providers/authProvider/AuthProvider.tsx';
 

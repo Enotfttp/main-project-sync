@@ -3,7 +3,7 @@ import { T } from '@admiral-ds/react-ui';
 import { useParams } from 'react-router-dom';
 import { StyledEventsPage } from './EventsPage.styled';
 import { columnList } from './EventsPage.columns';
-import { TableSort } from '@shared/index';
+import { TableSort } from '@shared/ui';
 import { SearchWithFilter } from '@features/index';
 import { TFiltersEvents, useGetEventsList } from '@entities/events';
 

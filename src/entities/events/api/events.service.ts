@@ -1,5 +1,5 @@
 import { IEventsList, TFiltersEvents } from '../index.ts';
-import { axiosInstance } from '@shared/index.ts';
+import { axiosInstance } from '@shared/api';
 
 class EventsService {
   async getEventsList(filters?: TFiltersEvents): Promise<IEventsList[]> {

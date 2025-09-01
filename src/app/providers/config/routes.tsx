@@ -1,9 +1,9 @@
 import { RouteObject } from 'react-router-dom';
 import React, { JSX, Suspense } from 'react';
 import { routesPath } from './routesPath';
-import { RKOPage, ConnectionsPage, PeriodsPage, EventsPage } from '@pages/index';
+import { RKOPage, ConnectionsPage, PeriodsPage, EventsPage, EnterPage } from '@pages/index';
 import { MainLayout, ServiceTabsLayout } from '@layouts/index';
-import { Loader } from '@shared/index';
+import { Loader } from '@shared/ui';
 import TestUIPage from '@pages/TestUI/TestUIPage.tsx';
 import { ProtectedRoute } from '@widgets/protectedRoute/ProtectedRoute.tsx';
 
@@ -37,6 +37,10 @@ export const routes: RouteObject[] = [
         ],
       },
     ],
+  },
+  {
+    path: routesPath.enter.root,
+    element: <EnterPage />,
   },
   {
     path: routesPath.testUIPage,

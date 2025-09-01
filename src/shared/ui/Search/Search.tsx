@@ -3,7 +3,7 @@ import type { ChangeEvent } from 'react';
 import { MultiInputField } from '@admiral-ds/react-ui';
 import type { InputExFieldProps } from '@admiral-ds/react-ui';
 import { StyledChip } from './Search.styled';
-import { uid } from '@shared/index.ts';
+import { uid } from '@shared/common';
 
 interface ISearch extends InputExFieldProps {
   listValue: React.ComponentProps<typeof StyledChip>[];

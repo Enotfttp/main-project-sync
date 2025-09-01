@@ -1,5 +1,5 @@
 import { IPeriodsList, TFiltersPeriods } from '../index.ts';
-import { axiosInstance } from '@shared/index.ts';
+import { axiosInstance } from '@shared/api';
 
 class PeriodsService {
   async getPeriodsList(filters?: TFiltersPeriods): Promise<IPeriodsList[]> {

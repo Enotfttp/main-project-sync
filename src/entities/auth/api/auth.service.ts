@@ -1,13 +1,13 @@
-import { axiosInstance } from '@shared/index.ts';
-import { AuthResponse, LoginCredentials, RegisterData } from '@entities/auth/types/auth.types';
+import { axiosInstance } from '@shared/api';
+import { IAuthResponse, ILoginCredentials, IRegisterData } from '@entities/auth';
 
 class AuthService {
-  async login(credentials: LoginCredentials): Promise<AuthResponse> {
+  async login(credentials: ILoginCredentials): Promise<IAuthResponse> {
     const response = await axiosInstance.post('/auth/login', credentials);
     return response.data;
   }
 
-  async register(userData: RegisterData): Promise<AuthResponse> {
+  async register(userData: IRegisterData): Promise<IAuthResponse> {
     const response = await axiosInstance.post('/auth/register', userData);
     return response.data;
   }

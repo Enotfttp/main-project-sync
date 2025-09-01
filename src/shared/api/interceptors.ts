@@ -62,7 +62,7 @@ export const setupInterceptors = () => {
         } catch (refreshError) {
           processQueue(refreshError, null);
           storage.removeToken();
-          window.location.href = '/login';
+          window.location.href = '/enter';
           return Promise.reject(refreshError);
         } finally {
           isRefreshing = false;

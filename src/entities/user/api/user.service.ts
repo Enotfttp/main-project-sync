@@ -1,5 +1,5 @@
 import { IUser } from '../index';
-import { axiosInstance } from '@shared/index.ts';
+import { axiosInstance } from '@shared/api';
 
 class UserService {
   async getProfile(): Promise<IUser> {

@@ -1,16 +1,18 @@
 import { IUser } from '@entities/user';
 
-export interface LoginCredentials {
-  email: string
+export interface ILoginCredentials {
+  login: string
   password: string
 }
 
-export interface RegisterData extends LoginCredentials {
-  username: string
+export interface IRegisterData extends ILoginCredentials {
+  firstname:string,
+  lastname:string,
+  email:string,
   confirmPassword?: string
 }
 
-export interface AuthResponse {
+export interface IAuthResponse {
   token: string
   user: IUser
 }

@@ -1,5 +1,5 @@
 import { TFiltersRKO, IRKOList } from '../index.ts';
-import { axiosInstance } from '@shared/index.ts';
+import { axiosInstance } from '@shared/api';
 
 class RKOService {
   async getRKOList(filters?: TFiltersRKO): Promise<IRKOList[]> {
