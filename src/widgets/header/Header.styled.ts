@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { SystemSignInSolid } from '@admiral-ds/icons';
 
 export const StyledHeader = styled.header`
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   padding: 0 65px;
   height: 100px;
@@ -16,4 +17,10 @@ export const StyledLink = styled(Link)`
   font-size: 40px;
   letter-spacing: 3px;
   font-weight: 600;
+`;
+
+export const StyledIconLogout = styled(SystemSignInSolid)`
+    & > g{
+        fill:#fff !important;
+    }
 `;

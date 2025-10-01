@@ -1,6 +1,10 @@
 export const routesPath = {
   root: '/',
   label: 'Документы РКО',
+  enter:{
+    root: 'enter',
+    label: 'Вход',
+  },
   service: {
     root: 'service/:id',
     label: 'Подписки',

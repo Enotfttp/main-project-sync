@@ -3,7 +3,7 @@ import { T } from '@admiral-ds/react-ui';
 import { useParams } from 'react-router-dom';
 import { StyledPeriodsPage } from './PeriodsPage.styled';
 import { columnList } from './PeriodsPage.columns';
-import { TableSort } from '@shared/index';
+import { TableSort } from '@shared/ui';
 import { SearchWithFilter } from '@features/index';
 import { TFiltersPeriods, useGetPeriodsList } from '@entities/periods';
 

@@ -2,9 +2,9 @@ import * as React from 'react';
 import { PaginationOneProps, Table, TableRow } from '@admiral-ds/react-ui';
 import type { TableProps, Column } from '@admiral-ds/react-ui';
 import { useIsFetching } from '@tanstack/react-query';
-import { PaginationTable } from './component/PaginationTable';
 import { StyledTableSort } from './TableSort.styled';
-import { Loader } from '@shared/index';
+import { PaginationTable } from './components';
+import { Loader } from '@shared/ui';
 
 const StrToTime = (str: string) => {
   const res = str.split('.').reverse().join('-');

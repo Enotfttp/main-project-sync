@@ -1,5 +1,5 @@
 import { IServiceConnectionList, TFiltersServiceConnection } from '../index';
-import { axiosInstance } from '@shared/index.ts';
+import { axiosInstance } from '@shared/api';
 
 class ServiceConnectService {
   async getServiceConnectionList(filters?: TFiltersServiceConnection): Promise<IServiceConnectionList[]> {

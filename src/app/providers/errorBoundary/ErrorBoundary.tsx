@@ -1,5 +1,5 @@
 import React, { Component, ReactNode } from 'react';
-import { ErrorFallback } from '@shared/index';
+import { ErrorFallback } from '@shared/ui';
 
 interface Props {
   children: ReactNode;
