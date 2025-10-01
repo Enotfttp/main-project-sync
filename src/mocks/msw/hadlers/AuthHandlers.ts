@@ -69,7 +69,7 @@ export const authHandlers = [
       return HttpResponse.json<IAuthList>(user);
 
     }
-    return HttpResponse.json(user);
+    return HttpResponse.json('Такого пользователя нет', { status: 403 });
   }),
 
   http.post('/auth/register', async ({ request }) => {
