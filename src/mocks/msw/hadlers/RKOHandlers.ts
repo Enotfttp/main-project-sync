@@ -1,6 +1,7 @@
 import { HttpResponse, http } from 'msw';
 import { IRKOList } from '@entities/rko';
 import { TFiltersBodyMSW } from '@mocks/msw/types/filters.types.ts';
+import { createApiUrl } from '@mocks/msw/config.ts';
 
 const mockedRKOList = [
   {
@@ -16,7 +17,7 @@ const mockedRKOList = [
 ];
 
 export const RKOHandlers = [
-  http.post('/api/rko-list', async ({ request }) => {
+  http.post(createApiUrl('/api/rko-list'), async ({ request }) => {
     const body = (await request.json()) as TFiltersBodyMSW<IRKOList>;
     const filters = body?.filters || {};
     let filtered = mockedRKOList;
