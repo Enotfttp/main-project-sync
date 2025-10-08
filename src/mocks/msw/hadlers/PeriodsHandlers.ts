@@ -1,6 +1,7 @@
 import { HttpResponse, http } from 'msw';
 import { IPeriodsList } from '@entities/periods';
 import { TFiltersBodyMSW } from '@mocks/msw/types/filters.types.ts';
+import { createApiUrl } from '@mocks/msw/config.ts';
 
 const mockedPeriodsList: IPeriodsList[] = [
   {
@@ -82,7 +83,7 @@ const mockedPeriodsList: IPeriodsList[] = [
 ];
 
 export const periodsHandlers = [
-  http.post('/api/periods-list/:id', async ({ request }) => {
+  http.post(createApiUrl('/api/periods-list/:id'), async ({ request }) => {
     const body = (await request.json()) as TFiltersBodyMSW<IPeriodsList>;
     const filters = body?.filters || {};
     let filtered = mockedPeriodsList;

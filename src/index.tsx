@@ -12,7 +12,7 @@ import { AuthProvider } from '@app/providers/authProvider/AuthProvider.tsx';
 
 const isShowDevTools = import.meta.env.VITE_IS_ENABLED_REACT_QUERY_DEV_TOOLS === 'true';
 
-if (import.meta.env.VITE_APP_ENV === 'development') {
+if (import.meta.env.VITE_APP_STAND === 'development') {
   import('@mocks/msw/browser').then(({ worker }) => worker.start());
 }
 

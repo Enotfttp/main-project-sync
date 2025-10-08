@@ -1,6 +1,7 @@
 import { HttpResponse, http } from 'msw';
 import { IEventsList } from '@entities/events';
 import { TFiltersBodyMSW } from '@mocks/msw/types/filters.types';
+import { createApiUrl } from '@mocks/msw/config.ts';
 
 const mockedEventsList: IEventsList[] = [
   {
@@ -30,7 +31,7 @@ const mockedEventsList: IEventsList[] = [
 ];
 
 export const eventsHandlers = [
-  http.post('/api/events-list/:id', async ({ request }) => {
+  http.post(createApiUrl('/api/events-list/:id'), async ({ request }) => {
     const body = (await request.json()) as TFiltersBodyMSW<IEventsList>;
     const filters = body?.filters || {};
     let filtered = mockedEventsList;

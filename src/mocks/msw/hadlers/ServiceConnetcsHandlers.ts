@@ -1,6 +1,7 @@
 import { HttpResponse, http } from 'msw';
 import { IServiceConnectionList } from '@entities/serviceConnect';
 import { TFiltersBodyMSW } from '@mocks/msw/types/filters.types';
+import { createApiUrl } from '@mocks/msw/config.ts';
 
 const mockedServiceConnectsList = [
   {
@@ -45,7 +46,7 @@ const mockedServiceConnectsList = [
 ];
 
 export const serviceConnectsHandlers = [
-  http.post('/api/service-connects/:idRKO', async ({ request }) => {
+  http.post(createApiUrl('/api/service-connects/:idRKO'), async ({ request }) => {
     const body = (await request.json()) as TFiltersBodyMSW<IServiceConnectionList>;
     const filters = body?.filters || {};
     let filtered = mockedServiceConnectsList;

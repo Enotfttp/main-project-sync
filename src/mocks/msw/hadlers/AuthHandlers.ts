@@ -1,6 +1,7 @@
 import { HttpResponse, http } from 'msw';
 import { IAuthResponse, ILoginCredentials, IRegisterData } from '@entities/auth';
 import { uid } from '@shared/common';
+import { createApiUrl } from '@mocks/msw/config.ts';
 
 interface IAuthList extends Omit<IAuthResponse, 'user'> {
   user:{
@@ -57,7 +58,7 @@ const mockedAuthList: IAuthList[] = [
 ];
 
 export const authHandlers = [
-  http.post('/auth/login', async ({ request }) => {
+  http.post(createApiUrl('/auth/login'), async ({ request }) => {
     const body = (await request.json()) as ILoginCredentials;
 
     const user = mockedAuthList.find(elem =>
@@ -72,7 +73,9 @@ export const authHandlers = [
     return HttpResponse.json('Такого пользователя нет', { status: 403 });
   }),
 
-  http.post('/auth/register', async ({ request }) => {
+
+
+  http.post(createApiUrl('/auth/register'), async ({ request }) => {
     const body = (await request.json()) as IRegisterData;
     const newUser = {
       token: uid(),
@@ -90,7 +93,7 @@ export const authHandlers = [
     return HttpResponse.json(newUser);
   }),
 
-  http.post('/auth/logout', async () => {
+  http.post(createApiUrl('/auth/logout'), async () => {
     // Optional: Clear authentication cookies/tokens
     const response = HttpResponse.json({
       message: 'Вы успешно вышли',
@@ -102,7 +105,7 @@ export const authHandlers = [
 
     return HttpResponse.json(response);
   }),
-  http.post('/auth/refresh', async ({ request }) => {
+  http.post(createApiUrl('/auth/refresh'), async ({ request }) => {
     const authHeader = request.headers.get('Authorization');
     const refreshToken = authHeader?.replace('Bearer ', '');
     if (!refreshToken) {

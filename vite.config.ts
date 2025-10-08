@@ -10,6 +10,32 @@ import { createHtmlPlugin } from 'vite-plugin-html';
 export default defineConfig(({ mode }) => {
 
   const env = loadEnv(mode, process.cwd(), '');
+  const stand = env.VITE_APP_STAND || 'development';
+
+  const standConfigs = {
+    development: {
+      base: '/',
+      server: { port: 3000, host: true },
+      build: { sourcemap: true }
+    },
+    psi: {
+      base: '/',
+      server: { port: 3000, host: true },
+      build: { sourcemap: true, outDir: 'dist', }
+    },
+    st: {
+      base: '/',
+      server: { port: 3000, host: true },
+      build: { sourcemap: false, outDir: 'dist', }
+    },
+    production: {
+      base: '/',
+      build: { sourcemap: false, minify: 'terser', outDir: 'dist', }
+    }
+  };
+
+  const config = standConfigs[stand] || standConfigs.development;
+
 
   const baseConfig = {
     plugins: [react(),
@@ -23,15 +49,12 @@ export default defineConfig(({ mode }) => {
         },
       })
     ],
-    base:'/',
-    server:{
-      port: 3000,
-    },
+    base:config.base,
+    server:config.server,
+    build:config.build,
     preview: {
       port: 3001,
-    },
-    build:{
-      outDir: 'dist',
+      host:false
     },
     resolve:{
       alias:{
@@ -93,7 +116,10 @@ export default defineConfig(({ mode }) => {
     },
     define: {
       __APP_ENV__: JSON.stringify(env.APP_ENV),
+      __APP_STAND__: JSON.stringify(stand),
     },
   };
 });
+
+
 
