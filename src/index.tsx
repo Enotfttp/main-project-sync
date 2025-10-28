@@ -10,8 +10,6 @@ import { Loader } from '@shared/ui';
 import './index.css';
 import { AuthProvider } from '@app/providers/authProvider/AuthProvider.tsx';
 
-const isShowDevTools = import.meta.env.VITE_IS_ENABLED_REACT_QUERY_DEV_TOOLS === 'true';
-
 if (import.meta.env.VITE_APP_STAND === 'development') {
   import('@mocks/msw/browser').then(({ worker }) => worker.start());
 }
@@ -43,7 +41,7 @@ createRoot(document.getElementById('root')!).render(
           <AuthProvider>
             <AppRouter />
             <ReactQueryDevtools initialIsOpen />
-            {isShowDevTools && (
+            {import.meta.env.VITE_APP_STAND === 'development' && (
               <React.Suspense fallback={<Loader />}>
                 <ReactQueryDevtoolsProduction />
               </React.Suspense>

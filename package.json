@@ -5,15 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite --mode development",
-    "dev:st": "vite --mode st",
     "build:dev": "vite build --mode development",
-    "build:st": "vite build --mode st",
     "build:prod": "vite build --mode production",
-    "preview:dev": "vite preview --mode development",
-    "preview:st": "vite preview --mode st",
+    "preview:dev": "vite preview --mode st",
     "preview:prod": "vite preview --mode production",
-    "deploy:st": "npm run build:st && echo 'Deploying to ST...'",
-    "deploy:prod": "npm run build:prod && echo 'Deploying to PROD...'",
+    "deploy:prod": "npm run build:prod && echo 'Deploying...'",
     "eslint": "eslint \"src/**/*.{js,jsx,ts,tsx,config.js}\" --cache --cache-location ./.cache/",
     "eslint:fix": "npm run eslint -- --fix",
     "preview": "npm run build && vite preview"

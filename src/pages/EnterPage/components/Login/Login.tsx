@@ -30,8 +30,10 @@ export const Login:FC<ILoginProps> = ({btnRedirect}) => {
 
   const onSubmit = async (values: IInitial) => {
     try {
+      console.log('test:', import.meta.env);
       await mutateAsync(values);
       navigate(routesPath.root);
+      console.log('test-1:', values);
     } catch (error) {
       const apiError = error as ApiError;
       const errorMessage = apiError?.response?.data?.error || 'Произошла ошибка при входе';
