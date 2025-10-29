@@ -5,8 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --mode development",
-    "build:dev": "vite build --mode development",
-    "build:prod": "vite build --mode production",
+    "build": "vite build --mode production",
     "preview:dev": "vite preview --mode st",
     "preview:prod": "vite preview --mode production",
     "deploy:prod": "npm run build:prod && echo 'Deploying...'",
