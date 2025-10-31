@@ -32,7 +32,7 @@ export const Login:FC<ILoginProps> = ({btnRedirect}) => {
     try {
       console.log('test:', import.meta.env);
       await mutateAsync(values);
-      navigate(routesPath.root);
+      navigate(routesPath.rko.root);
     } catch (error) {
       const apiError = error as ApiError;
       const errorMessage = apiError?.response?.data?.error || 'Произошла ошибка при входе';

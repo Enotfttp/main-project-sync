@@ -17,7 +17,7 @@ const RKOPage = () => {
 
   const onRowClick = useCallback(
     (rowId: string | number) => {
-      navigate(routesPath.service.fullPath(rowId));
+      navigate(routesPath.rko.service.fullPath(rowId));
     },
     [navigate],
   );

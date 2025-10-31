@@ -1,0 +1,45 @@
+import { T } from '@admiral-ds/react-ui';
+import * as React from 'react';
+import {
+    ErrorContainer, StyledButton, StyledErrorAction, StyledLink, StyledServiceErrorTriangleSolid,
+} from './RouterErrorBoundary.styled';
+import {routesPath} from "@app/providers";
+import {useNavigate} from "react-router-dom";
+
+export const NotFoundPage = () =>{
+    const navigate = useNavigate();
+
+    const handleGoBack=()=>{
+        if (window.history.state && window.history.state.idx > 0) {
+            console.log('window.history.state ', window.history.state, window.history.state.idx )
+            navigate(-1); // Есть куда возвращаться
+        } else {
+            navigate(routesPath.rko.root); // На главную, если истории нет
+        }
+    }
+
+    return (
+        <ErrorContainer>
+            <StyledServiceErrorTriangleSolid />
+            <T font="Header/H1">Упс! Что-то пошло не так</T>
+            <T font="Body/Body 1 Long">Страница не найдена</T>
+
+            <StyledErrorAction>
+                <StyledButton
+                    appearance="primary"
+                    dimension="m"
+                >
+                    <StyledLink to={routesPath.rko.root}>На главную</StyledLink>
+                </StyledButton>
+                <StyledButton
+                    onClick={handleGoBack}
+                    appearance="tertiary"
+                    dimension="m"
+                >
+                   Вернуться на предыдущую страницу
+                </StyledButton>
+            </StyledErrorAction>
+        </ErrorContainer>
+    );
+};
+

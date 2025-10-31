@@ -3,7 +3,7 @@ import { T } from '@admiral-ds/react-ui';
 import * as React from 'react';
 import {
   ErrorContainer, StyledButton, StyledErrorAction, StyledErrorDetails, StyledLink, StyledServiceErrorTriangleSolid,
-} from '@app/providers/errorBoundary/RouterErrorBoundary.styled.ts';
+} from './RouterErrorBoundary.styled';
 
 export const RouterErrorBoundary = () =>{
   const error = useRouteError() as Error & {status: number};
@@ -17,9 +17,7 @@ export const RouterErrorBoundary = () =>{
         : 'Произошла непредвиденная ошибка'
       }</T>
 
-
       <StyledErrorAction>
-
         <StyledButton
           appearance="primary"
           dimension="m"

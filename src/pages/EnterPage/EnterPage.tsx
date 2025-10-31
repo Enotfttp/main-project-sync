@@ -5,7 +5,7 @@ import { StyledEnterPage } from './EnterPage.styled';
 
 
 const EnterPage = () => {
-  const [isLogin, setLogin] = React.useState(false);
+  const [isLogin, setLogin] = React.useState(true);
 
   const btnRedirect = React.useMemo(()=>(
     <TextButton text={`${isLogin ? 'Зарегистрироваться' : 'Войти'}`} onClick={()=>setLogin(!isLogin)}/>
