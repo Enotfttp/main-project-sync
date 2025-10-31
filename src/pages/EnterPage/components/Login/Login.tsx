@@ -30,6 +30,7 @@ export const Login:FC<ILoginProps> = ({btnRedirect}) => {
 
   const onSubmit = async (values: IInitial) => {
     try {
+      console.log('test:', import.meta.env);
       await mutateAsync(values);
       navigate(routesPath.root);
     } catch (error) {
