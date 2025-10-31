@@ -14,8 +14,8 @@ export const ServiceTabsLayout = () => {
 
   const tabs = useMemo(
     () => [
-      { text: 'Периоды', tabId: '1', path: routesPath.service.periods.fullPath(id, serviceId) },
-      { text: 'События', tabId: '2', path: routesPath.service.events.fullPath(id, serviceId) },
+      { text: 'Периоды', tabId: '1', path: routesPath.rko.service.periods.fullPath(id, serviceId) },
+      { text: 'События', tabId: '2', path: routesPath.rko.service.events.fullPath(id, serviceId) },
     ],
     [id, serviceId],
   );

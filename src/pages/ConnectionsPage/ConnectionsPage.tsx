@@ -20,7 +20,7 @@ const ConnectionsPage = () => {
   const [filters, setFilters] = React.useState<TFiltersServiceConnection>();
   const onRowClick = useCallback(
     (rowId: string | number) => {
-      navigate(routesPath.service.periods.shortPath(rowId));
+      navigate(routesPath.rko.service.periods.shortPath(rowId));
     },
     [navigate],
   );

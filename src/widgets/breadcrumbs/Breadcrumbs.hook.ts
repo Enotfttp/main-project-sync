@@ -14,14 +14,6 @@ export const useBreadcrumbs = (): BreadcrumbItem[] => {
   let fullPath = '';
   let currentPathIndex = 0;
 
-  if (routesPath.label && routesPath.root === '/') {
-    items.push({
-      text: routesPath.label,
-      linkAs: Link,
-      linkProps: { to: '/' },
-    });
-  }
-
   while (currentPathIndex < pathParts.length) {
     const part = pathParts[currentPathIndex];
     // Находим совпадающий узел среди потомков текущего
@@ -30,7 +22,10 @@ export const useBreadcrumbs = (): BreadcrumbItem[] => {
       if (typeof child !== 'object' || !child.root) return false;
 
       const childSegments = child.root.split('/').filter(Boolean);
-      const expectedSegment = childSegments[childSegments.length - 2];
+      let expectedSegment = childSegments[childSegments.length - 1];
+      if(expectedSegment.includes(":")){
+        expectedSegment = childSegments[childSegments.length - 2];
+      }
 
       return (
         expectedSegment === part || expectedSegment?.startsWith(':') // динамический сегмент
