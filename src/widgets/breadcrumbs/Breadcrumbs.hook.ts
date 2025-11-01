@@ -5,6 +5,7 @@ import { routesPath } from '@app/providers';
 type BreadcrumbItem = BreadcrumbsProps['items'][number];
 
 export const useBreadcrumbs = (): BreadcrumbItem[] => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const location = useLocation();
   const pathParts = location.pathname.split('/').filter(Boolean);
 
@@ -23,7 +24,7 @@ export const useBreadcrumbs = (): BreadcrumbItem[] => {
 
       const childSegments = child.root.split('/').filter(Boolean);
       let expectedSegment = childSegments[childSegments.length - 1];
-      if(expectedSegment.includes(":")){
+      if(expectedSegment.includes(':')){
         expectedSegment = childSegments[childSegments.length - 2];
       }
 
@@ -38,20 +39,9 @@ export const useBreadcrumbs = (): BreadcrumbItem[] => {
     currentNode = nextNode;
 
     const segments = nextNode.root.split('/').filter(Boolean);
-    const dynamicParams: string[] = [];
 
     for (let i = 0; i < segments.length && currentPathIndex < pathParts.length; i++) {
-      const segment = segments[i];
       const value = pathParts[currentPathIndex];
-
-      if (segment.startsWith(':')) {
-        dynamicParams.push(value);
-      } else if (segment === value) {
-        // ok
-      } else {
-        // path mismatch
-        break;
-      }
 
       fullPath += `/${value}`;
       currentPathIndex++;

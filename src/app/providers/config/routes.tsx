@@ -1,13 +1,13 @@
 import {Navigate, RouteObject} from 'react-router-dom';
 import React, { JSX, Suspense } from 'react';
+import { RouterErrorBoundary } from '../errorBoundary/RouterErrorBoundary';
+import { NotFoundPage } from '../errorBoundary/NotFoundPage';
 import { routesPath } from './routesPath';
 import { RKOPage, ConnectionsPage, PeriodsPage, EventsPage, EnterPage } from '@pages/index';
 import { MainLayout, ServiceTabsLayout } from '@layouts/index';
 import { Loader } from '@shared/ui';
 import TestUIPage from '@pages/TestUI/TestUIPage.tsx';
 import { ProtectedRoute } from '@widgets/protectedRoute/ProtectedRoute.tsx';
-import { RouterErrorBoundary } from '../errorBoundary/RouterErrorBoundary';
-import { NotFoundPage } from '../errorBoundary/NotFoundPage';
 
 const withSuspense = (Component: React.LazyExoticComponent<() => JSX.Element>) => (
   <Suspense fallback={<Loader />}>
@@ -57,7 +57,7 @@ export const routes: RouteObject[] = [
     errorElement: <RouterErrorBoundary />,
   },
   {
-    path: "*",
+    path: '*',
     element: <NotFoundPage />,
     errorElement: <RouterErrorBoundary />,
   },
