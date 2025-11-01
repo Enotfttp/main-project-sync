@@ -10,33 +10,59 @@ import { createHtmlPlugin } from 'vite-plugin-html';
 export default defineConfig(({ mode }) => {
 
   const env = loadEnv(mode, process.cwd(), '');
-  console.log('env:', env)
   const stand = env.VITE_APP_STAND || 'development';
 
   const standConfigs = {
     development: {
       base: '/',
       server: { port: 3000, host: true },
-      build: { sourcemap: true }
-    },
-    psi: {
-      base: '/',
-      server: { port: 3000, host: true },
-      build: { sourcemap: true, outDir: 'dist', }
+      build: {
+        sourcemap: true,
+        assetsDir: '',
+        rollupOptions: {
+          output: {
+            assetFileNames: '[name]-[hash][extname]',
+            chunkFileNames: '[name]-[hash].js',
+            entryFileNames: '[name]-[hash].js',
+          }
+        }
+      }
     },
     st: {
       base: '/',
       server: { port: 3000, host: true },
-      build: { sourcemap: false, outDir: 'dist', }
+      build: {
+        sourcemap: false,
+        outDir: 'dist',
+        assetsDir: '',
+        rollupOptions: {
+          output: {
+            assetFileNames: '[name]-[hash][extname]',
+            chunkFileNames: '[name]-[hash].js',
+            entryFileNames: '[name]-[hash].js',
+          }
+        }
+      }
     },
     production: {
       base: '/',
-      build: { sourcemap: false, minify: 'terser', outDir: 'dist', }
+      build: {
+        sourcemap: false,
+        minify: 'terser',
+        outDir: 'dist',
+        assetsDir: '',
+        rollupOptions: {
+          output: {
+            assetFileNames: '[name]-[hash][extname]',
+            chunkFileNames: '[name]-[hash].js',
+            entryFileNames: '[name]-[hash].js',
+          }
+        }
+      }
     }
   };
 
   const config = standConfigs[stand] || standConfigs.development;
-
 
   const baseConfig = {
     plugins: [react(),
@@ -50,12 +76,12 @@ export default defineConfig(({ mode }) => {
         },
       })
     ],
-    base:config.base,
-    server:config.server,
-    build:config.build,
+    base: config.base,
+    server: config.server,
+    build: config.build,
     preview: {
       port: 3001,
-      host:false
+      host: false
     },
     resolve:{
       alias:{
@@ -71,56 +97,64 @@ export default defineConfig(({ mode }) => {
       extensions: ['.tsx', '.ts', '.js'],
     }
   };
-  // Настройки только для production
-  if (mode === 'production') {
-    return {
-      ...baseConfig,
-      base: '/',
-      build: {
-        outDir: 'dist',
-        emptyOutDir: true,
-        sourcemap: false,
-        minify: 'terser',
-        terserOptions: {
-          compress: {
-            drop_console: true, // удаляем console.log в prod
-            drop_debugger: true,
-          },
-        },
-        rollupOptions: {
-          plugins: [
-            visualizer({
-              filename: 'bundle-stats.html',
-              open: false,
-              gzipSize: true,
-              brotliSize: true,
-            }),
-            ViteMinifyPlugin({}),
-          ],
-          output: {
-            manualChunks: {
-              // Разделение vendor chunks
-              react: ['react', 'react-dom'],
-              router: ['react-router-dom'],
-            },
-          },
-        },
-      },
-    };
-  }
-
-  // Настройки для development
+// Настройки только для production
+if (mode === 'production') {
   return {
     ...baseConfig,
+    base: '/',
     build: {
-      sourcemap: true,
-    },
-    define: {
-      __APP_ENV__: JSON.stringify(env.APP_ENV),
-      __APP_STAND__: JSON.stringify(stand),
+      outDir: 'dist',
+      emptyOutDir: true,
+      sourcemap: false,
+      minify: 'terser',
+      assetsDir: '',
+      terserOptions: {
+        compress: {
+          drop_console: true,
+          drop_debugger: true,
+        },
+      },
+      rollupOptions: {
+        output: {
+          assetFileNames: '[name]-[hash][extname]',
+          chunkFileNames: '[name]-[hash].js',
+          entryFileNames: '[name]-[hash].js',
+        },
+        plugins: [
+          visualizer({
+            filename: 'bundle-stats.html',
+            open: false,
+            gzipSize: true,
+            brotliSize: true,
+          }),
+          ViteMinifyPlugin({}),
+        ],
+        manualChunks: {
+          react: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+        },
+      },
     },
   };
+}
+
+// Настройки для development
+return {
+  ...baseConfig,
+  build: {
+    sourcemap: true,
+    assetsDir: '',
+    rollupOptions: {
+      output: {
+        assetFileNames: '[name]-[hash][extname]',
+        chunkFileNames: '[name]-[hash].js',
+        entryFileNames: '[name]-[hash].js',
+      }
+    }
+  },
+  define: {
+    APP_ENV: JSON.stringify(env.APP_ENV),
+    APP_STAND: JSON.stringify(stand),
+  },
+};
 });
-
-
-
