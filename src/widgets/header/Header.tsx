@@ -1,15 +1,16 @@
-import { IconButton } from '@admiral-ds/react-ui';
-import { StyledHeader, StyledIconLogout, StyledLink } from './Header.styled';
-import { useLogoutMutation } from '@entities/auth';
+import { StyledHeader, StyledIconLogout, StyledLink } from "./Header.styled";
+import { IconButton } from "@admiral-ds/react-ui";
+import { useLogoutMutation } from "@entities/auth";
 
 export const Header = () => {
-  const {mutateAsync} = useLogoutMutation();
+  const { mutateAsync } = useLogoutMutation();
 
-  return(
+  return (
     <StyledHeader>
       <StyledLink to="/">КОМСОЮЛ</StyledLink>
-      <IconButton dimension="xl" onClick={()=>mutateAsync()}>
+      <IconButton dimension="xl" onClick={() => mutateAsync()}>
         <StyledIconLogout />
       </IconButton>
     </StyledHeader>
-  );};
+  );
+};

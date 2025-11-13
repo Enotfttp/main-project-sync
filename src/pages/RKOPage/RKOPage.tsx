@@ -1,14 +1,14 @@
-import * as React from 'react';
-import { T } from '@admiral-ds/react-ui';
-import { useNavigate } from 'react-router-dom';
-import { useCallback } from 'react';
-import { StyledRKOPage } from './RKOPage.styled';
-import { columnList } from './RKOTable.columns.tsx';
-import { TFiltersRKO, useGetRKOList } from '@entities/rko';
-import { TableSort } from '@shared/ui';
-import { routesPath } from '@app/index';
-import { additionalHover } from '@shared/common';
-import { SearchWithFilter } from '@features/index';
+import { StyledRKOPage } from "./RKOPage.styled";
+import { columnList } from "./RKOTable.columns.tsx";
+import { T } from "@admiral-ds/react-ui";
+import { routesPath } from "@app/index";
+import { TFiltersRKO, useGetRKOList } from "@entities/rko";
+import { SearchWithFilter } from "@features/index";
+import { additionalHover } from "@shared/common";
+import { TableSort } from "@shared/ui";
+import { useCallback } from "react";
+import * as React from "react";
+import { useNavigate } from "react-router-dom";
 
 const RKOPage = () => {
   const navigate = useNavigate();
@@ -31,7 +31,12 @@ const RKOPage = () => {
         setFilters={setFilters}
         searchPlaceholder="Введите значение для поиска"
       />
-      <TableSort columnList={columnList} rowList={additionalHover(data)} onRowClick={onRowClick} queryKey="rko-list" />
+      <TableSort
+        columnList={columnList}
+        rowList={additionalHover(data)}
+        onRowClick={onRowClick}
+        queryKey="rko-list"
+      />
     </StyledRKOPage>
   );
 };

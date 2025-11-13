@@ -1,8 +1,9 @@
-import { useState, useCallback } from 'react';
-import { FilterValue } from './Filter.types.ts';
+import { FilterValue } from "./Filter.types.ts";
+import { useState, useCallback } from "react";
 
 export const useFilter = (initialValues: FilterValue[] = []) => {
-  const [filterValues, setFilterValues] = useState<FilterValue[]>(initialValues);
+  const [filterValues, setFilterValues] =
+    useState<FilterValue[]>(initialValues);
 
   const updateFilter = useCallback((values: FilterValue[]) => {
     setFilterValues(values);
@@ -13,7 +14,7 @@ export const useFilter = (initialValues: FilterValue[] = []) => {
   }, []);
 
   const getFilterValue = useCallback(
-    (fieldId: string): FilterValue['value'] => {
+    (fieldId: string): FilterValue["value"] => {
       return filterValues.find((v) => v.fieldId === fieldId)?.value ?? null;
     },
     [filterValues],

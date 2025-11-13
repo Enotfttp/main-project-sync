@@ -1,9 +1,4 @@
-import React, { useRef } from 'react';
-import { Tag } from '@admiral-ds/react-ui';
-import { select } from 'd3-selection';
-import { PieArcDatum as D3PieArcDatum } from 'd3-shape';
-import { useParams } from 'react-router-dom';
-import { useDiagram } from './ChartDiagram.hook.ts';
+import { useDiagram } from "./ChartDiagram.hook.ts";
 import {
   StyledDiagramLegendBlock,
   StyledLegend,
@@ -15,11 +10,16 @@ import {
   StyledTextDescriptionProgress,
   StyledTextDescriptionProgressPercent,
   StyledTotal,
-} from './ChartDiagram.styled.ts';
-import { getStatusAppearance } from './ChartDiagram.utils.ts';
-import {Loader, Notification} from '@shared/ui';
-import {ChartData} from '@entities/admin/types/admin.types.ts';
-import {useDashboardData} from '@entities/admin/api/admin.service.ts';
+} from "./ChartDiagram.styled.ts";
+import { getStatusAppearance } from "./ChartDiagram.utils.ts";
+import { Tag } from "@admiral-ds/react-ui";
+import { useDashboardData } from "@entities/admin/api/admin.service.ts";
+import { ChartData } from "@entities/admin/types/admin.types.ts";
+import { Loader, Notification } from "@shared/ui";
+import { select } from "d3-selection";
+import { PieArcDatum as D3PieArcDatum } from "d3-shape";
+import React, { useRef } from "react";
+import { useParams } from "react-router-dom";
 
 interface ChartDiagramProps {
   selectedChartSection: string | null;
@@ -30,11 +30,18 @@ interface D3PieDatum extends D3PieArcDatum<ChartData> {
   data: ChartData;
 }
 
-export const ChartDiagram: React.FC<ChartDiagramProps> = ({ selectedChartSection, onChartSectionSelect }) => {
+export const ChartDiagram: React.FC<ChartDiagramProps> = ({
+  selectedChartSection,
+  onChartSectionSelect,
+}) => {
   const { serviceId } = useParams();
 
   const svgRef = useRef<SVGSVGElement>(null);
-  const { data: dashboardData, isLoading, error } = useDashboardData(serviceId || '');
+  const {
+    data: dashboardData,
+    isLoading,
+    error,
+  } = useDashboardData(serviceId || "");
 
   const chartData = dashboardData?.chartData || [];
   const total = chartData.reduce((sum, item) => sum + item.value, 0);
@@ -51,8 +58,8 @@ export const ChartDiagram: React.FC<ChartDiagramProps> = ({ selectedChartSection
     if (!svgRef.current) return;
 
     select(svgRef.current)
-      .selectAll('.arc path')
-      .style('opacity', function (_, d: unknown) {
+      .selectAll(".arc path")
+      .style("opacity", function (_, d: unknown) {
         const pieDatum = d as D3PieDatum;
         if (isHovered) {
           return pieDatum.data.id === sectionId ? 1 : 0.6;
@@ -63,29 +70,43 @@ export const ChartDiagram: React.FC<ChartDiagramProps> = ({ selectedChartSection
   };
 
   // Отрисовка круговой диаграммы с помощью d3
-  useDiagram(svgRef, chartData, selectedChartSection, handleSectionClick, total);
+  useDiagram(
+    svgRef,
+    chartData,
+    selectedChartSection,
+    handleSectionClick,
+    total,
+  );
 
   if (!serviceId) {
     return (
-      <Notification status="info" title="Выберите сервис" body="Пожалуйста, выберите сервис для отображения данных"/>
+      <Notification
+        status="info"
+        title="Выберите сервис"
+        body="Пожалуйста, выберите сервис для отображения данных"
+      />
     );
   }
 
   if (error) {
     return (
-      <Notification status="error" title="Ошибка загрузки" body="Не удалось загрузить данные диаграммы"/>
+      <Notification
+        status="error"
+        title="Ошибка загрузки"
+        body="Не удалось загрузить данные диаграммы"
+      />
     );
   }
 
   if (isLoading) {
-    return (
-      <Loader/>
-    );
+    return <Loader />;
   }
 
   return (
     <div>
-      <StyledServiceNumber>Диаграмма данных - Сервис {serviceId}</StyledServiceNumber>
+      <StyledServiceNumber>
+        Диаграмма данных - Сервис {serviceId}
+      </StyledServiceNumber>
       {/* Круговая диаграмма */}
       <StyledDiagramLegendBlock>
         <svg ref={svgRef} width={300} height={300} />
@@ -110,7 +131,10 @@ export const ChartDiagram: React.FC<ChartDiagramProps> = ({ selectedChartSection
                     </Tag>
                   </StyledTextDescriptionLabel>
                   <StyledTextDescriptionProgress>
-                    <StyledTextDescriptionProgressPercent section={section} percentage={percentage} />
+                    <StyledTextDescriptionProgressPercent
+                      section={section}
+                      percentage={percentage}
+                    />
                   </StyledTextDescriptionProgress>
                 </StyledTextDescription>
               </StyledLegendDescription>

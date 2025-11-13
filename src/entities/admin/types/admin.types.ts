@@ -16,7 +16,7 @@ export interface TableData {
   name: string;
   value: number;
   date: string;
-  status: 'completed' | 'danger' | 'pending';
+  status: "completed" | "danger" | "pending";
 }
 
 export interface DashboardData {

@@ -1,15 +1,19 @@
-import { T } from '@admiral-ds/react-ui';
-import * as React from 'react';
-import {useNavigate} from 'react-router-dom';
 import {
-  ErrorContainer, StyledButton, StyledErrorAction, StyledLink, StyledServiceErrorTriangleSolid,
-} from './RouterErrorBoundary.styled';
-import {routesPath} from '@app/providers';
+  ErrorContainer,
+  StyledButton,
+  StyledErrorAction,
+  StyledLink,
+  StyledServiceErrorTriangleSolid,
+} from "./RouterErrorBoundary.styled";
+import { T } from "@admiral-ds/react-ui";
+import { routesPath } from "@app/providers";
+import * as React from "react";
+import { useNavigate } from "react-router-dom";
 
-export const NotFoundPage = () =>{
+export const NotFoundPage = () => {
   const navigate = useNavigate();
 
-  const handleGoBack=()=>{
+  const handleGoBack = () => {
     if (window.history.state && window.history.state.idx > 0) {
       navigate(-1); // Есть куда возвращаться
     } else {
@@ -24,10 +28,7 @@ export const NotFoundPage = () =>{
       <T font="Body/Body 1 Long">Страница не найдена</T>
 
       <StyledErrorAction>
-        <StyledButton
-          appearance="primary"
-          dimension="m"
-        >
+        <StyledButton appearance="primary" dimension="m">
           <StyledLink to={routesPath.rko.root}>На главную</StyledLink>
         </StyledButton>
         <StyledButton
@@ -35,10 +36,9 @@ export const NotFoundPage = () =>{
           appearance="tertiary"
           dimension="m"
         >
-                   Вернуться на предыдущую страницу
+          Вернуться на предыдущую страницу
         </StyledButton>
       </StyledErrorAction>
     </ErrorContainer>
   );
 };
-

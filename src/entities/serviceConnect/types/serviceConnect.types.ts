@@ -14,5 +14,8 @@ export interface IServiceConnectionList {
 
 /** TODO.FIX Расшириить для большего фильтрования */
 export type TFiltersServiceConnection = {
-  [K in keyof IServiceConnectionList]?: Array<IServiceConnectionList[K]> | IServiceConnectionList[K] | null;
+  [K in keyof IServiceConnectionList]?:
+    | Array<IServiceConnectionList[K]>
+    | IServiceConnectionList[K]
+    | null;
 };

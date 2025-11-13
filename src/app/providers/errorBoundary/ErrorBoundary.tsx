@@ -1,5 +1,5 @@
-import React, { Component, ReactNode } from 'react';
-import { ErrorFallback } from '@shared/ui';
+import { ErrorFallback } from "@shared/ui";
+import React, { Component, ReactNode } from "react";
 
 interface Props {
   children: ReactNode;
@@ -12,7 +12,6 @@ interface State {
 }
 
 export class ErrorBoundary extends Component<Props, State> {
-
   constructor(props: Props) {
     super(props);
     this.state = { hasError: false, error: null, errorInfo: null };
@@ -25,9 +24,10 @@ export class ErrorBoundary extends Component<Props, State> {
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     this.setState({
       error,
-      errorInfo: errorInfo });
+      errorInfo: errorInfo,
+    });
     // eslint-disable-next-line no-console
-    console.error('Uncaught error:', error, errorInfo);
+    console.error("Uncaught error:", error, errorInfo);
   }
 
   render() {

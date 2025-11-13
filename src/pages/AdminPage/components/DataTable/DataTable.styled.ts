@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const StyledTableTitle = styled.h2`
   margin: 0 0 24px 0;
@@ -13,7 +13,7 @@ export const StyledTableHeader = styled.div`
 `;
 
 export const StyledTableEmpty = styled.div`
-    text-align: center;
-    padding: 20px;
-    color: #666;
+  text-align: center;
+  padding: 20px;
+  color: #666;
 `;

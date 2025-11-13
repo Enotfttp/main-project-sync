@@ -1,18 +1,27 @@
-import { useState } from 'react';
-import type { ChangeEvent } from 'react';
-import { MultiInputField } from '@admiral-ds/react-ui';
-import type { InputExFieldProps } from '@admiral-ds/react-ui';
-import { StyledChip } from './Search.styled';
-import { uid } from '@shared/common';
+import { StyledChip } from "./Search.styled";
+import { MultiInputField } from "@admiral-ds/react-ui";
+import type { InputExFieldProps } from "@admiral-ds/react-ui";
+import { uid } from "@shared/common";
+import { useState } from "react";
+import type { ChangeEvent } from "react";
 
 interface ISearch extends InputExFieldProps {
   listValue: React.ComponentProps<typeof StyledChip>[];
   // setListValue: React.Dispatch<React.SetStateAction<{id:string, children:unknown[]}[]>>
-  setListValue: React.Dispatch<React.SetStateAction<React.ComponentProps<typeof StyledChip>[]>>;
+  setListValue: React.Dispatch<
+    React.SetStateAction<React.ComponentProps<typeof StyledChip>[]>
+  >;
 }
 
-export const Search = ({ label = '', extraText = '', displayClearIcon = true, listValue, setListValue, ...props }: ISearch) => {
-  const [value, setValue] = useState('');
+export const Search = ({
+  label = "",
+  extraText = "",
+  displayClearIcon = true,
+  listValue,
+  setListValue,
+  ...props
+}: ISearch) => {
+  const [value, setValue] = useState("");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const currentValue = e.currentTarget.value;
@@ -33,7 +42,7 @@ export const Search = ({ label = '', extraText = '', displayClearIcon = true, li
       setListValue((prevState) => {
         return [...prevState, { id: uid(), children: newValue }];
       });
-      setValue('');
+      setValue("");
     }
   };
 
@@ -57,7 +66,11 @@ export const Search = ({ label = '', extraText = '', displayClearIcon = true, li
         <StyledChip
           {...item}
           key={index}
-          onClose={props.readOnly || props.disableCopying ? undefined : handleDeleteChip}
+          onClose={
+            props.readOnly || props.disableCopying
+              ? undefined
+              : handleDeleteChip
+          }
           tabIndex={-1}
           dimension="s"
           appearance="filled"

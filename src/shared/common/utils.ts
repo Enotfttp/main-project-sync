@@ -1,5 +1,8 @@
 export function uid(): string {
-  return (performance.now().toString(36) + Math.random().toString(36)).replace(/\./g, '');
+  return (performance.now().toString(36) + Math.random().toString(36)).replace(
+    /\./g,
+    "",
+  );
 }
 
 export function additionalHover<T>(arr?: T[]): T[] | [] {

@@ -1,4 +1,11 @@
-export type FilterFieldType = 'text' | 'number' | 'date' | 'select' | 'multiselect' | 'boolean' | 'range';
+export type FilterFieldType =
+  | "text"
+  | "number"
+  | "date"
+  | "select"
+  | "multiselect"
+  | "boolean"
+  | "range";
 
 export interface FilterOption {
   value: string;
@@ -16,12 +23,25 @@ export interface FilterField {
   max?: number;
   step?: number;
   required?: boolean;
-  defaultValue?: string | number | boolean | Date | { min: number; max: number } | string[];
+  defaultValue?:
+    | string
+    | number
+    | boolean
+    | Date
+    | { min: number; max: number }
+    | string[];
 }
 
 export interface FilterValue {
   fieldId: string;
-  value: string | number | boolean | Date | { min: number; max: number } | string[] | null;
+  value:
+    | string
+    | number
+    | boolean
+    | Date
+    | { min: number; max: number }
+    | string[]
+    | null;
   operator?: string;
 }
 
@@ -38,5 +58,5 @@ export interface TableRow {
   name: string;
   value: number;
   date: string;
-  status: 'completed' | 'danger' | 'pending';
+  status: "completed" | "danger" | "pending";
 }

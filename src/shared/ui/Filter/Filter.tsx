@@ -1,16 +1,35 @@
-import React, { useState } from 'react';
-import { Button, Checkbox, DateField, Range, TextInput } from '@admiral-ds/react-ui';
-import { FilterConfig, FilterField, FilterValue } from './Filter.types.ts';
-import { StyledFilter, StyledFilterActions, StyledFilterBody, StyledFilterCount, StyledFilterField, StyledFilterHeader } from './Filter.styled.ts';
-import {Select} from '@shared/ui';
+import {
+  StyledFilter,
+  StyledFilterActions,
+  StyledFilterBody,
+  StyledFilterCount,
+  StyledFilterField,
+  StyledFilterHeader,
+} from "./Filter.styled.ts";
+import { FilterConfig, FilterField, FilterValue } from "./Filter.types.ts";
+import {
+  Button,
+  Checkbox,
+  DateField,
+  Range,
+  TextInput,
+} from "@admiral-ds/react-ui";
+import { Select } from "@shared/ui";
+import React, { useState } from "react";
 
-export const Filter: React.FC<FilterConfig> = ({ fields, values, onChange, onApply, onReset }) => {
+export const Filter: React.FC<FilterConfig> = ({
+  fields,
+  values,
+  onChange,
+  onApply,
+  onReset,
+}) => {
   const [localValues, setLocalValues] = useState<FilterValue[]>(values);
 
-  const handleFieldChange = (fieldId: string, value: FilterValue['value']) => {
+  const handleFieldChange = (fieldId: string, value: FilterValue["value"]) => {
     const newValues = localValues.filter((v) => v.fieldId !== fieldId);
 
-    if (value !== null && value !== undefined && value !== '') {
+    if (value !== null && value !== undefined && value !== "") {
       newValues.push({
         fieldId,
         value,
@@ -32,7 +51,7 @@ export const Filter: React.FC<FilterConfig> = ({ fields, values, onChange, onApp
     onReset?.();
   };
 
-  const getFieldValue = (fieldId: string): FilterValue['value'] => {
+  const getFieldValue = (fieldId: string): FilterValue["value"] => {
     return localValues.find((v) => v.fieldId === fieldId)?.value ?? null;
   };
 
@@ -40,22 +59,24 @@ export const Filter: React.FC<FilterConfig> = ({ fields, values, onChange, onApp
     const value = getFieldValue(field.id);
 
     switch (field.type) {
-      case 'text':
+      case "text":
         return (
           <TextInput
-            value={typeof value === 'number' ? value : ''}
+            value={typeof value === "number" ? value : ""}
             onChange={(e) => handleFieldChange(field.id, e.target.value)}
             placeholder={field.placeholder}
             dimension="s"
           />
         );
 
-      case 'number':
+      case "number":
         return (
           <TextInput
             type="number"
-            value={typeof value === 'number' ? value : ''}
-            onChange={(e) => handleFieldChange(field.id, Number(e.target.value))}
+            value={typeof value === "number" ? value : ""}
+            onChange={(e) =>
+              handleFieldChange(field.id, Number(e.target.value))
+            }
             placeholder={field.placeholder}
             min={field.min}
             max={field.max}
@@ -64,46 +85,55 @@ export const Filter: React.FC<FilterConfig> = ({ fields, values, onChange, onApp
           />
         );
 
-      case 'date':
+      case "date":
         return (
           <DateField
-            value={typeof value === 'string' ? value : ''}
+            value={typeof value === "string" ? value : ""}
             // value={value ? new Date(value) : null}
-            onChange={(event) => handleFieldChange(field.id, event.target.value)}
+            onChange={(event) =>
+              handleFieldChange(field.id, event.target.value)
+            }
             placeholder={field.placeholder}
             dimension="s"
           />
         );
 
-      case 'select':
+      case "select":
         return (
           <Select
-            value={value ? value.toString() : ''}
+            value={value ? value.toString() : ""}
             onSelectedChange={(option) => handleFieldChange(field.id, option)}
             options={field.options || []}
-            placeholder={field.placeholder || ''}
+            placeholder={field.placeholder || ""}
             dimension="s"
           />
         );
 
-      case 'multiselect':
+      case "multiselect":
         return (
           <Select
             multiple
             value={value ? value?.toString() : []}
             onSelectedChange={(options) => handleFieldChange(field.id, options)}
             options={field.options || []}
-            placeholder={field.placeholder || ''}
+            placeholder={field.placeholder || ""}
             dimension="s"
           />
         );
 
-      case 'boolean':
+      case "boolean":
         return (
-          <Checkbox checked={!!value} onChange={(e) => handleFieldChange(field.id, e.target.checked.toString())} dimension="s" value={field.label} />
+          <Checkbox
+            checked={!!value}
+            onChange={(e) =>
+              handleFieldChange(field.id, e.target.checked.toString())
+            }
+            dimension="s"
+            value={field.label}
+          />
         );
 
-      case 'range':
+      case "range":
         return (
           <>
             <Range
@@ -127,29 +157,35 @@ export const Filter: React.FC<FilterConfig> = ({ fields, values, onChange, onApp
   };
 
   const activeFiltersCount = localValues.filter(
-    (v) => v.value !== null && v.value !== undefined && v.value !== '' && !(Array.isArray(v.value) && v.value.length === 0),
+    (v) =>
+      v.value !== null &&
+      v.value !== undefined &&
+      v.value !== "" &&
+      !(Array.isArray(v.value) && v.value.length === 0),
   ).length;
 
   return (
     <StyledFilter>
       <StyledFilterHeader>Фильтры</StyledFilterHeader>
-      {activeFiltersCount > 0 && <StyledFilterCount>{activeFiltersCount}</StyledFilterCount>}
+      {activeFiltersCount > 0 && (
+        <StyledFilterCount>{activeFiltersCount}</StyledFilterCount>
+      )}
 
       <StyledFilterBody>
         {fields.map((field) => (
           <StyledFilterField
             key={field.id}
             style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '8px',
+              display: "flex",
+              flexDirection: "column",
+              gap: "8px",
             }}
           >
             <label
               style={{
-                fontSize: '14px',
+                fontSize: "14px",
                 fontWeight: 500,
-                color: '#0D1F2C',
+                color: "#0D1F2C",
               }}
             >
               {field.label}

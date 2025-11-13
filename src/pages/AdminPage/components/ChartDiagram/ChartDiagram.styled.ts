@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import {ChartData} from '@entities/admin/types/admin.types.ts';
+import { ChartData } from "@entities/admin/types/admin.types.ts";
+import styled from "styled-components";
 
 export const StyledServiceNumber = styled.h2`
   text-align: center;
@@ -23,15 +23,22 @@ export const StyledLegend = styled.div`
   gap: 12px;
 `;
 
-export const StyledLegendDescription = styled.div<{ selectedChartSection: string | null; section: ChartData }>`
+export const StyledLegendDescription = styled.div<{
+  selectedChartSection: string | null;
+  section: ChartData;
+}>`
   display: flex;
   align-items: center;
   text-align: left;
   gap: 12px;
   padding: 12px 16px;
   border-radius: 8px;
-  background-color: ${({ selectedChartSection, section }) => (selectedChartSection === section.id ? '#E8F4FD' : '#F8F9FA')};
-  border: ${({ selectedChartSection, section }) => (selectedChartSection === section.id ? '2px solid #0D5ACE' : '1px solid #E2E5E8')};
+  background-color: ${({ selectedChartSection, section }) =>
+    selectedChartSection === section.id ? "#E8F4FD" : "#F8F9FA"};
+  border: ${({ selectedChartSection, section }) =>
+    selectedChartSection === section.id
+      ? "2px solid #0D5ACE"
+      : "1px solid #E2E5E8"};
   cursor: pointer;
   transition: all 0.2s ease;
 `;
@@ -71,7 +78,10 @@ export const StyledTextDescriptionProgress = styled.div`
   overflow: hidden;
 `;
 
-export const StyledTextDescriptionProgressPercent = styled.div<{ section: ChartData; percentage: number }>`
+export const StyledTextDescriptionProgressPercent = styled.div<{
+  section: ChartData;
+  percentage: number;
+}>`
   width: ${({ percentage }) => `${percentage}%`};
   height: 100%;
   background-color: ${({ section }) => section.color};

@@ -1,7 +1,7 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { authService } from '../index';
-import { storage } from '@shared/utils';
-import { IUser } from '@entities/user';
+import { authService } from "../index";
+import { IUser } from "@entities/user";
+import { storage } from "@shared/utils";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useRefreshTokenMutation = () => {
   const queryClient = useQueryClient();
@@ -11,7 +11,7 @@ export const useRefreshTokenMutation = () => {
     onSuccess: (data) => {
       storage.setToken(data.token);
       // Можно также обновить данные пользователя если нужно
-      queryClient.setQueryData(['user'], (old: IUser) => ({
+      queryClient.setQueryData(["user"], (old: IUser) => ({
         ...old,
         // обновляем только токен, остальные данные пользователя остаются
       }));
@@ -19,9 +19,9 @@ export const useRefreshTokenMutation = () => {
     onError: (error) => {
       // При ошибке refresh token делаем logout
       storage.removeToken();
-      queryClient.removeQueries({ queryKey: ['user'] });
+      queryClient.removeQueries({ queryKey: ["user"] });
       // eslint-disable-next-line no-console
-      console.error('Token refresh failed:', error);
-    }
+      console.error("Token refresh failed:", error);
+    },
   });
 };

@@ -1,9 +1,15 @@
-import * as React from 'react';
-import { Modal as ModalTemplate, ModalTitle, ModalContent, ModalButtonPanel, LIGHT_THEME } from '@admiral-ds/react-ui';
-import type { ModalProps } from '@admiral-ds/react-ui';
-import { ThemeProvider } from 'styled-components';
+import {
+  Modal as ModalTemplate,
+  ModalTitle,
+  ModalContent,
+  ModalButtonPanel,
+  LIGHT_THEME,
+} from "@admiral-ds/react-ui";
+import type { ModalProps } from "@admiral-ds/react-ui";
+import * as React from "react";
+import { ThemeProvider } from "styled-components";
 
-interface IModal extends Omit<ModalProps, 'children'> {
+interface IModal extends Omit<ModalProps, "children"> {
   isOpen: boolean;
   setClose: (value: boolean) => void;
   title?: string;
@@ -13,7 +19,13 @@ interface IModal extends Omit<ModalProps, 'children'> {
   };
 }
 
-export const Modal = ({ isOpen, setClose, children, title, ...props }: IModal) => {
+export const Modal = ({
+  isOpen,
+  setClose,
+  children,
+  title,
+  ...props
+}: IModal) => {
   return (
     <ThemeProvider theme={LIGHT_THEME}>
       {isOpen && (
@@ -26,7 +38,9 @@ export const Modal = ({ isOpen, setClose, children, title, ...props }: IModal) =
         >
           {title && <ModalTitle id="modal-title">{title}</ModalTitle>}
           <ModalContent>{children.contentChildren}</ModalContent>
-          {children?.btnChildren && <ModalButtonPanel>{children.btnChildren}</ModalButtonPanel>}
+          {children?.btnChildren && (
+            <ModalButtonPanel>{children.btnChildren}</ModalButtonPanel>
+          )}
         </ModalTemplate>
       )}
     </ThemeProvider>

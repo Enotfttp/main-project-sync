@@ -3,14 +3,14 @@ import {
   NotificationItemButtonPanel,
   NotificationItemContent,
   NotificationItemTitle,
-} from '@admiral-ds/react-ui';
-import type { NotificationItemProps } from '@admiral-ds/react-ui';
-import React from 'react';
+} from "@admiral-ds/react-ui";
+import type { NotificationItemProps } from "@admiral-ds/react-ui";
+import React from "react";
 
 interface INotificationProps {
-    title:string,
-    body:string,
-    buttonChildren?: React.ReactNode
+  title: string;
+  body: string;
+  buttonChildren?: React.ReactNode;
 }
 
 export const Notification = ({
@@ -21,9 +21,14 @@ export const Notification = ({
   body,
   buttonChildren,
   ...props
-}: NotificationItemProps & INotificationProps)=>{
+}: NotificationItemProps & INotificationProps) => {
   return (
-    <NotificationItem {...props} status={status} displayStatusIcon={displayStatusIcon} isClosable={isClosable}>
+    <NotificationItem
+      {...props}
+      status={status}
+      displayStatusIcon={displayStatusIcon}
+      isClosable={isClosable}
+    >
       <NotificationItemTitle>{title}</NotificationItemTitle>
       <NotificationItemContent>{body}</NotificationItemContent>
       {buttonChildren && (

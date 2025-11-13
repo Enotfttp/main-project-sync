@@ -1,16 +1,25 @@
-import { Outlet, useParams } from 'react-router-dom';
-import { useMemo } from 'react';
-import * as React from 'react';
-import { NotificationItem, NotificationItemContent, NotificationItemTitle, Spinner } from '@admiral-ds/react-ui';
-import { StyledUServiceSelector, StyledUServiceSelectorLayout, StyledUServiceTabs } from './AdminServiceSelector.styled.ts';
-import {HorizontalTabsTemplate} from '@shared/ui';
-import {routesPath} from '@app/providers';
-import {useServices} from '@entities/admin/api/admin.service.ts';
+import {
+  StyledUServiceSelector,
+  StyledUServiceSelectorLayout,
+  StyledUServiceTabs,
+} from "./AdminServiceSelector.styled.ts";
+import {
+  NotificationItem,
+  NotificationItemContent,
+  NotificationItemTitle,
+  Spinner,
+} from "@admiral-ds/react-ui";
+import { routesPath } from "@app/providers";
+import { useServices } from "@entities/admin/api/admin.service.ts";
+import { HorizontalTabsTemplate } from "@shared/ui";
+import * as React from "react";
+import { useMemo } from "react";
+import { Outlet, useParams } from "react-router-dom";
 
 export const AdminServiceSelector = () => {
   const { serviceId } = useParams();
   if (!serviceId) {
-    throw new Error('Вы не выбрали документ РКО');
+    throw new Error("Вы не выбрали документ РКО");
   }
   const { data: services = [], isLoading, error } = useServices();
 
@@ -28,9 +37,9 @@ export const AdminServiceSelector = () => {
     return (
       <div
         style={{
-          display: 'flex',
-          justifyContent: 'center',
-          padding: '40px',
+          display: "flex",
+          justifyContent: "center",
+          padding: "40px",
         }}
       >
         <Spinner dimension="m" />
@@ -42,7 +51,9 @@ export const AdminServiceSelector = () => {
     return (
       <NotificationItem status="error">
         <NotificationItemTitle>Ошибка загрузки</NotificationItemTitle>
-        <NotificationItemContent>Не удалось загрузить или найти сервис</NotificationItemContent>
+        <NotificationItemContent>
+          Не удалось загрузить или найти сервис
+        </NotificationItemContent>
       </NotificationItem>
     );
   }
@@ -50,7 +61,12 @@ export const AdminServiceSelector = () => {
   return (
     <StyledUServiceSelector>
       <StyledUServiceTabs>
-        <HorizontalTabsTemplate tabs={tabs} isRedirect defaultSelectedTabId="1" dimension="l" />
+        <HorizontalTabsTemplate
+          tabs={tabs}
+          isRedirect
+          defaultSelectedTabId="1"
+          dimension="l"
+        />
       </StyledUServiceTabs>
       <StyledUServiceSelectorLayout>
         <Outlet />

@@ -1,13 +1,15 @@
-import { Column, InputExFieldProps } from '@admiral-ds/react-ui';
-import * as React from 'react';
-import { useState } from 'react';
-import { ISearchWithFilter } from './SearchWithFilter.types';
-import { StyledSearchWithFilter } from './SearchWithFilter.styled';
-import { StyledChip } from '@shared/ui/Search/Search.styled.ts';
-import { Search, Select } from '@shared/ui';
-import { usePrevious } from '@shared/common';
+import { StyledSearchWithFilter } from "./SearchWithFilter.styled";
+import { ISearchWithFilter } from "./SearchWithFilter.types";
+import { Column, InputExFieldProps } from "@admiral-ds/react-ui";
+import { usePrevious } from "@shared/common";
+import { Search, Select } from "@shared/ui";
+import { StyledChip } from "@shared/ui/Search/Search.styled.ts";
+import { useState } from "react";
+import * as React from "react";
 
-interface ISearchWithFilterProps<T = Record<string, React.ReactNode | string[] | undefined>> extends InputExFieldProps {
+interface ISearchWithFilterProps<
+  T = Record<string, React.ReactNode | string[] | undefined>,
+> extends InputExFieldProps {
   columnList: Column[];
   selectPlaceholder: string;
   searchPlaceholder: string;
@@ -24,8 +26,10 @@ export const SearchWithFilter = <T,>({
   ...props
 }: ISearchWithFilterProps<T>) => {
   //TODO.FIX расширить для мультеселекта
-  const [curOption, setCurOption] = React.useState<string | Array<string>>('');
-  const [listValue, setListValue] = useState<React.ComponentProps<typeof StyledChip>[]>([]);
+  const [curOption, setCurOption] = React.useState<string | Array<string>>("");
+  const [listValue, setListValue] = useState<
+    React.ComponentProps<typeof StyledChip>[]
+  >([]);
   const previousOption = usePrevious(curOption);
 
   const options = columnList.reduce((acc, elem) => {
@@ -46,8 +50,18 @@ export const SearchWithFilter = <T,>({
 
   return (
     <StyledSearchWithFilter>
-      <Search listValue={listValue} setListValue={setListValue} placeholder={searchPlaceholder} {...props} />
-      <Select onSelectedChange={(val) => setCurOption(val)} options={options} placeholder={selectPlaceholder} multiple={multiple} />
+      <Search
+        listValue={listValue}
+        setListValue={setListValue}
+        placeholder={searchPlaceholder}
+        {...props}
+      />
+      <Select
+        onSelectedChange={(val) => setCurOption(val)}
+        options={options}
+        placeholder={selectPlaceholder}
+        multiple={multiple}
+      />
     </StyledSearchWithFilter>
   );
 };

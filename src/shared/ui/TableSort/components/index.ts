@@ -1,1 +1,1 @@
-export {PaginationTable} from './PaginationTable';
+export { PaginationTable } from "./PaginationTable";

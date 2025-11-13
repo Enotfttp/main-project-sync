@@ -1,17 +1,22 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import * as React from 'react';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { LIGHT_THEME, FontsVTBGroup, DropdownProvider } from '@admiral-ds/react-ui';
-import { ThemeProvider } from 'styled-components';
-import { AppRouter } from '@app/index';
-import { Loader } from '@shared/ui';
-import './index.css';
-import { AuthProvider } from '@app/providers/authProvider/AuthProvider.tsx';
+import {
+  LIGHT_THEME,
+  FontsVTBGroup,
+  DropdownProvider,
+} from "@admiral-ds/react-ui";
+import { AppRouter } from "@app/index";
+import { AuthProvider } from "@app/providers/authProvider/AuthProvider.tsx";
+import { Loader } from "@shared/ui";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { StrictMode } from "react";
+import * as React from "react";
+import { createRoot } from "react-dom/client";
+import { ThemeProvider } from "styled-components";
 
-if (import.meta.env.VITE_APP_STAND === 'development') {
-  import('@mocks/msw/browser').then(({ worker }) => worker.start());
+import "./index.css";
+
+if (import.meta.env.VITE_APP_STAND === "development") {
+  import("@mocks/msw/browser").then(({ worker }) => worker.start());
 }
 
 const queryClient = new QueryClient({
@@ -27,12 +32,14 @@ const queryClient = new QueryClient({
 });
 
 const ReactQueryDevtoolsProduction = React.lazy(() =>
-  import('@tanstack/react-query-devtools/build/modern/production.js').then((d) => ({
-    default: d.ReactQueryDevtools,
-  })),
+  import("@tanstack/react-query-devtools/build/modern/production.js").then(
+    (d) => ({
+      default: d.ReactQueryDevtools,
+    }),
+  ),
 );
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider theme={LIGHT_THEME}>
       <DropdownProvider>
@@ -41,7 +48,7 @@ createRoot(document.getElementById('root')!).render(
           <AuthProvider>
             <AppRouter />
             <ReactQueryDevtools initialIsOpen />
-            {import.meta.env.VITE_APP_STAND === 'development' && (
+            {import.meta.env.VITE_APP_STAND === "development" && (
               <React.Suspense fallback={<Loader />}>
                 <ReactQueryDevtoolsProduction />
               </React.Suspense>

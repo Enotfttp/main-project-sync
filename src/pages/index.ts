@@ -1,8 +1,10 @@
-import { lazy } from 'react';
+import { lazy } from "react";
 
-export const RKOPage = lazy(() => import('./RKOPage/RKOPage'));
-export const ConnectionsPage = lazy(() => import('./ConnectionsPage/ConnectionsPage'));
-export const PeriodsPage = lazy(() => import('./PeriodsPage/PeriodsPage'));
-export const EventsPage = lazy(() => import('./EventsPage/EventsPage'));
-export const EnterPage = lazy(() => import('./EnterPage/EnterPage'));
-export const AdminPage = lazy(() => import('./AdminPage/AdminPage'));
+export const RKOPage = lazy(() => import("./RKOPage/RKOPage"));
+export const ConnectionsPage = lazy(
+  () => import("./ConnectionsPage/ConnectionsPage"),
+);
+export const PeriodsPage = lazy(() => import("./PeriodsPage/PeriodsPage"));
+export const EventsPage = lazy(() => import("./EventsPage/EventsPage"));
+export const EnterPage = lazy(() => import("./EnterPage/EnterPage"));
+export const AdminPage = lazy(() => import("./AdminPage/AdminPage"));

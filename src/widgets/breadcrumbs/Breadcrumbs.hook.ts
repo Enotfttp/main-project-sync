@@ -1,18 +1,18 @@
-import { useLocation, Link } from 'react-router-dom';
-import { BreadcrumbsProps } from '@admiral-ds/react-ui';
-import { routesPath } from '@app/providers';
+import { BreadcrumbsProps } from "@admiral-ds/react-ui";
+import { routesPath } from "@app/providers";
+import { useLocation, Link } from "react-router-dom";
 
-type BreadcrumbItem = BreadcrumbsProps['items'][number];
+type BreadcrumbItem = BreadcrumbsProps["items"][number];
 
 export const useBreadcrumbs = (): BreadcrumbItem[] => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const location = useLocation();
-  const pathParts = location.pathname.split('/').filter(Boolean);
+  const pathParts = location.pathname.split("/").filter(Boolean);
 
   const items: BreadcrumbItem[] = [];
 
   let currentNode = routesPath;
-  let fullPath = '';
+  let fullPath = "";
   let currentPathIndex = 0;
 
   while (currentPathIndex < pathParts.length) {
@@ -20,16 +20,16 @@ export const useBreadcrumbs = (): BreadcrumbItem[] => {
     // Находим совпадающий узел среди потомков текущего
     const matchingKey = Object.keys(currentNode).find((key) => {
       const child = currentNode[key];
-      if (typeof child !== 'object' || !child.root) return false;
+      if (typeof child !== "object" || !child.root) return false;
 
-      const childSegments = child.root.split('/').filter(Boolean);
+      const childSegments = child.root.split("/").filter(Boolean);
       let expectedSegment = childSegments[childSegments.length - 1];
-      if(expectedSegment.includes(':')){
+      if (expectedSegment.includes(":")) {
         expectedSegment = childSegments[childSegments.length - 2];
       }
 
       return (
-        expectedSegment === part || expectedSegment?.startsWith(':') // динамический сегмент
+        expectedSegment === part || expectedSegment?.startsWith(":") // динамический сегмент
       );
     });
 
@@ -38,9 +38,13 @@ export const useBreadcrumbs = (): BreadcrumbItem[] => {
     const nextNode = currentNode[matchingKey];
     currentNode = nextNode;
 
-    const segments = nextNode.root.split('/').filter(Boolean);
+    const segments = nextNode.root.split("/").filter(Boolean);
 
-    for (let i = 0; i < segments.length && currentPathIndex < pathParts.length; i++) {
+    for (
+      let i = 0;
+      i < segments.length && currentPathIndex < pathParts.length;
+      i++
+    ) {
       const value = pathParts[currentPathIndex];
 
       fullPath += `/${value}`;

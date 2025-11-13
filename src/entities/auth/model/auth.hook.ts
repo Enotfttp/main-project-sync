@@ -1,8 +1,8 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
-import { IAuthResponse, authService } from '../index';
-import { storage } from '@shared/utils';
-import { routesPath } from '@app/providers';
+import { IAuthResponse, authService } from "../index";
+import { routesPath } from "@app/providers";
+import { storage } from "@shared/utils";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 export const useLoginMutation = () => {
   const queryClient = useQueryClient();
@@ -11,7 +11,7 @@ export const useLoginMutation = () => {
     mutationFn: authService.login,
     onSuccess: (data: IAuthResponse) => {
       storage.setToken(data.token);
-      queryClient.setQueryData(['user'], data.user);
+      queryClient.setQueryData(["user"], data.user);
     },
   });
 };
@@ -23,7 +23,7 @@ export const useRegisterMutation = () => {
     mutationFn: authService.register,
     onSuccess: (data: IAuthResponse) => {
       storage.setToken(data.token);
-      queryClient.setQueryData(['user'], data.user);
+      queryClient.setQueryData(["user"], data.user);
     },
   });
 };
@@ -36,7 +36,7 @@ export const useLogoutMutation = () => {
     mutationFn: authService.logout,
     onSuccess: () => {
       storage.removeToken();
-      queryClient.removeQueries({ queryKey: ['user'] });
+      queryClient.removeQueries({ queryKey: ["user"] });
       navigate(routesPath.enter.root);
     },
   });

@@ -1,22 +1,26 @@
-import { useState } from 'react';
-import type { ChangeEvent } from 'react';
-import { ThemeProvider } from 'styled-components';
-import { Select as SelectTemplate, LIGHT_THEME, Option, SelectProps } from '@admiral-ds/react-ui';
-import { ISearchWithFilter } from '@features/SearchWithFilter/SearchWithFilter.types';
+import {
+  Select as SelectTemplate,
+  LIGHT_THEME,
+  Option,
+  SelectProps,
+} from "@admiral-ds/react-ui";
+import { ISearchWithFilter } from "@features/SearchWithFilter/SearchWithFilter.types";
+import { useState } from "react";
+import type { ChangeEvent } from "react";
+import { ThemeProvider } from "styled-components";
 
 interface ISelect extends SelectProps {
   placeholder: string;
   options: ISearchWithFilter[];
 }
 
-export const Select = ({ placeholder = '', options, ...props }: ISelect) => {
-  const clearButtonProps = { 'data-testid': 'selectClearButton' };
-  const openButtonProps = { 'data-testid': 'selectOpenButton' };
-  const [selectValue, setSelectValue] = useState('');
+export const Select = ({ placeholder = "", options, ...props }: ISelect) => {
+  const clearButtonProps = { "data-testid": "selectClearButton" };
+  const openButtonProps = { "data-testid": "selectOpenButton" };
+  const [selectValue, setSelectValue] = useState("");
 
-  const onChange = (e: ChangeEvent<HTMLSelectElement>) => setSelectValue(e.target.value);
-
-
+  const onChange = (e: ChangeEvent<HTMLSelectElement>) =>
+    setSelectValue(e.target.value);
 
   return (
     <ThemeProvider theme={LIGHT_THEME}>

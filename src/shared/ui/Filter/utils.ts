@@ -1,4 +1,4 @@
-import { FilterValue } from './Filter.types.ts';
+import { FilterValue } from "./Filter.types.ts";
 
 export const buildQueryString = (filters: FilterValue[]): string => {
   const params = new URLSearchParams();
@@ -6,8 +6,14 @@ export const buildQueryString = (filters: FilterValue[]): string => {
   filters.forEach((filter) => {
     if (filter.value !== null && filter.value !== undefined) {
       if (Array.isArray(filter.value)) {
-        filter.value.forEach((val) => params.append(filter.fieldId, val.toString()));
-      } else if (typeof filter.value === 'object' && 'min' in filter.value && 'max' in filter.value) {
+        filter.value.forEach((val) =>
+          params.append(filter.fieldId, val.toString()),
+        );
+      } else if (
+        typeof filter.value === "object" &&
+        "min" in filter.value &&
+        "max" in filter.value
+      ) {
         // Для диапазона сохраняем min и max как отдельные параметры
         if (filter.value.min !== undefined) {
           params.append(`${filter.fieldId}_min`, filter.value.min.toString());
@@ -27,7 +33,10 @@ export const buildQueryString = (filters: FilterValue[]): string => {
 // Универсальный тип для данных с произвольными ключами
 type DataRecord = Record<string, string | number | boolean | Date | null>;
 
-export const filterData = <T extends DataRecord>(data: T[], filters: FilterValue[]): T[] => {
+export const filterData = <T extends DataRecord>(
+  data: T[],
+  filters: FilterValue[],
+): T[] => {
   return data.filter((item) => {
     return filters.every((filter) => {
       const itemValue = item[filter.fieldId];
@@ -37,14 +46,19 @@ export const filterData = <T extends DataRecord>(data: T[], filters: FilterValue
       }
 
       // Для текстового поиска
-      if (typeof filter.value === 'string') {
-        const stringValue = itemValue?.toString().toLowerCase() || '';
+      if (typeof filter.value === "string") {
+        const stringValue = itemValue?.toString().toLowerCase() || "";
         return stringValue.includes(filter.value.toLowerCase());
       }
 
       // Для числового диапазона
-      if (typeof filter.value === 'object' && 'min' in filter.value && 'max' in filter.value) {
-        const numericValue = typeof itemValue === 'number' ? itemValue : Number(itemValue);
+      if (
+        typeof filter.value === "object" &&
+        "min" in filter.value &&
+        "max" in filter.value
+      ) {
+        const numericValue =
+          typeof itemValue === "number" ? itemValue : Number(itemValue);
         if (isNaN(numericValue)) return false;
 
         const min = filter.value.min ?? -Infinity;
@@ -58,7 +72,7 @@ export const filterData = <T extends DataRecord>(data: T[], filters: FilterValue
       }
 
       // Для булевых значений
-      if (typeof filter.value === 'boolean') {
+      if (typeof filter.value === "boolean") {
         return Boolean(itemValue) === filter.value;
       }
 
