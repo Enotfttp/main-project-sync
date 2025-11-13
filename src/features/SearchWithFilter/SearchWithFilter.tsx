@@ -47,7 +47,7 @@ export const SearchWithFilter = <T,>({
   return (
     <StyledSearchWithFilter>
       <Search listValue={listValue} setListValue={setListValue} placeholder={searchPlaceholder} {...props} />
-      <Select setCurOption={setCurOption} options={options} placeholder={selectPlaceholder} multiple={multiple} />
+      <Select onSelectedChange={(val) => setCurOption(val)} options={options} placeholder={selectPlaceholder} multiple={multiple} />
     </StyledSearchWithFilter>
   );
 };

@@ -6,4 +6,6 @@ export { Search } from './Search/Search';
 export { TableSort } from './TableSort/TableSort';
 export { Select } from './Select/Select';
 export { InputFieldUI } from './InputField/InputField';
+export { Filter } from './Filter/Filter';
+export { Notification } from './Notification/Notification';
 

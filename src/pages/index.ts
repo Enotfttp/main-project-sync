@@ -5,3 +5,4 @@ export const ConnectionsPage = lazy(() => import('./ConnectionsPage/ConnectionsP
 export const PeriodsPage = lazy(() => import('./PeriodsPage/PeriodsPage'));
 export const EventsPage = lazy(() => import('./EventsPage/EventsPage'));
 export const EnterPage = lazy(() => import('./EnterPage/EnterPage'));
+export const AdminPage = lazy(() => import('./AdminPage/AdminPage'));

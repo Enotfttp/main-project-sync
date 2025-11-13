@@ -7,19 +7,16 @@ import { ISearchWithFilter } from '@features/SearchWithFilter/SearchWithFilter.t
 interface ISelect extends SelectProps {
   placeholder: string;
   options: ISearchWithFilter[];
-  setCurOption: (value: string | Array<string>) => void;
 }
 
-export const Select = ({ placeholder = '', options, setCurOption, ...props }: ISelect) => {
+export const Select = ({ placeholder = '', options, ...props }: ISelect) => {
   const clearButtonProps = { 'data-testid': 'selectClearButton' };
   const openButtonProps = { 'data-testid': 'selectOpenButton' };
   const [selectValue, setSelectValue] = useState('');
 
   const onChange = (e: ChangeEvent<HTMLSelectElement>) => setSelectValue(e.target.value);
 
-  const handleSelectedChange = (value: string | Array<string>) => {
-    setCurOption(value);
-  };
+
 
   return (
     <ThemeProvider theme={LIGHT_THEME}>
@@ -27,15 +24,14 @@ export const Select = ({ placeholder = '', options, setCurOption, ...props }: IS
         {...props}
         value={selectValue}
         onChange={onChange}
-        onSelectedChange={handleSelectedChange}
         placeholder={placeholder}
         dropContainerClassName="dropContainerClass"
         clearButtonPropsConfig={() => clearButtonProps}
         openButtonPropsConfig={() => openButtonProps}
       >
-        {options.map(({ key, value }) => (
-          <Option value={key} key={key}>
-            {value}
+        {options.map(({ value, label }) => (
+          <Option value={value} key={value}>
+            {label}
           </Option>
         ))}
       </SelectTemplate>

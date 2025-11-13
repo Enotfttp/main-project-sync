@@ -25,5 +25,12 @@ export const routesPath = {
       },
     },
   },
-  testUIPage: 'testUIPage',
+  adminka: {
+    root: 'adminka/:serviceId',
+    shortPath: (serviceId: string | number) => `adminka/${serviceId}`,
+    fullPath: (serviceId: string | number) => `adminka/${serviceId}`,
+  },
+  testUIPage:  {
+    root: 'testUIPage',
+  },
 };

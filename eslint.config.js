@@ -62,6 +62,16 @@ export default tseslint.config(
                 'warn',
                 { allowConstantExport: true },
             ],
+            "max-len": ["error", {
+                "code": 100,
+                "tabWidth": 2,
+                "ignoreUrls": true,
+                "ignoreStrings": true,
+                "ignoreTemplateLiterals": true,
+                "ignoreRegExpLiterals": true,
+                "ignoreComments": false,
+                "ignoreTrailingComments": true
+            }],
             'indent': [
                 'error', 2, {
                     "SwitchCase": 1,        // отступ для case в switch

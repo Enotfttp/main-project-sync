@@ -3,8 +3,8 @@ import React, { JSX, Suspense } from 'react';
 import { RouterErrorBoundary } from '../errorBoundary/RouterErrorBoundary';
 import { NotFoundPage } from '../errorBoundary/NotFoundPage';
 import { routesPath } from './routesPath';
-import { RKOPage, ConnectionsPage, PeriodsPage, EventsPage, EnterPage } from '@pages/index';
-import { MainLayout, ServiceTabsLayout } from '@layouts/index';
+import { RKOPage, ConnectionsPage, PeriodsPage, EventsPage, EnterPage, AdminPage } from '@pages/index';
+import { MainLayout, ServiceTabsLayout, AdminServiceSelector } from '@layouts/index';
 import { Loader } from '@shared/ui';
 import TestUIPage from '@pages/TestUI/TestUIPage.tsx';
 import { ProtectedRoute } from '@widgets/protectedRoute/ProtectedRoute.tsx';
@@ -52,7 +52,16 @@ export const routes: RouteObject[] = [
     ],
   },
   {
-    path: routesPath.testUIPage,
+    element: <AdminServiceSelector />,
+    children: [
+      {
+        path: routesPath.adminka.root,
+        element: <AdminPage />,
+      },
+    ],
+  },
+  {
+    path: routesPath.testUIPage.root,
     element: <TestUIPage />,
     errorElement: <RouterErrorBoundary />,
   },
