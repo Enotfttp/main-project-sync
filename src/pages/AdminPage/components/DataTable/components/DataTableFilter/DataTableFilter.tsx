@@ -1,6 +1,6 @@
 import { filterFields } from "./DataTableFilter.filter";
 import { Filter } from "@shared/ui";
-import { FilterValue, TableRow } from "@shared/ui/Filter/Filter.types.ts";
+import { FilterValue, TableRow } from "@shared/ui/Filter/Filter.types";
 import { useFilter } from "@shared/ui/Filter/useFilter";
 import React from "react";
 

@@ -1,5 +1,5 @@
 import { IEventsList } from "@entities/events";
-import { createApiUrl } from "@mocks/msw/config.ts";
+import { createApiUrl } from "@mocks/msw/config";
 import { TFiltersBodyMSW } from "@mocks/msw/types/filters.types";
 import { HttpResponse, http } from "msw";
 

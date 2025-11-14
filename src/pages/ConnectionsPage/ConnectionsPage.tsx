@@ -9,7 +9,7 @@ import {
 import { SearchWithFilter } from "@features/index";
 import { additionalHover } from "@shared/common";
 import { TableSort } from "@shared/ui";
-import { Breadcrumbs } from "@widgets/breadcrumbs/Breadcrumbs.tsx";
+import { Breadcrumbs } from "@widgets/breadcrumbs/Breadcrumbs";
 import { useCallback } from "react";
 import * as React from "react";
 import { useNavigate, useParams } from "react-router-dom";

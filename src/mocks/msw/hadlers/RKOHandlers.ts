@@ -1,6 +1,6 @@
 import { IRKOList } from "@entities/rko";
-import { createApiUrl } from "@mocks/msw/config.ts";
-import { TFiltersBodyMSW } from "@mocks/msw/types/filters.types.ts";
+import { createApiUrl } from "@mocks/msw/config";
+import { TFiltersBodyMSW } from "@mocks/msw/types/filters.types";
 import { HttpResponse, http } from "msw";
 
 const mockedRKOList = [

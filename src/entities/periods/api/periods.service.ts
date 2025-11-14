@@ -1,4 +1,4 @@
-import { IPeriodsList, TFiltersPeriods } from "../index.ts";
+import { IPeriodsList, TFiltersPeriods } from "../index";
 import { axiosInstance } from "@shared/api";
 
 class PeriodsService {

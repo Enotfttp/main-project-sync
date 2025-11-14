@@ -12,12 +12,14 @@
     "preview": "npm run build && vite preview",
     "eslint": "eslint \"src/**/*.{js,jsx,ts,tsx,config.js}\" --cache --cache-location ./.cache/",
     "eslint:fix": "npm run eslint -- --fix",
+    "fix:imports": "node scripts/fix-imports.js",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "lint:all": "npm run eslint:fix && npm run format"
+    "lint:all": "npm run fix:imports && npm run eslint:fix && npm run format"
   },
   "lint-staged": {
     "**/*.{ts,tsx,js,jsx}": [
+      "node scripts/fix-imports.js --staged",
       "prettier --write",
       "eslint --fix --no-warn-ignored"
     ],

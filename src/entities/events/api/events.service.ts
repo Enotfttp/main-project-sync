@@ -1,4 +1,4 @@
-import { IEventsList, TFiltersEvents } from "../index.ts";
+import { IEventsList, TFiltersEvents } from "../index";
 import { axiosInstance } from "@shared/api";
 
 class EventsService {

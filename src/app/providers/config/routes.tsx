@@ -14,9 +14,9 @@ import {
   EnterPage,
   AdminPage,
 } from "@pages/index";
-import TestUIPage from "@pages/TestUI/TestUIPage.tsx";
+import TestUIPage from "@pages/TestUI/TestUIPage";
 import { Loader } from "@shared/ui";
-import { ProtectedRoute } from "@widgets/protectedRoute/ProtectedRoute.tsx";
+import { ProtectedRoute } from "@widgets/protectedRoute/ProtectedRoute";
 import React, { JSX, Suspense } from "react";
 import { Navigate, RouteObject } from "react-router-dom";
 

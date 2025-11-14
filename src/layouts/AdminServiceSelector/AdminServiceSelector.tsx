@@ -2,7 +2,7 @@ import {
   StyledUServiceSelector,
   StyledUServiceSelectorLayout,
   StyledUServiceTabs,
-} from "./AdminServiceSelector.styled.ts";
+} from "./AdminServiceSelector.styled";
 import {
   NotificationItem,
   NotificationItemContent,
@@ -10,7 +10,7 @@ import {
   Spinner,
 } from "@admiral-ds/react-ui";
 import { routesPath } from "@app/providers";
-import { useServices } from "@entities/admin/api/admin.service.ts";
+import { useServices } from "@entities/admin/api/admin.service";
 import { HorizontalTabsTemplate } from "@shared/ui";
 import * as React from "react";
 import { useMemo } from "react";

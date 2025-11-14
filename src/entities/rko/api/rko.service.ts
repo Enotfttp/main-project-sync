@@ -1,4 +1,4 @@
-import { TFiltersRKO, IRKOList } from "../index.ts";
+import { TFiltersRKO, IRKOList } from "../index";
 import { axiosInstance } from "@shared/api";
 
 class RKOService {

@@ -1,16 +1,16 @@
-import { columns, statusConfig } from "./DataTable.columns.tsx";
+import { columns, statusConfig } from "./DataTable.columns";
 import {
   StyledTableTitle,
   StyledTableHeader,
   StyledTableEmpty,
-} from "./DataTable.styled.ts";
+} from "./DataTable.styled";
 import { Table } from "@admiral-ds/react-ui";
-import { useTableData } from "@entities/admin/api/admin.service.ts";
-import { TableData } from "@entities/admin/types/admin.types.ts";
-import { DataTableFilter } from "@pages/AdminPage/components/DataTable/components/DataTableFilter/DataTableFilter.tsx";
+import { useTableData } from "@entities/admin/api/admin.service";
+import { TableData } from "@entities/admin/types/admin.types";
+import { DataTableFilter } from "@pages/AdminPage/components/DataTable/components/DataTableFilter/DataTableFilter";
 import { Loader } from "@shared/ui";
-import { TableRow } from "@shared/ui/Filter/Filter.types.ts";
-import { Notification } from "@shared/ui/Notification/Notification.tsx";
+import { TableRow } from "@shared/ui/Filter/Filter.types";
+import { Notification } from "@shared/ui/Notification/Notification";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 

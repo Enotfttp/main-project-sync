@@ -1,4 +1,4 @@
-import { StyledAdminPageContainer } from "./AdminPage.styled.ts";
+import { StyledAdminPageContainer } from "./AdminPage.styled";
 import { DataTable, ChartDiagram } from "./components";
 import React, { useState } from "react";
 

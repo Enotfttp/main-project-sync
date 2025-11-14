@@ -1,4 +1,4 @@
-import { useDiagram } from "./ChartDiagram.hook.ts";
+import { useDiagram } from "./ChartDiagram.hook";
 import {
   StyledDiagramLegendBlock,
   StyledLegend,
@@ -10,11 +10,11 @@ import {
   StyledTextDescriptionProgress,
   StyledTextDescriptionProgressPercent,
   StyledTotal,
-} from "./ChartDiagram.styled.ts";
-import { getStatusAppearance } from "./ChartDiagram.utils.ts";
+} from "./ChartDiagram.styled";
+import { getStatusAppearance } from "./ChartDiagram.utils";
 import { Tag } from "@admiral-ds/react-ui";
-import { useDashboardData } from "@entities/admin/api/admin.service.ts";
-import { ChartData } from "@entities/admin/types/admin.types.ts";
+import { useDashboardData } from "@entities/admin/api/admin.service";
+import { ChartData } from "@entities/admin/types/admin.types";
 import { Loader, Notification } from "@shared/ui";
 import { select } from "d3-selection";
 import { PieArcDatum as D3PieArcDatum } from "d3-shape";

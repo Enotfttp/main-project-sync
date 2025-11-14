@@ -1,5 +1,5 @@
 import { StyledRKOPage } from "./RKOPage.styled";
-import { columnList } from "./RKOTable.columns.tsx";
+import { columnList } from "./RKOTable.columns";
 import { T } from "@admiral-ds/react-ui";
 import { routesPath } from "@app/index";
 import { TFiltersRKO, useGetRKOList } from "@entities/rko";

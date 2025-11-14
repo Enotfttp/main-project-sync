@@ -7,7 +7,7 @@ import {
   StyledRegistrationText,
   StyledSeparatorText,
 } from "./Registration.styled";
-import { validate, TInitial } from "./Registration.utils.ts";
+import { validate, TInitial } from "./Registration.utils";
 import {
   NotificationItem,
   NotificationItemContent,
@@ -15,7 +15,7 @@ import {
 } from "@admiral-ds/react-ui";
 import { routesPath } from "@app/providers";
 import { useRegisterMutation } from "@entities/auth";
-import { StyledTwoBlocks } from "@pages/EnterPage/components/Login/Login.styled.ts";
+import { StyledTwoBlocks } from "@pages/EnterPage/components/Login/Login.styled";
 import { ApiError } from "@shared/api";
 import { InputFieldUI } from "@shared/ui";
 import { FORM_ERROR } from "final-form";

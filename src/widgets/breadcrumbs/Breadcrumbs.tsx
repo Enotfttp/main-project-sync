@@ -1,6 +1,6 @@
 import { BreadcrumbsStyled } from "./Breadcrumbs.styled";
 import { BreadcrumbsProps } from "@admiral-ds/react-ui";
-import { useBreadcrumbs } from "@widgets/breadcrumbs/Breadcrumbs.hook.ts";
+import { useBreadcrumbs } from "@widgets/breadcrumbs/Breadcrumbs.hook";
 import React from "react";
 
 export const Breadcrumbs = ({ ...props }: Partial<BreadcrumbsProps>) => {

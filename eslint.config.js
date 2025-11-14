@@ -34,8 +34,6 @@ export default tseslint.config(
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
-
-      // Импорты
       "import/no-unresolved": "error",
       "import/order": [
         "warn",
@@ -49,12 +47,18 @@ export default tseslint.config(
         },
       ],
       "import/newline-after-import": ["error", { count: 1 }],
-
-      // Базовые правила
+      "import/extensions": [
+        "error",
+        "ignorePackages",
+        {
+          ts: "never",
+          tsx: "never",
+          js: "never",
+          jsx: "never",
+        },
+      ],
       "no-multi-spaces": "error",
       "no-console": "warn",
-
-      // TypeScript
       "@typescript-eslint/no-unused-vars": [
         "warn",
         {
@@ -66,16 +70,10 @@ export default tseslint.config(
       "@typescript-eslint/explicit-module-boundary-types": "off",
       "@typescript-eslint/no-explicit-any": "warn",
       "prefer-const": "warn",
-
-      // React
       "react/react-in-jsx-scope": "off",
       "react/prop-types": "off",
-
-      // React Hooks
       "react-hooks/rules-of-hooks": "error",
-      "react-hooks/exhaustive-deps": "warn",
-
-      // React Refresh
+      "react-hooks/exhaustive-deps": "off",
       "react-refresh/only-export-components": [
         "warn",
         { allowConstantExport: true },

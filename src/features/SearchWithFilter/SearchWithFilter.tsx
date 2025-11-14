@@ -3,7 +3,7 @@ import { ISearchWithFilter } from "./SearchWithFilter.types";
 import { Column, InputExFieldProps } from "@admiral-ds/react-ui";
 import { usePrevious } from "@shared/common";
 import { Search, Select } from "@shared/ui";
-import { StyledChip } from "@shared/ui/Search/Search.styled.ts";
+import { StyledChip } from "@shared/ui/Search/Search.styled";
 import { useState } from "react";
 import * as React from "react";
 
@@ -33,7 +33,7 @@ export const SearchWithFilter = <T,>({
   const previousOption = usePrevious(curOption);
 
   const options = columnList.reduce((acc, elem) => {
-    acc.push({ key: elem.name, value: String(elem.title) });
+    acc.push({ value: elem.name, label: String(elem.title) });
     return acc;
   }, [] as ISearchWithFilter[]);
 

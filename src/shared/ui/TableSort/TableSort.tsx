@@ -114,10 +114,10 @@ export const TableSort = ({ queryKey, ...props }: TableSortProps) => {
       }
     }
   };
-   
+
   const compare = (
-    a: any,
-    b: any,
+    a: TableRow,
+    b: TableRow,
     colName: string,
     sort: "asc" | "desc",
     colType?: string,

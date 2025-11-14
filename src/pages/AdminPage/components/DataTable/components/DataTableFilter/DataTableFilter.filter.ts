@@ -1,4 +1,4 @@
-import { FilterField } from "@shared/ui/Filter/Filter.types.ts";
+import { FilterField } from "@shared/ui/Filter/Filter.types";
 
 export const filterFields: FilterField[] = [
   {

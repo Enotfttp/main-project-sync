@@ -1,4 +1,4 @@
-import { FilterValue } from "./Filter.types.ts";
+import { FilterValue } from "./Filter.types";
 import { useState, useCallback } from "react";
 
 export const useFilter = (initialValues: FilterValue[] = []) => {

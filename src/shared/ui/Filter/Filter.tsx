@@ -5,8 +5,8 @@ import {
   StyledFilterCount,
   StyledFilterField,
   StyledFilterHeader,
-} from "./Filter.styled.ts";
-import { FilterConfig, FilterField, FilterValue } from "./Filter.types.ts";
+} from "./Filter.styled";
+import { FilterConfig, FilterField, FilterValue } from "./Filter.types";
 import {
   Button,
   Checkbox,

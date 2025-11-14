@@ -1,4 +1,4 @@
-import { IPeriodsList, periodsService, TFiltersPeriods } from "../index.ts";
+import { IPeriodsList, periodsService, TFiltersPeriods } from "../index";
 import { QueryKey, useQuery, UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetPeriodsList = (

@@ -1,4 +1,4 @@
-import { FilterValue } from "./Filter.types.ts";
+import { FilterValue } from "./Filter.types";
 
 export const buildQueryString = (filters: FilterValue[]): string => {
   const params = new URLSearchParams();

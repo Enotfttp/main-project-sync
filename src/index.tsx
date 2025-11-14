@@ -4,7 +4,7 @@ import {
   DropdownProvider,
 } from "@admiral-ds/react-ui";
 import { AppRouter } from "@app/index";
-import { AuthProvider } from "@app/providers/authProvider/AuthProvider.tsx";
+import { AuthProvider } from "@app/providers/authProvider/AuthProvider";
 import { Loader } from "@shared/ui";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";

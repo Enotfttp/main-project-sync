@@ -1,4 +1,4 @@
-import { TFiltersRKO, rkoService } from "../index.ts";
+import { TFiltersRKO, rkoService } from "../index";
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetRKOList = (filters?: TFiltersRKO) => {

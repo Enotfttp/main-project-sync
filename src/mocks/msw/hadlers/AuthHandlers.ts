@@ -3,7 +3,7 @@ import {
   ILoginCredentials,
   IRegisterData,
 } from "@entities/auth";
-import { createApiUrl } from "@mocks/msw/config.ts";
+import { createApiUrl } from "@mocks/msw/config";
 import { uid } from "@shared/common";
 import { HttpResponse, http } from "msw";
 

@@ -1,4 +1,4 @@
-import { eventsService, IEventsList, TFiltersEvents } from "../index.ts";
+import { eventsService, IEventsList, TFiltersEvents } from "../index";
 import { QueryKey, useQuery, UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetEventsList = (
