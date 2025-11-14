@@ -2,17 +2,17 @@ import { routesPath } from "./routesPath";
 import { NotFoundPage } from "../errorBoundary/NotFoundPage";
 import { RouterErrorBoundary } from "../errorBoundary/RouterErrorBoundary";
 import {
+  AdminServiceSelector,
   MainLayout,
   ServiceTabsLayout,
-  AdminServiceSelector,
 } from "@layouts/index";
 import {
-  RKOPage,
-  ConnectionsPage,
-  PeriodsPage,
-  EventsPage,
-  EnterPage,
   AdminPage,
+  ConnectionsPage,
+  EnterPage,
+  EventsPage,
+  PeriodsPage,
+  RKOPage,
 } from "@pages/index";
 import TestUIPage from "@pages/TestUI/TestUIPage";
 import { Loader } from "@shared/ui";
@@ -70,6 +70,7 @@ export const routes: RouteObject[] = [
   },
   {
     element: <AdminServiceSelector />,
+    errorElement: <RouterErrorBoundary />,
     children: [
       {
         path: routesPath.adminka.root,

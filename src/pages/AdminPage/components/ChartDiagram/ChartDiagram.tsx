@@ -13,12 +13,11 @@ import {
 } from "./ChartDiagram.styled";
 import { getStatusAppearance } from "./ChartDiagram.utils";
 import { Tag } from "@admiral-ds/react-ui";
-import { useDashboardData } from "@entities/admin/api/admin.service";
-import { ChartData } from "@entities/admin/types/admin.types";
+import { ChartData, useDashboardData } from "@entities/admin";
 import { Loader, Notification } from "@shared/ui";
 import { select } from "d3-selection";
 import { PieArcDatum as D3PieArcDatum } from "d3-shape";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 
 interface ChartDiagramProps {
@@ -38,13 +37,12 @@ export const ChartDiagram: React.FC<ChartDiagramProps> = ({
 
   const svgRef = useRef<SVGSVGElement>(null);
   const {
-    data: dashboardData,
+    data: chartData,
     isLoading,
     error,
   } = useDashboardData(serviceId || "");
 
-  const chartData = dashboardData?.chartData || [];
-  const total = chartData.reduce((sum, item) => sum + item.value, 0);
+  const total = chartData?.reduce((sum, item) => sum + item.value, 0) || 0;
 
   const handleSectionClick = (sectionId: string) => {
     if (selectedChartSection === sectionId) {
@@ -77,6 +75,13 @@ export const ChartDiagram: React.FC<ChartDiagramProps> = ({
     handleSectionClick,
     total,
   );
+
+  // Закрытие таблицы после смены сервиса
+  useEffect(() => {
+    return () => {
+      onChartSectionSelect(null);
+    };
+  }, [serviceId]);
 
   if (!serviceId) {
     return (
@@ -111,7 +116,7 @@ export const ChartDiagram: React.FC<ChartDiagramProps> = ({
       <StyledDiagramLegendBlock>
         <svg ref={svgRef} width={300} height={300} />
         <StyledLegend>
-          {chartData.map((section) => {
+          {chartData?.map((section) => {
             const percentage = (section.value / total) * 100;
             return (
               <StyledLegendDescription

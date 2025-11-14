@@ -1,4 +1,4 @@
-import { ChartData } from "@entities/admin/types/admin.types";
+import { ChartData } from "@entities/admin";
 import * as d3 from "d3";
 import { useEffect } from "react";
 

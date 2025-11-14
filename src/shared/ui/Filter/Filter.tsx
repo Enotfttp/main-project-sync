@@ -2,18 +2,21 @@ import {
   StyledFilter,
   StyledFilterActions,
   StyledFilterBody,
-  StyledFilterCount,
   StyledFilterField,
   StyledFilterHeader,
+  StyledFilterRange,
 } from "./Filter.styled";
 import { FilterConfig, FilterField, FilterValue } from "./Filter.types";
 import {
+  Badge,
   Button,
   Checkbox,
   DateField,
   Range,
   TextInput,
 } from "@admiral-ds/react-ui";
+import type { NumberRange } from "@admiral-ds/react-ui/dist/components/Range/utils";
+import { isRangeValue } from "@shared/common";
 import { Select } from "@shared/ui";
 import React, { useState } from "react";
 
@@ -35,7 +38,6 @@ export const Filter: React.FC<FilterConfig> = ({
         value,
       });
     }
-
     setLocalValues(newValues);
   };
 
@@ -51,7 +53,7 @@ export const Filter: React.FC<FilterConfig> = ({
     onReset?.();
   };
 
-  const getFieldValue = (fieldId: string): FilterValue["value"] => {
+  const getFieldValue = (fieldId: string): FilterValue["value"] | null => {
     return localValues.find((v) => v.fieldId === fieldId)?.value ?? null;
   };
 
@@ -62,7 +64,7 @@ export const Filter: React.FC<FilterConfig> = ({
       case "text":
         return (
           <TextInput
-            value={typeof value === "number" ? value : ""}
+            value={typeof value === "string" ? value : ""}
             onChange={(e) => handleFieldChange(field.id, e.target.value)}
             placeholder={field.placeholder}
             dimension="s"
@@ -89,7 +91,6 @@ export const Filter: React.FC<FilterConfig> = ({
         return (
           <DateField
             value={typeof value === "string" ? value : ""}
-            // value={value ? new Date(value) : null}
             onChange={(event) =>
               handleFieldChange(field.id, event.target.value)
             }
@@ -101,7 +102,7 @@ export const Filter: React.FC<FilterConfig> = ({
       case "select":
         return (
           <Select
-            value={value ? value.toString() : ""}
+            value={typeof value === "string" ? value : ""}
             onSelectedChange={(option) => handleFieldChange(field.id, option)}
             options={field.options || []}
             placeholder={field.placeholder || ""}
@@ -125,31 +126,61 @@ export const Filter: React.FC<FilterConfig> = ({
         return (
           <Checkbox
             checked={!!value}
-            onChange={(e) =>
-              handleFieldChange(field.id, e.target.checked.toString())
-            }
+            onChange={(e) => handleFieldChange(field.id, e.target.checked)}
             dimension="s"
             value={field.label}
           />
         );
 
-      case "range":
+      case "range": {
+        const min = isRangeValue(value) ? value.min : 0;
+        const max = isRangeValue(value) ? value.max : 10;
+
         return (
-          <>
+          <StyledFilterRange>
+            <div>
+              <TextInput
+                type="number"
+                value={min}
+                onChange={(e) =>
+                  handleFieldChange(field.id, {
+                    min: Number(e.target.value),
+                    max,
+                  })
+                }
+                min={field.min}
+                max={field.max}
+                step={field.step}
+                dimension="s"
+              />
+              <TextInput
+                type="number"
+                value={max}
+                onChange={(e) =>
+                  handleFieldChange(field.id, {
+                    min,
+                    max: Number(e.target.value),
+                  })
+                }
+                min={field.min}
+                max={field.max}
+                dimension="s"
+              />
+            </div>
+
             <Range
-              // TODO Нет гарантий что не 0, 0
-              value={field.min && field.max ? [field.min, field.max] : [0, 10]}
-              minValue={field.min}
-              maxValue={field.max}
-              onChange={(e, range: [number, number]) => {
+              value={[min, max]}
+              onChange={(_, range: NumberRange) => {
                 handleFieldChange(field.id, {
                   min: range[0],
                   max: range[1],
                 });
               }}
+              maxValue={100}
             />
-          </>
+          </StyledFilterRange>
         );
+      }
 
       default:
         return null;
@@ -166,30 +197,17 @@ export const Filter: React.FC<FilterConfig> = ({
 
   return (
     <StyledFilter>
-      <StyledFilterHeader>Фильтры</StyledFilterHeader>
-      {activeFiltersCount > 0 && (
-        <StyledFilterCount>{activeFiltersCount}</StyledFilterCount>
-      )}
+      <StyledFilterHeader>
+        <h3>Фильтры</h3>
+        {activeFiltersCount > 0 && (
+          <Badge appearance="info">{activeFiltersCount}</Badge>
+        )}
+      </StyledFilterHeader>
 
       <StyledFilterBody>
         {fields.map((field) => (
-          <StyledFilterField
-            key={field.id}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "8px",
-            }}
-          >
-            <label
-              style={{
-                fontSize: "14px",
-                fontWeight: 500,
-                color: "#0D1F2C",
-              }}
-            >
-              {field.label}
-            </label>
+          <StyledFilterField key={field.id}>
+            <label>{field.label}</label>
             {renderField(field)}
           </StyledFilterField>
         ))}

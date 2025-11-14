@@ -2,19 +2,14 @@ import styled from "styled-components";
 
 export const StyledFilter = styled.div``;
 
-export const StyledFilterHeader = styled.h3`
+export const StyledFilterHeader = styled.div`
+  display: flex;
+  align-items: center;
   margin-bottom: 20px;
+  gap: 10px;
   font-size: 16px;
   font-weight: 600;
   color: #0d1f2c;
-`;
-export const StyledFilterCount = styled.h3`
-  background: #0d5ace;
-  color: white;
-  border-radius: 12px;
-  padding: 2px 8px;
-  font-size: 12px;
-  font-weight: 500;
 `;
 
 export const StyledFilterBody = styled.div`
@@ -32,6 +27,17 @@ export const StyledFilterField = styled.div`
     font-weight: 500;
     color: #0d1f2c;
     margin-bottom: 4px;
+  }
+`;
+
+export const StyledFilterRange = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 `;
 

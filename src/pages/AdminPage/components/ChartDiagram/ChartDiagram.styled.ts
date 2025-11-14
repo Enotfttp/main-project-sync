@@ -1,4 +1,4 @@
-import { ChartData } from "@entities/admin/types/admin.types";
+import { ChartData } from "@entities/admin";
 import styled from "styled-components";
 
 export const StyledServiceNumber = styled.h2`

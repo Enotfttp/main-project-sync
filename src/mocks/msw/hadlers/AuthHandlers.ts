@@ -5,7 +5,7 @@ import {
 } from "@entities/auth";
 import { createApiUrl } from "@mocks/msw/config";
 import { uid } from "@shared/common";
-import { HttpResponse, http } from "msw";
+import { http, HttpResponse } from "msw";
 
 interface IAuthList extends Omit<IAuthResponse, "user"> {
   user: {
@@ -110,6 +110,7 @@ export const authHandlers = [
 
     return HttpResponse.json(response);
   }),
+
   http.post(createApiUrl("/auth/refresh"), async ({ request }) => {
     const authHeader = request.headers.get("Authorization");
     const refreshToken = authHeader?.replace("Bearer ", "");

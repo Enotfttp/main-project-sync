@@ -3,15 +3,9 @@ import {
   StyledUServiceSelectorLayout,
   StyledUServiceTabs,
 } from "./AdminServiceSelector.styled";
-import {
-  NotificationItem,
-  NotificationItemContent,
-  NotificationItemTitle,
-  Spinner,
-} from "@admiral-ds/react-ui";
 import { routesPath } from "@app/providers";
-import { useServices } from "@entities/admin/api/admin.service";
-import { HorizontalTabsTemplate } from "@shared/ui";
+import { useServices } from "@entities/admin";
+import { HorizontalTabsTemplate, Loader, Notification } from "@shared/ui";
 import * as React from "react";
 import { useMemo } from "react";
 import { Outlet, useParams } from "react-router-dom";
@@ -34,27 +28,16 @@ export const AdminServiceSelector = () => {
   );
 
   if (isLoading) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          padding: "40px",
-        }}
-      >
-        <Spinner dimension="m" />
-      </div>
-    );
+    return <Loader />;
   }
 
   if (error) {
     return (
-      <NotificationItem status="error">
-        <NotificationItemTitle>Ошибка загрузки</NotificationItemTitle>
-        <NotificationItemContent>
-          Не удалось загрузить или найти сервис
-        </NotificationItemContent>
-      </NotificationItem>
+      <Notification
+        status="error"
+        title="Ошибка загрузки"
+        body="Не удалось загрузить или найти сервис"
+      />
     );
   }
 

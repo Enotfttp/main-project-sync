@@ -4,8 +4,8 @@ import { Column, InputExFieldProps } from "@admiral-ds/react-ui";
 import { usePrevious } from "@shared/common";
 import { Search, Select } from "@shared/ui";
 import { StyledChip } from "@shared/ui/Search/Search.styled";
-import { useState } from "react";
 import * as React from "react";
+import { useState } from "react";
 
 interface ISearchWithFilterProps<
   T = Record<string, React.ReactNode | string[] | undefined>,
@@ -38,7 +38,6 @@ export const SearchWithFilter = <T,>({
   }, [] as ISearchWithFilter[]);
 
   React.useEffect(() => {
-    // if (!listValue.length) return;
     if (curOption && !Array.isArray(curOption)) {
       setFilters({ [curOption]: listValue.map((item) => item?.children) } as T);
     }
@@ -57,6 +56,7 @@ export const SearchWithFilter = <T,>({
         {...props}
       />
       <Select
+        value={curOption}
         onSelectedChange={(val) => setCurOption(val)}
         options={options}
         placeholder={selectPlaceholder}

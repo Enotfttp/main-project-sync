@@ -1,15 +1,15 @@
 import {
-  LIGHT_THEME,
-  FontsVTBGroup,
   DropdownProvider,
+  FontsVTBGroup,
+  LIGHT_THEME,
 } from "@admiral-ds/react-ui";
 import { AppRouter } from "@app/index";
 import { AuthProvider } from "@app/providers/authProvider/AuthProvider";
 import { Loader } from "@shared/ui";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { StrictMode } from "react";
 import * as React from "react";
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { ThemeProvider } from "styled-components";
 
