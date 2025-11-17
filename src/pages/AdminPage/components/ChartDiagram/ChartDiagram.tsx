@@ -15,7 +15,6 @@ import { getStatusAppearance } from "./ChartDiagram.utils";
 import { Tag } from "@admiral-ds/react-ui";
 import { ChartData, useDashboardData } from "@entities/admin";
 import { Loader, Notification } from "@shared/ui";
-import { select } from "d3-selection";
 import { PieArcDatum as D3PieArcDatum } from "d3-shape";
 import React, { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
@@ -50,21 +49,6 @@ export const ChartDiagram: React.FC<ChartDiagramProps> = ({
     } else {
       onChartSectionSelect(sectionId);
     }
-  };
-
-  const handleLegendHover = (sectionId: string, isHovered: boolean) => {
-    if (!svgRef.current) return;
-
-    select(svgRef.current)
-      .selectAll(".arc path")
-      .style("opacity", function (_, d: unknown) {
-        const pieDatum = d as D3PieDatum;
-        if (isHovered) {
-          return pieDatum.data.id === sectionId ? 1 : 0.6;
-        } else {
-          return selectedChartSection === pieDatum.data.id ? 1 : 0.8;
-        }
-      });
   };
 
   // Отрисовка круговой диаграммы с помощью d3
@@ -117,15 +101,14 @@ export const ChartDiagram: React.FC<ChartDiagramProps> = ({
         <svg ref={svgRef} width={300} height={300} />
         <StyledLegend>
           {chartData?.map((section) => {
-            const percentage = (section.value / total) * 100;
+            const percentage = total > 0 ? (section.value / total) * 100 : 0;
+
             return (
               <StyledLegendDescription
                 selectedChartSection={selectedChartSection}
                 section={section}
-                key={section.id}
+                key={section?.id}
                 onClick={() => handleSectionClick(section.id)}
-                onMouseEnter={() => handleLegendHover(section.id, true)}
-                onMouseLeave={() => handleLegendHover(section.id, false)}
               >
                 <StyledSquare section={section} />
                 <StyledTextDescription>

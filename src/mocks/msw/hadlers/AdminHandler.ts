@@ -306,7 +306,7 @@ export const adminHandlers = [
 
       if (!sectionId) return HttpResponse.json([]);
       let tableData = mockTableData[serviceId]?.[sectionId] || [];
-      console.log("filters: ", filters);
+
       if (filters.length > 0) {
         tableData = tableData.filter((item) => {
           return filters.every((filter) => {

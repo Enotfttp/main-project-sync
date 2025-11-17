@@ -31,7 +31,6 @@ export const DataTable: React.FC<DataTableProps> = ({
   } = useTableData(serviceId || "", selectedChartSection, filterValues);
 
   const handleApply = useCallback(() => {
-    console.log("filterValues2 = ", filterValues);
     refetch();
   }, []);
 
@@ -94,7 +93,7 @@ export const DataTable: React.FC<DataTableProps> = ({
   if (isLoading) {
     return <Loader />;
   }
-  console.log("tableData: ");
+
   return (
     <>
       <StyledTableHeader>

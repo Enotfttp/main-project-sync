@@ -5,7 +5,6 @@
  */
 export const createMockUrl = (path) => {
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
-  // return `${endpoint || import.meta.env.VITE_API_BASE_URL}${normalizedPath}`;
   return `${import.meta.env.VITE_API_BASE_URL}${normalizedPath}`;
 };
 

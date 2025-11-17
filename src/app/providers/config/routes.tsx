@@ -74,7 +74,7 @@ export const routes: RouteObject[] = [
     children: [
       {
         path: routesPath.adminka.root,
-        element: <AdminPage />,
+        element: withSuspense(AdminPage),
       },
     ],
   },
