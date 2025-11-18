@@ -1,8 +1,3 @@
-import { IServiceConnectionList } from "@entities/serviceConnect";
-import { createApiUrl } from "@mocks/msw/config";
-import { TFiltersBodyMSW } from "@mocks/msw/types/filters.types";
-import { HttpResponse, http } from "msw";
-
 const mockedServiceConnectsList = [
   {
     id: "1",
@@ -45,22 +40,8 @@ const mockedServiceConnectsList = [
   },
 ];
 
-export const serviceConnectsHandlers = [
-  http.post(
-    createApiUrl("/api/service-connects/:idRKO"),
-    async ({ request }) => {
-      const body =
-        (await request.json()) as TFiltersBodyMSW<IServiceConnectionList>;
-      const filters = body?.filters || {};
-      let filtered = mockedServiceConnectsList;
-
-      Object.entries(filters).forEach(([key, value]) => {
-        if (value?.length) {
-          filtered = filtered.filter((item) => value?.includes(item[key]));
-        }
-      });
-
-      return HttpResponse.json<IServiceConnectionList[]>(filtered);
-    },
-  ),
-];
+export function serviceConnectionSeeds(server) {
+  mockedServiceConnectsList.forEach((auth) => {
+    server.create("serviceConnection", auth);
+  });
+}

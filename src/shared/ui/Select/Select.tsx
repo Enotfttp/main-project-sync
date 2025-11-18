@@ -23,7 +23,7 @@ export const Select = ({ placeholder = "", options, ...props }: ISelect) => {
       openButtonPropsConfig={() => openButtonProps}
     >
       {options.map(({ value, label }) => (
-        <Option value={label} key={value}>
+        <Option value={value} key={value}>
           {label}
         </Option>
       ))}

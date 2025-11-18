@@ -4,7 +4,7 @@ import { axiosInstance } from "@shared/api";
 class PeriodsService {
   async getPeriodsList(filters?: TFiltersPeriods): Promise<IPeriodsList[]> {
     const response = await axiosInstance.post(
-      `api/periods-list/${filters?.serviceId}`,
+      `/api/periods-list/${filters?.serviceId}`,
       { filters: filters },
     );
     return response.data;

@@ -1,7 +1,4 @@
 import { IPeriodsList } from "@entities/periods";
-import { createApiUrl } from "@mocks/msw/config";
-import { TFiltersBodyMSW } from "@mocks/msw/types/filters.types";
-import { HttpResponse, http } from "msw";
 
 const mockedPeriodsList: IPeriodsList[] = [
   {
@@ -82,18 +79,8 @@ const mockedPeriodsList: IPeriodsList[] = [
   },
 ];
 
-export const periodsHandlers = [
-  http.post(createApiUrl("/api/periods-list/:id"), async ({ request }) => {
-    const body = (await request.json()) as TFiltersBodyMSW<IPeriodsList>;
-    const filters = body?.filters || {};
-    let filtered = mockedPeriodsList;
-
-    Object.entries(filters).forEach(([key, value]) => {
-      if (value?.length) {
-        filtered = filtered.filter((item) => value?.includes(item[key]));
-      }
-    });
-
-    return HttpResponse.json<IPeriodsList[]>(filtered);
-  }),
-];
+export function periodSeeds(server) {
+  mockedPeriodsList.forEach((auth) => {
+    server.create("period", auth);
+  });
+}

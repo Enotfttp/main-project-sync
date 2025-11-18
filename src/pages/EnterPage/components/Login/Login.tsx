@@ -7,7 +7,7 @@ import {
   StyledRegistrationText,
   StyledSeparatorText,
 } from "./Login.styled";
-import { validate, IInitial } from "./Login.utils";
+import { IInitial, validate } from "./Login.utils";
 import {
   NotificationItem,
   NotificationItemContent,
@@ -17,7 +17,7 @@ import { useLoginMutation } from "@entities/auth";
 import { ApiError } from "@shared/api";
 import { InputFieldUI } from "@shared/ui";
 import { FORM_ERROR } from "final-form";
-import React, { ReactNode, FC } from "react";
+import React, { FC, ReactNode } from "react";
 import { Form } from "react-final-form";
 import { useNavigate } from "react-router-dom";
 

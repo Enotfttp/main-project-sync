@@ -31,25 +31,4 @@ export const filterFields: FilterField[] = [
     label: "Дата",
     placeholder: "Выберите дату",
   },
-  {
-    id: "status",
-    name: "status",
-    type: "select",
-    label: "Статус",
-    options: [
-      {
-        value: "completed",
-        label: "Выполнено",
-      },
-      {
-        value: "danger",
-        label: "Ошибка",
-      },
-      {
-        value: "pending",
-        label: "В процессе",
-      },
-    ],
-    placeholder: "Выберите статус",
-  },
 ];
