@@ -12,9 +12,7 @@ import { Outlet, useParams } from "react-router-dom";
 
 export const AdminServiceSelector = () => {
   const { serviceId } = useParams();
-  if (!serviceId) {
-    throw new Error("Вы не выбрали документ РКО");
-  }
+
   const { data: services = [], isLoading, error } = useServices();
 
   const tabs = useMemo(
@@ -46,8 +44,8 @@ export const AdminServiceSelector = () => {
       <StyledUServiceTabs>
         <HorizontalTabsTemplate
           tabs={tabs}
+          defaultSelectedTabId={serviceId || services[0].id}
           isRedirect
-          defaultSelectedTabId="1"
           dimension="l"
         />
       </StyledUServiceTabs>

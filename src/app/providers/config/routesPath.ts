@@ -14,7 +14,6 @@ export const routesPath = {
       events: {
         label: "События",
         root: "service/:id/events/:serviceId",
-        shortPath: (serviceId: string | number) => `events/${serviceId}`,
         fullPath: (id: string | number, serviceId: string | number) =>
           `service/${id}/events/${serviceId}`,
       },
@@ -29,8 +28,7 @@ export const routesPath = {
   },
   adminka: {
     root: "adminka/:serviceId",
-    shortPath: (serviceId: string | number) => `adminka/${serviceId}`,
-    fullPath: (serviceId: string | number) => `adminka/${serviceId}`,
+    fullPath: (serviceId: string | number) => `/adminka/${serviceId}`,
   },
   testUIPage: {
     root: "testUIPage",

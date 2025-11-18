@@ -12,12 +12,11 @@ import * as React from "react";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { ThemeProvider } from "styled-components";
-
 import "./index.css";
 
-if (import.meta.env.VITE_APP_STAND === "development") {
-  import("@mocks/msw/browser").then(({ worker }) => worker.start());
-}
+// if (import.meta.env.VITE_APP_STAND === "development") {
+import("@mocks/msw/browser").then(({ worker }) => worker.start());
+// }
 
 const queryClient = new QueryClient({
   defaultOptions: {

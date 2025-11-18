@@ -312,6 +312,18 @@ export const adminHandlers = [
           return filters.every((filter) => {
             const itemValue = item[filter?.fieldId as keyof TableData];
 
+            if (
+              typeof filter?.value === "string" &&
+              filter?.fieldId === "date"
+            ) {
+              const tableDate = itemValue;
+              const filterDate = filter?.value.split(".").reverse().join("-");
+              if (tableDate === filterDate) {
+                return true;
+              }
+              return false;
+            }
+
             // Пропускаем пустые фильтры
             if (filter?.value === null || filter?.value === undefined) {
               return true;

@@ -16,7 +16,7 @@ import {
 } from "@pages/index";
 import TestUIPage from "@pages/TestUI/TestUIPage";
 import { Loader } from "@shared/ui";
-import { ProtectedRoute } from "@widgets/protectedRoute/ProtectedRoute";
+import { ProtectedRoute, ProtectedRouteAdmin } from "@widgets/index";
 import React, { JSX, Suspense } from "react";
 import { Navigate, RouteObject } from "react-router-dom";
 
@@ -27,6 +27,7 @@ const withSuspense = (
     <Component />
   </Suspense>
 );
+
 const withProtectedRoute = (
   Component: React.LazyExoticComponent<() => JSX.Element>,
 ) => <ProtectedRoute>{withSuspense(Component)}</ProtectedRoute>;
@@ -67,6 +68,10 @@ export const routes: RouteObject[] = [
         ],
       },
     ],
+  },
+  {
+    path: "adminka",
+    element: <ProtectedRouteAdmin />,
   },
   {
     element: <AdminServiceSelector />,
