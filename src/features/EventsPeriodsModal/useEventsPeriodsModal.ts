@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 export const useEventsPeriodsModalState = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [eventsPeriodsId, setEventsPeriodsId] = useState<string | number | null>(null);
+  const [eventsPeriodsId, setEventsPeriodsId] = useState<
+    string | number | null
+  >(null);
   // let isOpen, eventsPeriodsId
   const openModal = (id: string | number) => {
     setEventsPeriodsId(id);

@@ -1,4 +1,4 @@
 export interface ISearchWithFilter {
-  key: string;
   value: string;
+  label: string;
 }

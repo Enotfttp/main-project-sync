@@ -1,9 +1,14 @@
-import { IServiceConnectionList, TFiltersServiceConnection } from '../index';
-import { axiosInstance } from '@shared/api';
+import { IServiceConnectionList, TFiltersServiceConnection } from "../index";
+import { axiosInstance } from "@shared/api";
 
 class ServiceConnectService {
-  async getServiceConnectionList(filters?: TFiltersServiceConnection): Promise<IServiceConnectionList[]> {
-    const response = await axiosInstance.post(`/api/service-connects/${filters?.idRKO}`, { filters: filters });
+  async getServiceConnectionList(
+    filters?: TFiltersServiceConnection,
+  ): Promise<IServiceConnectionList[]> {
+    const response = await axiosInstance.post(
+      `/api/service-connects/${filters?.idRKO}`,
+      { filters: filters },
+    );
     return response.data;
   }
 }

@@ -4,8 +4,7 @@
  * Создает полный URL для MSW handlers
  */
 export const createMockUrl = (path) => {
-  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
-  // return `${endpoint || import.meta.env.VITE_API_BASE_URL}${normalizedPath}`;
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
   return `${import.meta.env.VITE_API_BASE_URL}${normalizedPath}`;
 };
 

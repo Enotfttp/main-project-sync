@@ -1,19 +1,18 @@
-import { IUser } from '@entities/user';
+import { IUser } from "@entities/user";
 
 export interface ILoginCredentials {
-  login: string
-  password: string
+  login: string;
+  password: string;
 }
 
 export interface IRegisterData extends ILoginCredentials {
-  firstname:string,
-  lastname:string,
-  email:string,
-  confirmPassword?: string
+  firstname: string;
+  lastname: string;
+  email: string;
+  confirmPassword?: string;
 }
 
 export interface IAuthResponse {
-  token: string
-  user: IUser
+  token: string;
+  user: IUser;
 }
-

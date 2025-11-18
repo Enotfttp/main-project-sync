@@ -1,21 +1,29 @@
-import { Outlet, useParams } from 'react-router-dom';
-import { useMemo } from 'react';
-import * as React from 'react';
-import { StyledUnderTabsLayout } from './ServiceTabsLayout.styled';
-import { HorizontalTabsTemplate } from '@shared/ui';
-import { routesPath } from '@app/index';
-import { Breadcrumbs } from '@widgets/breadcrumbs/Breadcrumbs.tsx';
+import { StyledUnderTabsLayout } from "./ServiceTabsLayout.styled";
+import { routesPath } from "@app/index";
+import { HorizontalTabsTemplate } from "@shared/ui";
+import { Breadcrumbs } from "@widgets/breadcrumbs/Breadcrumbs";
+import { useMemo } from "react";
+import * as React from "react";
+import { Outlet, useParams } from "react-router-dom";
 
 export const ServiceTabsLayout = () => {
   const { id, serviceId } = useParams();
   if (!id || !serviceId) {
-    throw new Error('Вы не выбрали документ РКО');
+    throw new Error("Вы не выбрали документ РКО");
   }
 
   const tabs = useMemo(
     () => [
-      { text: 'Периоды', tabId: '1', path: routesPath.rko.service.periods.fullPath(id, serviceId) },
-      { text: 'События', tabId: '2', path: routesPath.rko.service.events.fullPath(id, serviceId) },
+      {
+        text: "Периоды",
+        tabId: "1",
+        path: routesPath.rko.service.periods.fullPath(id, serviceId),
+      },
+      {
+        text: "События",
+        tabId: "2",
+        path: routesPath.rko.service.events.fullPath(id, serviceId),
+      },
     ],
     [id, serviceId],
   );

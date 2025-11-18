@@ -1,16 +1,14 @@
-import axios from 'axios';
-// import {endpoint} from "../../../index";
+import axios from "axios";
 
 export const axiosInstance = axios.create({
-  // baseURL: endpoint || import.meta.env.VITE_API_BASE_URL,
   baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
-declare module 'axios' {
+declare module "axios" {
   export interface AxiosRequestConfig {
-    skipAuthRefresh?: boolean
+    skipAuthRefresh?: boolean;
   }
 }

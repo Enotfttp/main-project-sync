@@ -1,2 +1,2 @@
-export {storage} from './storage';
-export * from './validate';
+export { storage } from "./storage";
+export * from "./validate";

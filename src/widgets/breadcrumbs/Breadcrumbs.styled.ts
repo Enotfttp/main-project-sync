@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { Breadcrumbs } from '@admiral-ds/react-ui';
+import { Breadcrumbs } from "@admiral-ds/react-ui";
+import styled from "styled-components";
 
 export const BreadcrumbsStyled = styled(Breadcrumbs)`
   // контейнер, куда мы встраиваем крошки имеет паддинги больше, чем нужен отсуп крошкам

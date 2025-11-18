@@ -1,30 +1,42 @@
-import {Navigate, RouteObject} from 'react-router-dom';
-import React, { JSX, Suspense } from 'react';
-import { RouterErrorBoundary } from '../errorBoundary/RouterErrorBoundary';
-import { NotFoundPage } from '../errorBoundary/NotFoundPage';
-import { routesPath } from './routesPath';
-import { RKOPage, ConnectionsPage, PeriodsPage, EventsPage, EnterPage } from '@pages/index';
-import { MainLayout, ServiceTabsLayout } from '@layouts/index';
-import { Loader } from '@shared/ui';
-import TestUIPage from '@pages/TestUI/TestUIPage.tsx';
-import { ProtectedRoute } from '@widgets/protectedRoute/ProtectedRoute.tsx';
+import { routesPath } from "./routesPath";
+import { NotFoundPage } from "../errorBoundary/NotFoundPage";
+import { RouterErrorBoundary } from "../errorBoundary/RouterErrorBoundary";
+import {
+  AdminServiceSelector,
+  MainLayout,
+  ServiceTabsLayout,
+} from "@layouts/index";
+import {
+  AdminPage,
+  ConnectionsPage,
+  EnterPage,
+  EventsPage,
+  PeriodsPage,
+  RKOPage,
+} from "@pages/index";
+import TestUIPage from "@pages/TestUI/TestUIPage";
+import { Loader } from "@shared/ui";
+import { ProtectedRoute, ProtectedRouteAdmin } from "@widgets/index";
+import React, { JSX, Suspense } from "react";
+import { Navigate, RouteObject } from "react-router-dom";
 
-const withSuspense = (Component: React.LazyExoticComponent<() => JSX.Element>) => (
+const withSuspense = (
+  Component: React.LazyExoticComponent<() => JSX.Element>,
+) => (
   <Suspense fallback={<Loader />}>
     <Component />
   </Suspense>
 );
-const withProtectedRoute = (Component: React.LazyExoticComponent<() => JSX.Element>) => (
-  <ProtectedRoute>
-    {withSuspense(Component)}
-  </ProtectedRoute>
-);
+
+const withProtectedRoute = (
+  Component: React.LazyExoticComponent<() => JSX.Element>,
+) => <ProtectedRoute>{withSuspense(Component)}</ProtectedRoute>;
 
 export const routes: RouteObject[] = [
   {
     path: routesPath.root,
     element: <Navigate to={routesPath.enter.root} />,
-    index:true
+    index: true,
   },
   {
     path: routesPath.enter.root,
@@ -45,19 +57,39 @@ export const routes: RouteObject[] = [
       {
         element: <ServiceTabsLayout />,
         children: [
-          { path: routesPath.rko.service.events.root, element: withProtectedRoute(EventsPage) },
-          { path: routesPath.rko.service.periods.root, element: withProtectedRoute(PeriodsPage) },
+          {
+            path: routesPath.rko.service.events.root,
+            element: withProtectedRoute(EventsPage),
+          },
+          {
+            path: routesPath.rko.service.periods.root,
+            element: withProtectedRoute(PeriodsPage),
+          },
         ],
       },
     ],
   },
   {
-    path: routesPath.testUIPage,
+    path: "adminka",
+    element: <ProtectedRouteAdmin />,
+  },
+  {
+    element: <AdminServiceSelector />,
+    errorElement: <RouterErrorBoundary />,
+    children: [
+      {
+        path: routesPath.adminka.root,
+        element: withSuspense(AdminPage),
+      },
+    ],
+  },
+  {
+    path: routesPath.testUIPage.root,
     element: <TestUIPage />,
     errorElement: <RouterErrorBoundary />,
   },
   {
-    path: '*',
+    path: "*",
     element: <NotFoundPage />,
     errorElement: <RouterErrorBoundary />,
   },

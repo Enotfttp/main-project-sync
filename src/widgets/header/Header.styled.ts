@@ -1,6 +1,6 @@
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { SystemSignInSolid } from '@admiral-ds/icons';
+import { SystemSignInSolid } from "@admiral-ds/icons";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 
 export const StyledHeader = styled.header`
   display: flex;
@@ -20,7 +20,7 @@ export const StyledLink = styled(Link)`
 `;
 
 export const StyledIconLogout = styled(SystemSignInSolid)`
-    & > g{
-        fill:#fff !important;
-    }
+  & > g {
+    fill: #fff !important;
+  }
 `;

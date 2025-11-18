@@ -1,5 +1,5 @@
-import { required, emailRegexp } from '@shared/utils';
-import { IRegisterData } from '@entities/auth';
+import { IRegisterData } from "@entities/auth";
+import { required, emailRegexp } from "@shared/utils";
 
 export type TInitial = IRegisterData;
 
@@ -15,7 +15,7 @@ export const validate = (values: TInitial) => {
   }
 
   if (values?.email && !values?.email.match(emailRegexp)) {
-    errors.email = 'Неправильно введён email';
+    errors.email = "Неправильно введён email";
   }
 
   if (!values?.login) {
@@ -29,9 +29,11 @@ export const validate = (values: TInitial) => {
     errors.confirmPassword = required(values?.confirmPassword);
   }
 
-  if ((values?.password || values?.confirmPassword) && values?.password !== values?.confirmPassword) {
-
-    errors.password = errors.confirmPassword = 'Пароли не совпадают';
+  if (
+    (values?.password || values?.confirmPassword) &&
+    values?.password !== values?.confirmPassword
+  ) {
+    errors.password = errors.confirmPassword = "Пароли не совпадают";
   }
 
   return errors;

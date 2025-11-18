@@ -6,5 +6,5 @@ export interface IRKOList {
 
 /**TODO.FIX Расшириить для большего фильтрования */
 export type TFiltersRKO = {
-  [K in keyof Omit<IRKOList, 'id'>]?: Array<IRKOList[K]> | IRKOList[K] | null;
+  [K in keyof Omit<IRKOList, "id">]?: Array<IRKOList[K]> | IRKOList[K] | null;
 };

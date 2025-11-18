@@ -1,8 +1,8 @@
-import { required } from '@shared/utils';
+import { required } from "@shared/utils";
 
 export interface IInitial {
-  login: string,
-  password: string
+  login: string;
+  password: string;
 }
 
 export const validate = (values: IInitial) => {

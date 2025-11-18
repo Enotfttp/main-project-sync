@@ -1,16 +1,16 @@
-import * as React from 'react';
-import { T } from '@admiral-ds/react-ui';
-import { useParams } from 'react-router-dom';
-import { StyledEventsPage } from './EventsPage.styled';
-import { columnList } from './EventsPage.columns';
-import { TableSort } from '@shared/ui';
-import { SearchWithFilter } from '@features/index';
-import { TFiltersEvents, useGetEventsList } from '@entities/events';
+import { columnList } from "./EventsPage.columns";
+import { StyledEventsPage } from "./EventsPage.styled";
+import { T } from "@admiral-ds/react-ui";
+import { TFiltersEvents, useGetEventsList } from "@entities/events";
+import { SearchWithFilter } from "@features/index";
+import { TableSort } from "@shared/ui";
+import * as React from "react";
+import { useParams } from "react-router-dom";
 
 const EventsPage = () => {
   const { id } = useParams();
   if (!id) {
-    throw new Error('Вы не выбрали подписку');
+    throw new Error("Вы не выбрали подписку");
   }
   const [filters, setFilters] = React.useState<TFiltersEvents>();
   const { data } = useGetEventsList({ ...filters, serviceId: id as string });
@@ -24,7 +24,11 @@ const EventsPage = () => {
         setFilters={setFilters}
         searchPlaceholder="Введите значение для поиска"
       />
-      <TableSort columnList={columnList} rowList={data || []} queryKey="events-list" />
+      <TableSort
+        columnList={columnList}
+        rowList={data || []}
+        queryKey="events-list"
+      />
     </StyledEventsPage>
   );
 };

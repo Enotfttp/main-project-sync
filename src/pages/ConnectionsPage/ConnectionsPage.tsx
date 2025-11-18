@@ -1,20 +1,23 @@
-import * as React from 'react';
-import { T } from '@admiral-ds/react-ui';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useCallback } from 'react';
-import { StyledConnectionsPage } from './ConnectionsPage.styled';
-import { columnList } from './ConnectionsTable.columns';
-import { useGetConnectionList, TFiltersServiceConnection } from '@entities/serviceConnect';
-import { additionalHover } from '@shared/common';
-import { TableSort } from '@shared/ui';
-import { SearchWithFilter } from '@features/index';
-import { routesPath } from '@app/providers';
-import { Breadcrumbs } from '@widgets/breadcrumbs/Breadcrumbs.tsx';
+import { StyledConnectionsPage } from "./ConnectionsPage.styled";
+import { columnList } from "./ConnectionsTable.columns";
+import { T } from "@admiral-ds/react-ui";
+import { routesPath } from "@app/providers";
+import {
+  useGetConnectionList,
+  TFiltersServiceConnection,
+} from "@entities/serviceConnect";
+import { SearchWithFilter } from "@features/index";
+import { additionalHover } from "@shared/common";
+import { TableSort } from "@shared/ui";
+import { Breadcrumbs } from "@widgets/breadcrumbs/Breadcrumbs";
+import { useCallback } from "react";
+import * as React from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ConnectionsPage = () => {
   const { id } = useParams();
   if (!id) {
-    throw new Error('Вы не выбрали документ РКО');
+    throw new Error("Вы не выбрали документ РКО");
   }
   const navigate = useNavigate();
   const [filters, setFilters] = React.useState<TFiltersServiceConnection>();
@@ -37,7 +40,12 @@ const ConnectionsPage = () => {
         setFilters={setFilters}
         searchPlaceholder="Введите значение для поиска"
       />
-      <TableSort columnList={columnList} rowList={additionalHover(data)} onRowClick={onRowClick} queryKey="serviceConnection-list" />
+      <TableSort
+        columnList={columnList}
+        rowList={additionalHover(data)}
+        onRowClick={onRowClick}
+        queryKey="serviceConnection-list"
+      />
     </StyledConnectionsPage>
   );
 };

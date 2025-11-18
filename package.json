@@ -9,26 +9,42 @@
     "preview:dev": "vite preview --mode st",
     "preview:prod": "vite preview --mode production",
     "deploy:prod": "npm run build:prod && echo 'Deploying...'",
+    "preview": "npm run build && vite preview",
     "eslint": "eslint \"src/**/*.{js,jsx,ts,tsx,config.js}\" --cache --cache-location ./.cache/",
     "eslint:fix": "npm run eslint -- --fix",
-    "preview": "npm run build && vite preview"
+    "fix:imports": "node scripts/fix-imports.js",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint:all": "npm run fix:imports && npm run eslint:fix && npm run format"
+  },
+  "lint-staged": {
+    "**/*.{ts,tsx,js,jsx}": [
+      "node scripts/fix-imports.js --staged",
+      "prettier --write",
+      "eslint --fix --no-warn-ignored"
+    ],
+    "**/*.{json,css,md,html}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@admiral-ds/flags": "3.1.1",
     "@admiral-ds/fonts": "2.0.0",
     "@admiral-ds/icons": "4.3.8",
-    "@admiral-ds/react-ui": "8.45.0",
+    "@admiral-ds/react-ui": "8.57.0",
     "@tanstack/react-query": "5.74.3",
     "@tanstack/react-query-devtools": "5.74.3",
     "axios": "1.8.4",
-    "react": "19.0.0",
-    "react-dom": "19.0.0",
+    "d3": "7.9.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
     "react-final-form": "^7.0.0",
     "react-router-dom": "7.5.0",
     "styled-components": "5.3.11"
   },
   "devDependencies": {
     "@eslint/js": "9.24.0",
+    "@types/d3": "7.4.3",
     "@types/jest": "29.5.14",
     "@types/node": "22.14.1",
     "@types/react": "19.0.10",
@@ -38,6 +54,7 @@
     "@typescript-eslint/parser": "8.32.1",
     "@vitejs/plugin-react": "4.3.4",
     "eslint": "9.24.0",
+    "eslint-config-prettier": "10.1.8",
     "eslint-import-resolver-typescript": "4.3.2",
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-react": "7.37.5",
@@ -45,8 +62,11 @@
     "eslint-plugin-react-refresh": "0.4.19",
     "eslint-plugin-simple-import-sort": "12.1.1",
     "globals": "15.15.0",
+    "husky": "9.1.7",
     "jest": "29.7.0",
+    "lint-staged": "16.2.6",
     "msw": "2.7.5",
+    "prettier": "3.6.2",
     "rollup-plugin-visualizer": "6.0.3",
     "ts-jest": "29.3.2",
     "typescript": "~5.7.2",
