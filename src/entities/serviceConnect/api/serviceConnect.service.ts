@@ -5,10 +5,9 @@ class ServiceConnectService {
   async getServiceConnectionList(
     filters?: TFiltersServiceConnection,
   ): Promise<IServiceConnectionList[]> {
-    const response = await axiosInstance.post(
-      `/api/service-connects/${filters?.idRKO}`,
-      { filters: filters },
-    );
+    const response = await axiosInstance.post(`/api/service-connects`, {
+      filters: filters,
+    });
     return response.data;
   }
 }

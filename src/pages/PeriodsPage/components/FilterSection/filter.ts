@@ -1,0 +1,123 @@
+import { FilterField } from "@shared/ui/Filter/Filter.types";
+
+export const filterFields: FilterField[] = [
+  {
+    id: "dateBegin",
+    name: "dateBegin",
+    type: "date",
+    label: "Дата начала",
+    placeholder: "Введите дату начала...",
+  },
+  {
+    id: "dateEnd",
+    name: "dateEnd",
+    type: "date",
+    label: "Дата окончания",
+    placeholder: "Введите дату окончания...",
+  },
+  {
+    id: "datePayBeg",
+    name: "datePayBeg",
+    type: "date",
+    label: "Дата начала оплаты",
+    placeholder: "Введите дату начала оплаты...",
+  },
+  {
+    id: "datePayEnd",
+    name: "datePayEnd",
+    type: "date",
+    label: "Дата окончания",
+    placeholder: "Введите дату окончания оплаты...",
+  },
+  {
+    id: "datePayFact",
+    name: "datePayFact",
+    type: "date",
+    label: "Дата окончания",
+    placeholder: "Введите дату оплаты...",
+  },
+  {
+    id: "status",
+    name: "status",
+    type: "select",
+    options: [
+      {
+        value: "notPayed",
+        label: "Неоплачено",
+      },
+      {
+        value: "waitPayed",
+        label: "Ожидает оплаты",
+      },
+      {
+        value: "payed",
+        label: "Оплачено",
+      },
+    ],
+    label: "Состояние",
+    placeholder: "Состояние...",
+  },
+  {
+    id: "chargeAmount",
+    name: "chargeAmount",
+    type: "number",
+    label: "Сумма начисления",
+    placeholder: "Введите сумму начисления...",
+  },
+  {
+    id: "additionalChargeAmount",
+    name: "additionalChargeAmount",
+    type: "number",
+    label: "Сумма доначисления",
+    placeholder: "Введите сумму доначисления...",
+  },
+  {
+    id: "amountAccountRequirements",
+    name: "amountAccountRequirements",
+    type: "number",
+    label: "Сумма с учётом требований",
+    placeholder: "Введите сумму с учётом требований...",
+  },
+  {
+    id: "sumPay",
+    name: "sumPay",
+    type: "number",
+    label: "Сумма оплаты",
+    placeholder: "Введите сумму оплаты...",
+  },
+  {
+    id: "sumInc",
+    name: "sumInc",
+    type: "number",
+    label: "Доход",
+    placeholder: "Введите доход...",
+  },
+  {
+    id: "sumDbp",
+    name: "sumDbp",
+    type: "number",
+    label: "ДБП",
+    placeholder: "Введите ДБП...",
+  },
+  {
+    id: "paymentBehavior",
+    name: "paymentBehavior",
+    type: "text",
+    label: "Поведение при неоплате",
+    placeholder: "Введите поведение при неоплате...",
+  },
+  {
+    id: "paymentPriorities",
+    name: "paymentPriorities",
+    type: "text",
+    label: "Приоритеты оплаты",
+    placeholder: "Введите приоритет оплаты...",
+  },
+  {
+    id: "orderMeaning",
+    name: "orderMeaning",
+    type: "text",
+    label: "Значение поручения",
+    placeholder: "Введите значение поручения...",
+  },
+];

@@ -1,21 +1,16 @@
+import { filterFunc } from "@mocks/utils";
 import { Server } from "miragejs";
 
 export function eventRoutes(this: Server) {
-  this.post("/events-list/:id", (schema, request) => {
+  this.post("/events-list", (schema, request) => {
     const requestBody = JSON.parse(request.requestBody);
-    const filters = requestBody?.filters || {};
     let events = schema.all("event").models.map((el) => el.attrs);
 
-    Object.entries(filters).forEach(([key, value]) => {
-      if (value?.length) {
-        events = events.filter((item) => {
-          const itemValue = item[key];
-          return Array.isArray(value)
-            ? value.includes(itemValue)
-            : value === itemValue;
-        });
-      }
-    });
+    const filters = requestBody?.filters || [];
+
+    if (filters.length > 0) {
+      events = filterFunc(events, filters);
+    }
 
     return events;
   });

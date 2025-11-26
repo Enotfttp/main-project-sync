@@ -13,19 +13,14 @@ import {
 } from "./ChartDiagram.styled";
 import { getStatusAppearance } from "./ChartDiagram.utils";
 import { Tag } from "@admiral-ds/react-ui";
-import { ChartData, useDashboardData } from "@entities/admin";
+import { useDashboardData } from "@entities/admin";
 import { Loader, Notification } from "@shared/ui";
-import { PieArcDatum as D3PieArcDatum } from "d3-shape";
 import React, { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 
 interface ChartDiagramProps {
-  selectedChartSection: string | null;
-  onChartSectionSelect: (sectionId: string | null) => void;
-}
-
-interface D3PieDatum extends D3PieArcDatum<ChartData> {
-  data: ChartData;
+  selectedChartSection: { id: string; title: string } | null;
+  onChartSectionSelect: (section: { id: string; title: string } | null) => void;
 }
 
 export const ChartDiagram: React.FC<ChartDiagramProps> = ({
@@ -43,11 +38,11 @@ export const ChartDiagram: React.FC<ChartDiagramProps> = ({
 
   const total = chartData?.reduce((sum, item) => sum + item.value, 0) || 0;
 
-  const handleSectionClick = (sectionId: string) => {
-    if (selectedChartSection === sectionId) {
+  const handleSectionClick = ({ id, title }: { id: string; title: string }) => {
+    if (selectedChartSection?.id === id) {
       onChartSectionSelect(null);
     } else {
-      onChartSectionSelect(sectionId);
+      onChartSectionSelect({ id, title });
     }
   };
 
@@ -108,7 +103,9 @@ export const ChartDiagram: React.FC<ChartDiagramProps> = ({
                 selectedChartSection={selectedChartSection}
                 section={section}
                 key={section?.id}
-                onClick={() => handleSectionClick(section.id)}
+                onClick={() =>
+                  handleSectionClick({ id: section.id, title: section.label })
+                }
               >
                 <StyledSquare section={section} />
                 <StyledTextDescription>

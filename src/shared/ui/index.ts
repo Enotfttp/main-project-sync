@@ -8,3 +8,4 @@ export { Select } from "./Select/Select";
 export { InputFieldUI } from "./InputField/InputField";
 export { Filter } from "./Filter/Filter";
 export { Notification } from "./Notification/Notification";
+export { DropDown } from "./DropDown/DropDown";

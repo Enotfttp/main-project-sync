@@ -47,9 +47,7 @@ export interface FilterValue {
 
 export interface FilterConfig {
   fields: FilterField[];
-  values: FilterValue[];
-  onChange: (values: FilterValue[]) => void;
-  onApply?: () => void;
+  onApply?: (values: FilterValue[]) => void;
   onReset?: () => void;
 }
 

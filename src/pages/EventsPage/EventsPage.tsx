@@ -1,9 +1,7 @@
-import { columnList } from "./EventsPage.columns";
+import { FilterSection, TableSection } from "./components";
 import { StyledEventsPage } from "./EventsPage.styled";
 import { T } from "@admiral-ds/react-ui";
-import { TFiltersEvents, useGetEventsList } from "@entities/events";
-import { SearchWithFilter } from "@features/index";
-import { TableSort } from "@shared/ui";
+import { useFilter } from "@shared/ui/Filter/useFilter";
 import * as React from "react";
 import { useParams } from "react-router-dom";
 
@@ -12,23 +10,19 @@ const EventsPage = () => {
   if (!id) {
     throw new Error("Вы не выбрали подписку");
   }
-  const [filters, setFilters] = React.useState<TFiltersEvents>();
-  const { data } = useGetEventsList({ ...filters, serviceId: id as string });
+  const { handleResetFilters, handleApplyFilters, filters, tableKey } =
+    useFilter();
 
   return (
     <StyledEventsPage>
       <T font="Header/H1">События</T>
-      <SearchWithFilter<TFiltersEvents>
-        selectPlaceholder="Выберите поле из выпадающего списка"
-        columnList={columnList}
-        setFilters={setFilters}
-        searchPlaceholder="Введите значение для поиска"
+
+      <FilterSection
+        onApplyFilters={handleApplyFilters}
+        onResetFilters={handleResetFilters}
       />
-      <TableSort
-        columnList={columnList}
-        rowList={data || []}
-        queryKey="events-list"
-      />
+
+      <TableSection tableKey={tableKey} filters={filters} id={id} />
     </StyledEventsPage>
   );
 };

@@ -34,7 +34,7 @@ export const useDashboardData = (
 
 export const useTableData = (
   serviceId: string,
-  sectionId: string | null,
+  sectionId?: string,
   filters?: FilterValue[],
   options?: Omit<
     UseQueryOptions<TableData[], Error, TableData[], QueryKey>,
