@@ -5,6 +5,7 @@ import {
 } from "@admiral-ds/react-ui";
 import { AppRouter } from "@app/index";
 import { AuthProvider } from "@app/providers/authProvider/AuthProvider";
+import { makeServer } from "@mocks/server";
 import { Loader } from "@shared/ui";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -14,9 +15,7 @@ import { createRoot } from "react-dom/client";
 import { ThemeProvider } from "styled-components";
 import "./index.css";
 
-// if (import.meta.env.VITE_APP_STAND === "development") {
-import("@mocks/msw/browser").then(({ worker }) => worker.start());
-// }
+makeServer();
 
 const queryClient = new QueryClient({
   defaultOptions: {

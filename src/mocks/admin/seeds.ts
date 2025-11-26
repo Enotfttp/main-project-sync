@@ -1,12 +1,4 @@
-import {
-  ChartData,
-  Service,
-  TableData,
-} from "@entities/admin/types/admin.types";
-import { createApiUrl } from "@mocks/msw/config";
-import { TFiltersBodyMSW } from "@mocks/msw/types/filters.types";
-import { FilterValue } from "@shared/ui/Filter/Filter.types";
-import { http, HttpResponse } from "msw";
+import { ChartData, Service, TableData } from "@entities/admin";
 
 const mockServices: Service[] = [
   {
@@ -284,77 +276,14 @@ const mockTableData: Record<string, Record<string, TableData[]>> = {
   },
 };
 
-export const adminHandlers = [
-  http.get(createApiUrl("/api/services"), async () => {
-    return HttpResponse.json<Service[]>(mockServices);
-  }),
+export function adminSeeds(server) {
+  mockServices.forEach((service) => {
+    server.create("service", service);
+  });
 
-  http.get(createApiUrl("/api/dashboards/:serviceId"), async (req) => {
-    const serviceId = req.params.serviceId as string;
-    const chartData = mockChartData[serviceId] || [];
+  Object.entries(mockChartData).forEach(([serviceId, charts]) => {
+    server.create("chartDatum", { serviceId, charts });
+  });
 
-    return HttpResponse.json<ChartData[]>(chartData);
-  }),
-
-  http.post(
-    createApiUrl("/api/dashboards-info/:serviceId/sections/:sectionId"),
-    async (req) => {
-      const serviceId = req.params.serviceId as string;
-      const sectionId = req.params.sectionId as string;
-      const body = (await req.request.json()) as TFiltersBodyMSW<FilterValue[]>;
-      const filters = body?.filters || [];
-
-      if (!sectionId) return HttpResponse.json([]);
-      let tableData = mockTableData[serviceId]?.[sectionId] || [];
-
-      if (filters.length > 0) {
-        tableData = tableData.filter((item) => {
-          return filters.every((filter) => {
-            const itemValue = item[filter?.fieldId as keyof TableData];
-
-            if (
-              typeof filter?.value === "string" &&
-              filter?.fieldId === "date"
-            ) {
-              const tableDate = itemValue;
-              const filterDate = filter?.value.split(".").reverse().join("-");
-              if (tableDate === filterDate) {
-                return true;
-              }
-              return false;
-            }
-
-            // Пропускаем пустые фильтры
-            if (filter?.value === null || filter?.value === undefined) {
-              return true;
-            }
-
-            // Фильтр по диапазону
-            if (
-              typeof filter.value === "object" &&
-              "min" in filter.value &&
-              "max" in filter.value
-            ) {
-              if (typeof itemValue === "number") {
-                return (
-                  itemValue >= filter.value.min && itemValue <= filter.value.max
-                );
-              }
-              return false;
-            }
-
-            // Фильтр по массиву значений
-            if (Array.isArray(filter.value) && typeof itemValue === "string") {
-              return filter.value.includes(itemValue);
-            }
-
-            // Простое сравнение для строк и чисел
-            return itemValue === filter.value;
-          });
-        });
-      }
-
-      return HttpResponse.json(tableData);
-    },
-  ),
-];
+  server.create("tableDatum", mockTableData);
+}

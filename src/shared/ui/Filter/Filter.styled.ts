@@ -20,7 +20,7 @@ export const StyledFilterBody = styled.div`
 `;
 
 export const StyledFilterField = styled.div`
-  flex: 1 1 30%;
+  flex: 0 1 30%;
 
   label {
     font-size: 14px;
