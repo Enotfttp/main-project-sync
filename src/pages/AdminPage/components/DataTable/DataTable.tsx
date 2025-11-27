@@ -1,5 +1,6 @@
 import { FilterSection, TableSection } from "./components";
 import { StyledTableHeader, StyledTableTitle } from "./DataTable.styled";
+import { Notification } from "@shared/ui";
 import { useFilter } from "@shared/ui/Filter/useFilter";
 import React from "react";
 import { useParams } from "react-router-dom";
@@ -15,6 +16,17 @@ export const DataTable: React.FC<DataTableProps> = ({
 
   const { handleResetFilters, handleApplyFilters, filters, tableKey } =
     useFilter();
+
+  if (!selectedChartSection?.id) {
+    return (
+      <Notification
+        status="info"
+        title="Выберите категорию"
+        body="Нажмите на любую категорию в диаграмме для отображения детальных данных"
+      />
+    );
+  }
+
   return (
     <>
       <StyledTableHeader>

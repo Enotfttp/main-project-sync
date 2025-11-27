@@ -8,7 +8,7 @@ export function serviceConnectionRoutes(this: Server) {
       .all("serviceConnection")
       .models.map((el) => el.attrs);
     const filters = requestBody?.filters || [];
-    console.log("filters: ", filters);
+
     if (filters.length > 0) {
       serviceConnections = filterFunc(serviceConnections, filters);
     }

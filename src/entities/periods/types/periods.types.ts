@@ -7,12 +7,12 @@ export interface IPeriodsList {
   datePayEnd: string;
   datePayFact: string;
   status: string;
-  chargeAmount: string;
-  additionalChargeAmount: string;
-  amountAccountRequirements: string;
-  sumPay: string;
-  sumInc: string;
-  sumDbp: string;
+  chargeAmount: number;
+  additionalChargeAmount: number;
+  amountAccountRequirements: number;
+  sumPay: number;
+  sumInc: number;
+  sumDbp: number;
   paymentBehavior: string;
   paymentPriorities: string;
   orderMeaning: string;

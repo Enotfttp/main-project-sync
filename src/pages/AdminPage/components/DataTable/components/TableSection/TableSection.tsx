@@ -39,26 +39,6 @@ export const TableSection: FC<IProps> = ({
     setCols(tableData ?? []);
   }, [tableData]);
 
-  if (!serviceId) {
-    return (
-      <Notification
-        status="info"
-        title="Выберите сервис"
-        body="Пожалуйста, выберите сервис для отображения данных"
-      />
-    );
-  }
-
-  if (!selectedChartSection) {
-    return (
-      <Notification
-        status="info"
-        title="Выберите категорию"
-        body="Нажмите на любую категорию в диаграмме для отображения детальных данных"
-      />
-    );
-  }
-
   if (error) {
     return (
       <Notification

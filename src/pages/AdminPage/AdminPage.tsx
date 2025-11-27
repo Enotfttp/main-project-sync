@@ -23,9 +23,7 @@ const AdminPage = () => {
         selectedChartSection={selectedChartSection}
         onChartSectionSelect={handleChartSectionSelect}
       />
-      {selectedChartSection && (
-        <DataTable selectedChartSection={selectedChartSection} />
-      )}
+      <DataTable selectedChartSection={selectedChartSection} />
     </StyledAdminPageContainer>
   );
 };

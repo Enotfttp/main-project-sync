@@ -19,7 +19,7 @@ const PeriodsPage = () => {
   } = useFilter();
 
   useEffect(() => {
-    if (!filters || filters?.length > 0) return;
+    if (Array.isArray(filters) && filters?.length > 0) return;
 
     setFilters((prevState) =>
       handleSetFilters([{ fieldId: "serviceId", value: id }], prevState),
