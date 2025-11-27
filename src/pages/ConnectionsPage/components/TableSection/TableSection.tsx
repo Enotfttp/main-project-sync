@@ -11,16 +11,10 @@ interface IProps {
   tableKey: number;
   filters?: FilterValue[];
   onRowClick(rowId: string | number): void;
-  id: string;
 }
 
-export const TableSection: FC<IProps> = ({
-  tableKey,
-  filters,
-  onRowClick,
-  id,
-}) => {
-  const { data } = useGetConnectionList({ ...filters, idRKO: id });
+export const TableSection: FC<IProps> = ({ tableKey, filters, onRowClick }) => {
+  const { data } = useGetConnectionList(filters);
 
   const handleRowClick = (rowId: string | number) => {
     onRowClick(routesPath.rko.service.periods.shortPath(rowId));

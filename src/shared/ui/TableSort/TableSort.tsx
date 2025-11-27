@@ -1,7 +1,7 @@
 import { PaginationTable } from "./components";
 import { StyledTableSort } from "./TableSort.styled";
+import type { Column, TableProps } from "@admiral-ds/react-ui";
 import { PaginationOneProps, Table, TableRow } from "@admiral-ds/react-ui";
-import type { TableProps, Column } from "@admiral-ds/react-ui";
 import { Loader } from "@shared/ui";
 import { useIsFetching } from "@tanstack/react-query";
 import * as React from "react";
@@ -195,6 +195,7 @@ export const TableSort = ({ queryKey, ...props }: TableSortProps) => {
     <StyledTableSort>
       <Table
         {...props}
+        dimension="m"
         onSortChange={handleSort}
         onColumnResize={handleResize}
       />

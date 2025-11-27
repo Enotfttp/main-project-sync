@@ -9,11 +9,10 @@ import { FC } from "react";
 interface IProps {
   tableKey: number;
   filters?: FilterValue[];
-  id: string;
 }
 
-export const TableSection: FC<IProps> = ({ tableKey, filters, id }) => {
-  const { data } = useGetPeriodsList({ ...filters, serviceId: id });
+export const TableSection: FC<IProps> = ({ tableKey, filters }) => {
+  const { data } = useGetPeriodsList(filters);
 
   return (
     <TableSort

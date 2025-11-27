@@ -1,8 +1,9 @@
-import { IPeriodsList, periodsService, TFiltersPeriods } from "../index";
+import { IPeriodsList, periodsService } from "../index";
+import { FilterValue } from "@shared/ui/Filter/Filter.types";
 import { QueryKey, useQuery, UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetPeriodsList = (
-  filters?: TFiltersPeriods,
+  filters?: FilterValue[],
   options?: Omit<
     UseQueryOptions<IPeriodsList[], Error, IPeriodsList[], QueryKey>,
     "queryKey" | "queryFn"
