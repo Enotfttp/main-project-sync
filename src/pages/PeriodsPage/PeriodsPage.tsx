@@ -1,10 +1,8 @@
-import { columnList } from "./PeriodsPage.columns";
+import { FilterSection, TableSection } from "./components";
 import { StyledPeriodsPage } from "./PeriodsPage.styled";
-import { T } from "@admiral-ds/react-ui";
-import { TFiltersPeriods, useGetPeriodsList } from "@entities/periods";
-import { SearchWithFilter } from "@features/index";
-import { TableSort } from "@shared/ui";
+import { handleSetFilters, useFilter } from "@shared/ui/Filter/useFilter";
 import * as React from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 const PeriodsPage = () => {
@@ -12,23 +10,30 @@ const PeriodsPage = () => {
   if (!id) {
     throw new Error("Вы не выбрали подписку");
   }
-  const [filters, setFilters] = React.useState<TFiltersPeriods>();
-  const { data } = useGetPeriodsList({ ...filters, serviceId: id });
+  const {
+    handleResetFilters,
+    handleApplyFilters,
+    filters,
+    tableKey,
+    setFilters,
+  } = useFilter();
+
+  useEffect(() => {
+    if (Array.isArray(filters) && filters?.length > 0) return;
+
+    setFilters((prevState) =>
+      handleSetFilters([{ fieldId: "serviceId", value: id }], prevState),
+    );
+  }, [filters]);
 
   return (
     <StyledPeriodsPage>
-      <T font="Header/H1">Периоды</T>
-      <SearchWithFilter<TFiltersPeriods>
-        selectPlaceholder="Выберите поле из выпадающего списка"
-        columnList={columnList}
-        setFilters={setFilters}
-        searchPlaceholder="Введите значение для поиска"
+      <FilterSection
+        onApplyFilters={handleApplyFilters}
+        onResetFilters={handleResetFilters}
       />
-      <TableSort
-        columnList={columnList}
-        rowList={data || []}
-        queryKey="periods-list"
-      />
+
+      <TableSection tableKey={tableKey} filters={filters} />
     </StyledPeriodsPage>
   );
 };

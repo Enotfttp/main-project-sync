@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 export const StyledServiceNumber = styled.h2`
   text-align: center;
-  margin: 0 0 24px 0;
+  margin: 24px 0;
   font-size: 20px;
   font-weight: 600;
   color: #0d1f2c;
@@ -11,16 +11,16 @@ export const StyledServiceNumber = styled.h2`
 
 export const StyledDiagramLegendBlock = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
-  gap: 30px;
+  gap: 130px;
 `;
 
 export const StyledLegend = styled.div`
   display: flex;
   flex-direction: column;
   width: 50%;
-  gap: 12px;
+  gap: 32px;
 `;
 
 export const StyledLegendDescription = styled.div<{

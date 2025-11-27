@@ -1,23 +1,17 @@
+import { filterFunc } from "@mocks/utils";
 import { Server } from "miragejs";
 
 export function serviceConnectionRoutes(this: Server) {
-  this.post("/service-connects/:idRKO", (schema, request) => {
+  this.post("/service-connects", (schema, request) => {
     const requestBody = JSON.parse(request.requestBody);
-    const filters = requestBody?.filters || {};
     let serviceConnections = schema
       .all("serviceConnection")
       .models.map((el) => el.attrs);
+    const filters = requestBody?.filters || [];
 
-    Object.entries(filters).forEach(([key, value]) => {
-      if (value?.length) {
-        serviceConnections = serviceConnections.filter((item) => {
-          const itemValue = item[key];
-          return Array.isArray(value)
-            ? value.includes(itemValue)
-            : value === itemValue;
-        });
-      }
-    });
+    if (filters.length > 0) {
+      serviceConnections = filterFunc(serviceConnections, filters);
+    }
 
     return serviceConnections;
   });

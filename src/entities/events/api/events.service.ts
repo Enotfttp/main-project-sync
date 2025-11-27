@@ -1,12 +1,12 @@
-import { IEventsList, TFiltersEvents } from "../index";
+import { IEventsList } from "../index";
 import { axiosInstance } from "@shared/api";
+import { FilterValue } from "@shared/ui/Filter/Filter.types";
 
 class EventsService {
-  async getEventsList(filters?: TFiltersEvents): Promise<IEventsList[]> {
-    const response = await axiosInstance.post(
-      `/api/events-list/${filters?.serviceId}`,
-      { filters: filters },
-    );
+  async getEventsList(filters?: FilterValue[]): Promise<IEventsList[]> {
+    const response = await axiosInstance.post(`/api/events-list`, {
+      filters: filters,
+    });
     return response.data;
   }
 }

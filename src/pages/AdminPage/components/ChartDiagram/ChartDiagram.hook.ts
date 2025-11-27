@@ -24,8 +24,8 @@ export const useDiagram = (
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove(); // Очищаем предыдущую диаграмму
 
-    const width = 300;
-    const height = 300;
+    const width = 400;
+    const height = 400;
     const radius = Math.min(width, height) / 2;
 
     // Создаем группу для диаграммы в центре SVG
@@ -50,7 +50,7 @@ export const useDiagram = (
       .attr("class", "arc")
       .style("cursor", "pointer")
       .on("click", (event, d) => {
-        handleSectionClick(d.data.id);
+        handleSectionClick({ id: d.data.id, label: d.data.label });
       });
 
     // Рисуем секции
@@ -81,30 +81,13 @@ export const useDiagram = (
         return `translate(${pos[0]}, ${pos[1]})`;
       })
       .attr("text-anchor", "middle")
-      .style("font-size", "12px")
-      .style("font-weight", "bold")
+      .style("font-size", "18px")
+      .style("font-weight", "500")
       .style("fill", "#fff")
       .style("pointer-events", "none")
       .text((d) => {
         const percentage = (d.data.value / total) * 100;
-        return percentage > 15 ? `${Math.round(percentage)}%` : "";
-      });
-
-    // Добавляем подписи с процентами в центр секций
-    arcs
-      .append("text")
-      .attr("transform", (d) => {
-        const pos = arc.centroid(d);
-        return `translate(${pos[0]}, ${pos[1]})`;
-      })
-      .attr("text-anchor", "middle")
-      .style("font-size", "12px")
-      .style("font-weight", "bold")
-      .style("fill", "#fff")
-      .style("pointer-events", "none")
-      .text((d) => {
-        const percentage = (d.data.value / total) * 100;
-        return percentage > 10 ? `${Math.round(percentage)}%` : "";
+        return `${Math.round(percentage)}%`;
       });
   }, [chartData, selectedChartSection, total]);
 };

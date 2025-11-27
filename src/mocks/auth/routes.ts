@@ -7,8 +7,8 @@ export function authRoutes(this: Server) {
     const body = JSON.parse(request.requestBody);
     const { login, password } = body;
 
-    const record = schema.authUsers
-      .all()
+    const record = schema
+      .all("authUser")
       .models.find(
         (m) =>
           m.attrs.user.username === login && m.attrs.user.password === password,

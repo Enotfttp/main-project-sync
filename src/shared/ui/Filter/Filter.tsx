@@ -13,21 +13,20 @@ import {
   Checkbox,
   DateField,
   Range,
+  T,
   TextInput,
 } from "@admiral-ds/react-ui";
 import type { NumberRange } from "@admiral-ds/react-ui/dist/components/Range/utils";
 import { isRangeValue } from "@shared/common";
-import { Select } from "@shared/ui";
+import { DropDown, Select } from "@shared/ui";
 import React, { useState } from "react";
 
 export const Filter: React.FC<FilterConfig> = ({
   fields,
-  values,
-  onChange,
   onApply,
   onReset,
 }) => {
-  const [localValues, setLocalValues] = useState<FilterValue[]>(values);
+  const [localValues, setLocalValues] = useState<FilterValue[]>([]);
 
   const handleFieldChange = (fieldId: string, value: FilterValue["value"]) => {
     const newValues = localValues.filter((v) => v.fieldId !== fieldId);
@@ -42,14 +41,12 @@ export const Filter: React.FC<FilterConfig> = ({
   };
 
   const handleApply = () => {
-    onChange(localValues);
-    onApply?.();
+    onApply?.(localValues);
   };
 
   const handleReset = () => {
     const resetValues: FilterValue[] = [];
     setLocalValues(resetValues);
-    onChange(resetValues);
     onReset?.();
   };
 
@@ -67,7 +64,7 @@ export const Filter: React.FC<FilterConfig> = ({
             value={typeof value === "string" ? value : ""}
             onChange={(e) => handleFieldChange(field.id, e.target.value)}
             placeholder={field.placeholder}
-            dimension="s"
+            dimension="m"
           />
         );
 
@@ -83,7 +80,7 @@ export const Filter: React.FC<FilterConfig> = ({
             min={field.min}
             max={field.max}
             step={field.step}
-            dimension="s"
+            dimension="m"
           />
         );
 
@@ -95,7 +92,7 @@ export const Filter: React.FC<FilterConfig> = ({
               handleFieldChange(field.id, event.target.value)
             }
             placeholder={field.placeholder}
-            dimension="s"
+            dimension="m"
           />
         );
 
@@ -106,7 +103,7 @@ export const Filter: React.FC<FilterConfig> = ({
             onSelectedChange={(option) => handleFieldChange(field.id, option)}
             options={field.options || []}
             placeholder={field.placeholder || ""}
-            dimension="s"
+            dimension="m"
           />
         );
 
@@ -118,7 +115,7 @@ export const Filter: React.FC<FilterConfig> = ({
             onSelectedChange={(options) => handleFieldChange(field.id, options)}
             options={field.options || []}
             placeholder={field.placeholder || ""}
-            dimension="s"
+            dimension="m"
           />
         );
 
@@ -127,7 +124,7 @@ export const Filter: React.FC<FilterConfig> = ({
           <Checkbox
             checked={!!value}
             onChange={(e) => handleFieldChange(field.id, e.target.checked)}
-            dimension="s"
+            dimension="m"
             value={field.label}
           />
         );
@@ -151,7 +148,7 @@ export const Filter: React.FC<FilterConfig> = ({
                 min={field.min}
                 max={field.max}
                 step={field.step}
-                dimension="s"
+                dimension="m"
               />
               <TextInput
                 type="number"
@@ -164,7 +161,7 @@ export const Filter: React.FC<FilterConfig> = ({
                 }
                 min={field.min}
                 max={field.max}
-                dimension="s"
+                dimension="m"
               />
             </div>
 
@@ -197,30 +194,34 @@ export const Filter: React.FC<FilterConfig> = ({
 
   return (
     <StyledFilter>
-      <StyledFilterHeader>
-        <h3>Фильтры</h3>
-        {activeFiltersCount > 0 && (
-          <Badge appearance="info">{activeFiltersCount}</Badge>
-        )}
-      </StyledFilterHeader>
+      <DropDown
+        headerChildren={
+          <StyledFilterHeader>
+            <T font="Header/H6">Фильтр</T>
+            {activeFiltersCount > 0 && (
+              <Badge appearance="info">{activeFiltersCount}</Badge>
+            )}
+          </StyledFilterHeader>
+        }
+      >
+        <StyledFilterBody>
+          {fields.map((field) => (
+            <StyledFilterField key={field.id}>
+              <label>{field.label}</label>
+              {renderField(field)}
+            </StyledFilterField>
+          ))}
+        </StyledFilterBody>
 
-      <StyledFilterBody>
-        {fields.map((field) => (
-          <StyledFilterField key={field.id}>
-            <label>{field.label}</label>
-            {renderField(field)}
-          </StyledFilterField>
-        ))}
-      </StyledFilterBody>
-
-      <StyledFilterActions>
-        <Button dimension="s" onClick={handleReset} appearance="secondary">
-          Сбросить
-        </Button>
-        <Button dimension="s" onClick={handleApply} appearance="primary">
-          Применить
-        </Button>
-      </StyledFilterActions>
+        <StyledFilterActions>
+          <Button dimension="s" onClick={handleReset} appearance="secondary">
+            Сбросить
+          </Button>
+          <Button dimension="s" onClick={handleApply} appearance="primary">
+            Применить
+          </Button>
+        </StyledFilterActions>
+      </DropDown>
     </StyledFilter>
   );
 };

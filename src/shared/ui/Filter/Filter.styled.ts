@@ -5,7 +5,6 @@ export const StyledFilter = styled.div``;
 export const StyledFilterHeader = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
   gap: 10px;
   font-size: 16px;
   font-weight: 600;
@@ -20,13 +19,15 @@ export const StyledFilterBody = styled.div`
 `;
 
 export const StyledFilterField = styled.div`
-  flex: 0 1 30%;
+  flex: 1 1 30%;
+  display: flex;
+  gap: 15px;
+  flex-direction: column;
 
   label {
     font-size: 14px;
     font-weight: 500;
     color: #0d1f2c;
-    margin-bottom: 4px;
   }
 `;
 

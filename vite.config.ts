@@ -3,7 +3,7 @@ import * as path from "path";
 import { visualizer } from "rollup-plugin-visualizer";
 import { defineConfig, loadEnv } from "vite";
 import { createHtmlPlugin } from "vite-plugin-html";
-import { ViteMinifyPlugin } from "vite-plugin-minify"; // https://vite.dev/config/
+import { ViteMinifyPlugin } from "vite-plugin-minify";
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
@@ -12,7 +12,6 @@ export default defineConfig(({ mode }) => {
 
   const standConfigs = {
     development: {
-      // base: "/app/",
       base: "/",
       server: {
         host: true,
@@ -65,8 +64,7 @@ export default defineConfig(({ mode }) => {
     },
   };
 
-  const config = standConfigs.development;
-  // const config = standConfigs[stand] || standConfigs.development;
+  const config = standConfigs[stand] || standConfigs.development;
 
   const baseConfig = {
     plugins: [

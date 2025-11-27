@@ -3,12 +3,18 @@ import { ChartDiagram, DataTable } from "./components";
 import React, { useState } from "react";
 
 const AdminPage = () => {
-  const [selectedChartSection, setSelectedChartSection] = useState<
-    string | null
-  >(null);
+  const [selectedChartSection, setSelectedChartSection] = useState<{
+    id: string;
+    title: string;
+  } | null>(null);
 
-  const handleChartSectionSelect = (sectionId: string | null) => {
-    setSelectedChartSection(sectionId);
+  const handleChartSectionSelect = (
+    section: {
+      id: string;
+      title: string;
+    } | null,
+  ) => {
+    setSelectedChartSection(section ? { ...section } : section);
   };
 
   return (

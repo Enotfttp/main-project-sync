@@ -15,17 +15,12 @@ import { getStatusAppearance } from "./ChartDiagram.utils";
 import { Tag } from "@admiral-ds/react-ui";
 import { ChartData, useDashboardData } from "@entities/admin";
 import { Loader, Notification } from "@shared/ui";
-import { PieArcDatum as D3PieArcDatum } from "d3-shape";
 import React, { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 
 interface ChartDiagramProps {
-  selectedChartSection: string | null;
-  onChartSectionSelect: (sectionId: string | null) => void;
-}
-
-interface D3PieDatum extends D3PieArcDatum<ChartData> {
-  data: ChartData;
+  selectedChartSection: { id: string; title: string } | null;
+  onChartSectionSelect: (section: { id: string; title: string } | null) => void;
 }
 
 export const ChartDiagram: React.FC<ChartDiagramProps> = ({
@@ -43,11 +38,11 @@ export const ChartDiagram: React.FC<ChartDiagramProps> = ({
 
   const total = chartData?.reduce((sum, item) => sum + item.value, 0) || 0;
 
-  const handleSectionClick = (sectionId: string) => {
-    if (selectedChartSection === sectionId) {
+  const handleSectionClick = (section: ChartData) => {
+    if (selectedChartSection?.id === section.id) {
       onChartSectionSelect(null);
     } else {
-      onChartSectionSelect(sectionId);
+      onChartSectionSelect({ id: section.id, title: section.label });
     }
   };
 
@@ -66,16 +61,6 @@ export const ChartDiagram: React.FC<ChartDiagramProps> = ({
       onChartSectionSelect(null);
     };
   }, [serviceId]);
-
-  if (!serviceId) {
-    return (
-      <Notification
-        status="info"
-        title="Выберите сервис"
-        body="Пожалуйста, выберите сервис для отображения данных"
-      />
-    );
-  }
 
   if (error) {
     return (
@@ -98,17 +83,17 @@ export const ChartDiagram: React.FC<ChartDiagramProps> = ({
       </StyledServiceNumber>
       {/* Круговая диаграмма */}
       <StyledDiagramLegendBlock>
-        <svg ref={svgRef} width={300} height={300} />
+        <svg ref={svgRef} width={400} height={400} />
         <StyledLegend>
-          {chartData?.map((section) => {
+          {chartData?.map((section: ChartData) => {
             const percentage = total > 0 ? (section.value / total) * 100 : 0;
 
             return (
               <StyledLegendDescription
-                selectedChartSection={selectedChartSection}
+                selectedChartSection={selectedChartSection?.id}
                 section={section}
                 key={section?.id}
-                onClick={() => handleSectionClick(section.id)}
+                onClick={() => handleSectionClick(section)}
               >
                 <StyledSquare section={section} />
                 <StyledTextDescription>

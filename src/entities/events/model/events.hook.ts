@@ -1,8 +1,9 @@
-import { eventsService, IEventsList, TFiltersEvents } from "../index";
+import { eventsService, IEventsList } from "../index";
+import { FilterValue } from "@shared/ui/Filter/Filter.types";
 import { QueryKey, useQuery, UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetEventsList = (
-  filters?: TFiltersEvents,
+  filters?: FilterValue[],
   options?: Omit<
     UseQueryOptions<IEventsList[], Error, IEventsList[], QueryKey>,
     "queryKey" | "queryFn"

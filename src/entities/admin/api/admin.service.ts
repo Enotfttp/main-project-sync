@@ -15,7 +15,7 @@ class AdminService {
 
   async getTableData(
     serviceId: string,
-    sectionId: string | null,
+    sectionId?: string,
     filters?: FilterValue[],
   ): Promise<TableData[]> {
     const response = await axiosInstance.post(
