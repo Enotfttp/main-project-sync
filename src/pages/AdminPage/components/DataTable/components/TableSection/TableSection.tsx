@@ -1,5 +1,5 @@
 import { columns } from "./column";
-import { StyledTableEmpty } from "../../DataTable.styled";
+import { StyledTableEmpty, StyledTableTitle } from "../../DataTable.styled";
 import { TableData, useTableData } from "@entities/admin";
 import { Loader, Notification, TableSort } from "@shared/ui";
 import { FilterValue } from "@shared/ui/Filter/Filter.types";
@@ -55,6 +55,7 @@ export const TableSection: FC<IProps> = ({
 
   return (
     <>
+      <StyledTableTitle>Детальные данные:</StyledTableTitle>
       <TableSort
         key={tableKey}
         displayRowSelectionColumn

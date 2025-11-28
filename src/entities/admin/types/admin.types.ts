@@ -2,6 +2,13 @@ export interface Service {
   id: string;
   name: string;
   description: string;
+  active: boolean;
+}
+
+export interface ErrorsChart {
+  id: string;
+  code: string;
+  count: number;
 }
 
 export interface ChartData {

@@ -1,18 +1,10 @@
 import { useDiagram } from "./ChartDiagram.hook";
 import {
   StyledDiagramLegendBlock,
-  StyledLegend,
-  StyledLegendDescription,
-  StyledServiceNumber,
-  StyledSquare,
-  StyledTextDescription,
-  StyledTextDescriptionLabel,
-  StyledTextDescriptionProgress,
-  StyledTextDescriptionProgressPercent,
-  StyledTotal,
+  StyledServiceText,
+  StyledWhiteBlock,
 } from "./ChartDiagram.styled";
-import { getStatusAppearance } from "./ChartDiagram.utils";
-import { Tag } from "@admiral-ds/react-ui";
+import { Legend } from "./components";
 import { ChartData, useDashboardData } from "@entities/admin";
 import { Loader, Notification } from "@shared/ui";
 import React, { useEffect, useRef } from "react";
@@ -78,43 +70,20 @@ export const ChartDiagram: React.FC<ChartDiagramProps> = ({
 
   return (
     <div>
-      <StyledServiceNumber>
-        Диаграмма данных - Сервис {serviceId}
-      </StyledServiceNumber>
-      {/* Круговая диаграмма */}
       <StyledDiagramLegendBlock>
-        <svg ref={svgRef} width={400} height={400} />
-        <StyledLegend>
-          {chartData?.map((section: ChartData) => {
-            const percentage = total > 0 ? (section.value / total) * 100 : 0;
+        <StyledWhiteBlock>
+          <StyledServiceText>Диаграмма данных</StyledServiceText>
+          <svg ref={svgRef} width={400} height={400} />
+        </StyledWhiteBlock>
 
-            return (
-              <StyledLegendDescription
-                selectedChartSection={selectedChartSection?.id}
-                section={section}
-                key={section?.id}
-                onClick={() => handleSectionClick(section)}
-              >
-                <StyledSquare section={section} />
-                <StyledTextDescription>
-                  <StyledTextDescriptionLabel>
-                    <span>{section.label}</span>
-                    <Tag kind={getStatusAppearance(section.label)}>
-                      {section.value} ({percentage.toFixed(1)}%)
-                    </Tag>
-                  </StyledTextDescriptionLabel>
-                  <StyledTextDescriptionProgress>
-                    <StyledTextDescriptionProgressPercent
-                      section={section}
-                      percentage={percentage}
-                    />
-                  </StyledTextDescriptionProgress>
-                </StyledTextDescription>
-              </StyledLegendDescription>
-            );
-          })}
-          <StyledTotal>Всего: {total} операций</StyledTotal>
-        </StyledLegend>
+        <StyledWhiteBlock>
+          <Legend
+            chartData={chartData}
+            handleSectionClick={handleSectionClick}
+            selectedChartSectionId={selectedChartSection?.id}
+            total={total}
+          />
+        </StyledWhiteBlock>
       </StyledDiagramLegendBlock>
     </div>
   );

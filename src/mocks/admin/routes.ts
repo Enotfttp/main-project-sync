@@ -7,6 +7,19 @@ export function adminRoutes(this: Server) {
     return schema.all("service").models;
   });
 
+  // GET /api/services
+  this.post("/services-active", (schema, request) => {
+    // Применяем фильтры из тела запроса
+    const requestBody = JSON.parse(request.requestBody);
+    const filters = requestBody?.filters || [];
+
+    const service = schema
+      .where("service", { id: filters.id })
+      .models.map((el) => el.attrs);
+
+    return { service, active: !service?.active };
+  });
+
   // GET /api/dashboards/:serviceId
   this.get("/dashboards/:serviceId", (schema, request) => {
     const { serviceId } = request.params;
@@ -17,6 +30,14 @@ export function adminRoutes(this: Server) {
     }
 
     return chartData[0].attrs.charts;
+  });
+
+  // GET /api/dashboards/:serviceId
+  this.get("/errors/:serviceId", (schema, request) => {
+    const { serviceId } = request.params;
+    const errors = schema.all("error").models.map((el) => el.attrs)[0];
+
+    return errors[serviceId];
   });
 
   // POST /api/dashboards-info/:serviceId/sections/:sectionId
