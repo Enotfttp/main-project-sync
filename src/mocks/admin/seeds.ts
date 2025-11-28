@@ -5,16 +5,19 @@ const mockServices: Service[] = [
     id: "1",
     name: "Сервис А",
     description: "Основной сервис аналитики",
+    active: true,
   },
   {
     id: "2",
     name: "Сервис Б",
     description: "Вспомогательный сервис данных",
+    active: false,
   },
   {
     id: "3",
     name: "Сервис В",
     description: "Сервис мониторинга",
+    active: false,
   },
 ];
 
@@ -77,6 +80,60 @@ const mockChartData: Record<string, ChartData[]> = {
       label: "В процессе",
       value: 40,
       color: "#FFC107",
+    },
+  ],
+};
+
+const mockErrors = {
+  "1": [
+    {
+      id: "1",
+      code: "401",
+      count: 5,
+    },
+    {
+      id: "2",
+      code: "403",
+      count: 5,
+    },
+    {
+      id: "3",
+      code: "405",
+      count: 5,
+    },
+  ],
+  "2": [
+    {
+      id: "4",
+      code: "401",
+      count: 10,
+    },
+    {
+      id: "5",
+      code: "403",
+      count: 10,
+    },
+    {
+      id: "6",
+      code: "405",
+      count: 5,
+    },
+  ],
+  "3": [
+    {
+      id: "7",
+      code: "401",
+      count: 30,
+    },
+    {
+      id: "8",
+      code: "403",
+      count: 50,
+    },
+    {
+      id: "9",
+      code: "405",
+      count: 15,
     },
   ],
 };
@@ -286,4 +343,6 @@ export function adminSeeds(server) {
   });
 
   server.create("tableDatum", mockTableData);
+
+  server.create("error", mockErrors);
 }

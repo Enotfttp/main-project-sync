@@ -1,4 +1,4 @@
-import { ChartData, Service, TableData } from "@entities/admin";
+import { ChartData, ErrorsChart, Service, TableData } from "@entities/admin";
 import { axiosInstance } from "@shared/api";
 import { FilterValue } from "@shared/ui/Filter/Filter.types";
 
@@ -8,8 +8,23 @@ class AdminService {
     return response.data;
   }
 
+  async updateServiceActiveChange(filter: {
+    id?: string;
+    active: boolean;
+  }): Promise<Service> {
+    const response = await axiosInstance.post(`/api/services-active`, {
+      filters: filter,
+    });
+    return response.data;
+  }
+
   async getDashboardData(serviceId: string): Promise<ChartData[]> {
     const response = await axiosInstance.get(`/api/dashboards/${serviceId}`);
+    return response.data;
+  }
+
+  async getAdditionalErrorData(serviceId?: string): Promise<ErrorsChart[]> {
+    const response = await axiosInstance.get(`/api/errors/${serviceId}`);
     return response.data;
   }
 

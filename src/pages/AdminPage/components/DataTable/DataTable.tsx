@@ -1,5 +1,6 @@
 import { FilterSection, TableSection } from "./components";
-import { StyledTableHeader, StyledTableTitle } from "./DataTable.styled";
+import { StyledTableHeader } from "./DataTable.styled";
+import { StyledWhiteBlock } from "@pages/AdminPage/components/ChartDiagram/ChartDiagram.styled";
 import { Notification } from "@shared/ui";
 import { useFilter } from "@shared/ui/Filter/useFilter";
 import React from "react";
@@ -30,20 +31,22 @@ export const DataTable: React.FC<DataTableProps> = ({
   return (
     <>
       <StyledTableHeader>
-        <StyledTableTitle>{`Детальные данные: ${selectedChartSection?.title}`}</StyledTableTitle>
-
-        <FilterSection
-          onApplyFilters={handleApplyFilters}
-          onResetFilters={handleResetFilters}
-        />
+        <StyledWhiteBlock>
+          <FilterSection
+            onApplyFilters={handleApplyFilters}
+            onResetFilters={handleResetFilters}
+          />
+        </StyledWhiteBlock>
       </StyledTableHeader>
 
-      <TableSection
-        tableKey={tableKey}
-        filters={filters}
-        serviceId={serviceId}
-        selectedChartSection={selectedChartSection?.id}
-      />
+      <StyledWhiteBlock>
+        <TableSection
+          tableKey={tableKey}
+          filters={filters}
+          serviceId={serviceId}
+          selectedChartSection={selectedChartSection?.id}
+        />
+      </StyledWhiteBlock>
     </>
   );
 };

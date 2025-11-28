@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
 export const StyledTableTitle = styled.h2`
-  margin: 0 0 24px 0;
-  font-size: 20px;
-  text-align: center;
-  font-weight: 600;
+  text-align: left;
+  margin: 0 0 44px 0;
+  font-size: 18px;
+  font-weight: 500;
   color: #0d1f2c;
 `;
 

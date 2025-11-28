@@ -7,6 +7,5 @@ export const StyledAdminPageContainer = styled.div`
   font-weight: 600;
   color: #0d1f2c;
   gap: 50px;
-  width: 90%;
   margin: auto;
 `;
