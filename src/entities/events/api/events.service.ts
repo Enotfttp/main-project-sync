@@ -1,9 +1,14 @@
 import { IEventsList } from "../index";
 import { axiosInstance } from "@shared/api";
-import { FilterValue } from "@shared/ui/Filter/Filter.types";
+import {
+  FilterWithPagination,
+  TableDataWithPagination,
+} from "@shared/ui/TableSort/components/Pagination.types";
 
 class EventsService {
-  async getEventsList(filters?: FilterValue[]): Promise<IEventsList[]> {
+  async getEventsList(
+    filters?: FilterWithPagination,
+  ): Promise<TableDataWithPagination<IEventsList>> {
     const response = await axiosInstance.post(`/api/events-list`, {
       filters: filters,
     });

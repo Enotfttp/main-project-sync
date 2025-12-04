@@ -1,10 +1,16 @@
-import { PaginationOne, useId } from "@admiral-ds/react-ui";
 import type { PaginationOneProps } from "@admiral-ds/react-ui";
+import { PaginationOne, useId } from "@admiral-ds/react-ui";
+import { TPaginationTable } from "@shared/ui/TableSort/components/Pagination.types";
 import * as React from "react";
 
-export const PaginationTable = ({ ...props }: PaginationOneProps) => {
+export const PaginationTable = ({
+  handlePaginationChange,
+  ...props
+}: Partial<PaginationOneProps> & {
+  handlePaginationChange(pagination: TPaginationTable): void;
+}) => {
   const [pageSize, setPageSize] = React.useState(props.pageSize || 1);
-  const [page, setPage] = React.useState(props.page || 1);
+  const [curPage, setPage] = React.useState(props.page || 1);
   const pageSizes = props.pageSizes || [8, 20, 50, 100, 200];
   const totalElements = props.totalItems || 100;
 
@@ -14,11 +20,15 @@ export const PaginationTable = ({ ...props }: PaginationOneProps) => {
     <PaginationOne
       {...props}
       onChange={({ page, pageSize }) => {
+        handlePaginationChange({
+          page: page,
+          pageSize: pageSize,
+        });
         setPage(page);
         setPageSize(pageSize);
       }}
       style={{ flexGrow: 1 }}
-      page={page}
+      page={curPage}
       pageSize={pageSize}
       totalItems={totalElements}
       pageSizes={pageSizes}

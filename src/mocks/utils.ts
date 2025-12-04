@@ -1,3 +1,5 @@
+import { TPaginationTable } from "@shared/ui/TableSort/components/Pagination.types";
+
 export const filterFunc = (tableData, filters) => {
   tableData = tableData.filter((item) => {
     return filters.every((filter) => {
@@ -37,4 +39,50 @@ export const filterFunc = (tableData, filters) => {
   });
 
   return tableData;
+};
+
+export const paginationFunc = <T>(arr: T[], pagination?: TPaginationTable) => {
+  const totalItems = arr.length || 0;
+  // Если пагинация не нужна или нет данных - возвращаем всё
+  if (!pagination || totalItems === 0) {
+    return {
+      pagination: {
+        page: 1,
+        pageSize: totalItems,
+        pageSizes: [10, 25, 50, 100],
+        totalItems,
+        totalPages: 1,
+      },
+      data: arr,
+    };
+  }
+
+  const page = Math.max(1, pagination.page || 1);
+  const pageSize = Math.max(1, pagination.pageSize || 10);
+
+  // Вычисляем стандартные размеры страниц
+  const pageSizes = [10, 25, 50, 100];
+
+  // Вычисляем offset (смещение) на основе page и pageSize
+  const offset = (page - 1) * pageSize;
+
+  // Вычисляем индексы для среза массива
+  const startIndex = Math.min(offset, totalItems);
+  const endIndex = Math.min(startIndex + pageSize, totalItems);
+
+  // // Вычисляем общее количество страниц
+  // const totalPages = Math.ceil(totalItems / pageSize);
+
+  // Получаем данные для текущей страницы
+  const paginatedData = arr.slice(startIndex, endIndex);
+
+  return {
+    pagination: {
+      page, // Текущая страница
+      pageSize, // Размер текущей страницы
+      pageSizes, // Доступные размеры страниц
+      totalItems, // Всего элементов
+    },
+    data: paginatedData,
+  };
 };

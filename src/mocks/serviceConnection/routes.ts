@@ -1,4 +1,4 @@
-import { filterFunc } from "@mocks/utils";
+import { filterFunc, paginationFunc } from "@mocks/utils";
 import { Server } from "miragejs";
 
 export function serviceConnectionRoutes(this: Server) {
@@ -10,9 +10,9 @@ export function serviceConnectionRoutes(this: Server) {
     const filters = requestBody?.filters || [];
 
     if (filters.length > 0) {
-      serviceConnections = filterFunc(serviceConnections, filters);
+      serviceConnections = filterFunc(serviceConnections, filters.filters);
     }
 
-    return serviceConnections;
+    return paginationFunc(serviceConnections, filters.pagination);
   });
 }

@@ -1,4 +1,4 @@
-import { filterFunc } from "@mocks/utils";
+import { filterFunc, paginationFunc } from "@mocks/utils";
 import { Server } from "miragejs";
 
 export function eventRoutes(this: Server) {
@@ -9,9 +9,9 @@ export function eventRoutes(this: Server) {
     const filters = requestBody?.filters || [];
 
     if (filters.length > 0) {
-      events = filterFunc(events, filters);
+      events = filterFunc(events, filters.filters);
     }
 
-    return events;
+    return paginationFunc(events, filters.pagination);
   });
 }

@@ -1,8 +1,16 @@
 import { PaginationTable } from "./components";
 import { StyledTableSort } from "./TableSort.styled";
-import type { Column, TableProps } from "@admiral-ds/react-ui";
-import { PaginationOneProps, Table, TableRow } from "@admiral-ds/react-ui";
+import type {
+  Column,
+  PaginationOneProps,
+  TableProps,
+} from "@admiral-ds/react-ui";
+import { Table, TableRow } from "@admiral-ds/react-ui";
 import { Loader } from "@shared/ui";
+import {
+  TPaginationData,
+  TPaginationTable,
+} from "@shared/ui/TableSort/components/Pagination.types";
 import { useIsFetching } from "@tanstack/react-query";
 import * as React from "react";
 
@@ -18,9 +26,11 @@ type SortColumn = { [key: string]: { sort: "asc" | "desc"; type?: string } };
 type TableSortProps =
   | ({
       queryKey: string;
+      handlePaginationChange(pagination: TPaginationTable): void;
+      pagination?: TPaginationData;
       isPagination: true;
-    } & TableProps &
-      PaginationOneProps)
+      paginationProp?: PaginationOneProps;
+    } & TableProps)
   | ({
       queryKey: string;
       isPagination?: false;
@@ -199,7 +209,13 @@ export const TableSort = ({ queryKey, ...props }: TableSortProps) => {
         onSortChange={handleSort}
         onColumnResize={handleResize}
       />
-      {props?.isPagination && <PaginationTable {...props} />}
+      {props?.isPagination && (
+        <PaginationTable
+          {...props?.paginationProp}
+          handlePaginationChange={props?.handlePaginationChange}
+          {...props?.pagination}
+        />
+      )}
     </StyledTableSort>
   );
 };

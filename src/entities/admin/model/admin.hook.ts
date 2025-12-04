@@ -1,6 +1,9 @@
 import { ChartData, ErrorsChart, Service, TableData } from "@entities/admin";
 import { adminService } from "@entities/admin/api/admin.service";
-import { FilterValue } from "@shared/ui/Filter/Filter.types";
+import {
+  FilterWithPagination,
+  TableDataWithPagination,
+} from "@shared/ui/TableSort/components/Pagination.types";
 import {
   QueryKey,
   useMutation,
@@ -81,9 +84,14 @@ export const useAdditionalErrorData = (
 export const useTableData = (
   serviceId: string,
   sectionId?: string,
-  filters?: FilterValue[],
+  filters?: FilterWithPagination,
   options?: Omit<
-    UseQueryOptions<TableData[], Error, TableData[], QueryKey>,
+    UseQueryOptions<
+      TableDataWithPagination<TableData>,
+      Error,
+      TableDataWithPagination<TableData>,
+      QueryKey
+    >,
     "queryKey" | "queryFn"
   >,
 ) => {

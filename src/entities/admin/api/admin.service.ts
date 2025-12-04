@@ -1,6 +1,9 @@
 import { ChartData, ErrorsChart, Service, TableData } from "@entities/admin";
 import { axiosInstance } from "@shared/api";
-import { FilterValue } from "@shared/ui/Filter/Filter.types";
+import {
+  FilterWithPagination,
+  TableDataWithPagination,
+} from "@shared/ui/TableSort/components/Pagination.types";
 
 class AdminService {
   async getServicesList(): Promise<Service[]> {
@@ -31,8 +34,8 @@ class AdminService {
   async getTableData(
     serviceId: string,
     sectionId?: string,
-    filters?: FilterValue[],
-  ): Promise<TableData[]> {
+    filters?: FilterWithPagination,
+  ): Promise<TableDataWithPagination<TableData>> {
     const response = await axiosInstance.post(
       `/api/dashboards-info/${serviceId}/sections/${sectionId}`,
       { filters: filters },

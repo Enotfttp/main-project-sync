@@ -1,4 +1,4 @@
-import { filterFunc } from "@mocks/utils";
+import { filterFunc, paginationFunc } from "@mocks/utils";
 import { Response, Server } from "miragejs";
 
 export function adminRoutes(this: Server) {
@@ -61,10 +61,10 @@ export function adminRoutes(this: Server) {
       const filters = requestBody?.filters || [];
 
       if (filters.length > 0) {
-        tableData = filterFunc(tableData, filters);
+        tableData = filterFunc(tableData, filters.filters);
       }
 
-      return tableData;
+      return paginationFunc(tableData, filters.pagination);
     },
   );
 }

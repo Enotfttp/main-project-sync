@@ -1,4 +1,4 @@
-import { filterFunc } from "@mocks/utils";
+import { filterFunc, paginationFunc } from "@mocks/utils";
 import { Server } from "miragejs";
 
 export function periodRoutes(this: Server) {
@@ -9,9 +9,9 @@ export function periodRoutes(this: Server) {
     const filters = requestBody?.filters || [];
 
     if (filters.length > 0) {
-      periods = filterFunc(periods, filters);
+      periods = filterFunc(periods, filters.filters);
     }
 
-    return periods;
+    return paginationFunc(periods, filters.pagination);
   });
 }

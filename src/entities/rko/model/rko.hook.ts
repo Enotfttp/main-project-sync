@@ -1,8 +1,8 @@
 import { rkoService } from "../index";
-import { FilterValue } from "@shared/ui/Filter/Filter.types";
+import { FilterWithPagination } from "@shared/ui/TableSort/components/Pagination.types";
 import { useQuery } from "@tanstack/react-query";
 
-export const useGetRKOList = (filters?: FilterValue[]) => {
+export const useGetRKOList = (filters?: FilterWithPagination) => {
   return useQuery({
     queryKey: ["rko-list", filters],
     queryFn: () => rkoService.getRKOList(filters),

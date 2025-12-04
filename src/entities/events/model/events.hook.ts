@@ -1,11 +1,19 @@
 import { eventsService, IEventsList } from "../index";
-import { FilterValue } from "@shared/ui/Filter/Filter.types";
+import {
+  FilterWithPagination,
+  TableDataWithPagination,
+} from "@shared/ui/TableSort/components/Pagination.types";
 import { QueryKey, useQuery, UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetEventsList = (
-  filters?: FilterValue[],
+  filters?: FilterWithPagination,
   options?: Omit<
-    UseQueryOptions<IEventsList[], Error, IEventsList[], QueryKey>,
+    UseQueryOptions<
+      TableDataWithPagination<IEventsList>,
+      Error,
+      TableDataWithPagination<IEventsList>,
+      QueryKey
+    >,
     "queryKey" | "queryFn"
   >,
 ) => {
