@@ -1,6 +1,9 @@
 import { FilterSection, TableSection } from "./components";
-import { StyledConnectionsPage } from "./ConnectionsPage.styled";
-import { Divider, T } from "@admiral-ds/react-ui";
+import {
+  StyledConnectionsPage,
+  StyledWhiteBlock,
+} from "./ConnectionsPage.styled";
+import { T } from "@admiral-ds/react-ui";
 import { handleSetFilters, useFilter } from "@shared/ui/Filter/useFilter";
 import { Breadcrumbs } from "@widgets/breadcrumbs/Breadcrumbs";
 import * as React from "react";
@@ -33,18 +36,20 @@ const ConnectionsPage = () => {
     <StyledConnectionsPage>
       <Breadcrumbs />
       <T font="Header/H1">Подписки</T>
-      <Divider />
+      <StyledWhiteBlock>
+        <FilterSection
+          onApplyFilters={handleApplyFilters}
+          onResetFilters={handleResetFilters}
+        />
+      </StyledWhiteBlock>
 
-      <FilterSection
-        onApplyFilters={handleApplyFilters}
-        onResetFilters={handleResetFilters}
-      />
-
-      <TableSection
-        onRowClick={onRowClick}
-        tableKey={tableKey}
-        filters={filters}
-      />
+      <StyledWhiteBlock>
+        <TableSection
+          onRowClick={onRowClick}
+          tableKey={tableKey}
+          filters={filters}
+        />
+      </StyledWhiteBlock>
     </StyledConnectionsPage>
   );
 };

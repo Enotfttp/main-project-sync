@@ -1,11 +1,19 @@
 import { IPeriodsList, periodsService } from "../index";
-import { FilterValue } from "@shared/ui/Filter/Filter.types";
+import {
+  FilterWithPagination,
+  TableDataWithPagination,
+} from "@shared/ui/TableSort/components/Pagination.types";
 import { QueryKey, useQuery, UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetPeriodsList = (
-  filters?: FilterValue[],
+  filters?: FilterWithPagination,
   options?: Omit<
-    UseQueryOptions<IPeriodsList[], Error, IPeriodsList[], QueryKey>,
+    UseQueryOptions<
+      TableDataWithPagination<IPeriodsList>,
+      Error,
+      TableDataWithPagination<IPeriodsList>,
+      QueryKey
+    >,
     "queryKey" | "queryFn"
   >,
 ) => {

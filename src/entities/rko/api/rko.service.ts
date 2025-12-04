@@ -1,9 +1,14 @@
 import { IRKOList } from "../index";
 import { axiosInstance } from "@shared/api";
-import { FilterValue } from "@shared/ui/Filter/Filter.types";
+import {
+  FilterWithPagination,
+  TableDataWithPagination,
+} from "@shared/ui/TableSort/components/Pagination.types";
 
 class RKOService {
-  async getRKOList(filters?: FilterValue[]): Promise<IRKOList[]> {
+  async getRKOList(
+    filters?: FilterWithPagination,
+  ): Promise<TableDataWithPagination<IRKOList>> {
     const response = await axiosInstance.post("api/rko-list", {
       filters: filters,
     });

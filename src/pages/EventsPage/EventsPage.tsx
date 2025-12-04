@@ -1,5 +1,5 @@
 import { FilterSection, TableSection } from "./components";
-import { StyledEventsPage } from "./EventsPage.styled";
+import { StyledEventsPage, StyledWhiteBlock } from "./EventsPage.styled";
 import { handleSetFilters, useFilter } from "@shared/ui/Filter/useFilter";
 import * as React from "react";
 import { useEffect } from "react";
@@ -28,12 +28,16 @@ const EventsPage = () => {
 
   return (
     <StyledEventsPage>
-      <FilterSection
-        onApplyFilters={handleApplyFilters}
-        onResetFilters={handleResetFilters}
-      />
+      <StyledWhiteBlock>
+        <FilterSection
+          onApplyFilters={handleApplyFilters}
+          onResetFilters={handleResetFilters}
+        />
+      </StyledWhiteBlock>
 
-      <TableSection tableKey={tableKey} filters={filters} />
+      <StyledWhiteBlock>
+        <TableSection tableKey={tableKey} filters={filters} />
+      </StyledWhiteBlock>
     </StyledEventsPage>
   );
 };

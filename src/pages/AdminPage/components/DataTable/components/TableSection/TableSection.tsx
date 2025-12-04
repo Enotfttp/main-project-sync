@@ -1,10 +1,11 @@
 import { columns } from "./column";
-import { StyledTableEmpty, StyledTableTitle } from "../../DataTable.styled";
+import { StyledTableTitle } from "../../DataTable.styled";
 import { TableData, useTableData } from "@entities/admin";
-import { Loader, Notification, TableSort } from "@shared/ui";
+import { Notification, TableSort } from "@shared/ui";
 import { FilterValue } from "@shared/ui/Filter/Filter.types";
+import { TPaginationTable } from "@shared/ui/TableSort/components/Pagination.types";
 import * as React from "react";
-import { FC, useEffect } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 
 interface IProps {
   tableKey: number;
@@ -19,24 +20,32 @@ export const TableSection: FC<IProps> = ({
   serviceId,
   selectedChartSection,
 }) => {
-  const {
-    data: tableData,
-    isLoading,
-    error,
-  } = useTableData(serviceId || "", selectedChartSection, filters);
-
+  const [pagination, setPagination] = useState<TPaginationTable>();
   const [cols, setCols] = React.useState<TableData[]>([]);
 
-  const handleSelectionChange = (ids: Record<string, boolean>): void => {
-    const updRows = cols.map((row) => ({
-      ...row,
-      selected: ids[row.id],
-    }));
-    setCols(updRows);
-  };
+  const { data: tableData, error } = useTableData(
+    serviceId || "",
+    selectedChartSection,
+    { filters: filters, pagination: pagination },
+  );
+
+  const handlePaginationChange = useCallback((pagination: TPaginationTable) => {
+    setPagination(pagination);
+  }, []);
+
+  const handleSelectionChange = useCallback(
+    (ids: Record<string, boolean>): void => {
+      const updRows = cols.map((row) => ({
+        ...row,
+        selected: ids[row.id],
+      }));
+      setCols(updRows);
+    },
+    [],
+  );
 
   useEffect(() => {
-    setCols(tableData ?? []);
+    setCols(tableData?.data ?? []);
   }, [tableData]);
 
   if (error) {
@@ -49,10 +58,6 @@ export const TableSection: FC<IProps> = ({
     );
   }
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
   return (
     <>
       <StyledTableTitle>Детальные данные:</StyledTableTitle>
@@ -63,13 +68,10 @@ export const TableSection: FC<IProps> = ({
         columnList={columns}
         onRowSelectionChange={handleSelectionChange}
         queryKey="tableData"
+        isPagination
+        handlePaginationChange={handlePaginationChange}
+        pagination={tableData?.pagination}
       />
-
-      {!tableData?.length && (
-        <StyledTableEmpty>
-          Нет данных, соответствующих выбранным фильтрам
-        </StyledTableEmpty>
-      )}
     </>
   );
 };

@@ -1,8 +1,8 @@
 import { serviceConnectionService } from "../index";
-import { FilterValue } from "@shared/ui/Filter/Filter.types";
+import { FilterWithPagination } from "@shared/ui/TableSort/components/Pagination.types";
 import { useQuery } from "@tanstack/react-query";
 
-export const useGetConnectionList = (filters?: FilterValue[]) => {
+export const useGetConnectionList = (filters?: FilterWithPagination) => {
   return useQuery({
     queryKey: ["serviceConnection-list", filters],
     queryFn: () => serviceConnectionService.getServiceConnectionList(filters),

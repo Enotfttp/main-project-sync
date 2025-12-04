@@ -1,9 +1,14 @@
 import { IPeriodsList } from "../index";
 import { axiosInstance } from "@shared/api";
-import { FilterValue } from "@shared/ui/Filter/Filter.types";
+import {
+  FilterWithPagination,
+  TableDataWithPagination,
+} from "@shared/ui/TableSort/components/Pagination.types";
 
 class PeriodsService {
-  async getPeriodsList(filters?: FilterValue[]): Promise<IPeriodsList[]> {
+  async getPeriodsList(
+    filters?: FilterWithPagination,
+  ): Promise<TableDataWithPagination<IPeriodsList>> {
     const response = await axiosInstance.post(`/api/periods-list`, {
       filters: filters,
     });

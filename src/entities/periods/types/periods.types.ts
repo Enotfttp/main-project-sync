@@ -17,8 +17,3 @@ export interface IPeriodsList {
   paymentPriorities: string;
   orderMeaning: string;
 }
-
-/** TODO.FIX Расшириить для большего фильтрования */
-export type TFiltersPeriods = {
-  [K in keyof IPeriodsList]?: Array<IPeriodsList[K]> | IPeriodsList[K] | null;
-};

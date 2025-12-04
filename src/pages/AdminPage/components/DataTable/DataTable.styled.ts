@@ -11,9 +11,3 @@ export const StyledTableTitle = styled.h2`
 export const StyledTableHeader = styled.div`
   margin-bottom: 20px;
 `;
-
-export const StyledTableEmpty = styled.div`
-  text-align: center;
-  padding: 20px;
-  color: #666;
-`;

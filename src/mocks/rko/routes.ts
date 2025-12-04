@@ -1,4 +1,4 @@
-import { filterFunc } from "@mocks/utils";
+import { filterFunc, paginationFunc } from "@mocks/utils";
 import { Server } from "miragejs";
 
 export function rkoRoutes(this: Server) {
@@ -9,9 +9,9 @@ export function rkoRoutes(this: Server) {
     const filters = requestBody?.filters || [];
 
     if (filters.length > 0) {
-      rko = filterFunc(rko, filters);
+      rko = filterFunc(rko, filters.filters);
     }
 
-    return rko;
+    return paginationFunc(rko, filters.pagination);
   });
 }
