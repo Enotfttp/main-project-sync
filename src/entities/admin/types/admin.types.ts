@@ -25,8 +25,3 @@ export interface TableData {
   date: string;
   status: "completed" | "danger" | "pending";
 }
-
-export interface DashboardData {
-  chartData: ChartData[];
-  tableData: Record<string, TableData[]>;
-}
