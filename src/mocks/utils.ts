@@ -48,7 +48,7 @@ export const paginationFunc = <T>(arr: T[], pagination?: TPaginationTable) => {
     return {
       pagination: {
         page: 1,
-        pageSize: totalItems,
+        pageSize: 10,
         pageSizes: [10, 25, 50, 100],
         totalItems,
         totalPages: 1,
@@ -58,6 +58,7 @@ export const paginationFunc = <T>(arr: T[], pagination?: TPaginationTable) => {
   }
 
   const page = Math.max(1, pagination.page || 1);
+
   const pageSize = Math.max(1, pagination.pageSize || 10);
 
   // Вычисляем стандартные размеры страниц

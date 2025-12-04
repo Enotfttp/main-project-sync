@@ -209,7 +209,7 @@ export const TableSort = ({ queryKey, ...props }: TableSortProps) => {
         onSortChange={handleSort}
         onColumnResize={handleResize}
       />
-      {props?.isPagination && (
+      {props?.isPagination && props?.pagination && (
         <PaginationTable
           {...props?.paginationProp}
           handlePaginationChange={props?.handlePaginationChange}
