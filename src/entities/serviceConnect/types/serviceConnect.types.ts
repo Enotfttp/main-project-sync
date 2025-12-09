@@ -3,8 +3,8 @@ export interface IServiceConnectionList {
   idRKO: string;
   idServiceContract: string;
   idSrvPackage: string;
-  conNumber: string;
-  conDate: number;
+  conNumber: number;
+  conDate: string;
   srvPackages: string;
   srvOptions: string;
   dateBeg: string;

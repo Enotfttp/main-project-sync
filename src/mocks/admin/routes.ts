@@ -7,9 +7,8 @@ export function adminRoutes(this: Server) {
     return schema.all("service").models;
   });
 
-  // GET /api/services
+  // POST /api/services-active
   this.post("/services-active", (schema, request) => {
-    // Применяем фильтры из тела запроса
     const requestBody = JSON.parse(request.requestBody);
     const filters = requestBody?.filters || [];
 
@@ -32,12 +31,12 @@ export function adminRoutes(this: Server) {
     return chartData[0].attrs.charts;
   });
 
-  // GET /api/dashboards/:serviceId
+  // GET /api/errors/:serviceId
   this.get("/errors/:serviceId", (schema, request) => {
     const { serviceId } = request.params;
     const errors = schema.all("error").models.map((el) => el.attrs)[0];
 
-    return errors[serviceId];
+    return errors[serviceId] || [];
   });
 
   // POST /api/dashboards-info/:serviceId/sections/:sectionId
@@ -56,7 +55,6 @@ export function adminRoutes(this: Server) {
 
       let tableData = tableModelData[serviceId]?.[sectionId] || [];
 
-      // Применяем фильтры из тела запроса
       const requestBody = JSON.parse(request.requestBody);
       const filters = requestBody?.filters || [];
 
