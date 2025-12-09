@@ -1,17 +1,9 @@
-const mockedRKOList = [
-  {
-    id: "1",
-    client: "МБАУМ ООО",
-    bankAccount: "001232131231",
-  },
-  {
-    id: "2",
-    client: "МБАУМ ООО",
-    bankAccount: "123123123",
-  },
-];
+import { generateMockRKOList } from "./utils";
+import { IRKOList } from "@entities/rko";
 
 export function rkoSeeds(server) {
+  const mockedRKOList: IRKOList[] = generateMockRKOList();
+
   mockedRKOList.forEach((auth) => {
     server.create("rko", auth);
   });

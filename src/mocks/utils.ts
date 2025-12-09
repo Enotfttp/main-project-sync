@@ -53,7 +53,7 @@ export const paginationFunc = <T>(arr: T[], pagination?: TPaginationTable) => {
         totalItems,
         totalPages: 1,
       },
-      data: arr,
+      data: arr.slice(0, 10),
     };
   }
 
