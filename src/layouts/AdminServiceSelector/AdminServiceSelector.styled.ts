@@ -11,6 +11,7 @@ export const StyledUServiceSelector = styled.main`
 export const StyledUServiceTabs = styled.main`
   display: flex;
   flex-direction: column;
+  width: 80%;
   margin: auto;
   gap: 20px;
   div {
