@@ -1,4 +1,4 @@
-import { IPeriodsList } from "@entities/periods";
+import { IPeriodsList } from "@entities/periods/periods.types";
 import { fakerRU as faker } from "@faker-js/faker";
 
 export const generateStructuredPeriods = (): IPeriodsList[] => {

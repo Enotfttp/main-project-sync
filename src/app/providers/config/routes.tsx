@@ -4,15 +4,17 @@ import { RouterErrorBoundary } from "../errorBoundary/RouterErrorBoundary";
 import {
   AdminServiceSelector,
   MainLayout,
-  ServiceTabsLayout,
+  MainTabsLayout,
+  PackageTabsLayout,
 } from "@layouts/index";
 import {
   AdminPage,
-  ConnectionsPage,
+  DocumentsPage,
   EnterPage,
-  EventsPage,
-  PeriodsPage,
-  RKOPage,
+  HistoryPage,
+  OptionsPage,
+  PackagesPage,
+  SchedulePage,
 } from "@pages/index";
 import TestUIPage from "@pages/TestUI/TestUIPage";
 import { Loader } from "@shared/ui";
@@ -44,28 +46,47 @@ export const routes: RouteObject[] = [
     errorElement: <RouterErrorBoundary />,
   },
   {
-    path: routesPath.rko.root,
+    path: routesPath.root,
     element: <MainLayout />,
     errorElement: <RouterErrorBoundary />,
     children: [
-      { path: routesPath.rko.root, element: withProtectedRoute(RKOPage) },
       {
-        path: routesPath.rko.service.root,
-        element: withProtectedRoute(ConnectionsPage),
-        index: true,
-      },
-      {
-        element: <ServiceTabsLayout />,
+        element: <MainTabsLayout />,
         children: [
           {
-            path: routesPath.rko.service.events.root,
-            element: withProtectedRoute(EventsPage),
-          },
-          {
-            path: routesPath.rko.service.periods.root,
-            element: withProtectedRoute(PeriodsPage),
+            path: routesPath.package.root,
+            element: withProtectedRoute(PackagesPage),
+            index: true,
           },
         ],
+      },
+      {
+        path: routesPath.package.detail.root,
+        element: <PackageTabsLayout />,
+        children: [
+          {
+            index: true,
+            element: (
+              <Navigate to={routesPath.package.detail.schedule.root} replace />
+            ),
+          },
+          {
+            path: routesPath.package.detail.schedule.root,
+            element: withProtectedRoute(SchedulePage),
+          },
+          {
+            path: routesPath.package.detail.history.root,
+            element: withProtectedRoute(HistoryPage),
+          },
+          {
+            path: routesPath.package.detail.options.root,
+            element: withProtectedRoute(OptionsPage),
+          },
+        ],
+      },
+      {
+        path: routesPath.documents.root,
+        element: withProtectedRoute(DocumentsPage),
       },
     ],
   },

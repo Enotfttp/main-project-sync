@@ -6,7 +6,10 @@ import {
 } from "./AdminServiceSelector.styled";
 import { T, Toggle } from "@admiral-ds/react-ui";
 import { routesPath } from "@app/providers";
-import { useMutationServiceActiveChange, useServices } from "@entities/admin";
+import {
+  useMutationServiceActiveChange,
+  useServices,
+} from "@entities/admin/admin.hook";
 import { HorizontalTabsTemplate, Loader, Notification } from "@shared/ui";
 import * as React from "react";
 import { useMemo } from "react";

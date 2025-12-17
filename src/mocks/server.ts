@@ -4,18 +4,24 @@ import { adminSeeds } from "./admin/seeds";
 import { authModels } from "./auth/model";
 import { authRoutes } from "./auth/routes";
 import { authSeeds } from "./auth/seeds";
-import { eventModels } from "./event/model";
-import { eventRoutes } from "./event/routes";
-import { eventSeeds } from "./event/seeds";
+import { documentModels } from "./document/model";
+import { documentRoutes } from "./document/routes";
+import { documentSeeds } from "./document/seeds";
+import { historyModels } from "./history/model";
+import { historyRoutes } from "./history/routes";
+import { historySeeds } from "./history/seeds";
+import { optionModels } from "./options/model";
+import { optionRoutes } from "./options/routes";
+import { optionSeeds } from "./options/seeds";
+import { packageModels } from "./package/model";
+import { packageRoutes } from "./package/routes";
+import { packageSeeds } from "./package/seeds";
 import { periodModels } from "./period/model";
 import { periodRoutes } from "./period/routes";
 import { periodSeeds } from "./period/seeds";
-import { rkoModels } from "./rko/model";
-import { rkoRoutes } from "./rko/routes";
-import { rkoSeeds } from "./rko/seeds";
-import { serviceConnectionModels } from "./serviceConnection/model";
-import { serviceConnectionRoutes } from "./serviceConnection/routes";
-import { serviceConnectionSeeds } from "./serviceConnection/seeds";
+import { scheduleModels } from "./schedule/model";
+import { scheduleRoutes } from "./schedule/routes";
+import { scheduleSeeds } from "./schedule/seeds";
 import { createServer } from "miragejs";
 
 export function makeServer() {
@@ -23,19 +29,23 @@ export function makeServer() {
     models: {
       ...authModels,
       ...adminModels,
-      ...eventModels,
       ...periodModels,
-      ...rkoModels,
-      ...serviceConnectionModels,
+      ...scheduleModels,
+      ...documentModels,
+      ...packageModels,
+      ...historyModels,
+      ...optionModels,
     },
 
     seeds(server) {
       authSeeds(server);
       adminSeeds(server);
-      eventSeeds(server);
       periodSeeds(server);
-      rkoSeeds(server);
-      serviceConnectionSeeds(server);
+      scheduleSeeds(server);
+      documentSeeds(server);
+      packageSeeds(server);
+      historySeeds(server);
+      optionSeeds(server);
     },
 
     routes() {
@@ -43,10 +53,12 @@ export function makeServer() {
 
       authRoutes.call(this);
       adminRoutes.call(this);
-      eventRoutes.call(this);
       periodRoutes.call(this);
-      rkoRoutes.call(this);
-      serviceConnectionRoutes.call(this);
+      scheduleRoutes.call(this);
+      documentRoutes.call(this);
+      packageRoutes.call(this);
+      historyRoutes.call(this);
+      optionRoutes.call(this);
 
       this.passthrough();
     },

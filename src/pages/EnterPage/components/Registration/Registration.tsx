@@ -1,25 +1,25 @@
 import {
-  StyledContainer,
-  StyledRegistrationPage,
-  StyledHeader,
   StyledBtnEnter,
+  StyledContainer,
   StyledCSeparator,
+  StyledHeader,
+  StyledRegistrationPage,
   StyledRegistrationText,
   StyledSeparatorText,
 } from "./Registration.styled";
-import { validate, TInitial } from "./Registration.utils";
+import { TInitial, validate } from "./Registration.utils";
 import {
   NotificationItem,
   NotificationItemContent,
   T,
 } from "@admiral-ds/react-ui";
 import { routesPath } from "@app/providers";
-import { useRegisterMutation } from "@entities/auth";
+import { useRegisterMutation } from "@entities/auth/auth.hook";
 import { StyledTwoBlocks } from "@pages/EnterPage/components/Login/Login.styled";
 import { ApiError } from "@shared/api";
 import { InputFieldUI } from "@shared/ui";
 import { FORM_ERROR } from "final-form";
-import React, { ReactNode, FC } from "react";
+import React, { FC, ReactNode } from "react";
 import { Form } from "react-final-form";
 import { useNavigate } from "react-router-dom";
 
@@ -49,7 +49,7 @@ export const Registration: FC<IRegistrationProps> = ({ btnRedirect }) => {
       delete cloneValues.confirmPassword;
 
       await mutateAsync(cloneValues);
-      navigate(routesPath.rko.root);
+      navigate(routesPath.package.root);
     } catch (error) {
       const apiError = error as ApiError;
       const errorMessage =

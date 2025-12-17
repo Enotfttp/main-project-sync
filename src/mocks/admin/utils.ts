@@ -1,4 +1,9 @@
-import { ChartData, ErrorsChart, Service, TableData } from "@entities/admin";
+import {
+  ChartData,
+  ErrorsChart,
+  Service,
+  TableData,
+} from "@entities/admin/admin.types";
 import { fakerRU as faker } from "@faker-js/faker"; // Функция для генерации сервисов
 
 // Функция для генерации сервисов

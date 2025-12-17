@@ -1,4 +1,9 @@
-import { ChartData, ErrorsChart, Service, TableData } from "@entities/admin";
+import {
+  ChartData,
+  ErrorsChart,
+  Service,
+  TableData,
+} from "@entities/admin/admin.types";
 import { Model } from "miragejs";
 
 // Типы для моделей MirageJS

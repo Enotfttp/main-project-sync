@@ -4,7 +4,7 @@ import {
   StyledSquare,
 } from "./AdditionalErrorInfo.styled";
 import { T } from "@admiral-ds/react-ui";
-import { useAdditionalErrorData } from "@entities/admin";
+import { useAdditionalErrorData } from "@entities/admin/admin.hook";
 import React, { useMemo } from "react";
 import { useParams } from "react-router-dom";
 

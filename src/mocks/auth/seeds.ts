@@ -1,4 +1,4 @@
-import { IAuthResponse } from "@entities/auth";
+import { IAuthResponse } from "@entities/auth/auth.types";
 
 interface IAuthList extends Omit<IAuthResponse, "user"> {
   user: {

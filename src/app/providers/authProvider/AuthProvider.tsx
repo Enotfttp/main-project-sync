@@ -1,5 +1,5 @@
-import { useRefreshTokenMutation } from "@entities/auth";
-import { useGetUser } from "@entities/user";
+import { useRefreshTokenMutation } from "@entities/auth/auth-refresh-token.hook";
+import { useGetUser } from "@entities/user/user.hook";
 import { setupInterceptors } from "@shared/api";
 import { storage } from "@shared/utils";
 import { ReactNode, useEffect } from "react";

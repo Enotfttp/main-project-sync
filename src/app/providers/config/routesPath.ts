@@ -4,27 +4,53 @@ export const routesPath = {
     root: "/enter",
     label: "Вход",
   },
-  rko: {
-    root: "/rko",
-    label: "Документы РКО",
-    service: {
-      root: "service/:id",
-      label: "Подписки",
-      fullPath: (id: string | number) => `service/${id}`,
-      events: {
-        label: "События",
-        root: "service/:id/events/:serviceId",
-        fullPath: (id: string | number, serviceId: string | number) =>
-          `service/${id}/events/${serviceId}`,
+  package: {
+    root: "/packages",
+    label: "Пакеты",
+    detail: {
+      root: "packages/:id/*",
+      label: "Подробная информация о пакете услуг",
+      fullPath: (id: string | number) => `/packages/${id}`,
+      schedule: {
+        root: "schedule",
+        label: "Графики",
+        shortPath: (id: string | number) => `${id}/schedule`,
+        fullPath: (id: string | number) => `/packages/${id}/schedule`,
+        periods: {
+          root: ":id/schedule/:idSchedule/periods",
+          label: "Периоды",
+          shortPath: (idSchedule: string | number) =>
+            `schedule/${idSchedule}/periods`,
+          fullPath: (id: string | number, idSchedule: string | number) =>
+            `${id}/schedule/${idSchedule}/period`,
+        },
+        documents: {
+          root: ":id/schedule/:idSchedule/periods/:idPeriod/documents",
+          label: "Документы",
+          shortPath: (idPeriod: string | number) =>
+            `periods/${idPeriod}/documents`,
+          fullPath: (
+            id: string | number,
+            idSchedule: string | number,
+            idPeriod: string | number,
+          ) => `${id}/schedule/${idSchedule}/period/${idPeriod}/documents`,
+        },
       },
-      periods: {
-        label: "Периоды",
-        root: "service/:id/periods/:serviceId",
-        shortPath: (serviceId: string | number) => `periods/${serviceId}`,
-        fullPath: (id: string | number, serviceId: string | number) =>
-          `service/${id}/periods/${serviceId}`,
+      options: {
+        root: "options",
+        label: "Опции пакета",
+        fullPath: (id: string | number) => `/packages/${id}/options`,
+      },
+      history: {
+        root: "history",
+        label: "История изменений",
+        fullPath: (id: string | number) => `/packages/${id}/history`,
       },
     },
+  },
+  documents: {
+    root: "/documents",
+    label: "Документы",
   },
   adminka: {
     root: "adminka/:serviceId",

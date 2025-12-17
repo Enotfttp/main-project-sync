@@ -1,5 +1,5 @@
 import { columnList } from "./column";
-import { useGetPeriodsList } from "@entities/periods";
+import { useGetPeriodsList } from "@entities/periods/periods.hook";
 import { additionalHover } from "@shared/common";
 import { TableSort } from "@shared/ui";
 import { FilterValue } from "@shared/ui/Filter/Filter.types";

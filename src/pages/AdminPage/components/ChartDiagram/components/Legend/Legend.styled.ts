@@ -1,4 +1,4 @@
-import { ChartData } from "@entities/admin";
+import { ChartData } from "@entities/admin/admin.types";
 import styled from "styled-components";
 
 export const StyledLegend = styled.div`
