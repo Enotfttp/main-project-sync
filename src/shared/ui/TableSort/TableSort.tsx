@@ -28,7 +28,7 @@ type TableSortProps =
       queryKey: string;
       handlePaginationChange(pagination: TPaginationTable): void;
       pagination?: TPaginationData;
-      isPagination: true;
+      isPagination?: true;
       paginationProp?: PaginationOneProps;
     } & TableProps)
   | ({

@@ -1,5 +1,5 @@
 import { periodsService } from "./periods.service";
-import { IPeriodsList } from "./periods.types";
+import { IPeriods } from "./periods.types";
 import {
   FilterWithPagination,
   TableDataWithPagination,
@@ -10,16 +10,16 @@ export const useGetPeriodsList = (
   filters?: FilterWithPagination,
   options?: Omit<
     UseQueryOptions<
-      TableDataWithPagination<IPeriodsList>,
+      TableDataWithPagination<IPeriods>,
       Error,
-      TableDataWithPagination<IPeriodsList>,
+      TableDataWithPagination<IPeriods>,
       QueryKey
     >,
     "queryKey" | "queryFn"
   >,
 ) => {
   return useQuery({
-    queryKey: ["Periods-list", filters],
+    queryKey: ["periods", filters],
     queryFn: () => periodsService.getPeriodsList(filters),
     ...options,
   });

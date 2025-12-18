@@ -2,6 +2,7 @@ import {
   StyledInfo,
   StyledInfoRow,
   StyledPackageDetailPage,
+  StyledTitle,
 } from "./PackageDetailPage.styled";
 import { T } from "@admiral-ds/react-ui";
 import { useGetPackage } from "@entities/package/hook";
@@ -16,7 +17,9 @@ const PackageDetailPage = () => {
 
   return (
     <StyledPackageDetailPage>
-      <T font="Header/H3">Подробная информация о пакете услуг</T>
+      <StyledTitle font="Header/H3">
+        Подробная информация о пакете услуг
+      </StyledTitle>
       <StyledInfo>
         {data?.id && (
           <StyledInfoRow>

@@ -4,13 +4,8 @@ import { useFilter } from "@shared/ui/Filter/useFilter";
 import * as React from "react";
 
 const HistoryPage = () => {
-  const {
-    handleResetFilters,
-    handleApplyFilters,
-    filters,
-    onRowClick,
-    tableKey,
-  } = useFilter();
+  const { handleResetFilters, handleApplyFilters, filters, tableKey } =
+    useFilter();
 
   return (
     <StyledPackagesPage>
@@ -22,11 +17,7 @@ const HistoryPage = () => {
       </StyledWhiteBlock>
 
       <StyledWhiteBlock>
-        <TableSection
-          onRowClick={onRowClick}
-          tableKey={tableKey}
-          filters={filters}
-        />
+        <TableSection tableKey={tableKey} filters={filters} />
       </StyledWhiteBlock>
     </StyledPackagesPage>
   );

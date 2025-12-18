@@ -1,6 +1,6 @@
 import { columnList } from "./column";
 import { routesPath } from "@app/providers";
-import { useGetSchedule } from "@entities/schedule/hook";
+import { useGetSchedules } from "@entities/schedule/hook";
 import { PaymentScheduleStatusText } from "@entities/schedule/types";
 import { additionalHover } from "@shared/common";
 import { TableSort } from "@shared/ui";
@@ -8,6 +8,7 @@ import { FilterValue } from "@shared/ui/Filter/Filter.types";
 import { TPaginationTable } from "@shared/ui/TableSort/components/Pagination.types";
 import * as React from "react";
 import { FC, useCallback, useMemo, useState } from "react";
+import { useParams } from "react-router-dom";
 
 interface IProps {
   tableKey: number;
@@ -16,9 +17,10 @@ interface IProps {
 }
 
 export const TableSection: FC<IProps> = ({ tableKey, filters, onRowClick }) => {
+  const { id } = useParams();
   const [pagination, setPagination] = useState<TPaginationTable>();
 
-  const { data: dataSchedule } = useGetSchedule(
+  const { data: dataSchedule } = useGetSchedules(
     {
       filters: filters,
       pagination: pagination,
@@ -40,7 +42,9 @@ export const TableSection: FC<IProps> = ({ tableKey, filters, onRowClick }) => {
   }, []);
 
   const handleRowClick = (rowId: string | number) => {
-    onRowClick(routesPath.package.detail.schedule.fullPath(rowId));
+    onRowClick(
+      routesPath.package.detail.schedule.periods.fullPath(id!, rowId!),
+    );
   };
 
   return (

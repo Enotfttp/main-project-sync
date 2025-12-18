@@ -1,8 +1,7 @@
-import { StyledUnderTabsLayout, Gap } from "./PackageTabsLayout.styled";
+import { Gap, StyledUnderTabsLayout } from "./PackageTabsLayout.styled";
 import { routesPath } from "@app/index";
 import { PackageDetailPage } from "@pages/index";
 import { HorizontalTabsTemplate } from "@shared/ui";
-import { Breadcrumbs } from "@widgets/breadcrumbs/Breadcrumbs";
 import * as React from "react";
 import { useMemo } from "react";
 import { Outlet, useParams } from "react-router-dom";
@@ -36,7 +35,7 @@ export const PackageTabsLayout = () => {
 
   return (
     <>
-      <Breadcrumbs />
+      {/*<Breadcrumbs />*/}
       <PackageDetailPage />
       <Gap />
       <HorizontalTabsTemplate tabs={tabs} isRedirect />

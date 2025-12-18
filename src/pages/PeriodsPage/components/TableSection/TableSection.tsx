@@ -1,11 +1,15 @@
 import { columnList } from "./column";
 import { useGetPeriodsList } from "@entities/periods/periods.hook";
+import {
+  PeriodsResultTypeText,
+  PeriodsStatusText,
+} from "@entities/periods/periods.types";
 import { additionalHover } from "@shared/common";
 import { TableSort } from "@shared/ui";
 import { FilterValue } from "@shared/ui/Filter/Filter.types";
 import { TPaginationTable } from "@shared/ui/TableSort/components/Pagination.types";
 import * as React from "react";
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useMemo, useState } from "react";
 
 interface IProps {
   tableKey: number;
@@ -19,6 +23,14 @@ export const TableSection: FC<IProps> = ({ tableKey, filters }) => {
     pagination: pagination,
   });
 
+  const dataPeriodWithRusStatus = useMemo(() => {
+    return dataPeriod?.data.map((el) => ({
+      ...el,
+      status: PeriodsStatusText[el.status],
+      resultType: PeriodsResultTypeText[el.resultType],
+    }));
+  }, [dataPeriod]);
+
   const handlePaginationChange = useCallback((pagination: TPaginationTable) => {
     setPagination(pagination);
   }, []);
@@ -27,8 +39,8 @@ export const TableSection: FC<IProps> = ({ tableKey, filters }) => {
     <TableSort
       key={tableKey}
       columnList={columnList}
-      rowList={additionalHover(dataPeriod?.data)}
-      queryKey="periods-list"
+      rowList={additionalHover(dataPeriodWithRusStatus)}
+      queryKey="periods"
       isPagination
       handlePaginationChange={handlePaginationChange}
       pagination={dataPeriod?.pagination}

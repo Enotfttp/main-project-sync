@@ -6,7 +6,7 @@ import {
 } from "@shared/ui/TableSort/components/Pagination.types";
 import { QueryKey, useQuery, UseQueryOptions } from "@tanstack/react-query";
 
-export const useGetSchedule = (
+export const useGetSchedules = (
   filters?: FilterWithPagination,
   options?: Omit<
     UseQueryOptions<
@@ -20,7 +20,21 @@ export const useGetSchedule = (
 ) => {
   return useQuery({
     queryKey: ["schedules", filters],
-    queryFn: () => scheduleService.getPackages(filters),
+    queryFn: () => scheduleService.getSchedules(filters),
+    ...options,
+  });
+};
+
+export const useGetSchedule = (
+  id?: string,
+  options?: Omit<
+    UseQueryOptions<IPaymentSchedule, Error, IPaymentSchedule, QueryKey>,
+    "queryKey" | "queryFn"
+  >,
+) => {
+  return useQuery({
+    queryKey: ["schedule", id],
+    queryFn: () => scheduleService.getSchedule(id),
     ...options,
   });
 };

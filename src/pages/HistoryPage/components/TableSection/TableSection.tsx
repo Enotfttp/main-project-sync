@@ -1,5 +1,4 @@
 import { columnList } from "./column";
-import { routesPath } from "@app/providers";
 import { useGetHistories } from "@entities/history/hook";
 import {
   ComcRequestStatusText,
@@ -16,10 +15,9 @@ import { FC, useCallback, useMemo, useState } from "react";
 interface IProps {
   tableKey: number;
   filters?: FilterValue[];
-  onRowClick(rowId: string | number): void;
 }
 
-export const TableSection: FC<IProps> = ({ tableKey, filters, onRowClick }) => {
+export const TableSection: FC<IProps> = ({ tableKey, filters }) => {
   const [pagination, setPagination] = useState<TPaginationTable>();
 
   const { data: dataHistory } = useGetHistories(
@@ -45,16 +43,11 @@ export const TableSection: FC<IProps> = ({ tableKey, filters, onRowClick }) => {
     setPagination(pagination);
   }, []);
 
-  const handleRowClick = (rowId: string | number) => {
-    onRowClick(routesPath.package.detail.schedule.fullPath(rowId));
-  };
-
   return (
     <TableSort
       key={tableKey}
       columnList={columnList}
       rowList={additionalHover(dataHistoryWithRusStatus)}
-      onRowClick={handleRowClick}
       queryKey="histories"
       isPagination
       handlePaginationChange={handlePaginationChange}

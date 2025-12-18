@@ -1,5 +1,4 @@
 import { columnList } from "./column";
-import { routesPath } from "@app/providers";
 import { useGetOptions } from "@entities/options/hook";
 import { PackageStatusText } from "@entities/package/types";
 import { additionalHover } from "@shared/common";
@@ -12,10 +11,9 @@ import { FC, useCallback, useMemo, useState } from "react";
 interface IProps {
   tableKey: number;
   filters?: FilterValue[];
-  onRowClick(rowId: string | number): void;
 }
 
-export const TableSection: FC<IProps> = ({ tableKey, filters, onRowClick }) => {
+export const TableSection: FC<IProps> = ({ tableKey, filters }) => {
   const [pagination, setPagination] = useState<TPaginationTable>();
 
   const { data: dataOptions } = useGetOptions(
@@ -40,16 +38,11 @@ export const TableSection: FC<IProps> = ({ tableKey, filters, onRowClick }) => {
     setPagination(pagination);
   }, []);
 
-  const handleRowClick = (rowId: string | number) => {
-    onRowClick(routesPath.package.detail.schedule.fullPath(rowId));
-  };
-
   return (
     <TableSort
       key={tableKey}
       columnList={columnList}
       rowList={additionalHover(dataOptionsWithRusStatus)}
-      onRowClick={handleRowClick}
       queryKey="options"
       isPagination
       handlePaginationChange={handlePaginationChange}

@@ -1,5 +1,6 @@
-import { FilterSection, TableSection } from "./components";
+import { FilterSection, ScheduleDetail, TableSection } from "./components";
 import { StyledPeriodsPage, StyledWhiteBlock } from "./PeriodsPage.styled";
+import { T } from "@admiral-ds/react-ui";
 import { handleSetFilters, useFilter } from "@shared/ui/Filter/useFilter";
 import * as React from "react";
 import { useEffect } from "react";
@@ -28,6 +29,8 @@ const PeriodsPage = () => {
 
   return (
     <StyledPeriodsPage>
+      <ScheduleDetail />
+      <T font="Header/H1">Периоды</T>
       <StyledWhiteBlock>
         <FilterSection
           onApplyFilters={handleApplyFilters}

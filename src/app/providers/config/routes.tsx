@@ -14,6 +14,7 @@ import {
   HistoryPage,
   OptionsPage,
   PackagesPage,
+  PeriodsPage,
   SchedulePage,
 } from "@pages/index";
 import TestUIPage from "@pages/TestUI/TestUIPage";
@@ -58,6 +59,11 @@ export const routes: RouteObject[] = [
             element: withProtectedRoute(PackagesPage),
             index: true,
           },
+          {
+            path: routesPath.documents.root,
+            element: withProtectedRoute(DocumentsPage),
+            index: true,
+          },
         ],
       },
       {
@@ -85,7 +91,11 @@ export const routes: RouteObject[] = [
         ],
       },
       {
-        path: routesPath.documents.root,
+        path: routesPath.package.detail.schedule.periods.root,
+        element: withProtectedRoute(PeriodsPage),
+      },
+      {
+        path: routesPath.package.detail.schedule.periods.documents.root,
         element: withProtectedRoute(DocumentsPage),
       },
     ],

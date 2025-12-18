@@ -4,14 +4,14 @@ import { Server } from "miragejs";
 export function historyRoutes(this: Server) {
   this.post("/histories", (schema, request) => {
     const requestBody = JSON.parse(request.requestBody);
-    let periods = schema.all("history").models.map((el) => el.attrs);
+    let histories = schema.all("history").models.map((el) => el.attrs);
 
     const filters = requestBody?.filters || [];
 
     if (filters.length > 0) {
-      periods = filterFunc(periods, filters.filters);
+      histories = filterFunc(histories, filters.filters);
     }
 
-    return paginationFunc(periods, filters.pagination);
+    return paginationFunc(histories, filters.pagination);
   });
 }
