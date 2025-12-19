@@ -1,26 +1,26 @@
 import { columnList } from "./column";
-import { routesPath } from "@app/providers";
-import { useGetSchedules } from "@entities/schedule/hook";
-import { PaymentScheduleStatusText } from "@entities/schedule/types";
+import { useGetHistories } from "@entities/history/hook";
+import {
+  ComcRequestStatusText,
+  ComcResultTypeText,
+  RequestHistoryKafkaStatusText,
+} from "@entities/history/types";
 import { additionalHover } from "@shared/common";
 import { TableSort } from "@shared/ui";
 import { FilterValue } from "@shared/ui/Filter/Filter.types";
 import { TPaginationTable } from "@shared/ui/TableSort/components/Pagination.types";
 import * as React from "react";
 import { FC, useCallback, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
 
 interface IProps {
   tableKey: number;
   filters?: FilterValue[];
-  onRowClick(rowId: string | number): void;
 }
 
-export const TableSection: FC<IProps> = ({ tableKey, filters, onRowClick }) => {
-  const { id } = useParams();
+export const TableSection: FC<IProps> = ({ tableKey, filters }) => {
   const [pagination, setPagination] = useState<TPaginationTable>();
 
-  const { data: dataSchedule } = useGetSchedules(
+  const { data: dataHistory } = useGetHistories(
     {
       filters: filters,
       pagination: pagination,
@@ -30,33 +30,28 @@ export const TableSection: FC<IProps> = ({ tableKey, filters, onRowClick }) => {
     },
   );
 
-  const dataScheduleWithRusStatus = useMemo(() => {
-    return dataSchedule?.data.map((el) => ({
+  const dataHistoryWithRusStatus = useMemo(() => {
+    return dataHistory?.data.map((el) => ({
       ...el,
-      status: PaymentScheduleStatusText[el.status],
+      status: ComcRequestStatusText[el.status],
+      resultType: ComcResultTypeText[el.status],
+      kafkaSendStatus: RequestHistoryKafkaStatusText[el.status],
     }));
-  }, [dataSchedule]);
+  }, [dataHistory]);
 
   const handlePaginationChange = useCallback((pagination: TPaginationTable) => {
     setPagination(pagination);
   }, []);
 
-  const handleRowClick = (rowId: string | number) => {
-    onRowClick(
-      routesPath.package.detail.schedule.periods.fullPath(id!, rowId!),
-    );
-  };
-
   return (
     <TableSort
       key={tableKey}
       columnList={columnList}
-      rowList={additionalHover(dataScheduleWithRusStatus)}
-      onRowClick={handleRowClick}
-      queryKey="schedules"
+      rowList={additionalHover(dataHistoryWithRusStatus)}
+      queryKey="histories"
       isPagination
       handlePaginationChange={handlePaginationChange}
-      pagination={dataSchedule?.pagination}
+      pagination={dataHistory?.pagination}
     />
   );
 };

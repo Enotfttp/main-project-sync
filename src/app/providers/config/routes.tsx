@@ -5,23 +5,20 @@ import {
   AdminServiceSelector,
   MainLayout,
   MainTabsLayout,
-  PackageTabsLayout,
 } from "@layouts/index";
 import {
   AdminPage,
   DocumentsPage,
   EnterPage,
-  HistoryPage,
-  OptionsPage,
+  PackagePage,
   PackagesPage,
   PeriodsPage,
-  SchedulePage,
 } from "@pages/index";
 import TestUIPage from "@pages/TestUI/TestUIPage";
 import { Loader } from "@shared/ui";
 import { ProtectedRoute, ProtectedRouteAdmin } from "@widgets/index";
 import React, { JSX, Suspense } from "react";
-import { Navigate, RouteObject } from "react-router-dom";
+import { Navigate, Outlet, RouteObject } from "react-router-dom";
 
 const withSuspense = (
   Component: React.LazyExoticComponent<() => JSX.Element>,
@@ -55,7 +52,7 @@ export const routes: RouteObject[] = [
         element: <MainTabsLayout />,
         children: [
           {
-            path: routesPath.package.root,
+            path: routesPath.packages.root,
             element: withProtectedRoute(PackagesPage),
             index: true,
           },
@@ -67,36 +64,21 @@ export const routes: RouteObject[] = [
         ],
       },
       {
-        path: routesPath.package.detail.root,
-        element: <PackageTabsLayout />,
+        element: <Outlet />,
         children: [
           {
-            index: true,
-            element: (
-              <Navigate to={routesPath.package.detail.schedule.root} replace />
-            ),
+            path: routesPath.packages.detail.root,
+            element: withProtectedRoute(PackagePage),
           },
           {
-            path: routesPath.package.detail.schedule.root,
-            element: withProtectedRoute(SchedulePage),
+            path: routesPath.packages.detail.periods.root,
+            element: withProtectedRoute(PeriodsPage),
           },
           {
-            path: routesPath.package.detail.history.root,
-            element: withProtectedRoute(HistoryPage),
-          },
-          {
-            path: routesPath.package.detail.options.root,
-            element: withProtectedRoute(OptionsPage),
+            path: routesPath.packages.detail.periods.documents.root,
+            element: withProtectedRoute(DocumentsPage),
           },
         ],
-      },
-      {
-        path: routesPath.package.detail.schedule.periods.root,
-        element: withProtectedRoute(PeriodsPage),
-      },
-      {
-        path: routesPath.package.detail.schedule.periods.documents.root,
-        element: withProtectedRoute(DocumentsPage),
       },
     ],
   },

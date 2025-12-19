@@ -4,43 +4,22 @@ export const routesPath = {
     root: "/enter",
     label: "Вход",
   },
-  package: {
+  packages: {
     root: "/packages",
     label: "Пакеты",
     detail: {
-      root: "packages/:id/*",
+      root: "packages/:id",
       label: "Подробная информация о пакете услуг",
-      schedule: {
-        root: "schedule",
-        label: "Графики",
-        fullPath: (id: string | number) => `/packages/${id}/schedule`,
-        periods: {
-          root: "packages/:id/schedule/:idSchedule/periods",
-          label: "Периоды",
-          fullPath: (id: string | number, idSchedule: string | number) =>
-            `/packages/${id}/schedule/${idSchedule}/periods`,
-          documents: {
-            root: "packages/:id/schedule/:idSchedule/periods/:idPeriod/documents",
-            label: "Документы",
-            shortPath: (idPeriod: string | number) =>
-              `periods/${idPeriod}/documents`,
-            fullPath: (
-              id: string | number,
-              idSchedule: string | number,
-              idPeriod: string | number,
-            ) => `${id}/schedule/${idSchedule}/period/${idPeriod}/documents`,
-          },
+      shortPath: (id: string | number) => `${id}`,
+      periods: {
+        root: "packages/:id/schedule/:idSchedule",
+        label: "Периоды",
+        shortPath: (idSchedule: string | number) => `schedule/${idSchedule}`,
+        documents: {
+          root: "packages/:id/schedule/:idSchedule/periods/:idPeriod",
+          label: "Документы",
+          shortPath: (idPeriod: string | number) => `periods/${idPeriod}`,
         },
-      },
-      options: {
-        root: "options",
-        label: "Опции пакета",
-        fullPath: (id: string | number) => `/packages/${id}/options`,
-      },
-      history: {
-        root: "history",
-        label: "История изменений",
-        fullPath: (id: string | number) => `/packages/${id}/history`,
       },
     },
   },

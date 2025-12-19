@@ -1,9 +1,9 @@
 import { FilterSection, TableSection } from "./components";
-import { StyledPackagesPage, StyledWhiteBlock } from "./OptionsPage.styled";
+import { StyledPackagesPage, StyledWhiteBlock } from "./Options.styled";
 import { useFilter } from "@shared/ui/Filter/useFilter";
 import * as React from "react";
 
-const OptionsPage = () => {
+export const Options = () => {
   const { handleResetFilters, handleApplyFilters, filters, tableKey } =
     useFilter();
 
@@ -22,5 +22,3 @@ const OptionsPage = () => {
     </StyledPackagesPage>
   );
 };
-
-export default OptionsPage;

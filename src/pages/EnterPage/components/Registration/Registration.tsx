@@ -49,7 +49,7 @@ export const Registration: FC<IRegistrationProps> = ({ btnRedirect }) => {
       delete cloneValues.confirmPassword;
 
       await mutateAsync(cloneValues);
-      navigate(routesPath.package.root);
+      navigate(routesPath.packages.root);
     } catch (error) {
       const apiError = error as ApiError;
       const errorMessage =

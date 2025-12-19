@@ -1,17 +1,15 @@
 import {
+  HorizontalTab,
   HorizontalTabProps,
+  HorizontalTabs,
   HorizontalTabsProps,
   LIGHT_THEME,
-} from "@admiral-ds/react-ui";
-import {
-  HorizontalTabs,
-  HorizontalTab,
-  TabIcon,
   TabBadge,
+  TabIcon,
   TabText,
 } from "@admiral-ds/react-ui";
-import { forwardRef, useMemo, useState } from "react";
 import type { ReactNode } from "react";
+import { forwardRef, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 
@@ -139,7 +137,12 @@ export const HorizontalTabsTemplate = ({
         showUnderline={showUnderline}
         selectedTabId={selectedTab}
         defaultSelectedTabId={defaultSelectedTabId}
-        onSelectTab={handleSelectTab}
+        onSelectTab={(tabId) => {
+          handleSelectTab(tabId);
+          if (props?.onSelectTab) {
+            props?.onSelectTab(tabId);
+          }
+        }}
         tabsId={tabsMap}
         renderTab={renderTab}
         tabIsDisabled={tabIsDisabled}

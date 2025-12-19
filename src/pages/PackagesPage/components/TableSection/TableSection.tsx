@@ -41,7 +41,7 @@ export const TableSection: FC<IProps> = ({ tableKey, filters, onRowClick }) => {
   }, []);
 
   const handleRowClick = (rowId: string | number) => {
-    onRowClick(routesPath.package.detail.schedule.fullPath(rowId));
+    onRowClick(routesPath.packages.detail.shortPath(rowId));
   };
 
   return (

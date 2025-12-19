@@ -39,7 +39,7 @@ export const Login: FC<ILoginProps> = ({ btnRedirect }) => {
   const onSubmit = async (values: IInitial) => {
     try {
       await mutateAsync(values);
-      navigate(routesPath.package.root);
+      navigate(routesPath.packages.root);
     } catch (error) {
       const apiError = error as ApiError;
       const errorMessage =

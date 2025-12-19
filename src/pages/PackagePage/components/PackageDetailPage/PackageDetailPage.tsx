@@ -10,7 +10,7 @@ import { PackageStatusText } from "@entities/package/types";
 import React from "react";
 import { useParams } from "react-router-dom";
 
-const PackageDetailPage = () => {
+export const PackageDetailPage = () => {
   const { id } = useParams();
 
   const { data } = useGetPackage(id);
@@ -59,5 +59,3 @@ const PackageDetailPage = () => {
     </StyledPackageDetailPage>
   );
 };
-
-export default PackageDetailPage;

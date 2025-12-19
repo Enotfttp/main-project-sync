@@ -1,6 +1,6 @@
 import { FilterSection, ScheduleDetail, TableSection } from "./components";
 import { StyledPeriodsPage, StyledWhiteBlock } from "./PeriodsPage.styled";
-import { T } from "@admiral-ds/react-ui";
+import { Divider, T } from "@admiral-ds/react-ui";
 import { handleSetFilters, useFilter } from "@shared/ui/Filter/useFilter";
 import * as React from "react";
 import { useEffect } from "react";
@@ -17,6 +17,7 @@ const PeriodsPage = () => {
     filters,
     tableKey,
     setFilters,
+    onRowClick,
   } = useFilter();
 
   useEffect(() => {
@@ -30,6 +31,7 @@ const PeriodsPage = () => {
   return (
     <StyledPeriodsPage>
       <ScheduleDetail />
+      <Divider />
       <T font="Header/H1">Периоды</T>
       <StyledWhiteBlock>
         <FilterSection
@@ -37,9 +39,12 @@ const PeriodsPage = () => {
           onResetFilters={handleResetFilters}
         />
       </StyledWhiteBlock>
-
       <StyledWhiteBlock>
-        <TableSection tableKey={tableKey} filters={filters} />
+        <TableSection
+          tableKey={tableKey}
+          filters={filters}
+          onRowClick={onRowClick}
+        />
       </StyledWhiteBlock>
     </StyledPeriodsPage>
   );

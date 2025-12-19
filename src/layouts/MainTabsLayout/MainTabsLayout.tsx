@@ -9,9 +9,9 @@ export const MainTabsLayout = () => {
   const tabs = useMemo(
     () => [
       {
-        text: routesPath.package.label,
+        text: routesPath.packages.label,
         tabId: "1",
-        path: routesPath.package.root,
+        path: routesPath.packages.root,
       },
       {
         text: routesPath.documents.label,

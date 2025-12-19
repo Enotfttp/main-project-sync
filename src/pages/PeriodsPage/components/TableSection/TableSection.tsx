@@ -1,4 +1,5 @@
 import { columnList } from "./column";
+import { routesPath } from "@app/providers";
 import { useGetPeriodsList } from "@entities/periods/periods.hook";
 import {
   PeriodsResultTypeText,
@@ -14,9 +15,10 @@ import { FC, useCallback, useMemo, useState } from "react";
 interface IProps {
   tableKey: number;
   filters?: FilterValue[];
+  onRowClick(rowId: string | number): void;
 }
 
-export const TableSection: FC<IProps> = ({ tableKey, filters }) => {
+export const TableSection: FC<IProps> = ({ tableKey, filters, onRowClick }) => {
   const [pagination, setPagination] = useState<TPaginationTable>();
   const { data: dataPeriod } = useGetPeriodsList({
     filters: filters,
@@ -35,11 +37,16 @@ export const TableSection: FC<IProps> = ({ tableKey, filters }) => {
     setPagination(pagination);
   }, []);
 
+  const handleRowClick = (rowId: string | number) => {
+    onRowClick(routesPath.packages.detail.periods.documents.shortPath(rowId));
+  };
+
   return (
     <TableSort
       key={tableKey}
       columnList={columnList}
       rowList={additionalHover(dataPeriodWithRusStatus)}
+      onRowClick={handleRowClick}
       queryKey="periods"
       isPagination
       handlePaginationChange={handlePaginationChange}

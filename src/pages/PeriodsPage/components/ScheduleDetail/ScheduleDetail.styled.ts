@@ -13,11 +13,11 @@ export const StyledTitle = styled(T)`
 export const StyledInfo = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 10px 0;
+  gap: 15px 0;
 `;
 
 export const StyledInfoRow = styled.div`
-  flex: 1 1 33%;
+  flex: 0 0 33%;
   display: flex;
   flex-direction: column;
   gap: 5px;
