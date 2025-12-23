@@ -2,7 +2,7 @@ import {
   IPeriods,
   PeriodsResultType,
   PeriodsStatus,
-} from "@entities/periods/periods.types";
+} from "@entities/periods/types";
 import { faker } from "@faker-js/faker/locale/ru";
 
 export const generateStructuredPeriods = (): IPeriods[] => {

@@ -1,10 +1,10 @@
 import { columnList } from "./column";
 import { routesPath } from "@app/providers";
-import { useGetPeriodsList } from "@entities/periods/periods.hook";
+import { useGetPeriods } from "@entities/periods/hook";
 import {
   PeriodsResultTypeText,
   PeriodsStatusText,
-} from "@entities/periods/periods.types";
+} from "@entities/periods/types";
 import { additionalHover } from "@shared/common";
 import { TableSort } from "@shared/ui";
 import { FilterValue } from "@shared/ui/Filter/Filter.types";
@@ -20,7 +20,7 @@ interface IProps {
 
 export const TableSection: FC<IProps> = ({ tableKey, filters, onRowClick }) => {
   const [pagination, setPagination] = useState<TPaginationTable>();
-  const { data: dataPeriod } = useGetPeriodsList({
+  const { data: dataPeriod } = useGetPeriods({
     filters: filters,
     pagination: pagination,
   });

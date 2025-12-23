@@ -1,8 +1,7 @@
-import { generateMockDocuments } from "./utils";
-import { IDocuments } from "@entities/documents/types";
+import { createMockDocuments } from "./utils";
 
 export function documentSeeds(server) {
-  const mockedDocuments: IDocuments[] = generateMockDocuments();
+  const mockedDocuments = createMockDocuments();
 
   mockedDocuments.forEach((auth) => {
     server.create("document", auth);

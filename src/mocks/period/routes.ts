@@ -2,7 +2,7 @@ import { filterFunc, paginationFunc } from "@mocks/utils";
 import { Server } from "miragejs";
 
 export function periodRoutes(this: Server) {
-  this.post("/periods-list", (schema, request) => {
+  this.post("/periods", (schema, request) => {
     const requestBody = JSON.parse(request.requestBody);
     let periods = schema.all("period").models.map((el) => el.attrs);
 
@@ -13,5 +13,12 @@ export function periodRoutes(this: Server) {
     }
 
     return paginationFunc(periods, filters.pagination);
+  });
+
+  this.get("/periods/:id", (schema: any, request) => {
+    const { id } = request.params;
+    const periods = schema.all("period").models.map((el) => el.attrs);
+
+    return periods.find((el) => el.id === id);
   });
 }

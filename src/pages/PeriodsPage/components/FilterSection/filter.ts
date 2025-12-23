@@ -1,7 +1,7 @@
 import {
   PeriodsResultTypeText,
   PeriodsStatusText,
-} from "@entities/periods/periods.types";
+} from "@entities/periods/types";
 import { FilterField } from "@shared/ui/Filter/Filter.types";
 
 export const filterFields: FilterField[] = [
