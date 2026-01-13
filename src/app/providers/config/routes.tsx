@@ -8,6 +8,7 @@ import {
 } from "@layouts/index";
 import {
   AdminPage,
+  DocPage,
   DocumentsPage,
   EnterPage,
   PackagePage,
@@ -58,7 +59,7 @@ export const routes: RouteObject[] = [
           },
           {
             path: routesPath.documents.root,
-            element: withProtectedRoute(DocumentsPage),
+            element: withProtectedRoute(DocPage),
             index: true,
           },
         ],

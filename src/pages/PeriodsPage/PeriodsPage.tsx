@@ -1,9 +1,8 @@
 import { FilterSection, ScheduleDetail, TableSection } from "./components";
 import { StyledPeriodsPage, StyledWhiteBlock } from "./PeriodsPage.styled";
 import { Divider, T } from "@admiral-ds/react-ui";
-import { handleSetFilters, useFilter } from "@shared/ui/Filter/useFilter";
+import { useFilter } from "@shared/ui/Filter/useFilter";
 import * as React from "react";
-import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 const PeriodsPage = () => {
@@ -16,17 +15,17 @@ const PeriodsPage = () => {
     handleApplyFilters,
     filters,
     tableKey,
-    setFilters,
     onRowClick,
   } = useFilter();
 
-  useEffect(() => {
-    if (Array.isArray(filters) && filters?.length > 0) return;
-
-    setFilters((prevState) =>
-      handleSetFilters([{ fieldId: "serviceId", value: id }], prevState),
-    );
-  }, [filters]);
+  // TODO закомментировал, чтобы не мешать работе автомоков
+  // useEffect(() => {
+  //   if (Array.isArray(filters) && filters?.length > 0) return;
+  //
+  //   setFilters((prevState) =>
+  //     handleSetFilters([{ fieldId: "serviceId", value: id }], prevState),
+  //   );
+  // }, [filters]);
 
   return (
     <StyledPeriodsPage>

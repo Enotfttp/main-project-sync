@@ -29,7 +29,7 @@ export const TableSection: FC<IProps> = ({ tableKey, filters }) => {
       ...el,
       status: DocStatusText[el.status],
       docType: DocTypeText[el.docType],
-      orderStatus: OrderStatusText[el.docType],
+      orderStatus: OrderStatusText[el.orderStatus],
     }));
   }, [dataDoc]);
 

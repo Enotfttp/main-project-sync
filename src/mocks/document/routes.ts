@@ -8,7 +8,7 @@ export function documentRoutes(this: Server) {
 
     const filters = requestBody?.filters || [];
 
-    if (filters.length > 0) {
+    if (filters.filters?.length > 0) {
       documents = filterFunc(documents, filters.filters);
     }
 

@@ -58,7 +58,7 @@ export function adminRoutes(this: Server) {
       const requestBody = JSON.parse(request.requestBody);
       const filters = requestBody?.filters || [];
 
-      if (filters.length > 0) {
+      if (filters.filters?.length > 0) {
         tableData = filterFunc(tableData, filters.filters);
       }
 

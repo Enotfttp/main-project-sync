@@ -8,7 +8,7 @@ export function periodRoutes(this: Server) {
 
     const filters = requestBody?.filters || [];
 
-    if (filters.length > 0) {
+    if (filters.filters?.length > 0) {
       periods = filterFunc(periods, filters.filters);
     }
 

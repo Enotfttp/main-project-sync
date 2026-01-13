@@ -25,7 +25,7 @@ export const TableSection: FC<IProps> = ({ tableKey, filters, onRowClick }) => {
     },
     {
       // enabled: !!filters?.length,
-      enabled: !filters?.length,
+      // enabled: !filters?.length,
     },
   );
 
