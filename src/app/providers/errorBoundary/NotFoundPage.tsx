@@ -17,7 +17,7 @@ export const NotFoundPage = () => {
     if (window.history.state && window.history.state.idx > 0) {
       navigate(-1); // Есть куда возвращаться
     } else {
-      navigate(routesPath.rko.root); // На главную, если истории нет
+      navigate(routesPath.packages.root); // На главную, если истории нет
     }
   };
 
@@ -29,7 +29,7 @@ export const NotFoundPage = () => {
 
       <StyledErrorAction>
         <StyledButton appearance="primary" dimension="m">
-          <StyledLink to={routesPath.rko.root}>На главную</StyledLink>
+          <StyledLink to={routesPath.packages.root}>На главную</StyledLink>
         </StyledButton>
         <StyledButton
           onClick={handleGoBack}
