@@ -2,6 +2,7 @@ export type FilterFieldType =
   | "text"
   | "number"
   | "date"
+  | "date-range"
   | "select"
   | "multiselect"
   | "boolean"
@@ -17,8 +18,16 @@ export interface FilterField {
   name: string;
   type: FilterFieldType;
   label: string;
+  // label для Range
+  additionalLabel?: string;
+  errorText?: string;
   placeholder?: string;
   options?: FilterOption[];
+  /**
+   * Строка должна быть в формате 1d, 1m, 1y
+   * где d-дни, m-месяца, y-года
+   */
+  dateDifference?: string;
   min?: number;
   max?: number;
   step?: number;
@@ -32,22 +41,20 @@ export interface FilterField {
     | string[];
 }
 
-export interface FilterValue {
-  fieldId: string;
-  value:
-    | string
-    | number
-    | boolean
-    | Date
-    | { min: number; max: number }
-    | string[]
-    | null;
-  operator?: string;
-}
+export type TValue =
+  | string
+  | number
+  | boolean
+  | Date
+  | { min: number; max: number }
+  | string[]
+  | null;
+
+export type FilterValue = Record<string, TValue>;
 
 export interface FilterConfig {
   fields: FilterField[];
-  onApply?: (values: FilterValue[]) => void;
+  onApply?: (values: FilterValue) => void;
   onReset?: () => void;
 }
 

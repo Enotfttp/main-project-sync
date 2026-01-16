@@ -4,27 +4,28 @@ export const routesPath = {
     root: "/enter",
     label: "Вход",
   },
-  rko: {
-    root: "/rko",
-    label: "Документы РКО",
-    service: {
-      root: "service/:id",
-      label: "Подписки",
-      fullPath: (id: string | number) => `service/${id}`,
-      events: {
-        label: "События",
-        root: "service/:id/events/:serviceId",
-        fullPath: (id: string | number, serviceId: string | number) =>
-          `service/${id}/events/${serviceId}`,
-      },
+  packages: {
+    root: "/packages",
+    label: "Пакеты",
+    detail: {
+      root: "packages/:id",
+      label: "Подробная информация о пакете услуг",
+      shortPath: (id: string | number) => `${id}`,
       periods: {
+        root: "packages/:id/schedule/:idSchedule",
         label: "Периоды",
-        root: "service/:id/periods/:serviceId",
-        shortPath: (serviceId: string | number) => `periods/${serviceId}`,
-        fullPath: (id: string | number, serviceId: string | number) =>
-          `service/${id}/periods/${serviceId}`,
+        shortPath: (idSchedule: string | number) => `schedule/${idSchedule}`,
+        documents: {
+          root: "packages/:id/schedule/:idSchedule/periods/:idPeriod",
+          label: "Документы",
+          shortPath: (idPeriod: string | number) => `periods/${idPeriod}`,
+        },
       },
     },
+  },
+  documents: {
+    root: "/documents",
+    label: "Документы",
   },
   adminka: {
     root: "adminka/:serviceId",

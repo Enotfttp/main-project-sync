@@ -1,40 +1,58 @@
+import { FilterValue } from "@shared/ui/Filter/Filter.types";
+import { parseDateString } from "@shared/ui/Filter/utils";
 import { TPaginationTable } from "@shared/ui/TableSort/components/Pagination.types";
 
-export const filterFunc = (tableData, filters) => {
-  tableData = tableData.filter((item) => {
-    return filters.every((filter) => {
-      const itemValue = item[filter?.fieldId];
+const singleDateRegex = /^\d{2}\.\d{2}\.\d{4}$/;
+const multiDateRegex = /^\d{2}\.\d{2}\.\d{4} - \d{2}\.\d{2}\.\d{4}$/;
 
-      if (typeof filter?.value === "string" && filter?.fieldId === "date") {
+export const filterFunc = (tableData, filters: FilterValue) => {
+  tableData = tableData.filter((item) => {
+    return Object.entries(filters).every(([key, value]) => {
+      const itemValue = item[key];
+      if (value === "") return true;
+      if (typeof value === "string" && value.match(singleDateRegex)) {
         const tableDate = itemValue;
-        const filterDate = filter?.value.split(".").reverse().join("-");
+        const filterDate = value.split(".").reverse().join("-");
         return tableDate === filterDate;
       }
 
+      //Формат данты в приходящем сообщение - 01.01.2026 - 15.01.2026
+      if (typeof value === "string" && value.match(multiDateRegex)) {
+        const [dateFrom, dateTo] = value
+          .split("-")
+          .map((s) => parseDateString(s?.trim()));
+
+        // Формат данты в БД - 2023-01-01
+        const tableDate = parseDateString(itemValue);
+
+        if (!dateFrom || !dateTo || !tableDate) return true;
+
+        if (dateFrom < tableDate && dateTo > tableDate) {
+          return true;
+        }
+        return false;
+      }
+
       // Пропускаем пустые фильтры
-      if (filter?.value === null || filter?.value === undefined) {
+      if (value === null || value === undefined) {
         return true;
       }
 
       // Фильтр по диапазону
-      if (
-        typeof filter.value === "object" &&
-        "min" in filter.value &&
-        "max" in filter.value
-      ) {
+      if (typeof value === "object" && "min" in value && "max" in value) {
         if (typeof itemValue === "number") {
-          return itemValue >= filter.value.min && itemValue <= filter.value.max;
+          return itemValue >= value.min && itemValue <= value.max;
         }
         return false;
       }
 
       // Фильтр по массиву значений
-      if (Array.isArray(filter.value) && typeof itemValue === "string") {
-        return filter.value.includes(itemValue);
+      if (Array.isArray(value) && typeof itemValue === "string") {
+        return value.includes(itemValue);
       }
 
       // Простое сравнение для строк и чисел
-      return itemValue === filter.value;
+      return itemValue === value;
     });
   });
 

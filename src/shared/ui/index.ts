@@ -9,3 +9,7 @@ export { InputFieldUI } from "./InputField/InputField";
 export { Filter } from "./Filter/Filter";
 export { Notification } from "./Notification/Notification";
 export { DropDown } from "./DropDown/DropDown";
+export { DateFieldUI } from "./DateField/DateField";
+export { SelectFieldUI } from "./SelectField/SelectField";
+export { CheckboxFieldUI } from "./CheckboxField/CheckboxField";
+export { RangeWithInput } from "./RangeWithInput/RangeWithInput";

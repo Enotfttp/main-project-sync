@@ -1,8 +1,8 @@
-import { FilterSection, TableSection } from "./components";
+import { FilterSection, ScheduleDetail, TableSection } from "./components";
 import { StyledPeriodsPage, StyledWhiteBlock } from "./PeriodsPage.styled";
-import { handleSetFilters, useFilter } from "@shared/ui/Filter/useFilter";
+import { Divider, T } from "@admiral-ds/react-ui";
+import { useFilter } from "@shared/ui/Filter/useFilter";
 import * as React from "react";
-import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 const PeriodsPage = () => {
@@ -15,28 +15,35 @@ const PeriodsPage = () => {
     handleApplyFilters,
     filters,
     tableKey,
-    setFilters,
+    onRowClick,
   } = useFilter();
 
-  useEffect(() => {
-    if (Array.isArray(filters) && filters?.length > 0) return;
-
-    setFilters((prevState) =>
-      handleSetFilters([{ fieldId: "serviceId", value: id }], prevState),
-    );
-  }, [filters]);
+  // TODO закомментировал, чтобы не мешать работе автомоков
+  // useEffect(() => {
+  //   if (filters && Object.keys(filters).length > 0) return;
+  //
+  //   setFilters((prevState) =>
+  //     handleSetFilters({  "serviceId: value: id }, prevState),
+  //   );
+  // }, [filters]);
 
   return (
     <StyledPeriodsPage>
+      <ScheduleDetail />
+      <Divider />
+      <T font="Header/H1">Периоды</T>
       <StyledWhiteBlock>
         <FilterSection
           onApplyFilters={handleApplyFilters}
           onResetFilters={handleResetFilters}
         />
       </StyledWhiteBlock>
-
       <StyledWhiteBlock>
-        <TableSection tableKey={tableKey} filters={filters} />
+        <TableSection
+          tableKey={tableKey}
+          filters={filters}
+          onRowClick={onRowClick}
+        />
       </StyledWhiteBlock>
     </StyledPeriodsPage>
   );

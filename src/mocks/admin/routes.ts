@@ -8,7 +8,8 @@ export function adminRoutes(this: Server) {
   });
 
   // POST /api/services-active
-  this.post("/services-active", (schema, request) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  this.post("/services-active", (schema: any, request) => {
     const requestBody = JSON.parse(request.requestBody);
     const filters = requestBody?.filters || [];
 
@@ -20,7 +21,8 @@ export function adminRoutes(this: Server) {
   });
 
   // GET /api/dashboards/:serviceId
-  this.get("/dashboards/:serviceId", (schema, request) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  this.get("/dashboards/:serviceId", (schema: any, request) => {
     const { serviceId } = request.params;
     const chartData = schema.where("chartDatum", { serviceId }).models;
 
@@ -56,13 +58,14 @@ export function adminRoutes(this: Server) {
       let tableData = tableModelData[serviceId]?.[sectionId] || [];
 
       const requestBody = JSON.parse(request.requestBody);
-      const filters = requestBody?.filters || [];
+      const { filters = {}, pagination } = requestBody?.filters || [];
+      const filterSize = Object.keys(filters).length;
 
-      if (filters.length > 0) {
-        tableData = filterFunc(tableData, filters.filters);
+      if (filterSize > 0) {
+        tableData = filterFunc(tableData, filters);
       }
 
-      return paginationFunc(tableData, filters.pagination);
+      return paginationFunc(tableData, pagination);
     },
   );
 }

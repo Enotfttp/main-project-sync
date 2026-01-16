@@ -1,12 +1,18 @@
 import { StyledMainLayout } from "./MainLayout.styled";
-import { Header } from "@widgets/index";
-import { Outlet } from "react-router-dom";
+import { Breadcrumbs, Header } from "@widgets/index";
+import * as React from "react";
+import { Outlet, useLocation } from "react-router-dom";
 
-export const MainLayout = () => (
-  <>
-    <Header />
-    <StyledMainLayout>
-      <Outlet />
-    </StyledMainLayout>
-  </>
-);
+export const MainLayout = () => {
+  const location = useLocation();
+
+  return (
+    <>
+      <Header />
+      <StyledMainLayout>
+        {location.pathname.split("/").length > 2 && <Breadcrumbs />}
+        <Outlet />
+      </StyledMainLayout>
+    </>
+  );
+};

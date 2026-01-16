@@ -11,7 +11,7 @@ import {
 import { StyledServiceText } from "../../ChartDiagram.styled";
 import { getStatusAppearance } from "../../ChartDiagram.utils";
 import { Tag } from "@admiral-ds/react-ui";
-import { ChartData } from "@entities/admin";
+import { ChartData } from "@entities/admin/admin.types";
 import { AdditionalErrorInfo } from "@pages/AdminPage/components/ChartDiagram/components/Legend/AdditionalErrorInfo";
 import { statusConfig } from "@pages/AdminPage/components/DataTable/components/TableSection/column";
 import React from "react";

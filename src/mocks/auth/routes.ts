@@ -3,7 +3,8 @@ import { Response, Server } from "miragejs";
 
 export function authRoutes(this: Server) {
   // POST /api/auth/login
-  this.post("/auth/login", (schema, request) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  this.post("/auth/login", (schema: any, request) => {
     const body = JSON.parse(request.requestBody);
     const { login, password } = body;
 
@@ -33,7 +34,8 @@ export function authRoutes(this: Server) {
   });
 
   // POST /api/auth/register
-  this.post("/auth/register", (schema, request) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  this.post("/auth/register", (schema: any, request) => {
     const body = JSON.parse(request.requestBody);
     const { email, login, password } = body;
 

@@ -1,83 +1,102 @@
-import { FilterValue } from "./Filter.types";
-
-export const buildQueryString = (filters: FilterValue[]): string => {
-  const params = new URLSearchParams();
-
-  filters.forEach((filter) => {
-    if (filter.value !== null && filter.value !== undefined) {
-      if (Array.isArray(filter.value)) {
-        filter.value.forEach((val) =>
-          params.append(filter.fieldId, val.toString()),
-        );
-      } else if (
-        typeof filter.value === "object" &&
-        "min" in filter.value &&
-        "max" in filter.value
-      ) {
-        // Для диапазона сохраняем min и max как отдельные параметры
-        if (filter.value.min !== undefined) {
-          params.append(`${filter.fieldId}_min`, filter.value.min.toString());
-        }
-        if (filter.value.max !== undefined) {
-          params.append(`${filter.fieldId}_max`, filter.value.max.toString());
-        }
-      } else {
-        params.append(filter.fieldId, filter.value.toString());
-      }
-    }
-  });
-
-  return params.toString();
-};
+import { FilterField, FilterValue } from "./Filter.types";
+import { required } from "@shared/utils";
 
 // Универсальный тип для данных с произвольными ключами
 type DataRecord = Record<string, string | number | boolean | Date | null>;
 
 export const filterData = <T extends DataRecord>(
   data: T[],
-  filters: FilterValue[],
+  filters: FilterValue,
 ): T[] => {
   return data.filter((item) => {
-    return filters.every((filter) => {
-      const itemValue = item[filter.fieldId];
+    Object.entries(filters).every(([key, value]) => {
+      const itemValue = item[key];
 
-      if (filter.value === null || filter.value === undefined) {
+      if (value === null || value === undefined) {
         return true;
       }
 
       // Для текстового поиска
-      if (typeof filter.value === "string") {
+      if (typeof value === "string") {
         const stringValue = itemValue?.toString().toLowerCase() || "";
-        return stringValue.includes(filter.value.toLowerCase());
+        return stringValue.includes(value.toLowerCase());
       }
 
       // Для числового диапазона
-      if (
-        typeof filter.value === "object" &&
-        "min" in filter.value &&
-        "max" in filter.value
-      ) {
+      if (typeof value === "object" && "min" in value && "max" in value) {
         const numericValue =
           typeof itemValue === "number" ? itemValue : Number(itemValue);
         if (isNaN(numericValue)) return false;
 
-        const min = filter.value.min ?? -Infinity;
-        const max = filter.value.max ?? Infinity;
+        const min = value.min ?? -Infinity;
+        const max = value.max ?? Infinity;
         return numericValue >= min && numericValue <= max;
       }
 
       // Для мультиселекта
-      if (Array.isArray(filter.value)) {
-        return filter.value.includes(itemValue as string);
+      if (Array.isArray(value)) {
+        return value.includes(itemValue as string);
       }
 
       // Для булевых значений
-      if (typeof filter.value === "boolean") {
-        return Boolean(itemValue) === filter.value;
+      if (typeof value === "boolean") {
+        return Boolean(itemValue) === value;
       }
 
       // Для точного совпадения (числа, даты и т.д.)
-      return itemValue === filter.value;
+      return itemValue === value;
     });
   });
+};
+
+export const parseDateString = (dateStr: string): Date | null => {
+  try {
+    const [day, month, year] = dateStr.split(".").map(Number);
+    if (day && month && year) {
+      return new Date(year, month, day);
+    }
+  } catch {
+    return null;
+  }
+  return null;
+};
+
+export const calculateMaxDate = (
+  fromDateStr: string,
+  dateDifference?: string,
+): Date | undefined => {
+  const fromDate = parseDateString(fromDateStr);
+  if (!fromDate) return;
+
+  const resultDate = new Date(fromDate);
+
+  if (dateDifference) {
+    // Обработка временных интервалов из конфига
+    if (dateDifference.includes("y")) {
+      const years = parseInt(dateDifference.split("y")[0]) || 0;
+      resultDate.setFullYear(resultDate.getFullYear() + years);
+    }
+    if (dateDifference.includes("m")) {
+      const months = parseInt(dateDifference.split("m")[0]) || 0;
+      resultDate.setMonth(resultDate.getMonth() + months);
+    }
+    if (dateDifference.includes("d")) {
+      const days = parseInt(dateDifference.split("d")[0]) || 0;
+      resultDate.setDate(resultDate.getDate() + days);
+    }
+  }
+
+  return resultDate;
+};
+
+export const validate = (values: FilterValue, fields: FilterField[]) => {
+  const errors: Partial<FilterField> = {};
+
+  fields.forEach((field) => {
+    if (field?.required) {
+      errors[field.id] = required(values[field.id]);
+    }
+  });
+
+  return errors;
 };

@@ -4,21 +4,22 @@ import { RouterErrorBoundary } from "../errorBoundary/RouterErrorBoundary";
 import {
   AdminServiceSelector,
   MainLayout,
-  ServiceTabsLayout,
+  MainTabsLayout,
 } from "@layouts/index";
 import {
   AdminPage,
-  ConnectionsPage,
+  DocPage,
+  DocumentsPage,
   EnterPage,
-  EventsPage,
+  PackagePage,
+  PackagesPage,
   PeriodsPage,
-  RKOPage,
 } from "@pages/index";
 import TestUIPage from "@pages/TestUI/TestUIPage";
 import { Loader } from "@shared/ui";
 import { ProtectedRoute, ProtectedRouteAdmin } from "@widgets/index";
 import React, { JSX, Suspense } from "react";
-import { Navigate, RouteObject } from "react-router-dom";
+import { Navigate, Outlet, RouteObject } from "react-router-dom";
 
 const withSuspense = (
   Component: React.LazyExoticComponent<() => JSX.Element>,
@@ -44,26 +45,39 @@ export const routes: RouteObject[] = [
     errorElement: <RouterErrorBoundary />,
   },
   {
-    path: routesPath.rko.root,
+    path: routesPath.root,
     element: <MainLayout />,
     errorElement: <RouterErrorBoundary />,
     children: [
-      { path: routesPath.rko.root, element: withProtectedRoute(RKOPage) },
       {
-        path: routesPath.rko.service.root,
-        element: withProtectedRoute(ConnectionsPage),
-        index: true,
-      },
-      {
-        element: <ServiceTabsLayout />,
+        element: <MainTabsLayout />,
         children: [
           {
-            path: routesPath.rko.service.events.root,
-            element: withProtectedRoute(EventsPage),
+            path: routesPath.packages.root,
+            element: withProtectedRoute(PackagesPage),
+            index: true,
           },
           {
-            path: routesPath.rko.service.periods.root,
+            path: routesPath.documents.root,
+            element: withProtectedRoute(DocPage),
+            index: true,
+          },
+        ],
+      },
+      {
+        element: <Outlet />,
+        children: [
+          {
+            path: routesPath.packages.detail.root,
+            element: withProtectedRoute(PackagePage),
+          },
+          {
+            path: routesPath.packages.detail.periods.root,
             element: withProtectedRoute(PeriodsPage),
+          },
+          {
+            path: routesPath.packages.detail.periods.documents.root,
+            element: withProtectedRoute(DocumentsPage),
           },
         ],
       },

@@ -1,5 +1,5 @@
 import { axiosInstance } from "./axiosInstance";
-import { authService } from "@entities/auth";
+import { authService } from "@entities/auth/auth.service";
 import { storage } from "@shared/utils/storage";
 
 let isRefreshing = false;

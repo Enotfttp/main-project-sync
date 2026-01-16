@@ -13,7 +13,7 @@ import {
   NotificationItemContent,
 } from "@admiral-ds/react-ui";
 import { routesPath } from "@app/providers";
-import { useLoginMutation } from "@entities/auth";
+import { useLoginMutation } from "@entities/auth/auth.hook";
 import { ApiError } from "@shared/api";
 import { InputFieldUI } from "@shared/ui";
 import { FORM_ERROR } from "final-form";
@@ -39,7 +39,7 @@ export const Login: FC<ILoginProps> = ({ btnRedirect }) => {
   const onSubmit = async (values: IInitial) => {
     try {
       await mutateAsync(values);
-      navigate(routesPath.rko.root);
+      navigate(routesPath.packages.root);
     } catch (error) {
       const apiError = error as ApiError;
       const errorMessage =

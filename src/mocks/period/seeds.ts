@@ -1,8 +1,8 @@
 import { generateStructuredPeriods } from "./utils";
-import { IPeriodsList } from "@entities/periods";
+import { IPeriods } from "@entities/periods/types";
 
 export function periodSeeds(server) {
-  const mockedPeriodsList: IPeriodsList[] = generateStructuredPeriods();
+  const mockedPeriodsList: IPeriods[] = generateStructuredPeriods();
   mockedPeriodsList.forEach((auth) => {
     server.create("period", auth);
   });

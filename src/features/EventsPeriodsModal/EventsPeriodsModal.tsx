@@ -4,7 +4,7 @@ import { Modal } from "@shared/ui";
 import * as React from "react";
 // import { columnPeriodsList, columnEventsList } from './EventsPeriodsModal.column';
 // import { useGetEventsList } from '@entities/events';
-// import { useGetPeriodsList } from '@entities/periods';
+// import { usegetPeriods } from '@entities/periods';
 // import { TableSort } from '@shared/ui';
 
 export const EventsPeriodsModal = ({
@@ -14,7 +14,7 @@ export const EventsPeriodsModal = ({
   // const { data: dataEvents } = useGetEventsList(eventsPeriodsId as string, {
   //   enabled: !!eventsPeriodsId && isOpen,
   // });
-  // const { data: dataPeriods } = useGetPeriodsList(eventsPeriodsId as string, {
+  // const { data: dataPeriods } = usegetPeriods(eventsPeriodsId as string, {
   //   enabled: !!eventsPeriodsId && isOpen,
   // });
 

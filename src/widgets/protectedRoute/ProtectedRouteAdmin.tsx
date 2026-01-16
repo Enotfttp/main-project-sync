@@ -1,5 +1,5 @@
 import { routesPath } from "@app/providers";
-import { useServices } from "@entities/admin";
+import { useServices } from "@entities/admin/admin.hook";
 import { Loader } from "@shared/ui";
 import * as React from "react";
 import { useEffect, useState } from "react";

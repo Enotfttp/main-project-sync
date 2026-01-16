@@ -13,6 +13,7 @@ export const StyledUServiceTabs = styled.main`
   flex-direction: column;
   width: 80%;
   margin: auto;
+  width: 80%;
   gap: 20px;
   div {
     display: flex;
