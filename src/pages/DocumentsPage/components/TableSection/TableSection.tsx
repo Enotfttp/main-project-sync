@@ -14,7 +14,7 @@ import { FC, useCallback, useMemo, useState } from "react";
 
 interface IProps {
   tableKey: number;
-  filters?: FilterValue[];
+  filters?: FilterValue;
 }
 
 export const TableSection: FC<IProps> = ({ tableKey, filters }) => {
@@ -29,7 +29,7 @@ export const TableSection: FC<IProps> = ({ tableKey, filters }) => {
       ...el,
       status: DocStatusText[el.status],
       docType: DocTypeText[el.docType],
-      orderStatus: OrderStatusText[el.orderStatus],
+      orderStatus: el.orderStatus ? OrderStatusText[el.orderStatus] : "",
     }));
   }, [dataDoc]);
 

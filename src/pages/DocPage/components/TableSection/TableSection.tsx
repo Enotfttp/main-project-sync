@@ -14,7 +14,7 @@ import { FC, useCallback, useMemo, useState } from "react";
 
 interface IProps {
   tableKey: number;
-  filters?: FilterValue[];
+  filters?: FilterValue;
 }
 
 export const TableSection: FC<IProps> = ({ tableKey, filters }) => {

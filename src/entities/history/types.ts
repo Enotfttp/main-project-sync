@@ -55,5 +55,6 @@ export interface IRequestHistory {
   kafkaSendStatus: RequestHistoryKafkaStatus;
   createdAt: string;
   updatedAt: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   content: Record<string, any>;
 }

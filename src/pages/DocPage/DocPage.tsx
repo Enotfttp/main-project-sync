@@ -26,12 +26,9 @@ const DocPage = () => {
   useLayoutEffect(() => {
     setFilters((prevState) =>
       handleSetFilters(
-        [
-          {
-            fieldId: "docType",
-            value: tabId,
-          },
-        ],
+        {
+          docType: tabId,
+        },
         prevState,
       ),
     );
@@ -41,12 +38,9 @@ const DocPage = () => {
     setTabId(tabId);
     setFilters((prevState) =>
       handleSetFilters(
-        [
-          {
-            fieldId: "docType",
-            value: tabId,
-          },
-        ],
+        {
+          docType: tabId,
+        },
         prevState,
       ),
     );

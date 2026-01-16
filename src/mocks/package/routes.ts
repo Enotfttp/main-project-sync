@@ -6,15 +6,17 @@ export function packageRoutes(this: Server) {
     const requestBody = JSON.parse(request.requestBody);
     let packages = schema.all("package").models.map((el) => el.attrs);
 
-    const filters = requestBody?.filters || [];
+    const { filters = {}, pagination } = requestBody?.filters || [];
+    const filterSize = Object.keys(filters).length;
 
-    if (filters.filters?.length > 0) {
-      packages = filterFunc(packages, filters.filters);
+    if (filterSize > 0) {
+      packages = filterFunc(packages, filters);
     }
 
-    return paginationFunc(packages, filters.pagination);
+    return paginationFunc(packages, pagination);
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   this.get("/packages/:id", (schema: any, request) => {
     const { id } = request.params;
     const packages = schema.all("package").models.map((el) => el.attrs);

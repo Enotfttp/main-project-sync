@@ -6,6 +6,7 @@ type BreadcrumbItem = BreadcrumbsProps["items"][number];
 type RouteNode = {
   root: string;
   label?: string | ((params: Record<string, string>) => string);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 };
 

@@ -20,10 +20,10 @@ const PeriodsPage = () => {
 
   // TODO закомментировал, чтобы не мешать работе автомоков
   // useEffect(() => {
-  //   if (Array.isArray(filters) && filters?.length > 0) return;
+  //   if (filters && Object.keys(filters).length > 0) return;
   //
   //   setFilters((prevState) =>
-  //     handleSetFilters([{ fieldId: "serviceId", value: id }], prevState),
+  //     handleSetFilters({  "serviceId: value: id }, prevState),
   //   );
   // }, [filters]);
 

@@ -6,12 +6,13 @@ export function documentRoutes(this: Server) {
     const requestBody = JSON.parse(request.requestBody);
     let documents = schema.all("document").models.map((el) => el.attrs);
 
-    const filters = requestBody?.filters || [];
+    const { filters = {}, pagination } = requestBody?.filters || [];
+    const filterSize = Object.keys(filters).length;
 
-    if (filters.filters?.length > 0) {
-      documents = filterFunc(documents, filters.filters);
+    if (filterSize > 0) {
+      documents = filterFunc(documents, filters);
     }
 
-    return paginationFunc(documents, filters.pagination);
+    return paginationFunc(documents, pagination);
   });
 }

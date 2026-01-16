@@ -4,179 +4,66 @@ import {
   StyledFilterBody,
   StyledFilterField,
   StyledFilterHeader,
-  StyledFilterRange,
 } from "./Filter.styled";
 import { FilterConfig, FilterField, FilterValue } from "./Filter.types";
+import { validate } from "./utils";
+import { Badge, Button, T } from "@admiral-ds/react-ui";
 import {
-  Badge,
-  Button,
-  Checkbox,
-  DateField,
-  Range,
-  T,
-  TextInput,
-} from "@admiral-ds/react-ui";
-import type { NumberRange } from "@admiral-ds/react-ui/dist/components/Range/utils";
-import { isRangeValue } from "@shared/common";
-import { DropDown, Select } from "@shared/ui";
-import React, { useState } from "react";
+  CheckboxFieldUI,
+  DateFieldUI,
+  DropDown,
+  InputFieldUI,
+  RangeWithInput,
+  SelectFieldUI,
+} from "@shared/ui";
+import React from "react";
+import { Form } from "react-final-form";
 
 export const Filter: React.FC<FilterConfig> = ({
   fields,
   onApply,
   onReset,
 }) => {
-  const [localValues, setLocalValues] = useState<FilterValue[]>([]);
+  const initialState: FilterValue = React.useMemo(
+    () => ({
+      ...fields.reduce((acc, el) => ({ ...acc, [el.name]: "" }), {}),
+    }),
+    [],
+  );
 
-  const handleFieldChange = (fieldId: string, value: FilterValue["value"]) => {
-    const newValues = localValues.filter((v) => v.fieldId !== fieldId);
-
-    if (value !== null && value !== undefined && value !== "") {
-      newValues.push({
-        fieldId,
-        value,
-      });
-    }
-    setLocalValues(newValues);
-  };
-
-  const handleApply = () => {
-    onApply?.(localValues);
+  const handleApply = (values: FilterValue) => {
+    onApply?.(values);
   };
 
   const handleReset = () => {
-    const resetValues: FilterValue[] = [];
-    setLocalValues(resetValues);
     onReset?.();
   };
 
-  const getFieldValue = (fieldId: string): FilterValue["value"] | null => {
-    return localValues.find((v) => v.fieldId === fieldId)?.value ?? null;
-  };
-
   const renderField = (field: FilterField) => {
-    const value = getFieldValue(field.id);
-
     switch (field.type) {
-      case "text":
-        return (
-          <TextInput
-            value={typeof value === "string" ? value : ""}
-            onChange={(e) => handleFieldChange(field.id, e.target.value)}
-            placeholder={field.placeholder}
-            dimension="m"
-          />
-        );
-
       case "number":
-        return (
-          <TextInput
-            type="number"
-            value={typeof value === "number" ? value : ""}
-            onChange={(e) =>
-              handleFieldChange(field.id, Number(e.target.value))
-            }
-            placeholder={field.placeholder}
-            min={field.min}
-            max={field.max}
-            step={field.step}
-            dimension="m"
-          />
-        );
+      case "text":
+        return <InputFieldUI {...field} dimension="m" />;
 
       case "date":
-        return (
-          <DateField
-            value={typeof value === "string" ? value : ""}
-            onChange={(event) =>
-              handleFieldChange(field.id, event.target.value)
-            }
-            placeholder={field.placeholder}
-            dimension="m"
-          />
-        );
+      case "date-range":
+        return <DateFieldUI {...field} dimension="m" />;
 
       case "select":
-        return (
-          <Select
-            value={typeof value === "string" ? value : ""}
-            onSelectedChange={(option) => handleFieldChange(field.id, option)}
-            options={field.options || []}
-            placeholder={field.placeholder || ""}
-            dimension="m"
-          />
-        );
-
       case "multiselect":
         return (
-          <Select
-            multiple
-            value={value ? value?.toString() : []}
-            onSelectedChange={(options) => handleFieldChange(field.id, options)}
-            options={field.options || []}
-            placeholder={field.placeholder || ""}
+          <SelectFieldUI
+            {...field}
+            multiple={field.type === "multiselect"}
             dimension="m"
           />
         );
 
       case "boolean":
-        return (
-          <Checkbox
-            checked={!!value}
-            onChange={(e) => handleFieldChange(field.id, e.target.checked)}
-            dimension="m"
-            value={field.label}
-          />
-        );
+        return <CheckboxFieldUI {...field} dimension="m" />;
 
       case "range": {
-        const min = isRangeValue(value) ? value.min : 0;
-        const max = isRangeValue(value) ? value.max : 10;
-
-        return (
-          <StyledFilterRange>
-            <div>
-              <TextInput
-                type="number"
-                value={min}
-                onChange={(e) =>
-                  handleFieldChange(field.id, {
-                    min: Number(e.target.value),
-                    max,
-                  })
-                }
-                min={field.min}
-                max={field.max}
-                step={field.step}
-                dimension="m"
-              />
-              <TextInput
-                type="number"
-                value={max}
-                onChange={(e) =>
-                  handleFieldChange(field.id, {
-                    min,
-                    max: Number(e.target.value),
-                  })
-                }
-                min={field.min}
-                max={field.max}
-                dimension="m"
-              />
-            </div>
-
-            <Range
-              value={[min, max]}
-              onChange={(_, range: NumberRange) => {
-                handleFieldChange(field.id, {
-                  min: range[0],
-                  max: range[1],
-                });
-              }}
-              maxValue={100}
-            />
-          </StyledFilterRange>
-        );
+        return <RangeWithInput {...field} dimension="m" />;
       }
 
       default:
@@ -184,44 +71,61 @@ export const Filter: React.FC<FilterConfig> = ({
     }
   };
 
-  const activeFiltersCount = localValues.filter(
-    (v) =>
-      v.value !== null &&
-      v.value !== undefined &&
-      v.value !== "" &&
-      !(Array.isArray(v.value) && v.value.length === 0),
-  ).length;
-
   return (
-    <StyledFilter>
-      <DropDown
-        headerChildren={
-          <StyledFilterHeader>
-            <T font="Header/H6">Фильтр</T>
-            {activeFiltersCount > 0 && (
-              <Badge appearance="info">{activeFiltersCount}</Badge>
-            )}
-          </StyledFilterHeader>
-        }
-      >
-        <StyledFilterBody>
-          {fields.map((field) => (
-            <StyledFilterField key={field.id}>
-              <label>{field.label}</label>
-              {renderField(field)}
-            </StyledFilterField>
-          ))}
-        </StyledFilterBody>
+    <Form<FilterValue>
+      initialValues={initialState}
+      onSubmit={handleApply}
+      validate={(values) => validate(values, fields)}
+    >
+      {({ handleSubmit, errors, values = {} }) => {
+        const activeFiltersCount = Object.entries(values).filter(
+          ([key, value]) => initialState[key] !== value,
+        ).length;
 
-        <StyledFilterActions>
-          <Button dimension="s" onClick={handleReset} appearance="secondary">
-            Сбросить
-          </Button>
-          <Button dimension="s" onClick={handleApply} appearance="primary">
-            Применить
-          </Button>
-        </StyledFilterActions>
-      </DropDown>
-    </StyledFilter>
+        return (
+          <form onSubmit={handleSubmit}>
+            <StyledFilter>
+              <DropDown
+                headerChildren={
+                  <StyledFilterHeader>
+                    <T font="Header/H6">Фильтр</T>
+                    {activeFiltersCount > 0 && (
+                      <Badge appearance="info">{activeFiltersCount}</Badge>
+                    )}
+                  </StyledFilterHeader>
+                }
+              >
+                <StyledFilterBody>
+                  {fields.map((field) => (
+                    <StyledFilterField key={field.id}>
+                      {renderField(field)}
+                    </StyledFilterField>
+                  ))}
+                </StyledFilterBody>
+
+                <StyledFilterActions>
+                  <Button
+                    dimension="s"
+                    onClick={handleReset}
+                    appearance="secondary"
+                    type="reset"
+                  >
+                    Сбросить
+                  </Button>
+                  <Button
+                    disabled={Boolean(errors && Object.keys(errors).length)}
+                    dimension="s"
+                    type="submit"
+                    appearance="primary"
+                  >
+                    Применить
+                  </Button>
+                </StyledFilterActions>
+              </DropDown>
+            </StyledFilter>
+          </form>
+        );
+      }}
+    </Form>
   );
 };

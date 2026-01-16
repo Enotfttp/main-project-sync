@@ -6,12 +6,13 @@ export function historyRoutes(this: Server) {
     const requestBody = JSON.parse(request.requestBody);
     let histories = schema.all("history").models.map((el) => el.attrs);
 
-    const filters = requestBody?.filters || [];
+    const { filters = {}, pagination } = requestBody?.filters || [];
+    const filterSize = Object.keys(filters).length;
 
-    if (filters.filters?.length > 0) {
-      histories = filterFunc(histories, filters.filters);
+    if (filterSize > 0) {
+      histories = filterFunc(histories, filters);
     }
 
-    return paginationFunc(histories, filters.pagination);
+    return paginationFunc(histories, pagination);
   });
 }

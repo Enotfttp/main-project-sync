@@ -13,7 +13,7 @@ export type TPaginationTable = {
 };
 
 export type FilterWithPagination = {
-  filters?: FilterValue[];
+  filters?: FilterValue;
   pagination?: TPaginationTable;
 };
 

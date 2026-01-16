@@ -11,7 +11,7 @@ import { FC, useCallback, useMemo, useState } from "react";
 
 interface IProps {
   tableKey: number;
-  filters?: FilterValue[];
+  filters?: FilterValue;
   onRowClick(rowId: string | number): void;
 }
 

@@ -6,12 +6,13 @@ export function optionRoutes(this: Server) {
     const requestBody = JSON.parse(request.requestBody);
     let options = schema.all("option").models.map((el) => el.attrs);
 
-    const filters = requestBody?.filters || [];
+    const { filters = {}, pagination } = requestBody?.filters || [];
+    const filterSize = Object.keys(filters).length;
 
-    if (filters.filters?.length > 0) {
-      options = filterFunc(options, filters.filters);
+    if (filterSize > 0) {
+      options = filterFunc(options, filters);
     }
 
-    return paginationFunc(options, filters.pagination);
+    return paginationFunc(options, pagination);
   });
 }

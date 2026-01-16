@@ -6,15 +6,17 @@ export function periodRoutes(this: Server) {
     const requestBody = JSON.parse(request.requestBody);
     let periods = schema.all("period").models.map((el) => el.attrs);
 
-    const filters = requestBody?.filters || [];
+    const { filters = {}, pagination } = requestBody?.filters || [];
+    const filterSize = Object.keys(filters).length;
 
-    if (filters.filters?.length > 0) {
-      periods = filterFunc(periods, filters.filters);
+    if (filterSize > 0) {
+      periods = filterFunc(periods, filters);
     }
 
-    return paginationFunc(periods, filters.pagination);
+    return paginationFunc(periods, pagination);
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   this.get("/periods/:id", (schema: any, request) => {
     const { id } = request.params;
     const periods = schema.all("period").models.map((el) => el.attrs);

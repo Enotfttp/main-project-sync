@@ -6,15 +6,17 @@ export function scheduleRoutes(this: Server) {
     const requestBody = JSON.parse(request.requestBody);
     let schedules = schema.all("schedule").models.map((el) => el.attrs);
 
-    const filters = requestBody?.filters || [];
+    const { filters = {}, pagination } = requestBody?.filters || [];
+    const filterSize = Object.keys(filters).length;
 
-    if (filters.filters?.length > 0) {
-      schedules = filterFunc(schedules, filters.filters);
+    if (filterSize > 0) {
+      schedules = filterFunc(schedules, filters);
     }
 
-    return paginationFunc(schedules, filters.pagination);
+    return paginationFunc(schedules, pagination);
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   this.get("/schedules/:id", (schema: any, request) => {
     const { id } = request.params;
     const schedules = schema.all("schedule").models.map((el) => el.attrs);

@@ -76,6 +76,7 @@ export const generateMockHistories = (options?: {
   ];
 
   // Генерация контента запроса
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const generateContent = (status: ComcRequestStatus): Record<string, any> => {
     const baseContent = {
       requestData: {

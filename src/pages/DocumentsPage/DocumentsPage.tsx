@@ -16,10 +16,10 @@ const DocumentsPage = () => {
 
   // TODO закомментировал, чтобы не мешать работе автомоков
   // useEffect(() => {
-  //   if (Array.isArray(filters) && filters?.length > 0) return;
+  //   if (filters && Object.keys(filters).length > 0) return;
   //
   //   setFilters((prevState) =>
-  //     handleSetFilters([{ fieldId: "serviceId", value: idPeriod }], prevState),
+  //     handleSetFilters({  "serviceId: value: idPeriod }, prevState),
   //   );
   // }, [filters]);
 

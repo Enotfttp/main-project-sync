@@ -12,9 +12,12 @@ export const filterFields: FilterField[] = [
   {
     id: "executionDate",
     name: "executionDate",
-    type: "date",
-    label: "Дата исполнения документа РОЮЛ",
-    placeholder: "Введите дату исполнения документа РОЮЛ...",
+    type: "date-range",
+    required: true,
+    dateDifference: "1m",
+    label: "Даты исполнения документа РОЮЛ",
+    errorText: "Разница должна не привышать 1 месяц",
+    placeholder: "Введите даты исполнения документа РОЮЛ...",
   },
   {
     id: "status",

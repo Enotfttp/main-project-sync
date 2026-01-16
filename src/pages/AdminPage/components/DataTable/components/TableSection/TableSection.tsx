@@ -10,7 +10,7 @@ import { FC, useCallback, useEffect, useState } from "react";
 
 interface IProps {
   tableKey: number;
-  filters?: FilterValue[];
+  filters?: FilterValue;
   serviceId?: string;
   selectedChartSection?: string;
 }
