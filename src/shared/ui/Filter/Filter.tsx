@@ -77,7 +77,7 @@ export const Filter: React.FC<FilterConfig> = ({
       onSubmit={handleApply}
       validate={(values) => validate(values, fields)}
     >
-      {({ handleSubmit, errors, values = {} }) => {
+      {({ handleSubmit, errors, form, values = {} }) => {
         const activeFiltersCount = Object.entries(values).filter(
           ([key, value]) => initialState[key] !== value,
         ).length;
@@ -106,7 +106,10 @@ export const Filter: React.FC<FilterConfig> = ({
                 <StyledFilterActions>
                   <Button
                     dimension="s"
-                    onClick={handleReset}
+                    onClick={() => {
+                      form.reset();
+                      handleReset();
+                    }}
                     appearance="secondary"
                     type="reset"
                   >
