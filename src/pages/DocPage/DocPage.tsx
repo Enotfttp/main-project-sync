@@ -32,7 +32,7 @@ const DocPage = () => {
         prevState,
       ),
     );
-  }, []);
+  }, [filters]);
 
   const handleSetTabId = (tabId: string) => {
     setTabId(tabId);
