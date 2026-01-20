@@ -15,6 +15,8 @@ export const columnList: Column[] = [
     name: "executionDate",
     title: "Дата окончания периода действия",
     width: "14.2%",
+    sortable: true,
+    type: "date",
   },
   {
     name: "orderStatus",

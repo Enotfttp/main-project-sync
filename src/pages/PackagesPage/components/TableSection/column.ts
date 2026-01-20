@@ -20,6 +20,8 @@ export const columnList: Column[] = [
     name: "activationDateTime",
     title: "Дата подключения подписки",
     width: "20%",
+    sortable: true,
+    type: "date",
   },
   {
     name: "deactivationDateTime",
