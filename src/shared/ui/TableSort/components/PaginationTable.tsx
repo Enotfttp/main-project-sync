@@ -5,9 +5,11 @@ import * as React from "react";
 
 export const PaginationTable = ({
   handlePaginationChange,
+  handleResetSortCols,
   ...props
 }: Partial<PaginationOneProps> & {
   handlePaginationChange(pagination: TPaginationTable): void;
+  handleResetSortCols(): void;
 }) => {
   const [pageSize, setPageSize] = React.useState(props.pageSize || 1);
   const [curPage, setPage] = React.useState(props.page || 1);
@@ -26,6 +28,7 @@ export const PaginationTable = ({
         });
         setPage(page);
         setPageSize(pageSize);
+        handleResetSortCols();
       }}
       style={{ flexGrow: 1 }}
       page={curPage}

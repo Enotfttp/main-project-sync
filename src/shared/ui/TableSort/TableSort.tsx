@@ -197,6 +197,10 @@ export const TableSort = ({ queryKey, ...props }: TableSortProps) => {
     setCols(newCols);
   };
 
+  const handleResetSortCols = () => {
+    setCols([...props.columnList]);
+  };
+
   if (isFetching) {
     return <Loader />;
   }
@@ -215,6 +219,7 @@ export const TableSort = ({ queryKey, ...props }: TableSortProps) => {
         <PaginationTable
           {...props?.paginationProp}
           handlePaginationChange={props?.handlePaginationChange}
+          handleResetSortCols={handleResetSortCols}
           {...props?.pagination}
         />
       )}
