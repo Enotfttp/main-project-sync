@@ -205,6 +205,8 @@ export const TableSort = ({ queryKey, ...props }: TableSortProps) => {
     <StyledTableSort>
       <Table
         {...props}
+        columnList={cols}
+        rowList={rows}
         dimension="m"
         onSortChange={handleSort}
         onColumnResize={handleResize}
