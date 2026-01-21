@@ -1,5 +1,5 @@
 import { PaymentScheduleStatusText } from "@entities/schedule/types";
-import { FilterField } from "@shared/ui/Filter/Filter.types";
+import { FilterField } from "@features/Filter/Filter.types";
 
 export const filterFields: FilterField[] = [
   {

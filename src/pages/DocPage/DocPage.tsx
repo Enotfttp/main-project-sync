@@ -2,8 +2,8 @@ import { FilterSection, TableSection } from "./components";
 import { StyledDocPage, StyledWhiteBlock } from "./DocPage.styled";
 import { T } from "@admiral-ds/react-ui";
 import { DocTypeText } from "@entities/documents/types";
+import { handleSetFilters, useFilter } from "@features/Filter/useFilter";
 import { HorizontalTabsTemplate } from "@shared/ui";
-import { handleSetFilters, useFilter } from "@shared/ui/Filter/useFilter";
 import * as React from "react";
 import { useLayoutEffect, useState } from "react";
 

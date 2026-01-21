@@ -1,4 +1,4 @@
-import { FilterValue } from "@shared/ui/Filter/Filter.types";
+import { FilterValue } from "@features/Filter/Filter.types";
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 

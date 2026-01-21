@@ -1,5 +1,5 @@
-import { FilterValue } from "@shared/ui/Filter/Filter.types";
-import { parseDateString } from "@shared/ui/Filter/utils";
+import { FilterValue } from "@features/Filter/Filter.types";
+import { parseDateString } from "@features/Filter/utils";
 import { TPaginationTable } from "@shared/ui/TableSort/components/Pagination.types";
 
 const singleDateRegex = /^\d{2}\.\d{2}\.\d{4}$/;

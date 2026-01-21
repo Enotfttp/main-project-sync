@@ -1,6 +1,6 @@
 import { filterFields } from "./filter";
-import { Filter } from "@shared/ui";
-import { FilterValue } from "@shared/ui/Filter/Filter.types";
+import { FilterValue } from "@features/Filter/Filter.types";
+import { Filter } from "@features/index";
 import React, { useCallback } from "react";
 
 interface FilterSectionProps {

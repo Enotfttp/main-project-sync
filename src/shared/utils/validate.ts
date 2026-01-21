@@ -1,4 +1,4 @@
-import { TValue } from "@shared/ui/Filter/Filter.types";
+import { TValue } from "@features/Filter/Filter.types";
 
 export const emailRegexp = new RegExp(
   /^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i,

@@ -1,7 +1,7 @@
 import { FilterSection, TableSection } from "./components";
 import { StyledPackagesPage, StyledWhiteBlock } from "./PackagesPage.styled";
 import { T } from "@admiral-ds/react-ui";
-import { useFilter } from "@shared/ui/Filter/useFilter";
+import { useFilter } from "@features/Filter/useFilter";
 import * as React from "react";
 
 const PackagesPage = () => {

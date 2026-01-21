@@ -1,7 +1,7 @@
 import { FilterSection, PeriodDetail, TableSection } from "./components";
 import { StyledDocumentsPage, StyledWhiteBlock } from "./DocumentsPage.styled";
 import { Divider, T } from "@admiral-ds/react-ui";
-import { useFilter } from "@shared/ui/Filter/useFilter";
+import { useFilter } from "@features/Filter/useFilter";
 import * as React from "react";
 import { useParams } from "react-router-dom";
 

@@ -1,6 +1,6 @@
 import { FilterSection, TableSection } from "./components";
 import { StyledPackagesPage, StyledWhiteBlock } from "./HistoryPage.styled";
-import { useFilter } from "@shared/ui/Filter/useFilter";
+import { useFilter } from "@features/Filter/useFilter";
 import * as React from "react";
 
 const HistoryPage = () => {
