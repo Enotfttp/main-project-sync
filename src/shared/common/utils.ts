@@ -1,4 +1,4 @@
-import { FilterValue } from "@shared/ui/Filter/Filter.types";
+import { FilterValue } from "@features/Filter/Filter.types";
 
 export function uid(): string {
   return (performance.now().toString(36) + Math.random().toString(36)).replace(

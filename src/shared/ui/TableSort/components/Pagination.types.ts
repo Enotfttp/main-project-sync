@@ -1,4 +1,4 @@
-import { FilterValue } from "@shared/ui/Filter/Filter.types";
+import { FilterValue } from "@features/Filter/Filter.types";
 
 export type TPaginationData = {
   pageSize: number;

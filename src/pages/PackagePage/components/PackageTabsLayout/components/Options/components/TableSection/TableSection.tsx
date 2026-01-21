@@ -1,9 +1,9 @@
 import { columnList } from "./column";
 import { useGetOptions } from "@entities/options/hook";
 import { PackageStatusText } from "@entities/package/types";
+import { FilterValue } from "@features/Filter/Filter.types";
 import { additionalHover } from "@shared/common";
 import { TableSort } from "@shared/ui";
-import { FilterValue } from "@shared/ui/Filter/Filter.types";
 import { TPaginationTable } from "@shared/ui/TableSort/components/Pagination.types";
 import * as React from "react";
 import { FC, useCallback, useMemo, useState } from "react";
