@@ -15,9 +15,9 @@ export const filterFields: FilterField[] = [
     type: "date-range",
     required: true,
     dateDifference: "1m",
-    label: "Даты исполнения документа РОЮЛ",
+    label: "Интервал дат окончания периода действия",
     errorText: "Разница должна не привышать 1 месяц",
-    placeholder: "Введите даты исполнения документа РОЮЛ...",
+    placeholder: "Введите интервал дат окончания периода действия...",
   },
   {
     id: "status",

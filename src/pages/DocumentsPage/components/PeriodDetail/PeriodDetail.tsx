@@ -59,14 +59,14 @@ export const PeriodDetail = () => {
           </StyledInfoRow>
         )}
 
-        {data?.amount && (
+        {!!data?.amount && (
           <StyledInfoRow>
             <T font="Main/XS-bold">Сумма начисления в валюте:</T>
             <T font="Additional/L">{data?.amount}</T>
           </StyledInfoRow>
         )}
 
-        {data?.additionalAmount && (
+        {!!data?.additionalAmount && (
           <StyledInfoRow>
             <T font="Main/XS-bold">Сумма доначисления в валюте:</T>
             <T font="Additional/L">{data?.additionalAmount}</T>

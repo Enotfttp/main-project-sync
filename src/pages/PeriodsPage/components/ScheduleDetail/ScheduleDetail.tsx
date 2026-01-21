@@ -65,14 +65,14 @@ export const ScheduleDetail = () => {
           </StyledInfoRow>
         )}
 
-        {data?.utilityPriority && (
+        {!!data?.utilityPriority && (
           <StyledInfoRow>
             <T font="Main/XS-bold">Приоритет оплаты:</T>
             <T font="Additional/L">{data?.utilityPriority}</T>
           </StyledInfoRow>
         )}
 
-        {data?.vatDocumentTypeAmountFullNds && (
+        {!!data?.vatDocumentTypeAmountFullNds && (
           <StyledInfoRow>
             <T font="Main/XS-bold">
               Общая сумма комисии с учётом скидок, с НДС:
@@ -88,14 +88,14 @@ export const ScheduleDetail = () => {
           </StyledInfoRow>
         )}
 
-        {data?.vatDocumentTypeAmountNdsCur && (
+        {!!data?.vatDocumentTypeAmountNdsCur && (
           <StyledInfoRow>
             <T font="Main/XS-bold">Сумма НДС в валюте тарифа:</T>
             <T font="Additional/L">{data?.vatDocumentTypeAmountNdsCur}</T>
           </StyledInfoRow>
         )}
 
-        {!!data?.processDocProcessCode && (
+        {data?.processDocProcessCode && (
           <StyledInfoRow>
             <T font="Main/XS-bold">Код управляющего признака:</T>
             <T font="Additional/L">{data?.processDocProcessCode}</T>
