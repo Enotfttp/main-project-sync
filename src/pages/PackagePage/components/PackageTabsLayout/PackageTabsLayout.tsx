@@ -1,10 +1,10 @@
-import { History, Options, Schedule } from "./components";
+import { Options, RequestTypes, Schedule } from "./components";
 import { HorizontalTabsTemplate } from "@shared/ui";
 import * as React from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
-type TTabs = "schedule" | "options" | "history";
+type TTabs = "schedule" | "options" | "requestTypes";
 
 const TABS = [
   {
@@ -16,8 +16,8 @@ const TABS = [
     tabId: "options",
   },
   {
-    text: "История изменений",
-    tabId: "history",
+    text: "Типы запросов",
+    tabId: "requestTypes",
   },
 ];
 
@@ -38,7 +38,7 @@ export const PackageTabsLayout = () => {
       />
       {tabId === "schedule" && <Schedule />}
       {tabId === "options" && <Options />}
-      {tabId === "history" && <History />}
+      {tabId === "requestTypes" && <RequestTypes />}
     </>
   );
 };
