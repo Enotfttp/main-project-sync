@@ -19,6 +19,9 @@ import { packageSeeds } from "./package/seeds";
 import { periodModels } from "./period/model";
 import { periodRoutes } from "./period/routes";
 import { periodSeeds } from "./period/seeds";
+import { requestTypeModels } from "./requestTypes/model";
+import { requestTypeRoutes } from "./requestTypes/routes";
+import { requestTypeSeeds } from "./requestTypes/seeds";
 import { scheduleModels } from "./schedule/model";
 import { scheduleRoutes } from "./schedule/routes";
 import { scheduleSeeds } from "./schedule/seeds";
@@ -35,6 +38,7 @@ export function makeServer() {
       ...packageModels,
       ...historyModels,
       ...optionModels,
+      ...requestTypeModels,
     },
 
     seeds(server) {
@@ -46,6 +50,7 @@ export function makeServer() {
       packageSeeds(server);
       historySeeds(server);
       optionSeeds(server);
+      requestTypeSeeds(server);
     },
 
     routes() {
@@ -59,6 +64,7 @@ export function makeServer() {
       packageRoutes.call(this);
       historyRoutes.call(this);
       optionRoutes.call(this);
+      requestTypeRoutes.call(this);
 
       this.passthrough();
     },

@@ -39,6 +39,7 @@ export const routes: RouteObject[] = [
     element: <Navigate to={routesPath.enter.root} />,
     index: true,
   },
+
   {
     path: routesPath.enter.root,
     element: <EnterPage />,
