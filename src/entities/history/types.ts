@@ -6,13 +6,29 @@ export type ComcRequestStatus =
   | "COMPLETED"
   | "ERROR";
 
-export const ComcRequestStatusText = {
+export const ComcRequestStatusText: Record<ComcRequestStatus, string> = {
   CREATED: "Создан",
   ACCEPTED: "Принят в обработку",
   REJECTED: "Отклонён",
   PROCESSED: "В процессе обработки",
   COMPLETED: "Работа с завершена",
   ERROR: "Ошибка обработки",
+};
+
+type TStepperStatus = "completed" | "warning" | "error" | undefined;
+
+interface IParamView {
+  priority: number;
+  status: TStepperStatus;
+}
+
+export const ComcRequestStatusView: Record<ComcRequestStatus, IParamView> = {
+  CREATED: { priority: 0, status: "completed" },
+  ACCEPTED: { priority: 1, status: "completed" },
+  REJECTED: { priority: 2, status: "warning" },
+  PROCESSED: { priority: 3, status: "completed" },
+  COMPLETED: { priority: 4, status: "completed" },
+  ERROR: { priority: 5, status: "error" },
 };
 
 export type ComcResultType =

@@ -1,5 +1,7 @@
-import { Model } from "miragejs";
+import { hasMany, Model } from "miragejs";
 
 export const requestTypeModels = {
-  requestType: Model,
+  requestType: Model.extend({
+    history: hasMany("history"),
+  }),
 };

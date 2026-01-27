@@ -1,18 +1,17 @@
 import { useModalContext } from "./ModalContext";
+import { IModalHistoryConfig, ModalHistoryChange } from "@widgets/Modals";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 interface ModalConfig {
-  [key: string]: {
-    component: React.ComponentType<{ params: Record<string, string> }>;
-    title: string;
-  };
+  historyRequestType: IModalHistoryConfig;
 }
 
 const modalConfig: ModalConfig = {
   historyRequestType: {
-    component: ({ params }) => <div>Пользователь ID: {params.id}</div>,
+    component: ({ params }) => <ModalHistoryChange {...params} />,
     title: "История изменений",
+    customWidth: "70%",
   },
 };
 
@@ -27,11 +26,15 @@ export const ModalRouteHandler = () => {
       const config = modalConfig[modalName];
       const params = Object.fromEntries(searchParams.entries());
 
-      openModal(<config.component params={params} />, config.title);
+      openModal(
+        <config.component params={params} />,
+        config.title,
+        config.customWidth,
+      );
     } else {
       closeModal();
     }
   }, [modalName, location.search]);
 
-  return null; // Этот компонент ничего не рендерит
+  return null;
 };

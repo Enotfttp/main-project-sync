@@ -1,4 +1,4 @@
-import { historiesService } from "./api";
+import { historyService } from "./api";
 import { IRequestHistory } from "./types";
 import {
   FilterWithPagination,
@@ -20,7 +20,21 @@ export const useGetHistories = (
 ) => {
   return useQuery({
     queryKey: ["histories", filters],
-    queryFn: () => historiesService.getHistory(filters),
+    queryFn: () => historyService.getHistories(filters),
+    ...options,
+  });
+};
+
+export const useGetHistory = (
+  id: string,
+  options?: Omit<
+    UseQueryOptions<IRequestHistory, Error, IRequestHistory, QueryKey>,
+    "queryKey" | "queryFn"
+  >,
+) => {
+  return useQuery({
+    queryKey: ["history", id],
+    queryFn: () => historyService.getHistory(id),
     ...options,
   });
 };

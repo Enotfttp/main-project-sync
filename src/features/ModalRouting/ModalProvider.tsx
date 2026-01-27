@@ -2,10 +2,12 @@ import { ModalContext } from "./ModalContext";
 import { Modal } from "@shared/ui";
 import * as React from "react";
 import { createPortal } from "react-dom";
+import { useNavigate } from "react-router-dom";
 
 interface ModalState {
   content: React.ReactNode;
   title: string;
+  customWidth?: string;
   isOpen: boolean;
   onClose?: () => void;
   buttons?: React.ReactNode;
@@ -14,36 +16,48 @@ interface ModalState {
 export const ModalProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const navigate = useNavigate();
   const [modalState, setModalState] = React.useState<ModalState>({
     content: null,
     title: "",
+    customWidth: "",
     isOpen: false,
   });
 
   const openModal = (
     content: React.ReactNode,
     title: string = "",
+    customWidth?: string,
     buttons?: React.ReactNode,
   ) => {
     setModalState({
       content,
       title,
+      customWidth,
       isOpen: true,
       buttons,
     });
   };
 
   const closeModal = () => {
+    const cleanSearchParams = new URLSearchParams();
+
     setModalState((prev) => ({ ...prev, isOpen: false }));
     // Очищаем контент после анимации закрытия
-    setTimeout(() => {
-      setModalState({
-        content: null,
-        title: "",
-        isOpen: false,
-        buttons: undefined,
-      });
-    }, 300);
+    setModalState({
+      content: null,
+      title: "",
+      customWidth: undefined,
+      isOpen: false,
+      buttons: undefined,
+    });
+    navigate(
+      {
+        pathname: location.pathname,
+        search: cleanSearchParams.toString(),
+      },
+      { replace: true },
+    );
   };
 
   const renderModal = () => {
@@ -52,6 +66,9 @@ export const ModalProvider: React.FC<{ children: React.ReactNode }> = ({
     return createPortal(
       <Modal
         isOpen={modalState.isOpen}
+        style={{
+          width: modalState.customWidth || "100%",
+        }}
         setClose={closeModal}
         title={modalState.title}
         children={{

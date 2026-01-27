@@ -5,15 +5,22 @@ import {
   TableDataWithPagination,
 } from "@shared/ui/TableSort/components/Pagination.types";
 
-class HistoriesService {
-  async getHistory(
+class HistoryService {
+  async getHistories(
     filters?: FilterWithPagination,
   ): Promise<TableDataWithPagination<IRequestHistory>> {
     const response = await axiosInstance.post(`/api/histories`, {
       filters: filters,
     });
+
+    return response.data;
+  }
+
+  async getHistory(id: string): Promise<IRequestHistory> {
+    const response = await axiosInstance.get(`/api/histories/${id}`);
+
     return response.data;
   }
 }
 
-export const historiesService = new HistoriesService();
+export const historyService = new HistoryService();
