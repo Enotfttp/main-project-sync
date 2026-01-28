@@ -1,35 +1,29 @@
 import { ModalHistoryContent } from "./components";
+import { useHistoryStepsGenerated } from "./hook";
 import {
   StyledBtnWrapper,
   StyledModalHistoryChange,
 } from "./ModalHistoryChange.styled";
-import { IParams } from "./ModalHistoryChange.types";
-import { configGenerated, configGeneratedForIndex } from "./utils";
-import {
-  Button,
-  Step,
-  StepContent,
-  Stepper,
-  StepProps,
-} from "@admiral-ds/react-ui";
+import { IParams, IStepPropsExtKey } from "./ModalHistoryChange.types";
+import { configGeneratedForIndex } from "./utils";
+import { Button, Step, StepContent, Stepper } from "@admiral-ds/react-ui";
 import { useGetHistory } from "@entities/history/hook";
-import {
-  ComcRequestStatus,
-  ComcRequestStatusText,
-  ComcRequestStatusView,
-} from "@entities/history/types";
+import { ComcRequestStatusView } from "@entities/history/types";
 import * as React from "react";
-import { useEffect } from "react";
-
-export interface IStepPropsExtKey extends StepProps {
-  key: ComcRequestStatus;
-  content: string;
-}
+import { useMemo } from "react";
 
 export const ModalHistoryChange = ({ id }: IParams) => {
   const { data: dataHistory } = useGetHistory(id);
   const [steps, setSteps] = React.useState<IStepPropsExtKey[]>([]);
   const [activeStep, setActiveStep] = React.useState(1);
+
+  const currentStatus = useMemo(
+    () =>
+      dataHistory?.length
+        ? dataHistory[dataHistory.length - 1].status
+        : "CREATED",
+    [dataHistory],
+  );
 
   const handleStepClick = ({
     index,
@@ -43,32 +37,17 @@ export const ModalHistoryChange = ({ id }: IParams) => {
   };
 
   const handleChangeStep = (index) => {
-    if (!dataHistory?.status) return;
-
-    const newSteps = configGeneratedForIndex(index, dataHistory.status, steps);
+    const newSteps = configGeneratedForIndex(index, currentStatus, steps);
 
     setSteps(newSteps);
     setActiveStep(index);
   };
 
-  useEffect(() => {
-    if (!dataHistory?.status) return;
-    const newSteps = Object.entries(ComcRequestStatusText).map(([key, val]) => {
-      const config = configGenerated(
-        key as ComcRequestStatus,
-        dataHistory?.status,
-      );
-
-      return {
-        key: key,
-        content: val,
-        ...config,
-      };
-    }) as IStepPropsExtKey[];
-
-    setSteps(newSteps);
-    setActiveStep(ComcRequestStatusView[dataHistory.status].priority);
-  }, [dataHistory]);
+  useHistoryStepsGenerated({
+    dataHistory,
+    setSteps,
+    setActiveStep,
+  });
 
   return (
     <StyledModalHistoryChange>
@@ -80,7 +59,12 @@ export const ModalHistoryChange = ({ id }: IParams) => {
             </Step>
           ))}
       </Stepper>
-      {dataHistory && <ModalHistoryContent dataHistory={dataHistory} />}
+      {Boolean(steps.length) && (
+        <ModalHistoryContent
+          dataHistory={dataHistory!}
+          currentStep={steps[activeStep]}
+        />
+      )}
       <StyledBtnWrapper>
         <Button
           onClick={() => {
@@ -99,9 +83,8 @@ export const ModalHistoryChange = ({ id }: IParams) => {
           }}
           disabled={
             activeStep === steps.length - 1 ||
-            (dataHistory?.status &&
-              activeStep ===
-                ComcRequestStatusView[dataHistory?.status].priority)
+            (currentStatus &&
+              activeStep === ComcRequestStatusView[currentStatus].priority)
           }
           dimension="s"
         >

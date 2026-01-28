@@ -8,7 +8,7 @@ export const PaginationTable = ({
   handleResetSortCols,
   ...props
 }: Partial<PaginationOneProps> & {
-  handlePaginationChange(pagination: TPaginationTable): void;
+  handlePaginationChange?(pagination: TPaginationTable): void;
   handleResetSortCols(): void;
 }) => {
   const [pageSize, setPageSize] = React.useState(props.pageSize || 1);
@@ -22,10 +22,13 @@ export const PaginationTable = ({
     <PaginationOne
       {...props}
       onChange={({ page, pageSize }) => {
-        handlePaginationChange({
-          page: page,
-          pageSize: pageSize,
-        });
+        if (handlePaginationChange) {
+          handlePaginationChange({
+            page: page,
+            pageSize: pageSize,
+          });
+        }
+
         setPage(page);
         setPageSize(pageSize);
         handleResetSortCols();

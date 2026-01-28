@@ -1,4 +1,5 @@
-import { ComcRequestStatus } from "@entities/history/types";
+import { StepProps } from "@admiral-ds/react-ui";
+import { ComcRequestStatus, IContent } from "@entities/history/types";
 
 export interface IModalHistoryConfig {
   component: React.ComponentType<{ params: IParams }>;
@@ -9,4 +10,10 @@ export interface IModalHistoryConfig {
 export interface IParams {
   id: string;
   type: ComcRequestStatus;
+}
+
+export interface IStepPropsExtKey extends StepProps {
+  key: ComcRequestStatus;
+  content: string;
+  contentInfo?: IContent;
 }

@@ -1,33 +1,64 @@
-import { IStepPropsExtKey } from "./ModalHistoryChange";
+import { IStepPropsExtKey } from "./ModalHistoryChange.types";
 import {
   ComcRequestStatus,
+  ComcRequestStatusText,
   ComcRequestStatusView,
+  IRequestHistory,
 } from "@entities/history/types";
 
 /**
  * Метод генераци конфига для степпера.
  *
- * @param status - статус каждого элемента массива
- * @param currentStatus - текущий статус, который пришёл в ресте
+ * @param dataHistory - Информация, которая пришла из реста по истории изменения
  */
-export const configGenerated = (
-  status: ComcRequestStatus,
-  currentStatus: ComcRequestStatus,
-) => {
+export const configGenerated = (dataHistory: IRequestHistory[]) => {
+  const currentStatus = dataHistory[dataHistory.length - 1].status;
   const currentStatusPriority = ComcRequestStatusView[currentStatus].priority;
-  const statusPriority = ComcRequestStatusView[status].priority;
+  let prevStatusPriority = 0;
 
-  if (currentStatusPriority < statusPriority) {
-    return;
+  if (dataHistory.length > 1) {
+    const prevStatus = dataHistory[dataHistory.length - 2].status;
+    prevStatusPriority = ComcRequestStatusView[prevStatus].priority;
   }
 
-  return {
-    [ComcRequestStatusView[status].status!]: status !== currentStatus,
-    // Обход логики Stepper'а на disabled шагов со статусами warning и error
-    active:
-      ComcRequestStatusView[status].status === "warning" ||
-      ComcRequestStatusView[status].status === "error",
-  };
+  const allSteps = Object.entries(ComcRequestStatusText).map(([key, val]) => {
+    const statusPriority = ComcRequestStatusView[key].priority;
+
+    if (currentStatus === "ERROR" || currentStatus === "REJECTED") {
+      if (prevStatusPriority >= statusPriority) {
+        return {
+          [ComcRequestStatusView[key].status!]: true,
+          active: true,
+          key: key,
+          content: val,
+        };
+      }
+    }
+
+    if (
+      !["ERROR", "REJECTED"].includes(currentStatus) &&
+      !["ERROR", "REJECTED"].includes(key)
+    ) {
+      return {
+        [ComcRequestStatusView[key].status!]:
+          currentStatusPriority > statusPriority,
+        active: currentStatusPriority >= statusPriority,
+        key: key,
+        content: val,
+      };
+    }
+  });
+
+  if (["ERROR", "REJECTED"].includes(currentStatus)) {
+    allSteps.push({
+      [ComcRequestStatusView[currentStatus as string].status]: true,
+      active: true,
+      key: currentStatus,
+      content: ComcRequestStatusText[currentStatus],
+    });
+  }
+
+  return allSteps.filter((el) => el) as IStepPropsExtKey[];
 };
 
 /**
@@ -46,7 +77,7 @@ export const configGeneratedForIndex = (
     const currentPriorityStatus = ComcRequestStatusView[currentStatus].priority;
     const currentStepStatus = ComcRequestStatusView[step.key].status;
 
-    if (i < currentPriorityStatus + 1) {
+    if (i < currentPriorityStatus) {
       return { ...step, [currentStepStatus!]: i !== index };
     }
 

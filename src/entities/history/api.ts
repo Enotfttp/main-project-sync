@@ -16,7 +16,7 @@ class HistoryService {
     return response.data;
   }
 
-  async getHistory(id: string): Promise<IRequestHistory> {
+  async getHistory(id: string): Promise<IRequestHistory[]> {
     const response = await axiosInstance.get(`/api/histories/${id}`);
 
     return response.data;

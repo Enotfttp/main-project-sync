@@ -1,4 +1,4 @@
-import type {
+import {
   IRequestType,
   TRequestTypeEventType,
   TRequestTypeRequestStatus,
@@ -11,121 +11,107 @@ export const generateStructuredRequestTypes = (
 ): IRequestType[] => {
   const requests: IRequestType[] = [];
 
-  // Маппинг вероятностей статусов
-  const statusProbabilities = {
-    CREATED: 0.25,
-    ACCEPTED: 0.15,
-    REJECTED: 0.1,
-    PROCESSED: 0.2,
-    COMPLETED: 0.25,
-    ERROR: 0.05,
-  };
+  // Все статусы, которые должны быть гарантированно
+  const allStatuses: TRequestTypeRequestStatus[] = [
+    "CREATED",
+    "ACCEPTED",
+    "REJECTED",
+    "PROCESSED",
+    "COMPLETED",
+    "ERROR",
+  ];
 
-  // Маппинг resultType в зависимости от status
-  const resultTypeByStatus: Record<
-    TRequestTypeRequestStatus,
-    TRequestTypeResultType[]
-  > = {
-    CREATED: ["PAYMENT_SUCCESS", "PAYMENT_DECLINE", "CARD_INDEX"],
-    ACCEPTED: ["PAYMENT_SUCCESS", "CARD_INDEX"],
-    REJECTED: ["PAYMENT_DECLINE", "ANNULMENT"],
-    PROCESSED: ["CARD_INDEX", "PAYMENT_SUCCESS", "ANNULMENT"],
-    COMPLETED: ["PAYMENT_SUCCESS", "PAYMENT_DECLINE", "CANCELLATION"],
-    ERROR: ["PAYMENT_DECLINE", "CANCELLATION", "ANNULMENT"],
-  };
+  // Все возможные event types
+  const allEventTypes: TRequestTypeEventType[] = [
+    "PACKAGE_ACTIVATION",
+    "OPTION_ACTIVATION",
+    "PRE_OPTION_ACTIVATION",
+    "PACKAGE_PROLONGATION",
+    "OPTION_PROLONGATION",
+    "PACKAGE_CHANGE",
+    "PRIORITY_CHANGE",
+    "SCHEDULE_UPDATE",
+    "PACKAGE_MIGRATION",
+    "OPTION_MIGRATION",
+    "DISABLE_OPTION",
+    "CANCEL_FEE",
+  ];
 
-  // Event types сгруппированы по категориям
-  const eventTypes = {
-    ACTIVATION: [
-      "PACKAGE_ACTIVATION",
-      "OPTION_ACTIVATION",
-      "PRE_OPTION_ACTIVATION",
-    ],
-    PROLONGATION: ["PACKAGE_PROLONGATION", "OPTION_PROLONGATION"],
-    CHANGE: ["PACKAGE_CHANGE", "PRIORITY_CHANGE", "SCHEDULE_UPDATE"],
-    MIGRATION: ["PACKAGE_MIGRATION", "OPTION_MIGRATION"],
-    DISABLE: ["DISABLE_OPTION", "CANCEL_FEE"],
-  };
+  // 1. Сначала создаем по одной записи для каждого статуса (гарантированно)
+  allStatuses.forEach((status, index) => {
+    const eventType = faker.helpers.arrayElement(allEventTypes);
 
-  const allEventTypes = Object.values(
-    eventTypes,
-  ).flat() as TRequestTypeEventType[];
-
-  for (let i = 0; i < count; i++) {
-    // Генерация базовых дат
-    const requestCreatedAt = faker.date.between({
-      from: "2024-01-01T00:00:00.000Z",
-      to: "2024-12-31T23:59:59.999Z",
-    });
-
-    const createdAt = faker.date.between({
-      from: new Date(requestCreatedAt.getTime() - 2 * 24 * 60 * 60 * 1000), // -2 дня
-      to: requestCreatedAt,
-    });
-
+    const requestCreatedAt = faker.date.past({ years: 1 });
+    const createdAt = faker.date.past({ refDate: requestCreatedAt });
     const updatedAt = faker.date.between({
       from: requestCreatedAt,
       to: new Date(),
     });
 
-    // Выбор статуса на основе вероятностей
-    const randomStatus = Math.random();
-    let cumulativeProbability = 0;
-    let status: TRequestTypeRequestStatus = "CREATED";
-
-    for (const [stat, prob] of Object.entries(statusProbabilities)) {
-      cumulativeProbability += prob;
-      if (randomStatus < cumulativeProbability) {
-        status = stat as TRequestTypeRequestStatus;
-        break;
-      }
+    // Простая логика для resultType
+    let resultType: TRequestTypeResultType = "PAYMENT_SUCCESS";
+    if (status === "REJECTED" || status === "ERROR") {
+      resultType = faker.helpers.arrayElement([
+        "PAYMENT_DECLINE",
+        "ANNULMENT",
+        "CANCELLATION",
+      ]);
     }
 
-    // Выбор resultType в зависимости от статуса
-    const availableResultTypes = resultTypeByStatus[status];
-    const resultType = faker.helpers.arrayElement(availableResultTypes);
+    requests.push({
+      id: index + 1,
+      incomingMessageId: faker.number.int({ min: 1000, max: 9999 }),
+      packageSubscriptionId: faker.number.int({ min: 1, max: 100 }),
+      requestId: faker.number.int({ min: 1000, max: 9999 }),
+      status,
+      resultType,
+      errorCode:
+        status === "REJECTED" || status === "ERROR"
+          ? faker.helpers.arrayElement(["ERR-001", "ERR-002"])
+          : "",
+      errorMessage:
+        status === "REJECTED" || status === "ERROR"
+          ? faker.lorem.sentence()
+          : "",
+      requestCreatedAt: requestCreatedAt.toISOString(),
+      eventType,
+      content: null,
+      createdAt: createdAt.toISOString(),
+      updatedAt: updatedAt.toISOString(),
+    });
+  });
 
-    // Выбор eventType
+  // 2. Добавляем дополнительные записи до нужного количества
+  for (let i = allStatuses.length; i < count; i++) {
+    const status = faker.helpers.arrayElement(allStatuses);
     const eventType = faker.helpers.arrayElement(allEventTypes);
 
-    // Генерация ошибок для соответствующих статусов
-    let errorCode = "";
-    let errorMessage = "";
-
-    if (status === "REJECTED" || status === "ERROR") {
-      const errorCodes = [
-        "ERR-001",
-        "ERR-002",
-        "ERR-003",
-        "VALIDATION_ERROR",
-        "PAYMENT_FAILED",
-      ];
-      const errorMessages = [
-        "Недостаточно средств на счете",
-        "Ошибка подключения к платежной системе",
-        "Истек срок действия карты",
-        "Неверные реквизиты",
-        "Превышен лимит операций",
-        "Техническая ошибка сервера",
-      ];
-
-      errorCode = faker.helpers.arrayElement(errorCodes);
-      errorMessage = faker.helpers.arrayElement(errorMessages);
-    }
-
-    // Генерация content в зависимости от eventType
-    // TODO сделать контент
-    // const content = faker.;
+    const requestCreatedAt = faker.date.past({ years: 1 });
+    const createdAt = faker.date.past({ refDate: requestCreatedAt });
+    const updatedAt = faker.date.between({
+      from: requestCreatedAt,
+      to: new Date(),
+    });
 
     requests.push({
       id: i + 1,
       incomingMessageId: faker.number.int({ min: 1000, max: 9999 }),
-      packageSubscriptionId: faker.number.int({ min: 5000, max: 5010 }),
-      requestId: faker.number.int({ min: 2000, max: 2999 }),
+      packageSubscriptionId: faker.number.int({ min: 1, max: 100 }),
+      requestId: faker.number.int({ min: 1000, max: 9999 }),
       status,
-      resultType,
-      errorCode,
-      errorMessage,
+      resultType: faker.helpers.arrayElement([
+        "PAYMENT_SUCCESS",
+        "PAYMENT_DECLINE",
+        "CARD_INDEX",
+      ]),
+      errorCode:
+        status === "REJECTED" || status === "ERROR"
+          ? faker.helpers.arrayElement(["ERR-001", "ERR-002"])
+          : "",
+      errorMessage:
+        status === "REJECTED" || status === "ERROR"
+          ? faker.lorem.sentence()
+          : "",
       requestCreatedAt: requestCreatedAt.toISOString(),
       eventType,
       content: null,
@@ -134,5 +120,6 @@ export const generateStructuredRequestTypes = (
     });
   }
 
-  return requests;
+  // Перемешиваем результат
+  return [...requests].sort(() => 0.5 - Math.random());
 };

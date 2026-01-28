@@ -22,7 +22,7 @@ export const RequestTypes = () => {
   };
 
   return (
-    <Tags>
+    <Tags width="100%">
       {requestTypes?.map((requestType) => {
         const config = statusConfig[requestType.status];
 

@@ -28,7 +28,7 @@ export const useGetHistories = (
 export const useGetHistory = (
   id: string,
   options?: Omit<
-    UseQueryOptions<IRequestHistory, Error, IRequestHistory, QueryKey>,
+    UseQueryOptions<IRequestHistory[], Error, IRequestHistory[], QueryKey>,
     "queryKey" | "queryFn"
   >,
 ) => {

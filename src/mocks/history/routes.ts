@@ -1,3 +1,4 @@
+import { scenarios } from "@mocks/history/utils";
 import { filterFunc, paginationFunc } from "@mocks/utils";
 import { Server } from "miragejs";
 
@@ -22,7 +23,12 @@ export function historyRoutes(this: Server) {
     const requestTypes = schema.all("requestType").models.map((el) => el.attrs);
     const currentRequesttType = requestTypes.find((el) => el.id === id);
     const histories = schema.all("history").models.map((el) => el.attrs);
+    const currentId = scenarios.find(
+      (scenery) =>
+        scenery.statuses[scenery.statuses.length - 1] ===
+        currentRequesttType.status,
+    )?.comcRequestId;
 
-    return histories.find((el) => el.status === currentRequesttType.status);
+    return histories.filter((el) => el.comcRequestId === currentId);
   });
 }

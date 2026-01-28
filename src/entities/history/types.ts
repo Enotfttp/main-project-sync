@@ -1,3 +1,21 @@
+import { TRequestTypeEventType } from "@entities/requestTypes/types";
+
+export type TPaymentScheduleStatus =
+  | "FRM_SUCCESS"
+  | "FRM_ERR"
+  | "PROV"
+  | "DECLINE"
+  | "KART"
+  | "CANCEL_FEE"
+  | "ERROR";
+
+export type TResultType =
+  | "PAYMENT_SUCCESS"
+  | "PAYMENT_DECLINE"
+  | "CARD_INDEX"
+  | "ANNULMENT"
+  | "CANCELLATION";
+
 export type ComcRequestStatus =
   | "CREATED"
   | "ACCEPTED"
@@ -5,6 +23,17 @@ export type ComcRequestStatus =
   | "PROCESSED"
   | "COMPLETED"
   | "ERROR";
+
+export type TPaymentStatus =
+  | "ITERIM_ACCOUNT"
+  | "BANK_INCOME_ACCOUNT"
+  | "ANNULMENT";
+
+export const PaymentStatusText: Record<TPaymentStatus, string> = {
+  ITERIM_ACCOUNT: "Сумма переведена на промежуточный счет",
+  BANK_INCOME_ACCOUNT: "Сумма переведена на счет доходов банка",
+  ANNULMENT: "Период аннулирован",
+};
 
 export const ComcRequestStatusText: Record<ComcRequestStatus, string> = {
   CREATED: "Создан",
@@ -15,7 +44,7 @@ export const ComcRequestStatusText: Record<ComcRequestStatus, string> = {
   ERROR: "Ошибка обработки",
 };
 
-type TStepperStatus = "completed" | "warning" | "error" | undefined;
+export type TStepperStatus = "completed" | "warning" | "error" | undefined;
 
 interface IParamView {
   priority: number;
@@ -27,8 +56,8 @@ export const ComcRequestStatusView: Record<ComcRequestStatus, IParamView> = {
   ACCEPTED: { priority: 1, status: "completed" },
   REJECTED: { priority: 2, status: "warning" },
   PROCESSED: { priority: 3, status: "completed" },
-  COMPLETED: { priority: 4, status: "completed" },
-  ERROR: { priority: 5, status: "error" },
+  ERROR: { priority: 4, status: "error" },
+  COMPLETED: { priority: 5, status: "completed" },
 };
 
 export type ComcResultType =
@@ -59,6 +88,32 @@ export const RequestHistoryKafkaStatusText = {
   ERROR: "Ошибка при отправки",
 };
 
+interface IPayments {
+  periodId: string;
+  startDate: string;
+  endDate: string;
+  status: TPaymentStatus;
+  interimAccountPostDate: string;
+  bankIncomeAccountPostDate: string;
+}
+
+interface IResult {
+  resultType: TResultType;
+  payments: IPayments[];
+}
+
+export interface IContent {
+  message: { uuid: string; timeStamp: string };
+  requestId: string;
+  paymentScheduleId: string;
+  eventDateTime: string;
+  eventType: TRequestTypeEventType;
+  requestStatus: ComcRequestStatus;
+  paymentScheduleStatus: TPaymentScheduleStatus;
+  result: IResult;
+  error: { errorCode: string; errorMessage: string };
+}
+
 export interface IRequestHistory {
   id: number;
   comcRequestId?: number | null;
@@ -71,6 +126,5 @@ export interface IRequestHistory {
   kafkaSendStatus: RequestHistoryKafkaStatus;
   createdAt: string;
   updatedAt: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  content: Record<string, any>;
+  content: IContent;
 }
