@@ -1,16 +1,11 @@
 import { columnList } from "./column";
 import { useGetDocuments } from "@entities/documents/hook";
-import {
-  DocStatusText,
-  DocTypeText,
-  OrderStatusText,
-} from "@entities/documents/types";
 import { FilterValue } from "@features/Filter/Filter.types";
 import { additionalHover } from "@shared/common";
 import { TableSort } from "@shared/ui";
 import { TPaginationTable } from "@shared/ui/TableSort/components/Pagination.types";
 import * as React from "react";
-import { FC, useCallback, useMemo, useState } from "react";
+import { FC, useCallback, useState } from "react";
 
 interface IProps {
   tableKey: number;
@@ -24,15 +19,6 @@ export const TableSection: FC<IProps> = ({ tableKey, filters }) => {
     pagination: pagination,
   });
 
-  const dataDocWithRusStatus = useMemo(() => {
-    return dataDoc?.data.map((el) => ({
-      ...el,
-      status: DocStatusText[el.status],
-      docType: DocTypeText[el.docType],
-      orderStatus: el.orderStatus ? OrderStatusText[el.orderStatus] : "",
-    }));
-  }, [dataDoc]);
-
   const handlePaginationChange = useCallback((pagination: TPaginationTable) => {
     setPagination(pagination);
   }, []);
@@ -41,7 +27,7 @@ export const TableSection: FC<IProps> = ({ tableKey, filters }) => {
     <TableSort
       key={tableKey}
       columnList={columnList}
-      rowList={additionalHover(dataDocWithRusStatus)}
+      rowList={additionalHover(dataDoc?.data)}
       queryKey="documents"
       isPagination
       handlePaginationChange={handlePaginationChange}

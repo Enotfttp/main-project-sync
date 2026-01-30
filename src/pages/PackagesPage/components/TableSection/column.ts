@@ -1,4 +1,6 @@
 import { Column } from "@admiral-ds/react-ui";
+import { PackageStatusText } from "@entities/package/types";
+import React from "react";
 
 export const columnList: Column[] = [
   {
@@ -10,6 +12,9 @@ export const columnList: Column[] = [
     name: "status",
     title: "Статус",
     width: "20%",
+    renderCell(status): React.ReactNode {
+      return PackageStatusText[status];
+    },
   },
   {
     name: "accountNumber",

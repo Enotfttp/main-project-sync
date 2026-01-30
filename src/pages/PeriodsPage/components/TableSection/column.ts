@@ -1,4 +1,9 @@
 import { Column } from "@admiral-ds/react-ui";
+import {
+  PeriodsResultTypeText,
+  PeriodsStatusText,
+} from "@entities/periods/types";
+import React from "react";
 
 export const columnList: Column[] = [
   {
@@ -10,6 +15,9 @@ export const columnList: Column[] = [
     name: "resultType",
     title: "Статус оплаты",
     width: "14.2%",
+    renderCell(resultType): React.ReactNode {
+      return PeriodsResultTypeText[resultType];
+    },
   },
   {
     name: "startDate",
@@ -25,6 +33,9 @@ export const columnList: Column[] = [
     name: "status",
     title: "Статус",
     width: "14.2%",
+    renderCell(status): React.ReactNode {
+      return PeriodsStatusText[status];
+    },
   },
   {
     name: "amount",
