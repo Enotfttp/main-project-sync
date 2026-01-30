@@ -3,6 +3,7 @@ import * as React from "react";
 interface ModalContextType {
   openModal: (
     content: React.ReactNode,
+    customWidth?: string,
     title?: string,
     buttons?: React.ReactNode,
   ) => void;

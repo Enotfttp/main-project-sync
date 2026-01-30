@@ -26,7 +26,7 @@ type SortColumn = { [key: string]: { sort: "asc" | "desc"; type?: string } };
 type TableSortProps =
   | ({
       queryKey: string;
-      handlePaginationChange(pagination: TPaginationTable): void;
+      handlePaginationChange?(pagination: TPaginationTable): void;
       pagination?: TPaginationData;
       isPagination?: true;
       paginationProp?: PaginationOneProps;

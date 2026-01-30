@@ -1,176 +1,270 @@
 import {
   ComcRequestStatus,
   ComcResultType,
+  IContent,
   IRequestHistory,
   RequestHistoryKafkaStatus,
+  TPaymentScheduleStatus,
+  TPaymentStatus,
+  TResultType,
 } from "@entities/history/types";
+import { TRequestTypeEventType } from "@entities/requestTypes/types";
 import { fakerRU as faker } from "@faker-js/faker";
 
-export const generateMockHistories = (options?: {
-  // Опциональные ID для связей между сущностями
-  comcRequestIds?: number[];
-  packageSubscriptionIds?: number[];
-  // Распределение статусов
-  statusDistribution?: Partial<Record<ComcRequestStatus, number>>;
-}): IRequestHistory[] => {
-  // Статусы запросов с реалистичным распределением по умолчанию
-  const getRandomStatus = (): ComcRequestStatus => {
-    const rand = Math.random();
-    if (rand < 0.3) return "COMPLETED"; // 30% завершенных
-    if (rand < 0.5) return "PROCESSED"; // 20% в обработке
-    if (rand < 0.65) return "ACCEPTED"; // 15% принятых
-    if (rand < 0.75) return "CREATED"; // 10% созданных
-    if (rand < 0.9) return "REJECTED"; // 15% отклоненных
-    return "ERROR"; // 10% ошибок
+// Типы событий
+const eventTypes: TRequestTypeEventType[] = [
+  "PACKAGE_ACTIVATION",
+  "OPTION_ACTIVATION",
+  "PACKAGE_PROLONGATION",
+  "OPTION_PROLONGATION",
+  "PACKAGE_CHANGE",
+  "PACKAGE_MIGRATION",
+  "OPTION_MIGRATION",
+  "PRE_OPTION_ACTIVATION",
+  "PRIORITY_CHANGE",
+  "SCHEDULE_UPDATE",
+  "CANCEL_FEE",
+  "DISABLE_PACKAGE",
+  "DISABLE_OPTION",
+];
+
+// Базовые данные для всех записей одного запроса
+const generateBaseData = (comcRequestId: number) => {
+  const createdAt = faker.date.past({ years: 0.3 });
+  const requestId = faker.string.uuid();
+  const paymentScheduleId = faker.string.uuid();
+  const eventType = faker.helpers.arrayElement(eventTypes);
+  const eventDateTime = faker.date.future({ years: 0.1, refDate: createdAt });
+
+  return {
+    comcRequestId,
+    requestId,
+    paymentScheduleId,
+    eventType,
+    eventDateTime: eventDateTime.toISOString(),
+    packageSubscriptionId: faker.number.int({ min: 1, max: 100 }),
+    createdAt,
+    baseContent: {
+      message: {
+        uuid: faker.string.uuid(),
+        timeStamp: createdAt.toISOString(),
+      },
+      requestId,
+      paymentScheduleId,
+      eventDateTime: eventDateTime.toISOString(),
+      eventType,
+    },
   };
+};
 
-  // Типы результатов в зависимости от статуса
-  const getResultTypeForStatus = (
-    status: ComcRequestStatus,
-  ): ComcResultType | null => {
-    switch (status) {
-      case "COMPLETED":
-        return faker.helpers.arrayElement(["PAYMENT_SUCCESS", "CARD_INDEX"]);
-      case "REJECTED":
-        return faker.helpers.arrayElement(["PAYMENT_DECLINE", "CANCELLATION"]);
-      case "ERROR":
-        return faker.helpers.arrayElement(["ANNULMENT", "PAYMENT_DECLINE"]);
-      default:
-        return null;
-    }
-  };
+// Сценарии (каждый comcRequestId - свой сценарий)
+export const scenarios = [
+  // Сценарий 1: [CREATED]
+  {
+    comcRequestId: 1,
+    statuses: ["CREATED"],
+  },
+  // Сценарий 2: [CREATED, REJECTED]
+  {
+    comcRequestId: 2,
+    statuses: ["CREATED", "REJECTED"],
+  },
+  // Сценарий 3: [CREATED, ACCEPTED]
+  {
+    comcRequestId: 3,
+    statuses: ["CREATED", "ACCEPTED"],
+  },
+  // Сценарий 4: [CREATED, ACCEPTED, ERROR]
+  {
+    comcRequestId: 4,
+    statuses: ["CREATED", "ACCEPTED", "ERROR"],
+  },
+  // Сценарий 5: [CREATED, ACCEPTED, PROCESSED]
+  {
+    comcRequestId: 5,
+    statuses: ["CREATED", "ACCEPTED", "PROCESSED"],
+  },
+  // Сценарий 6: [CREATED, ACCEPTED, PROCESSED, ERROR]
+  {
+    comcRequestId: 6,
+    statuses: ["CREATED", "ACCEPTED", "PROCESSED", "ERROR"],
+  },
+  // Сценарий 7: [CREATED, ACCEPTED, PROCESSED, COMPLETED]
+  {
+    comcRequestId: 7,
+    statuses: ["CREATED", "ACCEPTED", "PROCESSED", "COMPLETED"],
+  },
+];
 
-  // Статусы отправки в Kafka
-  const getKafkaStatusForRequest = (
-    status: ComcRequestStatus,
-  ): RequestHistoryKafkaStatus => {
-    switch (status) {
-      case "CREATED":
-        return faker.helpers.arrayElement(["CREATED", "DO_NOT_SEND"]);
-      case "PROCESSED":
-      case "ACCEPTED":
-        return "PROCESSED";
-      case "COMPLETED":
-      case "REJECTED":
-        return faker.datatype.boolean({ probability: 0.8 })
-          ? "PROCESSED"
-          : "ERROR";
-      case "ERROR":
-        return faker.helpers.arrayElement(["ERROR", "DO_NOT_SEND"]);
-      default:
-        return "PROCESSED";
-    }
-  };
-
-  // Статус коды и описания
-  const statusCodes = ["00", "01", "05", "12", "51", "55", "61", "91"];
-  const statusDescriptions = [
-    "Успешная операция",
-    "Недостаточно средств",
-    "Неверный формат запроса",
-    "Недействительная карта",
-    "Отказ эмитента",
-    "Превышен лимит",
-    "Ошибка тайм-аута",
-    "Техническая ошибка",
-  ];
-
-  // Генерация контента запроса
+// Генерация content для конкретного статуса
+const generateContentForStatus = (
+  status: ComcRequestStatus,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const generateContent = (status: ComcRequestStatus): Record<string, any> => {
-    const baseContent = {
-      requestData: {
-        amount: faker.number.float({ min: 100, max: 50000, fractionDigits: 2 }),
-        currency: faker.helpers.arrayElement(["RUB", "USD", "EUR"]),
-        transactionId: `TRX-${faker.string.alphanumeric(10).toUpperCase()}`,
-        timestamp: new Date().toISOString(),
-      },
-      metadata: {
-        sourceSystem: faker.helpers.arrayElement([
-          "ERP",
-          "CRM",
-          "BANK",
-          "PAYMENT_GATEWAY",
-        ]),
-        userId: faker.number.int({ min: 1000, max: 9999 }),
-        sessionId: faker.string.uuid(),
-      },
-    };
-
-    // Дополнительные поля в зависимости от статуса
-    if (status === "COMPLETED" || status === "PROCESSED") {
-      Object.assign(baseContent, {
-        processingDetails: {
-          processor: faker.company.name(),
-          processingTime: faker.number.int({ min: 100, max: 5000 }),
-          authorizationCode: `AUTH-${faker.string.numeric(6)}`,
-        },
-      });
-    }
-
-    if (status === "ERROR" || status === "REJECTED") {
-      Object.assign(baseContent, {
-        errorDetails: {
-          errorCode: `ERR-${faker.string.numeric(4)}`,
-          retryable: faker.datatype.boolean(),
-          suggestedAction: faker.helpers.arrayElement([
-            "Повторить попытку",
-            "Обратиться в поддержку",
-            "Проверить данные карты",
-          ]),
-        },
-      });
-    }
-
-    return baseContent;
+  baseContent: any,
+): IContent => {
+  const content: Partial<IContent> = {
+    ...baseContent,
+    requestStatus: status,
   };
 
-  // Используем переданные ID или генерируем случайные
-  const comcRequestIds =
-    options?.comcRequestIds ||
-    Array.from({ length: 20 }, (_, i) => 10000 + i * 50);
+  switch (status) {
+    case "CREATED":
+      content.paymentScheduleStatus = "FRM_SUCCESS";
+      break;
 
-  const packageSubscriptionIds =
-    options?.packageSubscriptionIds ||
-    Array.from({ length: 50 }, (_, i) => 1 + i);
+    case "ACCEPTED":
+      content.paymentScheduleStatus = "FRM_SUCCESS";
+      break;
 
-  return Array.from({ length: 30 }, (_, index) => {
-    const createdAt = faker.date.past({ years: 0.3 }); // записи за последние 4 месяца
-    const status = getRandomStatus();
-    const resultType = getResultTypeForStatus(status);
+    case "REJECTED":
+      content.paymentScheduleStatus = "FRM_ERR";
+      content.error = {
+        errorCode: "200",
+        errorMessage: "Ошибка валидации: некорректный формат данных",
+      };
+      break;
 
-    // Для некоторых записей генерируем статус код и описание
-    const hasStatusCode = faker.datatype.boolean({ probability: 0.7 });
-    const statusCodeIndex = hasStatusCode
-      ? faker.number.int({ min: 0, max: statusCodes.length - 1 })
-      : -1;
+    case "PROCESSED":
+      content.paymentScheduleStatus =
+        faker.helpers.arrayElement<TPaymentScheduleStatus>([
+          "PROV",
+          "DECLINE",
+          "KART",
+        ]);
 
-    return {
-      id: 10000 + index, // начинаем с 10000
-      comcRequestId: faker.datatype.boolean({ probability: 0.8 })
-        ? faker.helpers.arrayElement(comcRequestIds)
-        : null,
-      requestId: faker.string.uuid(),
-      packageSubscriptionId: faker.helpers.arrayElement(packageSubscriptionIds),
-      status,
-      resultType: resultType,
-      statusCode:
-        hasStatusCode && statusCodeIndex >= 0
-          ? statusCodes[statusCodeIndex]
-          : null,
-      statusDescription:
-        hasStatusCode && statusCodeIndex >= 0
-          ? statusDescriptions[statusCodeIndex]
-          : null,
-      kafkaSendStatus: getKafkaStatusForRequest(status),
-      createdAt: createdAt.toISOString(),
-      updatedAt: faker.date
-        .between({
-          from: createdAt,
-          to: new Date(),
-        })
-        .toISOString(),
-      content: generateContent(status),
-    };
+      if (content.paymentScheduleStatus === "PROV") {
+        content.result = {
+          resultType: faker.helpers.arrayElement<TResultType>([
+            "PAYMENT_SUCCESS",
+            "CARD_INDEX",
+          ]),
+          payments: [
+            {
+              periodId: faker.string.uuid(),
+              startDate: faker.date
+                .recent({ days: 30 })
+                .toISOString()
+                .split("T")[0],
+              endDate: faker.date
+                .soon({ days: 30 })
+                .toISOString()
+                .split("T")[0],
+              status: faker.helpers.arrayElement<TPaymentStatus>([
+                "ITERIM_ACCOUNT",
+                "BANK_INCOME_ACCOUNT",
+              ]),
+              interimAccountPostDate: faker.date.recent().toISOString(),
+              bankIncomeAccountPostDate: faker.date.recent().toISOString(),
+            },
+          ],
+        };
+      }
+      break;
+
+    case "COMPLETED":
+      content.paymentScheduleStatus = "PROV";
+      content.result = {
+        resultType: "PAYMENT_SUCCESS",
+        payments: [
+          {
+            periodId: faker.string.uuid(),
+            startDate: faker.date
+              .recent({ days: 30 })
+              .toISOString()
+              .split("T")[0],
+            endDate: faker.date.soon({ days: 30 }).toISOString().split("T")[0],
+            status: "BANK_INCOME_ACCOUNT",
+            interimAccountPostDate: faker.date.recent().toISOString(),
+            bankIncomeAccountPostDate: faker.date.recent().toISOString(),
+          },
+        ],
+      };
+      break;
+
+    case "ERROR":
+      content.paymentScheduleStatus = "ERROR";
+      content.error = {
+        errorCode: "100",
+        errorMessage: "Техническая ошибка обработки: системная ошибка",
+      };
+      // Если есть result из предыдущего статуса - оставляем
+      break;
+  }
+
+  // Убедимся, что все обязательные поля есть
+  return content as IContent;
+};
+
+// Определяем resultType на основе статуса
+const getResultTypeForStatus = (
+  status: ComcRequestStatus,
+): ComcResultType | null => {
+  switch (status) {
+    case "COMPLETED":
+      return "PAYMENT_SUCCESS";
+    case "REJECTED":
+      return "PAYMENT_DECLINE";
+    case "ERROR":
+      return "ANNULMENT";
+    default:
+      return null;
+  }
+};
+
+// Статус отправки в Kafka
+const getKafkaStatusForRequest = (
+  status: ComcRequestStatus,
+): RequestHistoryKafkaStatus => {
+  switch (status) {
+    case "CREATED":
+      return "CREATED";
+    case "PROCESSED":
+    case "ACCEPTED":
+    case "COMPLETED":
+    case "REJECTED":
+      return "PROCESSED";
+    case "ERROR":
+      return "ERROR";
+    default:
+      return "PROCESSED";
+  }
+};
+
+// Генерация всех историй для всех сценариев
+export const generateMockHistories = (): IRequestHistory[] => {
+  const allHistories: IRequestHistory[] = [];
+  let historyId = 10000;
+
+  scenarios.forEach((scenario) => {
+    const baseData = generateBaseData(scenario.comcRequestId);
+
+    scenario.statuses.forEach((status, index) => {
+      const createdAt = new Date(
+        baseData.createdAt.getTime() + index * 3600000,
+      );
+      const updatedAt = new Date(createdAt.getTime() + 600000);
+
+      const content = generateContentForStatus(
+        status as ComcRequestStatus,
+        baseData.baseContent,
+      );
+
+      allHistories.push({
+        id: historyId++,
+        comcRequestId: scenario.comcRequestId,
+        requestId: baseData.requestId,
+        packageSubscriptionId: baseData.packageSubscriptionId,
+        status: status as ComcRequestStatus,
+        resultType: getResultTypeForStatus(status as ComcRequestStatus),
+        statusCode: null,
+        statusDescription: null,
+        kafkaSendStatus: getKafkaStatusForRequest(status as ComcRequestStatus),
+        createdAt: createdAt.toISOString(),
+        updatedAt: updatedAt.toISOString(),
+        content,
+      });
+    });
   });
+
+  return allHistories;
 };
