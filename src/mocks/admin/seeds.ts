@@ -15,7 +15,8 @@ export function adminSeeds(server: Server) {
     server.create("chartDatum", {
       serviceId: serviceId,
       charts,
-    });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
   });
 
   // Создаем табличные данные

@@ -3,12 +3,12 @@ import { Button } from "@admiral-ds/react-ui";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-export const ErrorContainer = styled.div`
+export const ErrorContainer = styled.div<{ type: "modal" | "page" }>`
+  margin-top: ${(props) => (props.type === "modal" ? 0 : "100px")};
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-top: 100px;
   gap: 10px;
 `;
 

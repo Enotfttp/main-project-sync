@@ -1,5 +1,4 @@
 export { Loader } from "./Loader/Loader";
-export { ErrorFallback } from "./ErrorFallback/ErrorFallback";
 export { HorizontalTabsTemplate } from "./HorizontalTabsTemplate/HorizontalTabsTemplate";
 export { Modal } from "./Modal/Modal";
 export { Search } from "./Search/Search";

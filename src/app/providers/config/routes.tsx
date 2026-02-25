@@ -1,6 +1,6 @@
 import { routesPath } from "./routesPath";
 import { NotFoundPage } from "../errorBoundary/NotFoundPage";
-import { RouterErrorBoundary } from "../errorBoundary/RouterErrorBoundary";
+import { RouterErrorBoundary } from "@app/providers/errorBoundary/RouterErrorBoundary";
 import {
   AdminServiceSelector,
   MainLayout,
