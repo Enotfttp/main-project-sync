@@ -3,8 +3,8 @@ import { statusConfig } from "./utils";
 import { Tags } from "@admiral-ds/react-ui";
 import { useGetRequestTypes } from "@entities/requestTypes/hook";
 import {
+  ERequestTypesEventType,
   IRequestType,
-  RequestTypesEventTypeText,
 } from "@entities/requestTypes/types";
 import { useModalManager } from "@features/ModalRouting/useModalManager";
 import React from "react";
@@ -35,7 +35,7 @@ export const RequestTypes = () => {
             {...config}
             onClick={() => clickHandler(requestType)}
           >
-            {RequestTypesEventTypeText[requestType.eventType]}
+            {ERequestTypesEventType[requestType.eventType]}
           </StyledTag>
         );
       })}

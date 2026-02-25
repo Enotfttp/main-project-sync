@@ -1,19 +1,19 @@
 import {
+  EDocStatus,
+  EDocType,
+  EOrderStatus,
   IDocuments,
-  TDocStatus,
-  TDocType,
-  TOrderStatus,
 } from "@entities/documents/types";
 import { fakerRU as faker } from "@faker-js/faker";
 
-const DOC_TYPES: TDocType[] = [
+const DOC_TYPES: (keyof typeof EDocType)[] = [
   "PAYMENT_REQUEST_DOC",
   "MEMORIAL_ORDER_DOC",
   "BANK_ORDER_DOC",
   "NULL_PAYMENT_DOC",
 ];
 
-const DOC_STATUSES: TDocStatus[] = [
+const DOC_STATUSES: (keyof typeof EDocStatus)[] = [
   "CREATED",
   "SENT",
   "DELIVERED",
@@ -22,7 +22,7 @@ const DOC_STATUSES: TDocStatus[] = [
   "ERROR",
 ];
 
-const ORDER_STATUSES: TOrderStatus[] = [
+const ORDER_STATUSES: (keyof typeof EOrderStatus)[] = [
   "PASSED_VERIFICATION",
   "UNDER_VERIFICATION",
   "DOCUMENT_ERROR",
@@ -43,7 +43,7 @@ export function createMockDocuments(): IDocuments[] {
     const docType = DOC_TYPES[Math.floor(Math.random() * DOC_TYPES.length)];
     const status =
       DOC_STATUSES[Math.floor(Math.random() * DOC_STATUSES.length)];
-    let orderStatus: TOrderStatus | null = null;
+    let orderStatus: keyof typeof EOrderStatus | null = null;
 
     if (status !== "CREATED") {
       orderStatus =

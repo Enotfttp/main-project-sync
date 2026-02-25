@@ -1,5 +1,5 @@
 import { routesPath } from "@app/providers";
-import { useGetUser } from "@entities/user/user.hook";
+import { useGetUser } from "@entities/user/hook";
 import { Loader } from "@shared/ui";
 import { ReactNode } from "react";
 import { Navigate } from "react-router-dom";

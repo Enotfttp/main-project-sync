@@ -1,11 +1,7 @@
-import {
-  DocStatusText,
-  DocTypeText,
-  OrderStatusText,
-} from "@entities/documents/types";
-import { FilterField } from "@features/Filter/Filter.types";
+import { EDocStatus, EDocType, EOrderStatus } from "@entities/documents/types";
+import { RenderField } from "@features/Fields/RenderFields.types";
 
-export const filterFields: FilterField[] = [
+export const filterFields: RenderField[] = [
   {
     id: "id",
     name: "id",
@@ -33,7 +29,7 @@ export const filterFields: FilterField[] = [
     type: "select",
     label: "Статус исполнения документа РОЮЛ",
     placeholder: "Выберите статус исполнения документа РОЮЛ...",
-    options: Object.entries(OrderStatusText).map(([key, val]) => ({
+    options: Object.entries(EOrderStatus).map(([key, val]) => ({
       value: key,
       label: val,
     })),
@@ -44,7 +40,7 @@ export const filterFields: FilterField[] = [
     type: "select",
     label: "Вид документа",
     placeholder: "Выберите вид документа...",
-    options: Object.entries(DocTypeText).map(([key, val]) => ({
+    options: Object.entries(EDocType).map(([key, val]) => ({
       value: key,
       label: val,
     })),
@@ -55,7 +51,7 @@ export const filterFields: FilterField[] = [
     type: "select",
     label: "Статус обработки документа",
     placeholder: "Выберите статус обработки документа...",
-    options: Object.entries(DocStatusText).map(([key, val]) => ({
+    options: Object.entries(EDocStatus).map(([key, val]) => ({
       value: key,
       label: val,
     })),

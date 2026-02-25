@@ -1,5 +1,5 @@
-import { userService } from "./user.service";
-import { IUser } from "./user.types";
+import { userService } from "./api";
+import { IUser } from "./types";
 import { storage } from "@shared/utils";
 import { useQuery } from "@tanstack/react-query";
 

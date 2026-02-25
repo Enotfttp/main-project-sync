@@ -1,5 +1,5 @@
-import { adminService } from "./admin.service";
-import { ChartData, ErrorsChart, Service, TableData } from "./admin.types";
+import { adminService } from "./api";
+import { ChartData, ErrorsChart, Service, TableData } from "./types";
 import {
   FilterWithPagination,
   TableDataWithPagination,

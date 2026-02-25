@@ -6,7 +6,7 @@ import {
 } from "./PackageDetailPage.styled";
 import { T } from "@admiral-ds/react-ui";
 import { useGetPackage } from "@entities/package/hook";
-import { PackageStatusText } from "@entities/package/types";
+import { EPackageStatus } from "@entities/package/types";
 import React from "react";
 import { useParams } from "react-router-dom";
 
@@ -31,7 +31,7 @@ export const PackageDetailPage = () => {
         {data?.status && (
           <StyledInfoRow>
             <T font="Main/S">Статус:</T>
-            <T font="Additional/L">{PackageStatusText[data?.status] ?? ""}</T>
+            <T font="Additional/L">{EPackageStatus[data?.status] ?? ""}</T>
           </StyledInfoRow>
         )}
 

@@ -1,5 +1,5 @@
-import { authService } from "./auth.service";
-import { IUser } from "@entities/user/user.types";
+import { authService } from "./api";
+import { IUser } from "@entities/user/types";
 import { storage } from "@shared/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 

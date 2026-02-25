@@ -1,4 +1,4 @@
-import { ChartData } from "@entities/admin/admin.types";
+import { ChartData } from "@entities/admin/types";
 import styled from "styled-components";
 
 export const StyledAdditionalErrorInfo = styled.div`

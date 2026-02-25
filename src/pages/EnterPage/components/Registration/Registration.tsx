@@ -14,7 +14,7 @@ import {
   T,
 } from "@admiral-ds/react-ui";
 import { routesPath } from "@app/providers";
-import { useRegisterMutation } from "@entities/auth/auth.hook";
+import { useRegisterMutation } from "@entities/auth/hook";
 import { StyledTwoBlocks } from "@pages/EnterPage/components/Login/Login.styled";
 import { ApiError } from "@shared/api";
 import { InputFieldUI } from "@shared/ui";

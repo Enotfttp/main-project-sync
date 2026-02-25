@@ -1,7 +1,7 @@
 import {
+  EPeriodsResultType,
+  EPeriodsStatus,
   IPeriods,
-  PeriodsResultType,
-  PeriodsStatus,
 } from "@entities/periods/types";
 import { faker } from "@faker-js/faker/locale/ru";
 
@@ -9,7 +9,7 @@ export const generateStructuredPeriods = (): IPeriods[] => {
   const periods: IPeriods[] = [];
 
   // Типы результатов в правильном формате
-  const resultTypes: PeriodsResultType[] = [
+  const resultTypes: (keyof typeof EPeriodsResultType)[] = [
     "ITERIM_ACCOUNT",
     "BANK_INCOME_ACCOUNT",
     "ANNULMENT",
@@ -46,7 +46,7 @@ export const generateStructuredPeriods = (): IPeriods[] => {
 
     // Выбор статуса на основе вероятности
     const randomStatus = Math.random();
-    let status: PeriodsStatus;
+    let status: keyof typeof EPeriodsStatus;
 
     if (randomStatus < statusMapping.CREATED.probability) {
       status = "CREATED";
@@ -60,7 +60,7 @@ export const generateStructuredPeriods = (): IPeriods[] => {
     }
 
     // Выбор типа результата в зависимости от статуса
-    let resultType: PeriodsResultType;
+    let resultType: keyof typeof EPeriodsResultType;
     if (status === "COMPLETED") {
       resultType = faker.helpers.arrayElement([
         "ITERIM_ACCOUNT",

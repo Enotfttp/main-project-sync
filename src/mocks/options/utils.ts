@@ -1,8 +1,12 @@
-import { IOption, OptionStatus } from "@entities/options/types";
+import { EOptionStatus, IOption } from "@entities/options/types";
 import { fakerRU as faker } from "@faker-js/faker";
 
 export const generateMockOptions = (): IOption[] => {
-  const statuses: OptionStatus[] = ["CREATED", "ACTIVE", "INACTIVE"];
+  const statuses: (keyof typeof EOptionStatus)[] = [
+    "CREATED",
+    "ACTIVE",
+    "INACTIVE",
+  ];
 
   return Array.from({ length: 30 }, (_, index) => {
     const createdAt = faker.date.past({ years: 1 });

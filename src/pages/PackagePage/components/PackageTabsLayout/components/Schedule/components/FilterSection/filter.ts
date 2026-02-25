@@ -1,7 +1,7 @@
-import { PaymentScheduleStatusText } from "@entities/schedule/types";
-import { FilterField } from "@features/Filter/Filter.types";
+import { EPaymentScheduleStatus } from "@entities/schedule/types";
+import { RenderField } from "@features/Fields/RenderFields.types";
 
-export const filterFields: FilterField[] = [
+export const filterFields: RenderField[] = [
   {
     id: "id",
     name: "id",
@@ -30,7 +30,7 @@ export const filterFields: FilterField[] = [
     type: "select",
     label: "Статус",
     placeholder: "Выберите статус...",
-    options: Object.entries(PaymentScheduleStatusText).map(([key, val]) => ({
+    options: Object.entries(EPaymentScheduleStatus).map(([key, val]) => ({
       value: key,
       label: val,
     })),

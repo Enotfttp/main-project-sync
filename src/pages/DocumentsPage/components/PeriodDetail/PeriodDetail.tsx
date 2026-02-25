@@ -6,10 +6,7 @@ import {
 } from "./PeriodDetail.styled";
 import { T } from "@admiral-ds/react-ui";
 import { useGetPeriod } from "@entities/periods/hook";
-import {
-  PeriodsResultTypeText,
-  PeriodsStatusText,
-} from "@entities/periods/types";
+import { EPeriodsResultType, EPeriodsStatus } from "@entities/periods/types";
 import React from "react";
 import { useParams } from "react-router-dom";
 
@@ -33,7 +30,7 @@ export const PeriodDetail = () => {
           <StyledInfoRow>
             <T font="Main/S">Статус оплаты:</T>
             <T font="Additional/L">
-              {PeriodsResultTypeText[data?.resultType] ?? ""}
+              {EPeriodsResultType[data?.resultType] ?? ""}
             </T>
           </StyledInfoRow>
         )}
@@ -55,7 +52,7 @@ export const PeriodDetail = () => {
         {data?.status && (
           <StyledInfoRow>
             <T font="Main/XS-bold">Статус:</T>
-            <T font="Additional/L">{PeriodsStatusText[data?.status] ?? ""}</T>
+            <T font="Additional/L">{EPeriodsStatus[data?.status] ?? ""}</T>
           </StyledInfoRow>
         )}
 

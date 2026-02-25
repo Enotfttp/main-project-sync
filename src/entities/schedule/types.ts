@@ -1,15 +1,13 @@
-export type PaymentScheduleStatus = "CREATED" | "COMPLETED" | "CANCEL";
-
-export const PaymentScheduleStatusText = {
-  CREATED: "Активен",
-  COMPLETED: "Обработан",
-  CANCEL: "Отменён",
-};
+export enum EPaymentScheduleStatus {
+  CREATED = "Активен",
+  COMPLETED = "Обработан",
+  CANCEL = "Отменён",
+}
 
 export interface IPaymentSchedule {
   id: number;
   comcRequestId: number;
-  status: PaymentScheduleStatus;
+  status: keyof typeof EPaymentScheduleStatus;
   dataTrfId: string;
   dataName: string;
   dataTrfNumber: string;

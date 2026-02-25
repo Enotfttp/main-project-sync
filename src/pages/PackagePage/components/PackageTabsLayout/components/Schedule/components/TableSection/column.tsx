@@ -1,6 +1,22 @@
-import { Column } from "@admiral-ds/react-ui";
-import { PaymentScheduleStatusText } from "@entities/schedule/types";
+import { Column, Tag } from "@admiral-ds/react-ui";
+import { EPaymentScheduleStatus } from "@entities/schedule/types";
+import { TTag } from "@shared/types/types";
 import React from "react";
+
+export const statusConfig: TTag<keyof typeof EPaymentScheduleStatus> = {
+  CREATED: {
+    kind: "neutral",
+    text: EPaymentScheduleStatus.CREATED,
+  },
+  COMPLETED: {
+    kind: "success",
+    text: EPaymentScheduleStatus.COMPLETED,
+  },
+  CANCEL: {
+    kind: "warning",
+    text: EPaymentScheduleStatus.CANCEL,
+  },
+};
 
 export const columnList: Column[] = [
   {
@@ -12,8 +28,11 @@ export const columnList: Column[] = [
     name: "status",
     title: "Статус",
     width: "7.6%",
-    renderCell(status): React.ReactNode {
-      return PaymentScheduleStatusText[status];
+    renderCell: (status: string) => {
+      const config = statusConfig[status];
+
+      if (!config) return null;
+      return <Tag kind={config.kind}>{config.text}</Tag>;
     },
   },
   {

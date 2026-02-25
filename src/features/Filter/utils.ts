@@ -1,4 +1,5 @@
-import { FilterField, FilterValue } from "./Filter.types";
+import { FilterValue } from "./Filter.types";
+import { RenderField } from "../Fields/RenderFields.types";
 import { required } from "@shared/utils";
 
 // Универсальный тип для данных с произвольными ключами
@@ -89,8 +90,8 @@ export const calculateMaxDate = (
   return resultDate;
 };
 
-export const validate = (values: FilterValue, fields: FilterField[]) => {
-  const errors: Partial<FilterField> = {};
+export const validate = (values: FilterValue, fields: RenderField[]) => {
+  const errors: Partial<RenderField> = {};
 
   fields.forEach((field) => {
     if (field?.required) {

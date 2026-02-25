@@ -1,10 +1,7 @@
-import {
-  PeriodsResultTypeText,
-  PeriodsStatusText,
-} from "@entities/periods/types";
-import { FilterField } from "@features/Filter/Filter.types";
+import { EPeriodsResultType, EPeriodsStatus } from "@entities/periods/types";
+import { RenderField } from "@features/Fields/RenderFields.types";
 
-export const filterFields: FilterField[] = [
+export const filterFields: RenderField[] = [
   {
     id: "id",
     name: "id",
@@ -18,7 +15,7 @@ export const filterFields: FilterField[] = [
     type: "select",
     label: "Статус оплаты",
     placeholder: "Введите cтатус оплаты...",
-    options: Object.entries(PeriodsResultTypeText).map(([key, val]) => ({
+    options: Object.entries(EPeriodsResultType).map(([key, val]) => ({
       value: key,
       label: val,
     })),
@@ -43,7 +40,7 @@ export const filterFields: FilterField[] = [
     type: "select",
     label: "Статус",
     placeholder: "Выберите статус...",
-    options: Object.entries(PeriodsStatusText).map(([key, val]) => ({
+    options: Object.entries(EPeriodsStatus).map(([key, val]) => ({
       value: key,
       label: val,
     })),

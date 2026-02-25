@@ -1,13 +1,13 @@
 import { FilterSection, TableSection } from "./components";
 import { StyledDocPage, StyledWhiteBlock } from "./DocPage.styled";
 import { T } from "@admiral-ds/react-ui";
-import { DocTypeText } from "@entities/documents/types";
+import { EDocType } from "@entities/documents/types";
 import { handleSetFilters, useFilter } from "@features/Filter/useFilter";
 import { HorizontalTabsTemplate } from "@shared/ui";
 import * as React from "react";
 import { useLayoutEffect, useState } from "react";
 
-const TABS = Object.entries(DocTypeText).map(([key, value]) => ({
+const TABS = Object.entries(EDocType).map(([key, value]) => ({
   text: value,
   tabId: key,
 }));

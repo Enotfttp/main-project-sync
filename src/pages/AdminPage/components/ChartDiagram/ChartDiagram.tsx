@@ -5,8 +5,8 @@ import {
   StyledWhiteBlock,
 } from "./ChartDiagram.styled";
 import { Legend } from "./components";
-import { useDashboardData } from "@entities/admin/admin.hook";
-import { ChartData } from "@entities/admin/admin.types";
+import { useDashboardData } from "@entities/admin/hook";
+import { ChartData } from "@entities/admin/types";
 import { Loader, Notification } from "@shared/ui";
 import React, { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";

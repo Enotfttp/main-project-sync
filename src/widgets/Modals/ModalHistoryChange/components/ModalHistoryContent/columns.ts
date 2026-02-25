@@ -1,5 +1,5 @@
 import { Column } from "@admiral-ds/react-ui";
-import { PaymentStatusText } from "@entities/history/types";
+import { EPaymentStatus } from "@entities/history/types";
 import { normalizedDate } from "@shared/common";
 import React from "react";
 
@@ -33,7 +33,7 @@ export const columnList: Column[] = [
     width: "16.6%",
     sortable: true,
     renderCell(status): React.ReactNode {
-      return PaymentStatusText[status];
+      return EPaymentStatus[status];
     },
   },
   {

@@ -1,7 +1,7 @@
-import { OptionStatusText } from "@entities/options/types";
-import { FilterField } from "@features/Filter/Filter.types";
+import { EOptionStatus } from "@entities/options/types";
+import { RenderField } from "@features/Fields/RenderFields.types";
 
-export const filterFields: FilterField[] = [
+export const filterFields: RenderField[] = [
   {
     id: "id",
     name: "id",
@@ -22,7 +22,7 @@ export const filterFields: FilterField[] = [
     type: "select",
     label: "Статус",
     placeholder: "Выберите статус...",
-    options: Object.entries(OptionStatusText).map(([key, val]) => ({
+    options: Object.entries(EOptionStatus).map(([key, val]) => ({
       value: key,
       label: val,
     })),

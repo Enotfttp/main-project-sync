@@ -13,7 +13,7 @@ import {
   NotificationItemContent,
 } from "@admiral-ds/react-ui";
 import { routesPath } from "@app/providers";
-import { useLoginMutation } from "@entities/auth/auth.hook";
+import { useLoginMutation } from "@entities/auth/hook";
 import { ApiError } from "@shared/api";
 import { InputFieldUI } from "@shared/ui";
 import { FORM_ERROR } from "final-form";
