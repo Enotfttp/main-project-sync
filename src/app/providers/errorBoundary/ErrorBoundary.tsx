@@ -1,8 +1,9 @@
-import { ErrorFallback } from "@shared/ui";
+import { RouterErrorBoundary } from "./RouterErrorBoundary";
 import React, { Component, ReactNode } from "react";
 
 interface Props {
   children: ReactNode;
+  type?: "modal" | "page";
 }
 
 interface State {
@@ -14,11 +15,15 @@ interface State {
 export class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = { hasError: false, error: null, errorInfo: null };
+    this.state = {
+      hasError: false,
+      error: null,
+      errorInfo: null,
+    };
   }
 
-  static getDerivedStateFromError(): State {
-    return { hasError: true };
+  static getDerivedStateFromError(error: Error): State {
+    return { hasError: true, error };
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
@@ -32,7 +37,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
   render() {
     if (this.state.hasError) {
-      return <ErrorFallback />;
+      return <RouterErrorBoundary type={this.props?.type} />;
     }
 
     return this.props.children;

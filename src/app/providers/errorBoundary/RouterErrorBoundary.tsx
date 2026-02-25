@@ -10,11 +10,15 @@ import { T } from "@admiral-ds/react-ui";
 import * as React from "react";
 import { useRouteError } from "react-router-dom";
 
-export const RouterErrorBoundary = () => {
+export const RouterErrorBoundary = ({
+  type = "page",
+}: {
+  type?: "page" | "modal";
+}) => {
   const error = useRouteError() as Error & { status: number };
 
   return (
-    <ErrorContainer>
+    <ErrorContainer type={type}>
       <StyledServiceErrorTriangleSolid />
       <T font="Header/H1">Упс! Что-то пошло не так</T>
       <T font="Body/Body 1 Long">

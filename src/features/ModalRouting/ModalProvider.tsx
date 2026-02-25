@@ -1,4 +1,5 @@
 import { ModalContext } from "./ModalContext";
+import { ErrorBoundary } from "@app/providers";
 import { Modal } from "@shared/ui";
 import * as React from "react";
 import { createPortal } from "react-dom";
@@ -63,6 +64,10 @@ export const ModalProvider: React.FC<{ children: React.ReactNode }> = ({
   const renderModal = () => {
     if (!modalState.isOpen || !modalState.content) return null;
 
+    const modalContent = (
+      <ErrorBoundary type="modal">{modalState.content}</ErrorBoundary>
+    );
+
     return createPortal(
       <Modal
         isOpen={modalState.isOpen}
@@ -72,7 +77,7 @@ export const ModalProvider: React.FC<{ children: React.ReactNode }> = ({
         setClose={closeModal}
         title={modalState.title}
         children={{
-          contentChildren: modalState.content,
+          contentChildren: modalContent,
           btnChildren: modalState.buttons,
         }}
       />,
