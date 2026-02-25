@@ -5,17 +5,11 @@ import {
   StyledFilterField,
   StyledFilterHeader,
 } from "./Filter.styled";
-import { FilterConfig, FilterField, FilterValue } from "./Filter.types";
+import { FilterConfig, FilterValue } from "./Filter.types";
 import { validate } from "./utils";
 import { Badge, Button, T } from "@admiral-ds/react-ui";
-import {
-  CheckboxFieldUI,
-  DateFieldUI,
-  DropDown,
-  InputFieldUI,
-  RangeWithInput,
-  SelectFieldUI,
-} from "@shared/ui";
+import { renderField } from "@features/Fields/RenderFields";
+import { DropDown } from "@shared/ui";
 import React from "react";
 import { Form } from "react-final-form";
 
@@ -37,38 +31,6 @@ export const Filter: React.FC<FilterConfig> = ({
 
   const handleReset = () => {
     onReset?.();
-  };
-
-  const renderField = (field: FilterField) => {
-    switch (field.type) {
-      case "number":
-      case "text":
-        return <InputFieldUI {...field} dimension="m" />;
-
-      case "date":
-      case "date-range":
-        return <DateFieldUI {...field} dimension="m" />;
-
-      case "select":
-      case "multiselect":
-        return (
-          <SelectFieldUI
-            {...field}
-            multiple={field.type === "multiselect"}
-            dimension="m"
-          />
-        );
-
-      case "boolean":
-        return <CheckboxFieldUI {...field} dimension="m" />;
-
-      case "range": {
-        return <RangeWithInput {...field} dimension="m" />;
-      }
-
-      default:
-        return null;
-    }
   };
 
   return (

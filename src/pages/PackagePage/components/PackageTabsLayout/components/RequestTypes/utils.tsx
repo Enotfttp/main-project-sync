@@ -6,11 +6,11 @@ import {
 } from "./RequestTypes.styled";
 import { DocumentsInvoiceOutline, SystemTimeOutline } from "@admiral-ds/icons";
 import { LIGHT_THEME } from "@admiral-ds/react-ui";
-import { TRequestTypeRequestStatus } from "@entities/requestTypes/types";
+import { ERequestTypeRequestStatus } from "@entities/requestTypes/types";
 import { TTag } from "@shared/types/types";
 import React from "react";
 
-export const statusConfig: TTag<TRequestTypeRequestStatus> = {
+export const statusConfig: TTag<keyof typeof ERequestTypeRequestStatus> = {
   CREATED: {
     kind: "neutral",
     icon: <DocumentsInvoiceOutline />,

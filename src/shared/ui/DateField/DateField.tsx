@@ -1,11 +1,11 @@
 import { DateField, DateFieldProps } from "@admiral-ds/react-ui";
-import { FilterField } from "@features/Filter/Filter.types";
+import { RenderField } from "@features/Fields/RenderFields.types";
 import { calculateMaxDate, parseDateString } from "@features/Filter/utils";
 import React from "react";
 import { Field, FieldProps } from "react-final-form";
 
 type TProps = Omit<
-  FieldProps<string> & DateFieldProps & Partial<FilterField>,
+  FieldProps<string> & DateFieldProps & Partial<RenderField>,
   "children"
 > & {
   label: string;

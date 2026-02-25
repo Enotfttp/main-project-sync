@@ -9,7 +9,7 @@ import { routesPath } from "@app/providers";
 import {
   useMutationServiceActiveChange,
   useServices,
-} from "@entities/admin/admin.hook";
+} from "@entities/admin/hook";
 import { HorizontalTabsTemplate, Loader, Notification } from "@shared/ui";
 import * as React from "react";
 import { useMemo } from "react";

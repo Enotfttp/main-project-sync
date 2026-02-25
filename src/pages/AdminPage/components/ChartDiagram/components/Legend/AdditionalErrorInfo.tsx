@@ -4,7 +4,7 @@ import {
   StyledSquare,
 } from "./AdditionalErrorInfo.styled";
 import { T } from "@admiral-ds/react-ui";
-import { useAdditionalErrorData } from "@entities/admin/admin.hook";
+import { useAdditionalErrorData } from "@entities/admin/hook";
 import React, { useMemo } from "react";
 import { useParams } from "react-router-dom";
 
@@ -14,7 +14,7 @@ export const AdditionalErrorInfo: React.FC = () => {
   const { data } = useAdditionalErrorData(serviceId);
 
   const total = useMemo(
-    () => data?.reduce((acc, el) => (acc += el.count), 0) || 0,
+    () => data?.reduce((acc, el) => acc + el.count, 0) || 0,
     [data],
   );
 

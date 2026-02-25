@@ -6,7 +6,7 @@ import {
 } from "./ScheduleDetail.styled";
 import { T } from "@admiral-ds/react-ui";
 import { useGetSchedule } from "@entities/schedule/hook";
-import { PaymentScheduleStatusText } from "@entities/schedule/types";
+import { EPaymentScheduleStatus } from "@entities/schedule/types";
 import React from "react";
 import { useParams } from "react-router-dom";
 
@@ -30,7 +30,7 @@ export const ScheduleDetail = () => {
           <StyledInfoRow>
             <T font="Main/S">Статус:</T>
             <T font="Additional/L">
-              {PaymentScheduleStatusText[data?.status] ?? ""}
+              {EPaymentScheduleStatus[data?.status] ?? ""}
             </T>
           </StyledInfoRow>
         )}

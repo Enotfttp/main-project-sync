@@ -1,6 +1,6 @@
 import { StyledHeader, StyledIconLogout, StyledLink } from "./Header.styled";
 import { IconButton } from "@admiral-ds/react-ui";
-import { useLogoutMutation } from "@entities/auth/auth.hook";
+import { useLogoutMutation } from "@entities/auth/hook";
 
 export const Header = () => {
   const { mutateAsync } = useLogoutMutation();

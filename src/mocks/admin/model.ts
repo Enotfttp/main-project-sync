@@ -3,7 +3,7 @@ import {
   ErrorsChart,
   Service,
   TableData,
-} from "@entities/admin/admin.types";
+} from "@entities/admin/types";
 import { Model } from "miragejs";
 
 // Типы для моделей MirageJS

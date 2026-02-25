@@ -1,6 +1,6 @@
-import { FilterField } from "@features/Filter/Filter.types";
+import { RenderField } from "@features/Fields/RenderFields.types";
 
-export const filterFields: FilterField[] = [
+export const filterFields: RenderField[] = [
   {
     id: "id",
     name: "id",

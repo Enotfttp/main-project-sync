@@ -1,7 +1,7 @@
-import { DocStatusText } from "@entities/documents/types";
-import { FilterField } from "@features/Filter/Filter.types";
+import { EDocStatus } from "@entities/documents/types";
+import { RenderField } from "@features/Fields/RenderFields.types";
 
-export const filterFields: FilterField[] = [
+export const filterFields: RenderField[] = [
   {
     id: "inn",
     name: "inn",
@@ -25,7 +25,7 @@ export const filterFields: FilterField[] = [
     type: "select",
     label: "Статус обработки документа",
     placeholder: "Выберите статус обработки документа...",
-    options: Object.entries(DocStatusText).map(([key, val]) => ({
+    options: Object.entries(EDocStatus).map(([key, val]) => ({
       value: key,
       label: val,
     })),

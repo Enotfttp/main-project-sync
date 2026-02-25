@@ -1,7 +1,7 @@
-import { IAuthResponse, ILoginCredentials, IRegisterData } from "./auth.types";
+import { IAuthResponse, ILoginCredentials, IRegisterData } from "./types";
 import { axiosInstance } from "@shared/api";
 
-class AuthService {
+class Api {
   async login(credentials: ILoginCredentials): Promise<IAuthResponse> {
     const response = await axiosInstance.post("/api/auth/login", credentials);
     return response.data;
@@ -29,4 +29,4 @@ class AuthService {
   }
 }
 
-export const authService = new AuthService();
+export const authService = new Api();

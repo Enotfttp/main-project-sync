@@ -1,11 +1,11 @@
-import { ChartData, ErrorsChart, Service, TableData } from "./admin.types";
+import { ChartData, ErrorsChart, Service, TableData } from "./types";
 import { axiosInstance } from "@shared/api";
 import {
   FilterWithPagination,
   TableDataWithPagination,
 } from "@shared/ui/TableSort/components/Pagination.types";
 
-class AdminService {
+class Api {
   async getServicesList(): Promise<Service[]> {
     const response = await axiosInstance.get(`/api/services`);
     return response.data;
@@ -44,4 +44,4 @@ class AdminService {
   }
 }
 
-export const adminService = new AdminService();
+export const adminService = new Api();

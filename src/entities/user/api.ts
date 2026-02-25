@@ -1,7 +1,7 @@
-import { IUser } from "./user.types";
+import { IUser } from "./types";
 import { axiosInstance } from "@shared/api";
 
-class UserService {
+class Api {
   async getProfile(): Promise<IUser> {
     const response = await axiosInstance.get("/auth/profile");
     return response.data;
@@ -13,4 +13,4 @@ class UserService {
   }
 }
 
-export const userService = new UserService();
+export const userService = new Api();

@@ -1,5 +1,5 @@
-import { authService } from "./auth.service";
-import { IAuthResponse } from "./auth.types";
+import { authService } from "./api";
+import { IAuthResponse } from "./types";
 import { routesPath } from "@app/providers";
 import { storage } from "@shared/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

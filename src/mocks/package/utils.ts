@@ -1,11 +1,11 @@
-import { IPackage, PackageStatus } from "@entities/package/types";
+import { EPackageStatus, IPackage } from "@entities/package/types";
 import { fakerRU as faker } from "@faker-js/faker";
 
 export const generateMockPackages = (payerIds?: number[]): IPackage[] => {
   const availablePayerIds =
     payerIds || Array.from({ length: 10 }, (_, i) => 1000 + i * 100);
 
-  const getRandomStatus = (): PackageStatus => {
+  const getRandomStatus = (): keyof typeof EPackageStatus => {
     const rand = Math.random();
     if (rand < 0.6) return "ACTIVE";
     if (rand < 0.85) return "INACTIVE";

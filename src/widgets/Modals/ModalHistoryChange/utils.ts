@@ -1,8 +1,7 @@
 import { IStepPropsExtKey } from "./ModalHistoryChange.types";
 import {
-  ComcRequestStatus,
-  ComcRequestStatusText,
   ComcRequestStatusView,
+  EComcRequestStatus,
   IRequestHistory,
 } from "@entities/history/types";
 
@@ -21,7 +20,7 @@ export const configGenerated = (dataHistory: IRequestHistory[]) => {
     prevStatusPriority = ComcRequestStatusView[prevStatus].priority;
   }
 
-  const allSteps = Object.entries(ComcRequestStatusText).map(([key, val]) => {
+  const allSteps = Object.entries(EComcRequestStatus).map(([key, val]) => {
     const statusPriority = ComcRequestStatusView[key].priority;
 
     if (currentStatus === "ERROR" || currentStatus === "REJECTED") {
@@ -54,7 +53,7 @@ export const configGenerated = (dataHistory: IRequestHistory[]) => {
       [ComcRequestStatusView[currentStatus as string].status]: true,
       active: true,
       key: currentStatus,
-      content: ComcRequestStatusText[currentStatus],
+      content: EComcRequestStatus[currentStatus],
     });
   }
 
@@ -70,7 +69,7 @@ export const configGenerated = (dataHistory: IRequestHistory[]) => {
  */
 export const configGeneratedForIndex = (
   index: number,
-  currentStatus: ComcRequestStatus,
+  currentStatus: keyof typeof EComcRequestStatus,
   currentSteps: IStepPropsExtKey[],
 ): IStepPropsExtKey[] => {
   return [...currentSteps].map((step, i) => {

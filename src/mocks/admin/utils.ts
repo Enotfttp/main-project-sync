@@ -3,7 +3,7 @@ import {
   ErrorsChart,
   Service,
   TableData,
-} from "@entities/admin/admin.types";
+} from "@entities/admin/types";
 import { fakerRU as faker } from "@faker-js/faker"; // Функция для генерации сервисов
 
 // Функция для генерации сервисов

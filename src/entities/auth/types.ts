@@ -1,4 +1,4 @@
-import { IUser } from "@entities/user/user.types";
+import { IUser } from "@entities/user/types";
 
 export interface ILoginCredentials {
   login: string;

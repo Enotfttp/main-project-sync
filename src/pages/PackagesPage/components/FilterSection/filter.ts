@@ -1,7 +1,7 @@
-import { PackageStatusText } from "@entities/package/types";
-import { FilterField } from "@features/Filter/Filter.types";
+import { EPackageStatus } from "@entities/package/types";
+import { RenderField } from "@features/Fields/RenderFields.types";
 
-export const filterFields: FilterField[] = [
+export const filterFields: RenderField[] = [
   {
     id: "id",
     name: "id",
@@ -29,7 +29,7 @@ export const filterFields: FilterField[] = [
     type: "select",
     label: "Статус",
     placeholder: "Выберите статус...",
-    options: Object.entries(PackageStatusText).map(([key, val]) => ({
+    options: Object.entries(EPackageStatus).map(([key, val]) => ({
       value: key,
       label: val,
     })),

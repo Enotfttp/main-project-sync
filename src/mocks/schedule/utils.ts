@@ -1,12 +1,16 @@
 import {
+  EPaymentScheduleStatus,
   IPaymentSchedule,
-  PaymentScheduleStatus,
 } from "@entities/schedule/types";
 import { fakerRU as faker } from "@faker-js/faker";
 
 export const generateMockSchedules = (): IPaymentSchedule[] => {
   // Статусы с разной вероятностью для реалистичности
-  const statuses: PaymentScheduleStatus[] = ["CREATED", "COMPLETED", "CANCEL"];
+  const statuses: (keyof typeof EPaymentScheduleStatus)[] = [
+    "CREATED",
+    "COMPLETED",
+    "CANCEL",
+  ];
 
   // Коды процессов
   const processCodes = [

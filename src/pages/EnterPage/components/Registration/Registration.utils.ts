@@ -1,4 +1,4 @@
-import { IRegisterData } from "@entities/auth/auth.types";
+import { IRegisterData } from "@entities/auth/types";
 import { emailRegexp, required } from "@shared/utils";
 
 export type TInitial = IRegisterData;

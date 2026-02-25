@@ -1,7 +1,7 @@
 import { columns } from "./column";
 import { StyledTableTitle } from "../../DataTable.styled";
-import { useTableData } from "@entities/admin/admin.hook";
-import { TableData } from "@entities/admin/admin.types";
+import { useTableData } from "@entities/admin/hook";
+import { TableData } from "@entities/admin/types";
 import { FilterValue } from "@features/Filter/Filter.types";
 import { Notification, TableSort } from "@shared/ui";
 import { TPaginationTable } from "@shared/ui/TableSort/components/Pagination.types";
