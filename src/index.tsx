@@ -5,9 +5,16 @@ import {
 } from "@admiral-ds/react-ui";
 import { AppRouter } from "@app/index";
 import { AuthProvider } from "@app/providers/authProvider/AuthProvider";
+import { NotificationRestApi } from "@features/NotificationRestApi";
+import { notifyRestError, notifyRestSuccess } from "@features/NotificationRestApi/api";
 import { makeServer } from "@mocks/server";
 import { Loader } from "@shared/ui";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  MutationCache,
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import * as React from "react";
 import { StrictMode } from "react";
@@ -18,6 +25,22 @@ import "./index.css";
 makeServer();
 
 const queryClient = new QueryClient({
+  queryCache: new QueryCache({
+    onError: (error) => {
+      notifyRestError(error);
+    },
+    onSuccess: () => {
+      notifyRestSuccess();
+    },
+  }),
+  mutationCache: new MutationCache({
+    onError: (error) => {
+      notifyRestError(error);
+    },
+    onSuccess: () => {
+      notifyRestSuccess();
+    },
+  }),
   defaultOptions: {
     queries: {
       retry: 1,
@@ -45,6 +68,7 @@ createRoot(document.getElementById("root")!).render(
         <QueryClientProvider client={queryClient}>
           <AuthProvider>
             <AppRouter />
+            <NotificationRestApi />
             <ReactQueryDevtools initialIsOpen />
             {import.meta.env.VITE_APP_STAND === "development" && (
               <React.Suspense fallback={<Loader />}>
