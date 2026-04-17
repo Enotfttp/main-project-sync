@@ -95,7 +95,7 @@ export const ScheduleDetail = () => {
           </StyledInfoRow>
         )}
 
-        {data?.processDocProcessCode && (
+        {!!data?.processDocProcessCode && (
           <StyledInfoRow>
             <T font="Main/XS-bold">Код управляющего признака:</T>
             <T font="Additional/L">{data?.processDocProcessCode}</T>
