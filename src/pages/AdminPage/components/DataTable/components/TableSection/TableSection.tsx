@@ -63,6 +63,7 @@ export const TableSection: FC<IProps> = ({
     <>
       <StyledTableTitle>Детальные данные:</StyledTableTitle>
       <TableSort
+        isVisibleAdditionalBlock
         key={tableKey}
         displayRowSelectionColumn
         rowList={cols || []}

@@ -18,8 +18,10 @@ export const StyledLegendDescription = styled.div<{
   gap: 12px;
   padding: 12px 16px;
   border-radius: 8px;
-  background-color: ${({ selectedChartSection, section }) =>
-    selectedChartSection === section.id ? "#E8F4FD" : "#F8F9FA"};
+  background-color: ${({ selectedChartSection, section, theme }) =>
+    selectedChartSection === section.id
+      ? theme.color["Neutral/Neutral 50"]
+      : theme.color["Neutral/Neutral 30"]};
   border: ${({ selectedChartSection, section }) =>
     selectedChartSection === section.id
       ? "2px solid #0D5ACE"
@@ -48,7 +50,7 @@ export const StyledTextDescriptionLabel = styled.div`
   gap: 8px;
   > span {
     font-weight: 500;
-    color: #0d1f2c;
+    color: ${({ theme }) => theme.color["Neutral/Neutral 90"]};
     font-size: 14px;
     flex: 1;
   }

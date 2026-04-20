@@ -12,6 +12,6 @@ export const StyledSystemDarkModeOutline = styled(SystemDarkModeOutline)`
 
 export const StyledSystemLightModeOutline = styled(SystemLightModeOutline)`
   > path {
-    fill: ${({ theme }) => theme.color["Special/Static White"]} !important;
+    fill: ${({ theme }) => theme.color["Attention/Attention 40"]} !important;
   }
 `;

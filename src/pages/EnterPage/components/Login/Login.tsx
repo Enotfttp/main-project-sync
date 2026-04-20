@@ -6,6 +6,7 @@ import {
   StyledLoginPage,
   StyledRegistrationText,
   StyledSeparatorText,
+  StyledThemeChange,
 } from "./Login.styled";
 import { IInitial, validate } from "./Login.utils";
 import {
@@ -14,6 +15,7 @@ import {
 } from "@admiral-ds/react-ui";
 import { routesPath } from "@app/providers";
 import { useLoginMutation } from "@entities/auth/hook";
+import { ThemeChange } from "@features/ThemeChange";
 import { ApiError } from "@shared/api";
 import { InputFieldUI } from "@shared/ui";
 import { FORM_ERROR } from "final-form";
@@ -51,6 +53,9 @@ export const Login: FC<ILoginProps> = ({ btnRedirect }) => {
 
   return (
     <StyledLoginPage>
+      <StyledThemeChange>
+        <ThemeChange />
+      </StyledThemeChange>
       <Form<IInitial>
         initialValues={initialState}
         onSubmit={onSubmit}

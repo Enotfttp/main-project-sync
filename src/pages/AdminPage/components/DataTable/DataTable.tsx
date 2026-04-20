@@ -1,7 +1,6 @@
 import { FilterSection, TableSection } from "./components";
 import { StyledTableHeader } from "./DataTable.styled";
 import { useFilter } from "@features/Filter/useFilter";
-import { StyledWhiteBlock } from "@pages/AdminPage/components/ChartDiagram/ChartDiagram.styled";
 import { Notification } from "@shared/ui";
 import React from "react";
 import { useParams } from "react-router-dom";
@@ -31,22 +30,18 @@ export const DataTable: React.FC<DataTableProps> = ({
   return (
     <>
       <StyledTableHeader>
-        <StyledWhiteBlock>
-          <FilterSection
-            onApplyFilters={handleApplyFilters}
-            onResetFilters={handleResetFilters}
-          />
-        </StyledWhiteBlock>
+        <FilterSection
+          onApplyFilters={handleApplyFilters}
+          onResetFilters={handleResetFilters}
+        />
       </StyledTableHeader>
 
-      <StyledWhiteBlock>
-        <TableSection
-          tableKey={tableKey}
-          filters={filters}
-          serviceId={serviceId}
-          selectedChartSection={selectedChartSection?.id}
-        />
-      </StyledWhiteBlock>
+      <TableSection
+        tableKey={tableKey}
+        filters={filters}
+        serviceId={serviceId}
+        selectedChartSection={selectedChartSection?.id}
+      />
     </>
   );
 };

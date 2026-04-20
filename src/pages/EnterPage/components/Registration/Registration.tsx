@@ -6,6 +6,8 @@ import {
   StyledRegistrationPage,
   StyledRegistrationText,
   StyledSeparatorText,
+  StyledThemeChange,
+  StyledTwoBlocks,
 } from "./Registration.styled";
 import { TInitial, validate } from "./Registration.utils";
 import {
@@ -15,7 +17,7 @@ import {
 } from "@admiral-ds/react-ui";
 import { routesPath } from "@app/providers";
 import { useRegisterMutation } from "@entities/auth/hook";
-import { StyledTwoBlocks } from "@pages/EnterPage/components/Login/Login.styled";
+import { ThemeChange } from "@features/ThemeChange";
 import { ApiError } from "@shared/api";
 import { InputFieldUI } from "@shared/ui";
 import { FORM_ERROR } from "final-form";
@@ -61,6 +63,9 @@ export const Registration: FC<IRegistrationProps> = ({ btnRedirect }) => {
 
   return (
     <StyledRegistrationPage>
+      <StyledThemeChange>
+        <ThemeChange />
+      </StyledThemeChange>
       <Form<TInitial>
         initialValues={initialState}
         onSubmit={onSubmit}
