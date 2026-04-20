@@ -1,4 +1,5 @@
 import {
+  StyledThemeChange,
   StyledUServiceSelector,
   StyledUServiceSelectorLayout,
   StyledUServiceTabs,
@@ -10,6 +11,7 @@ import {
   useMutationServiceActiveChange,
   useServices,
 } from "@entities/admin/hook";
+import { ThemeChange } from "@features/ThemeChange";
 import { HorizontalTabsTemplate, Loader, Notification } from "@shared/ui";
 import * as React from "react";
 import { useMemo } from "react";
@@ -55,6 +57,9 @@ export const AdminServiceSelector = () => {
 
   return (
     <StyledUServiceSelector>
+      <StyledThemeChange>
+        <ThemeChange />
+      </StyledThemeChange>
       <StyledWhiteBlock>
         <StyledUServiceTabs>
           <HorizontalTabsTemplate

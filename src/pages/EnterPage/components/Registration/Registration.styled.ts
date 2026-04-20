@@ -2,6 +2,7 @@ import { Button, T } from "@admiral-ds/react-ui";
 import styled from "styled-components";
 
 export const StyledRegistrationPage = styled.div`
+  position: relative;
   background-color: ${({ theme }) => theme.color["Neutral/Neutral 00"]};
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
@@ -51,4 +52,16 @@ export const StyledRegistrationText = styled(T)`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+export const StyledTwoBlocks = styled.div`
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+`;
+
+export const StyledThemeChange = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
 `;
