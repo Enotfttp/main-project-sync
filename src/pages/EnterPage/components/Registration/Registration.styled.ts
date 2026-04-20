@@ -2,7 +2,7 @@ import { Button, T } from "@admiral-ds/react-ui";
 import styled from "styled-components";
 
 export const StyledRegistrationPage = styled.div`
-  background-color: white;
+  background-color: ${({ theme }) => theme.color["Neutral/Neutral 00"]};
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   width: 100%;

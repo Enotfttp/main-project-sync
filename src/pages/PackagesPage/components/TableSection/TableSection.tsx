@@ -38,6 +38,7 @@ export const TableSection: FC<IProps> = ({ tableKey, filters, onRowClick }) => {
 
   return (
     <TableSort
+      isVisibleAdditionalBlock
       key={tableKey}
       columnList={columnList}
       rowList={additionalHover(dataPackage?.data)}

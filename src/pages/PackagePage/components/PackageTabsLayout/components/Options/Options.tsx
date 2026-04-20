@@ -1,5 +1,5 @@
 import { FilterSection, TableSection } from "./components";
-import { StyledPackagesPage, StyledWhiteBlock } from "./Options.styled";
+import { StyledPackagesPage } from "./Options.styled";
 import { useFilter } from "@features/Filter/useFilter";
 import * as React from "react";
 
@@ -9,16 +9,12 @@ export const Options = () => {
 
   return (
     <StyledPackagesPage>
-      <StyledWhiteBlock>
-        <FilterSection
-          onApplyFilters={handleApplyFilters}
-          onResetFilters={handleResetFilters}
-        />
-      </StyledWhiteBlock>
+      <FilterSection
+        onApplyFilters={handleApplyFilters}
+        onResetFilters={handleResetFilters}
+      />
 
-      <StyledWhiteBlock>
-        <TableSection tableKey={tableKey} filters={filters} />
-      </StyledWhiteBlock>
+      <TableSection tableKey={tableKey} filters={filters} />
     </StyledPackagesPage>
   );
 };

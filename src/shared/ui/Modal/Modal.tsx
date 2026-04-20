@@ -1,13 +1,11 @@
+import type { ModalProps } from "@admiral-ds/react-ui";
 import {
   Modal as ModalTemplate,
-  ModalTitle,
-  ModalContent,
   ModalButtonPanel,
-  LIGHT_THEME,
+  ModalContent,
+  ModalTitle,
 } from "@admiral-ds/react-ui";
-import type { ModalProps } from "@admiral-ds/react-ui";
 import * as React from "react";
-import { ThemeProvider } from "styled-components";
 
 interface IModal extends Omit<ModalProps, "children"> {
   isOpen: boolean;
@@ -27,7 +25,7 @@ export const Modal = ({
   ...props
 }: IModal) => {
   return (
-    <ThemeProvider theme={LIGHT_THEME}>
+    <>
       {isOpen && (
         <ModalTemplate
           {...props}
@@ -43,6 +41,6 @@ export const Modal = ({
           )}
         </ModalTemplate>
       )}
-    </ThemeProvider>
+    </>
   );
 };

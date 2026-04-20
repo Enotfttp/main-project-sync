@@ -2,6 +2,13 @@ import { Option, SelectField, SelectProps } from "@admiral-ds/react-ui";
 import { ISearchWithFilter } from "@features/SearchWithFilter/SearchWithFilter.types";
 import React from "react";
 import { Field, FieldProps } from "react-final-form";
+import styled from "styled-components";
+
+const StyledSelectField = styled(SelectField)`
+  label {
+    color: ${({ theme }) => theme.color["Neutral/Neutral 90"]} !important;
+  }
+`;
 
 type TProps = Omit<FieldProps<string> & SelectProps, "children"> & {
   label: string;
@@ -16,7 +23,7 @@ export const SelectFieldUI = ({ options = [], ...props }: TProps) => {
     <Field type={props.type} data-testid="form-select-field" {...props}>
       {({ input, meta }) => {
         return (
-          <SelectField
+          <StyledSelectField
             {...input}
             {...props}
             data-container-id="selectFieldId"
@@ -28,7 +35,7 @@ export const SelectFieldUI = ({ options = [], ...props }: TProps) => {
                 {label}
               </Option>
             ))}
-          </SelectField>
+          </StyledSelectField>
         );
       }}
     </Field>

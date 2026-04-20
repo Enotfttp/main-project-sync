@@ -1,5 +1,5 @@
 import { FilterSection, PeriodDetail, TableSection } from "./components";
-import { StyledDocumentsPage, StyledWhiteBlock } from "./DocumentsPage.styled";
+import { StyledDocumentsPage } from "./DocumentsPage.styled";
 import { Divider, T } from "@admiral-ds/react-ui";
 import { useFilter } from "@features/Filter/useFilter";
 import * as React from "react";
@@ -28,15 +28,11 @@ const DocumentsPage = () => {
       <PeriodDetail />
       <Divider />
       <T font="Header/H1">Документы</T>
-      <StyledWhiteBlock>
-        <FilterSection
-          onApplyFilters={handleApplyFilters}
-          onResetFilters={handleResetFilters}
-        />
-      </StyledWhiteBlock>
-      <StyledWhiteBlock>
-        <TableSection tableKey={tableKey} filters={filters} />
-      </StyledWhiteBlock>
+      <FilterSection
+        onApplyFilters={handleApplyFilters}
+        onResetFilters={handleResetFilters}
+      />
+      <TableSection tableKey={tableKey} filters={filters} />
     </StyledDocumentsPage>
   );
 };

@@ -1,5 +1,5 @@
 import { FilterSection, TableSection } from "./components";
-import { StyledDocPage, StyledWhiteBlock } from "./DocPage.styled";
+import { StyledDocPage } from "./DocPage.styled";
 import { T } from "@admiral-ds/react-ui";
 import { EDocType } from "@entities/documents/types";
 import { handleSetFilters, useFilter } from "@features/Filter/useFilter";
@@ -58,15 +58,11 @@ const DocPage = () => {
         if (tab.tabId !== tabId) return null;
         return (
           <React.Fragment key={tab.tabId}>
-            <StyledWhiteBlock>
-              <FilterSection
-                onApplyFilters={handleApplyFilters}
-                onResetFilters={handleResetFilters}
-              />
-            </StyledWhiteBlock>
-            <StyledWhiteBlock>
-              <TableSection tableKey={tableKey} filters={filters} />
-            </StyledWhiteBlock>
+            <FilterSection
+              onApplyFilters={handleApplyFilters}
+              onResetFilters={handleResetFilters}
+            />
+            <TableSection tableKey={tableKey} filters={filters} />
           </React.Fragment>
         );
       })}

@@ -25,6 +25,7 @@ export const TableSection: FC<IProps> = ({ tableKey, filters }) => {
 
   return (
     <TableSort
+      isVisibleAdditionalBlock
       key={tableKey}
       columnList={columnList}
       rowList={additionalHover(dataDoc?.data)}

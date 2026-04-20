@@ -1,6 +1,13 @@
 import { InputField, InputFieldProps } from "@admiral-ds/react-ui";
 import React, { ChangeEvent } from "react";
 import { Field, FieldProps } from "react-final-form";
+import styled from "styled-components";
+
+const StyledInputField = styled(InputField)`
+  label {
+    color: ${({ theme }) => theme.color["Neutral/Neutral 90"]} !important;
+  }
+`;
 
 type TProps = Omit<FieldProps<string> & InputFieldProps, "children"> & {
   name: string;
@@ -26,7 +33,7 @@ export const InputFieldUI = ({ maxLength = 255, ...props }: TProps) => {
         };
 
         return (
-          <InputField
+          <StyledInputField
             {...input}
             {...props}
             onChange={handleChange}

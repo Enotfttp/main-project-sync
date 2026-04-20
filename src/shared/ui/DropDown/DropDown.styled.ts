@@ -13,7 +13,7 @@ export const StyledSSystemSmallArrowUpOutline = styled(
   SystemSmallArrowUpOutline,
 )`
   > path {
-    fill: #000 !important;
+    fill: ${({ theme }) => theme.color["Neutral/Neutral 90"]} !important;
   }
 `;
 
@@ -21,7 +21,7 @@ export const StyledSystemSmallArrowDownOutline = styled(
   SystemSmallArrowDownOutline,
 )`
   > path {
-    fill: #000 !important;
+    fill: ${({ theme }) => theme.color["Neutral/Neutral 90"]} !important;
   }
 `;
 
