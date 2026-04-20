@@ -1,0 +1,17 @@
+import {
+  SystemDarkModeOutline,
+  SystemLightModeOutline,
+} from "@admiral-ds/icons";
+import styled from "styled-components";
+
+export const StyledSystemDarkModeOutline = styled(SystemDarkModeOutline)`
+  > path {
+    fill: ${({ theme }) => theme.color["Special/Static White"]} !important;
+  }
+`;
+
+export const StyledSystemLightModeOutline = styled(SystemLightModeOutline)`
+  > path {
+    fill: ${({ theme }) => theme.color["Special/Static White"]} !important;
+  }
+`;

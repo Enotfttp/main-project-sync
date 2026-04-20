@@ -21,6 +21,11 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
   }, [onResetFilters]);
 
   return (
-    <Filter fields={filterFields} onApply={handleApply} onReset={handleReset} />
+    <Filter
+      isVisibleAdditionalBlock
+      fields={filterFields}
+      onApply={handleApply}
+      onReset={handleReset}
+    />
   );
 };

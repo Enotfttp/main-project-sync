@@ -3,7 +3,6 @@ import {
   HorizontalTabProps,
   HorizontalTabs,
   HorizontalTabsProps,
-  LIGHT_THEME,
   TabBadge,
   TabIcon,
   TabText,
@@ -11,7 +10,6 @@ import {
 import type { ReactNode } from "react";
 import { forwardRef, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ThemeProvider } from "styled-components";
 
 interface TabContentProps extends HorizontalTabProps {
   text: string;
@@ -131,22 +129,20 @@ export const HorizontalTabsTemplate = ({
   };
 
   return (
-    <ThemeProvider theme={LIGHT_THEME}>
-      <HorizontalTabs
-        {...props}
-        showUnderline={showUnderline}
-        selectedTabId={selectedTab}
-        defaultSelectedTabId={defaultSelectedTabId}
-        onSelectTab={(tabId) => {
-          handleSelectTab(tabId);
-          if (props?.onSelectTab) {
-            props?.onSelectTab(tabId);
-          }
-        }}
-        tabsId={tabsMap}
-        renderTab={renderTab}
-        tabIsDisabled={tabIsDisabled}
-      />
-    </ThemeProvider>
+    <HorizontalTabs
+      {...props}
+      showUnderline={showUnderline}
+      selectedTabId={selectedTab}
+      defaultSelectedTabId={defaultSelectedTabId}
+      onSelectTab={(tabId) => {
+        handleSelectTab(tabId);
+        if (props?.onSelectTab) {
+          props?.onSelectTab(tabId);
+        }
+      }}
+      tabsId={tabsMap}
+      renderTab={renderTab}
+      tabIsDisabled={tabIsDisabled}
+    />
   );
 };

@@ -8,12 +8,12 @@ export const StyledHeader = styled.header`
   align-items: center;
   padding: 0 65px;
   height: 100px;
-  background-color: #1d6f95;
+  background-color: ${({ theme }) => theme.color["Teal/Teal 50"]};
 `;
 
 export const StyledLink = styled(Link)`
   text-decoration: none;
-  color: #ffffff;
+  color: ${({ theme }) => theme.color["Special/Static White"]};
   font-size: 40px;
   letter-spacing: 3px;
   font-weight: 600;

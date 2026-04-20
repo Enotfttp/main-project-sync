@@ -5,12 +5,14 @@ import {
   StyledWarningTriangleOutline,
 } from "./RequestTypes.styled";
 import { DocumentsInvoiceOutline, SystemTimeOutline } from "@admiral-ds/icons";
-import { LIGHT_THEME } from "@admiral-ds/react-ui";
+import { DARK_THEME, LIGHT_THEME } from "@admiral-ds/react-ui";
 import { ERequestTypeRequestStatus } from "@entities/requestTypes/types";
 import { TTag } from "@shared/types/types";
 import React from "react";
 
-export const statusConfig: TTag<keyof typeof ERequestTypeRequestStatus> = {
+export const statusConfig = (
+  theme: typeof DARK_THEME | typeof LIGHT_THEME,
+): TTag<keyof typeof ERequestTypeRequestStatus> => ({
   CREATED: {
     kind: "neutral",
     icon: <DocumentsInvoiceOutline />,
@@ -21,9 +23,9 @@ export const statusConfig: TTag<keyof typeof ERequestTypeRequestStatus> = {
   },
   REJECTED: {
     kind: {
-      background: `var(--admiral-color-Attention_Attention10, ${LIGHT_THEME.color["Attention/Attention 10"]})`,
-      border: `var(--admiral-color-Attention_Attention40, ${LIGHT_THEME.color["Attention/Attention 40"]})`,
-      backgroundHover: `var(--admiral-color-Attention_Attention20, ${LIGHT_THEME.color["Attention/Attention 20"]})`,
+      background: `var(--admiral-color-Attention_Attention10, ${theme.color["Attention/Attention 10"]})`,
+      border: `var(--admiral-color-Attention_Attention40, ${theme.color["Attention/Attention 40"]})`,
+      backgroundHover: `var(--admiral-color-Attention_Attention20, ${theme.color["Attention/Attention 20"]})`,
     },
     icon: <StyledWarningTriangleOutline />,
   },
@@ -39,4 +41,4 @@ export const statusConfig: TTag<keyof typeof ERequestTypeRequestStatus> = {
     kind: "danger",
     icon: <StyledErrorCloseCircleOutline />,
   },
-};
+});

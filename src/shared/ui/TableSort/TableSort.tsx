@@ -1,11 +1,12 @@
 import { PaginationTable } from "./components";
-import { StyledTableSort } from "./TableSort.styled";
-import type {
+import { StyledAdditionalBlock, StyledTableSort } from "./TableSort.styled";
+import {
   Column,
   PaginationOneProps,
+  Table,
   TableProps,
+  TableRow,
 } from "@admiral-ds/react-ui";
-import { Table, TableRow } from "@admiral-ds/react-ui";
 import { Loader } from "@shared/ui";
 import {
   TPaginationData,
@@ -30,13 +31,19 @@ type TableSortProps =
       pagination?: TPaginationData;
       isPagination?: true;
       paginationProp?: PaginationOneProps;
+      isVisibleAdditionalBlock?: boolean;
     } & TableProps)
   | ({
       queryKey: string;
       isPagination?: false;
+      isVisibleAdditionalBlock?: boolean;
     } & TableProps);
 
-export const TableSort = ({ queryKey, ...props }: TableSortProps) => {
+export const TableSort = ({
+  queryKey,
+  isVisibleAdditionalBlock = false,
+  ...props
+}: TableSortProps) => {
   const isFetching = useIsFetching({ queryKey: [queryKey] });
   const [rows, setRows] = React.useState([...props.rowList]);
   const [cols, setCols] = React.useState([...props.columnList]);
@@ -205,7 +212,28 @@ export const TableSort = ({ queryKey, ...props }: TableSortProps) => {
     return <Loader />;
   }
 
-  return (
+  return isVisibleAdditionalBlock ? (
+    <StyledAdditionalBlock>
+      <StyledTableSort>
+        <Table
+          {...props}
+          columnList={cols}
+          rowList={rows}
+          dimension="m"
+          onSortChange={handleSort}
+          onColumnResize={handleResize}
+        />
+        {props?.isPagination && props?.pagination && (
+          <PaginationTable
+            {...props?.paginationProp}
+            handlePaginationChange={props?.handlePaginationChange}
+            handleResetSortCols={handleResetSortCols}
+            {...props?.pagination}
+          />
+        )}
+      </StyledTableSort>
+    </StyledAdditionalBlock>
+  ) : (
     <StyledTableSort>
       <Table
         {...props}

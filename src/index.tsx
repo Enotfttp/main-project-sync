@@ -1,8 +1,5 @@
-import {
-  DropdownProvider,
-  FontsVTBGroup,
-  LIGHT_THEME,
-} from "@admiral-ds/react-ui";
+import { GlobalStyle } from "./index.styled";
+import { DropdownProvider, FontsVTBGroup } from "@admiral-ds/react-ui";
 import { AppRouter } from "@app/index";
 import { AuthProvider } from "@app/providers/authProvider/AuthProvider";
 import { NotificationRestApi } from "@features/NotificationRestApi";
@@ -10,6 +7,7 @@ import {
   notifyRestError,
   notifyRestSuccess,
 } from "@features/NotificationRestApi/api";
+import { ThemeProviderLayout } from "@layouts/ThemeProviderLayout/ThemeProviderLayout";
 import { makeServer } from "@mocks/server";
 import { Loader } from "@shared/ui";
 import {
@@ -22,8 +20,6 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import * as React from "react";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { ThemeProvider } from "styled-components";
-import "./index.css";
 
 makeServer();
 
@@ -62,7 +58,8 @@ const ReactQueryDevtoolsProduction = React.lazy(() =>
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ThemeProvider theme={LIGHT_THEME}>
+    <ThemeProviderLayout>
+      <GlobalStyle />
       <DropdownProvider>
         <FontsVTBGroup />
         <QueryClientProvider client={queryClient}>
@@ -78,6 +75,6 @@ createRoot(document.getElementById("root")!).render(
           </AuthProvider>
         </QueryClientProvider>
       </DropdownProvider>
-    </ThemeProvider>
+    </ThemeProviderLayout>
   </StrictMode>,
 );

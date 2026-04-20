@@ -9,11 +9,13 @@ import {
 import { useModalManager } from "@features/ModalRouting/useModalManager";
 import React from "react";
 import { useParams } from "react-router-dom";
+import { useTheme } from "styled-components";
 
 export const RequestTypes = () => {
   const { id } = useParams();
   const { data: requestTypes } = useGetRequestTypes(id!);
   const { openModal } = useModalManager();
+  const theme = useTheme();
 
   const clickHandler = (requestType: IRequestType) => {
     openModal("historyRequestType", {
@@ -24,7 +26,7 @@ export const RequestTypes = () => {
   return (
     <Tags width="100%">
       {requestTypes?.map((requestType) => {
-        const config = statusConfig[requestType.status];
+        const config = statusConfig(theme)[requestType.status];
 
         return (
           <StyledTag

@@ -1,5 +1,5 @@
 import { FilterSection, TableSection } from "./components";
-import { StyledPackagesPage, StyledWhiteBlock } from "./Schedule.styled";
+import { StyledPackagesPage } from "./Schedule.styled";
 import { useFilter } from "@features/Filter/useFilter";
 import * as React from "react";
 
@@ -14,20 +14,16 @@ export const Schedule = () => {
 
   return (
     <StyledPackagesPage>
-      <StyledWhiteBlock>
-        <FilterSection
-          onApplyFilters={handleApplyFilters}
-          onResetFilters={handleResetFilters}
-        />
-      </StyledWhiteBlock>
+      <FilterSection
+        onApplyFilters={handleApplyFilters}
+        onResetFilters={handleResetFilters}
+      />
 
-      <StyledWhiteBlock>
-        <TableSection
-          onRowClick={onRowClick}
-          tableKey={tableKey}
-          filters={filters}
-        />
-      </StyledWhiteBlock>
+      <TableSection
+        onRowClick={onRowClick}
+        tableKey={tableKey}
+        filters={filters}
+      />
     </StyledPackagesPage>
   );
 };

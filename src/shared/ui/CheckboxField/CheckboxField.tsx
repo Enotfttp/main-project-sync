@@ -1,6 +1,13 @@
 import { CheckboxField, CheckboxFieldProps } from "@admiral-ds/react-ui";
 import React from "react";
 import { Field, FieldProps } from "react-final-form";
+import styled from "styled-components";
+
+const StyledCheckboxField = styled(CheckboxField)`
+  label {
+    color: ${({ theme }) => theme.color["Neutral/Neutral 90"]} !important;
+  }
+`;
 
 type TProps = Omit<FieldProps<string> & CheckboxFieldProps, "children"> & {
   name: string;
@@ -13,7 +20,7 @@ export const CheckboxFieldUI = ({ ...props }: TProps) => {
     <Field type={props.type} data-testid="form-checkbox-field" {...props}>
       {({ input, meta }) => {
         return (
-          <CheckboxField
+          <StyledCheckboxField
             {...input}
             {...props}
             error={meta.touched && meta.error}
@@ -21,7 +28,7 @@ export const CheckboxFieldUI = ({ ...props }: TProps) => {
             data-testid={`form-checkbox-${input.name}`}
           >
             props?.label
-          </CheckboxField>
+          </StyledCheckboxField>
         );
       }}
     </Field>

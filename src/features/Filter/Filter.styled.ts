@@ -1,6 +1,25 @@
 import styled from "styled-components";
 
-export const StyledFilter = styled.div``;
+export const StyledFilter = styled.div<{ isVisible: boolean }>`
+  background-color: ${({ theme, isVisible }) =>
+    isVisible
+      ? theme.color["Neutral/Neutral 00"]
+      : theme.color["Neutral/Neutral 05"]};
+`;
+
+export const StyledAdditionalBlock = styled.div`
+  background-color: ${({ theme }) => theme.color["Neutral/Neutral 00"]};
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+  border-radius: 25px;
+  border: 2px solid ${({ theme }) => theme.color["Neutral/Neutral 20"]};
+  width: 100%;
+  height: 100%;
+  svg {
+    align-self: center;
+  }
+`;
 
 export const StyledFilterHeader = styled.div`
   display: flex;
@@ -46,6 +65,4 @@ export const StyledFilterActions = styled.div`
   display: flex;
   gap: 8px;
   justify-content: flex-end;
-  padding-top: 16px;
-  border-top: 1px solid #e2e5e8;
 `;

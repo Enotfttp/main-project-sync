@@ -3,6 +3,13 @@ import { RenderField } from "@features/Fields/RenderFields.types";
 import { calculateMaxDate, parseDateString } from "@features/Filter/utils";
 import React from "react";
 import { Field, FieldProps } from "react-final-form";
+import styled from "styled-components";
+
+const StyledDateField = styled(DateField)`
+  label {
+    color: ${({ theme }) => theme.color["Neutral/Neutral 90"]} !important;
+  }
+`;
 
 type TProps = Omit<
   FieldProps<string> & DateFieldProps & Partial<RenderField>,
@@ -44,7 +51,7 @@ export const DateFieldUI = ({ ...props }: TProps) => {
           input.onChange(value);
         };
         return (
-          <DateField
+          <StyledDateField
             {...input}
             {...props}
             type={props.type}

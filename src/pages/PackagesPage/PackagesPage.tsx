@@ -1,5 +1,5 @@
 import { FilterSection, TableSection } from "./components";
-import { StyledPackagesPage, StyledWhiteBlock } from "./PackagesPage.styled";
+import { StyledPackagesPage } from "./PackagesPage.styled";
 import { T } from "@admiral-ds/react-ui";
 import { useFilter } from "@features/Filter/useFilter";
 import * as React from "react";
@@ -16,20 +16,16 @@ const PackagesPage = () => {
   return (
     <StyledPackagesPage>
       <T font="Header/H1">Пакеты</T>
-      <StyledWhiteBlock>
-        <FilterSection
-          onApplyFilters={handleApplyFilters}
-          onResetFilters={handleResetFilters}
-        />
-      </StyledWhiteBlock>
+      <FilterSection
+        onApplyFilters={handleApplyFilters}
+        onResetFilters={handleResetFilters}
+      />
 
-      <StyledWhiteBlock>
-        <TableSection
-          onRowClick={onRowClick}
-          tableKey={tableKey}
-          filters={filters}
-        />
-      </StyledWhiteBlock>
+      <TableSection
+        onRowClick={onRowClick}
+        tableKey={tableKey}
+        filters={filters}
+      />
     </StyledPackagesPage>
   );
 };

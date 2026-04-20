@@ -6,4 +6,5 @@ export interface FilterConfig {
   fields: RenderField[];
   onApply?: (values: FilterValue) => void;
   onReset?: () => void;
+  isVisibleAdditionalBlock?: boolean;
 }
