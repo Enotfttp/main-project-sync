@@ -14,7 +14,9 @@ export const statusConfig = (
   theme: typeof DARK_THEME | typeof LIGHT_THEME,
 ): TTag<keyof typeof ERequestTypeRequestStatus> => ({
   CREATED: {
-    kind: "neutral",
+    kind: {
+      background: `var(--admiral-color-Neutral_Neutral60, ${theme.color["Neutral/Neutral 60"]})`,
+    },
     icon: <DocumentsInvoiceOutline />,
   },
   ACCEPTED: {

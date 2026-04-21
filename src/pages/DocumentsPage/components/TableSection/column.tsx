@@ -1,4 +1,4 @@
-import { Column, Tag } from "@admiral-ds/react-ui";
+import { Column, DARK_THEME, LIGHT_THEME, Tag } from "@admiral-ds/react-ui";
 import { EDocStatus, EDocType, EOrderStatus } from "@entities/documents/types";
 import { TTag } from "@shared/types/types";
 import React from "react";
@@ -18,9 +18,13 @@ export const orderStatusConfig: TTag<keyof typeof EOrderStatus> = {
   },
 };
 
-export const statusConfig: TTag<keyof typeof EDocStatus> = {
+export const statusConfig = (
+  theme: typeof DARK_THEME | typeof LIGHT_THEME,
+): TTag<keyof typeof EDocStatus> => ({
   CREATED: {
-    kind: "neutral",
+    kind: {
+      background: `var(--admiral-color-Neutral_Neutral60, ${theme.color["Neutral/Neutral 60"]})`,
+    },
     text: EDocStatus.CREATED,
   },
   SENT: {
@@ -43,7 +47,7 @@ export const statusConfig: TTag<keyof typeof EDocStatus> = {
     kind: "danger",
     text: EDocStatus.ERROR,
   },
-};
+});
 
 export const columnList: Column[] = [
   {
@@ -85,8 +89,14 @@ export const columnList: Column[] = [
     title: "Статус обработки документа",
     width: "14.2%",
     renderCell: (status: string) => {
-      const config = statusConfig[status];
+      const themeStorage = localStorage.getItem("theme");
+      let config;
 
+      if (themeStorage === "dark") {
+        config = statusConfig(DARK_THEME)[status];
+      } else {
+        config = statusConfig(LIGHT_THEME)[status];
+      }
       if (!config) return null;
       return <Tag kind={config.kind}>{config.text}</Tag>;
     },
