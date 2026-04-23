@@ -23,7 +23,7 @@ export const statusConfig = (
 ): TTag<keyof typeof EDocStatus> => ({
   CREATED: {
     kind: {
-      background: `var(--admiral-color-Neutral_Neutral60, ${theme.color["Neutral/Neutral 60"]})`,
+      background: `var(--admiral-color-Neutral_Neutral10, ${theme.color["Neutral/Neutral 10"]})`,
     },
     text: EDocStatus.CREATED,
   },
