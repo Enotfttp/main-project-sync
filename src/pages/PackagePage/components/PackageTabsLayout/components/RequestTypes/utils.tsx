@@ -15,7 +15,8 @@ export const statusConfig = (
 ): TTag<keyof typeof ERequestTypeRequestStatus> => ({
   CREATED: {
     kind: {
-      background: `var(--admiral-color-Neutral_Neutral60, ${theme.color["Neutral/Neutral 60"]})`,
+      background: `var(--admiral-color-Neutral_Neutral10, ${theme.color["Neutral/Neutral 10"]})`,
+      backgroundHover: `var(--admiral-color-Neutral_Neutral20, ${theme.color["Neutral/Neutral 20"]})`,
     },
     icon: <DocumentsInvoiceOutline />,
   },
