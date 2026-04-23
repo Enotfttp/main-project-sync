@@ -6,7 +6,8 @@ import styled from "styled-components";
 
 export const StyledSystemDarkModeOutline = styled(SystemDarkModeOutline)`
   > path {
-    fill: ${({ theme }) => theme.color["Special/Static White"]} !important;
+    fill: ${({ theme }) =>
+      theme.color["Special/Dark Static Neutral 00"]} !important;
   }
 `;
 

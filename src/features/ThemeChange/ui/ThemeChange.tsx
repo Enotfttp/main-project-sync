@@ -27,7 +27,7 @@ export const ThemeChange = () => {
 
   return (
     <IconButton dimension="xl" onClick={handleChange}>
-      {isDarkTheme ? (
+      {!isDarkTheme ? (
         <StyledSystemDarkModeOutline />
       ) : (
         <StyledSystemLightModeOutline />
