@@ -15,7 +15,7 @@ export const statusConfig = (
   },
   INACTIVE: {
     kind: {
-      background: `var(--admiral-color-Neutral_Neutral10, ${theme.color["Neutral/Neutral 10"]})`,
+      background: `var(--admiral-color-Neutral_Neutral50, ${theme.color["Neutral/Neutral 50"]})`,
     },
     text: EPackageStatus.INACTIVE,
   },
@@ -33,9 +33,13 @@ export const columnList: Column[] = [
     width: "20%",
     renderCell: (status: string) => {
       const themeStorage = localStorage.getItem("theme");
+      let shortNameTheme = "light";
       let config;
+      if (themeStorage) {
+        shortNameTheme = JSON.parse(themeStorage).state.shortNameTheme;
+      }
 
-      if (themeStorage === "dark") {
+      if (shortNameTheme === "dark") {
         config = statusConfig(DARK_THEME)[status];
       } else {
         config = statusConfig(LIGHT_THEME)[status];
