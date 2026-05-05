@@ -8,19 +8,13 @@ import { faker } from "@faker-js/faker/locale/ru";
 export const generateStructuredPeriods = (): IPeriods[] => {
   const periods: IPeriods[] = [];
 
-  // Типы результатов в правильном формате
-  const resultTypes: (keyof typeof EPeriodsResultType)[] = [
-    "ITERIM_ACCOUNT",
-    "BANK_INCOME_ACCOUNT",
-    "ANNULMENT",
-  ];
+  const resultTypes = Object.keys(EPeriodsResultType) as Array<
+    keyof typeof EPeriodsResultType
+  >;
 
-  // Маппинг статусов для логики генерации
-  const statusMapping = {
-    CREATED: { probability: 0.5, canHaveAmount: true },
-    COMPLETED: { probability: 0.3, canHaveAmount: true },
-    CANCEL: { probability: 0.2, canHaveAmount: false },
-  };
+  const statusPeriods = Object.keys(EPeriodsStatus) as Array<
+    keyof typeof EPeriodsStatus
+  >;
 
   for (let i = 0; i < 30; i++) {
     // Генерация дат
@@ -44,52 +38,17 @@ export const generateStructuredPeriods = (): IPeriods[] => {
       to: new Date(),
     });
 
-    // Выбор статуса на основе вероятности
-    const randomStatus = Math.random();
-    let status: keyof typeof EPeriodsStatus;
-
-    if (randomStatus < statusMapping.CREATED.probability) {
-      status = "CREATED";
-    } else if (
-      randomStatus <
-      statusMapping.CREATED.probability + statusMapping.COMPLETED.probability
-    ) {
-      status = "COMPLETED";
-    } else {
-      status = "CANCEL";
-    }
-
-    // Выбор типа результата в зависимости от статуса
-    let resultType: keyof typeof EPeriodsResultType;
-    if (status === "COMPLETED") {
-      resultType = faker.helpers.arrayElement([
-        "ITERIM_ACCOUNT",
-        "BANK_INCOME_ACCOUNT",
-      ]);
-    } else if (status === "CANCEL") {
-      resultType = "ANNULMENT";
-    } else {
-      resultType = faker.helpers.arrayElement(resultTypes);
-    }
-
-    // Генерация сумм в зависимости от статуса
-    const baseAmount = statusMapping[status].canHaveAmount
-      ? faker.number.float({ min: 1000, max: 50000 })
-      : faker.number.float({ min: 0, max: 1000 });
-
-    const additionalAmount = statusMapping[status].canHaveAmount
-      ? faker.number.float({ min: 0, max: 5000 })
-      : 0;
-
     periods.push({
       id: i + 1,
-      resultType: resultType,
+      periodId: faker.string.uuid(),
+      resultType: faker.helpers.arrayElement(resultTypes),
       startDate: startDate.toISOString().split("T")[0], // Формат YYYY-MM-DD
       endDate: endDate.toISOString().split("T")[0],
-      status: status,
-      amount: baseAmount,
-      additionalAmount: additionalAmount,
-      createdAt: createdAt.toISOString(),
+      status: faker.helpers.arrayElement(statusPeriods),
+      amount: faker.number.float({ min: 1000, max: 50000 }),
+      additionalAmount: faker.number.float({ min: 0, max: 5000 }),
+      periodNumber: faker.number.int({ min: 1, max: 1000 }),
+      inGroupOperation: faker.datatype.boolean(),
       updatedAt: updatedAt.toISOString(),
     });
   }

@@ -23,7 +23,10 @@ export function addIdTableRowData<T, K extends keyof T>(
  * @param withTime флаг от которого зависит какую дату возвращать с временем или нет
  */
 export function normalizedDate(date: string, withTime?: boolean) {
-  const newDate = new Date(date);
+  if (!date) return "";
+  const [day, month, year] = date.split(".").map(Number);
+
+  const newDate = new Date(year, month - 1, day);
   const normalizedDate = newDate.toLocaleDateString();
 
   if (withTime) {

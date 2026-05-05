@@ -1,4 +1,10 @@
-import { EDocStatus, EDocType, EOrderStatus } from "@entities/documents/types";
+import {
+  EDocStatus,
+  EDocType,
+  EOrderStatus,
+  EProcessDoc,
+  ERequestProcessCode,
+} from "@entities/documents/types";
 import { RenderField } from "@features/Fields/RenderFields.types";
 
 export const filterFields: RenderField[] = [
@@ -10,18 +16,11 @@ export const filterFields: RenderField[] = [
     placeholder: "Введите индификатор записи...",
   },
   {
-    id: "processDate",
-    name: "processDate",
-    type: "date",
-    label: "Плановая дата обработки документа",
-    placeholder: "Введите плановую дату обработки документа...",
-  },
-  {
-    id: "executionDate",
-    name: "executionDate",
-    type: "date",
-    label: "Дата исполнения документа РОЮЛ",
-    placeholder: "Введите дату исполнения документа РОЮЛ...",
+    id: "vkus",
+    name: "vkus",
+    type: "text",
+    label: "Внутренний код учетного события",
+    placeholder: "Введите внутренний код учетного события...",
   },
   {
     id: "orderStatus",
@@ -46,6 +45,49 @@ export const filterFields: RenderField[] = [
     })),
   },
   {
+    id: "processDocProcessCode",
+    name: "processDocProcessCode",
+    type: "select",
+    label: "Управляющий признак",
+    placeholder: "Выберите управляющий признак...",
+    options: Object.entries(EProcessDoc).map(([key, val]) => ({
+      value: key,
+      label: val,
+    })),
+  },
+  {
+    id: "requestProcessCode",
+    name: "requestProcessCode",
+    type: "select",
+    label: "Код управляющего признака",
+    placeholder: "Введите код управляющего признака...",
+    options: Object.entries(ERequestProcessCode).map(([key, val]) => ({
+      value: key,
+      label: val,
+    })),
+  },
+  {
+    id: "processEndDate",
+    name: "processEndDate",
+    type: "date",
+    label: "Дата и время окончания списания комиссии",
+    placeholder: "Введите дату и время окончания списания комиссии...",
+  },
+  {
+    id: "processAccDate",
+    name: "processAccDate",
+    type: "date",
+    label: "Дата начала учёта требований",
+    placeholder: "Введите дату начала учёта требований...",
+  },
+  {
+    id: "attemptsCount",
+    name: "attemptsCount",
+    type: "number",
+    label: "Количество попыток отправки тикета",
+    placeholder: "Введите количество попыток отправки тикета...",
+  },
+  {
     id: "status",
     name: "status",
     type: "select",
@@ -55,12 +97,5 @@ export const filterFields: RenderField[] = [
       value: key,
       label: val,
     })),
-  },
-  {
-    id: "availableAt",
-    name: "additionalAmount",
-    type: "date",
-    label: "Дата доступности записи для обработки",
-    placeholder: "Введите дату доступности записи для обработки...",
   },
 ];

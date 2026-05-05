@@ -2,6 +2,7 @@ export enum EOptionStatus {
   CREATED = "Новая подписка",
   ACTIVE = "Активная подписка",
   INACTIVE = "Неактивная подписка",
+  DISABLED = "Опция отключена",
 }
 
 export interface IOption {
@@ -10,8 +11,8 @@ export interface IOption {
   payerId: number;
   optionSubscriptionId: number;
   status: keyof typeof EOptionStatus;
-  activationDateTime: string;
-  deactivationDateTime?: string | null;
-  createdAt: string;
-  updatedAt: string;
+  activationDateTime: string; // TIMESTAMPTZ
+  deactivationDateTime?: string | null; // TIMESTAMPTZ
+  createdAt: string; // TIMESTAMPTZ
+  updatedAt: string; // TIMESTAMPTZ
 }

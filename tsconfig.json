@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "skipDefaultLibCheck": true,
     "target": "ESNext",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "types": ["jest", "node"],

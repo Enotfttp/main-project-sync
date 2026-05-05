@@ -4,28 +4,30 @@ import {
 } from "@entities/schedule/types";
 import { fakerRU as faker } from "@faker-js/faker";
 
+const statuses = Object.keys(EPaymentScheduleStatus) as Array<
+  keyof typeof EPaymentScheduleStatus
+>;
+
+// Коды процессов
+const processCodes = [
+  "PAY_UTILITY",
+  "TAX_PAYMENT",
+  "SERVICE_FEE",
+  "SUBSCRIPTION_PAY",
+];
+
+// Валюты
+const currencies = ["RUB", "USD", "EUR", "CNY"];
+
 export const generateMockSchedules = (): IPaymentSchedule[] => {
-  // Статусы с разной вероятностью для реалистичности
-  const statuses: (keyof typeof EPaymentScheduleStatus)[] = [
-    "CREATED",
-    "COMPLETED",
-    "CANCEL",
-  ];
-
-  // Коды процессов
-  const processCodes = [
-    "PAY_UTILITY",
-    "TAX_PAYMENT",
-    "SERVICE_FEE",
-    "SUBSCRIPTION_PAY",
-  ];
-
-  // Валюты
-  const currencies = ["RUB", "USD", "EUR", "CNY"];
-
   return Array.from({ length: 30 }, (_, index) => {
     const createdAt = faker.date.past({ years: 0.5 }); // создано в последние полгода
     const scheduleCreatedAt = faker.date.between({
+      from: faker.date.past({ years: 0.1, refDate: createdAt }),
+      to: new Date(),
+    });
+
+    const scheduleCancelledAt = faker.date.between({
       from: faker.date.past({ years: 0.1, refDate: createdAt }),
       to: new Date(),
     });
@@ -85,6 +87,7 @@ export const generateMockSchedules = (): IPaymentSchedule[] => {
       dataTrfNumber: faker.string.numeric(10),
       scheduleSourceGuid: faker.string.uuid(),
       scheduleCreatedAt: scheduleCreatedAt.toISOString(),
+      scheduleCancelledAt: scheduleCancelledAt.toISOString(),
       utilityCurrencyTariff: faker.helpers.arrayElement(currencies),
       utilityAmountFullCur: amountFull,
       utilityPriority: faker.number.int({ min: 1, max: 10 }),

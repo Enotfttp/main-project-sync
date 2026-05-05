@@ -2,7 +2,6 @@ import {
   EComcRequestStatus,
   EComcResultType,
   EPaymentStatus,
-  ERequestHistoryKafkaStatus,
   IContent,
   IRequestHistory,
   TPaymentScheduleStatus,
@@ -10,22 +9,13 @@ import {
 import { ERequestTypesEventType } from "@entities/requestTypes/types";
 import { fakerRU as faker } from "@faker-js/faker";
 
-// Типы событий
-const eventTypes: (keyof typeof ERequestTypesEventType)[] = [
-  "PACKAGE_ACTIVATION",
-  "OPTION_ACTIVATION",
-  "PACKAGE_PROLONGATION",
-  "OPTION_PROLONGATION",
-  "PACKAGE_CHANGE",
-  "PACKAGE_MIGRATION",
-  "OPTION_MIGRATION",
-  "PRE_OPTION_ACTIVATION",
-  "PRIORITY_CHANGE",
-  "SCHEDULE_UPDATE",
-  "CANCEL_FEE",
-  "DISABLE_PACKAGE",
-  "DISABLE_OPTION",
-];
+const eventTypes = Object.keys(ERequestTypesEventType) as Array<
+  keyof typeof ERequestTypesEventType
+>;
+
+const resultTypes = Object.keys(EComcResultType) as Array<
+  keyof typeof EComcResultType
+>;
 
 // Базовые данные для всех записей одного запроса
 const generateBaseData = (comcRequestId: number) => {
@@ -133,10 +123,7 @@ const generateContentForStatus = (
 
       if (content.paymentScheduleStatus === "PROV") {
         content.result = {
-          resultType: faker.helpers.arrayElement<keyof typeof EComcResultType>([
-            "PAYMENT_SUCCESS",
-            "CARD_INDEX",
-          ]),
+          resultType: faker.helpers.arrayElement(resultTypes),
           payments: [
             {
               periodId: faker.string.uuid(),
@@ -163,7 +150,7 @@ const generateContentForStatus = (
     case "COMPLETED":
       content.paymentScheduleStatus = "PROV";
       content.result = {
-        resultType: "PAYMENT_SUCCESS",
+        resultType: "OPERATION_SUCCESS",
         payments: [
           {
             periodId: faker.string.uuid(),
@@ -200,32 +187,13 @@ const getResultTypeForStatus = (
 ): keyof typeof EComcResultType | null => {
   switch (status) {
     case "COMPLETED":
-      return "PAYMENT_SUCCESS";
+      return "OPERATION_SUCCESS";
     case "REJECTED":
-      return "PAYMENT_DECLINE";
+      return "OPERATION_DECLINE";
     case "ERROR":
       return "ANNULMENT";
     default:
       return null;
-  }
-};
-
-// Статус отправки в Kafka
-const getKafkaStatusForRequest = (
-  status: keyof typeof EComcRequestStatus,
-): keyof typeof ERequestHistoryKafkaStatus => {
-  switch (status) {
-    case "CREATED":
-      return "CREATED";
-    case "PROCESSED":
-    case "ACCEPTED":
-    case "COMPLETED":
-    case "REJECTED":
-      return "PROCESSED";
-    case "ERROR":
-      return "ERROR";
-    default:
-      return "PROCESSED";
   }
 };
 
@@ -252,16 +220,14 @@ export const generateMockHistories = (): IRequestHistory[] => {
         id: historyId++,
         comcRequestId: scenario.comcRequestId,
         requestId: baseData.requestId,
+        scheduleSourceGuid: faker.string.uuid(),
         packageSubscriptionId: baseData.packageSubscriptionId,
         status: status as keyof typeof EComcRequestStatus,
         resultType: getResultTypeForStatus(
           status as keyof typeof EComcRequestStatus,
         ),
-        statusCode: null,
-        statusDescription: null,
-        kafkaSendStatus: getKafkaStatusForRequest(
-          status as keyof typeof EComcRequestStatus,
-        ),
+        errorCode: null,
+        errorMessage: null,
         createdAt: createdAt.toISOString(),
         updatedAt: updatedAt.toISOString(),
         content,

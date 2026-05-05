@@ -1,24 +1,28 @@
 import { Column, DARK_THEME, LIGHT_THEME, Tag } from "@admiral-ds/react-ui";
-import { EPackageStatus } from "@entities/package/types";
+import { EOptionStatus } from "@entities/options/types";
 import { TTag } from "@shared/types/types";
 import React from "react";
 
 export const statusConfig = (
   theme: typeof DARK_THEME | typeof LIGHT_THEME,
-): TTag<keyof typeof EPackageStatus> => ({
+): TTag<keyof typeof EOptionStatus> => ({
   CREATED: {
     kind: "primary",
-    text: EPackageStatus.CREATED,
+    text: EOptionStatus.CREATED,
   },
   ACTIVE: {
     kind: "success",
-    text: EPackageStatus.ACTIVE,
+    text: EOptionStatus.ACTIVE,
   },
   INACTIVE: {
     kind: {
       background: `var(--admiral-color-Neutral_Neutral50, ${theme.color["Neutral/Neutral 50"]})`,
     },
-    text: EPackageStatus.INACTIVE,
+    text: EOptionStatus.INACTIVE,
+  },
+  DISABLED: {
+    kind: "danger",
+    text: EOptionStatus.DISABLED,
   },
 });
 
