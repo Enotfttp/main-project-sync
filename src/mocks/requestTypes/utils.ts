@@ -1,44 +1,30 @@
 import {
+  ERequestTypeRequestStatus,
+  ERequestTypeResultType,
+  ERequestTypesEventType,
   IRequestType,
-  TRequestTypeEventType,
-  TRequestTypeRequestStatus,
-  TRequestTypeResultType,
 } from "@entities/requestTypes/types";
 import { faker } from "@faker-js/faker/locale/ru";
+
+const allStatuses = Object.keys(ERequestTypeRequestStatus) as Array<
+  keyof typeof ERequestTypeRequestStatus
+>;
+
+const allEventTypes = Object.keys(ERequestTypesEventType) as Array<
+  keyof typeof ERequestTypesEventType
+>;
+
+const allResultType = Object.keys(ERequestTypeResultType) as Array<
+  keyof typeof ERequestTypeResultType
+>;
 
 export const generateStructuredRequestTypes = (
   count: number = 10,
 ): IRequestType[] => {
   const requests: IRequestType[] = [];
 
-  // Все статусы, которые должны быть гарантированно
-  const allStatuses: TRequestTypeRequestStatus[] = [
-    "CREATED",
-    "ACCEPTED",
-    "REJECTED",
-    "PROCESSED",
-    "COMPLETED",
-    "ERROR",
-  ];
-
-  // Все возможные event types
-  const allEventTypes: TRequestTypeEventType[] = [
-    "PACKAGE_ACTIVATION",
-    "OPTION_ACTIVATION",
-    "PRE_OPTION_ACTIVATION",
-    "PACKAGE_PROLONGATION",
-    "OPTION_PROLONGATION",
-    "PACKAGE_CHANGE",
-    "PRIORITY_CHANGE",
-    "SCHEDULE_UPDATE",
-    "PACKAGE_MIGRATION",
-    "OPTION_MIGRATION",
-    "DISABLE_OPTION",
-    "CANCEL_FEE",
-  ];
-
   // 1. Сначала создаем по одной записи для каждого статуса (гарантированно)
-  allStatuses.forEach((status, index) => {
+  allStatuses.forEach((status) => {
     const eventType = faker.helpers.arrayElement(allEventTypes);
 
     const requestCreatedAt = faker.date.past({ years: 1 });
@@ -49,20 +35,17 @@ export const generateStructuredRequestTypes = (
     });
 
     // Простая логика для resultType
-    let resultType: TRequestTypeResultType = "PAYMENT_SUCCESS";
+    let resultType: keyof typeof ERequestTypeResultType = "OPERATION_SUCCESS";
     if (status === "REJECTED" || status === "ERROR") {
-      resultType = faker.helpers.arrayElement([
-        "PAYMENT_DECLINE",
-        "ANNULMENT",
-        "CANCELLATION",
-      ]);
+      resultType = faker.helpers.arrayElement(allResultType);
     }
 
     requests.push({
-      id: index + 1,
+      id: faker.string.uuid(),
       incomingMessageId: faker.number.int({ min: 1000, max: 9999 }),
       packageSubscriptionId: faker.number.int({ min: 1, max: 100 }),
-      requestId: faker.number.int({ min: 1000, max: 9999 }),
+      requestId: faker.string.uuid(),
+      scheduleSourceGuid: faker.string.uuid(),
       status,
       resultType,
       errorCode:
@@ -75,6 +58,7 @@ export const generateStructuredRequestTypes = (
           : "",
       requestCreatedAt: requestCreatedAt.toISOString(),
       eventType,
+      attemptsCount: faker.number.int({ min: 1, max: 100 }),
       content: null,
       createdAt: createdAt.toISOString(),
       updatedAt: updatedAt.toISOString(),
@@ -94,16 +78,13 @@ export const generateStructuredRequestTypes = (
     });
 
     requests.push({
-      id: i + 1,
+      id: faker.string.uuid(),
       incomingMessageId: faker.number.int({ min: 1000, max: 9999 }),
       packageSubscriptionId: faker.number.int({ min: 1, max: 100 }),
-      requestId: faker.number.int({ min: 1000, max: 9999 }),
+      requestId: faker.string.uuid(),
+      scheduleSourceGuid: faker.string.uuid(),
       status,
-      resultType: faker.helpers.arrayElement([
-        "PAYMENT_SUCCESS",
-        "PAYMENT_DECLINE",
-        "CARD_INDEX",
-      ]),
+      resultType: faker.helpers.arrayElement(allResultType),
       errorCode:
         status === "REJECTED" || status === "ERROR"
           ? faker.helpers.arrayElement(["ERR-001", "ERR-002"])
@@ -114,6 +95,7 @@ export const generateStructuredRequestTypes = (
           : "",
       requestCreatedAt: requestCreatedAt.toISOString(),
       eventType,
+      attemptsCount: faker.number.int({ min: 1, max: 100 }),
       content: null,
       createdAt: createdAt.toISOString(),
       updatedAt: updatedAt.toISOString(),

@@ -35,9 +35,10 @@ export const ComcRequestStatusView: Record<
 };
 
 export enum EComcResultType {
-  PAYMENT_SUCCESS = "Успешеный платёж",
-  PAYMENT_DECLINE = "Платёж отменён",
-  CARD_INDEX = "Индекс карт",
+  OPERATION_SUCCESS = "Успешеная операция",
+  OPERATION_DECLINE = "Отменённая платёж",
+  CARD_INDEX_PLAN = "Индексирование карточного плана",
+  CARD_INDEX_DONE = "Карточный учёт завершен",
   ANNULMENT = "Аннулирование",
   CANCELLATION = "Отмена",
 }
@@ -50,13 +51,6 @@ export type TPaymentScheduleStatus =
   | "KART"
   | "CANCEL_FEE"
   | "ERROR";
-
-export enum ERequestHistoryKafkaStatus {
-  CREATED = "Создан",
-  PROCESSED = "Отправлено в Kafka",
-  DO_NOT_SEND = "Не отребуется отправлять в Kafka",
-  ERROR = "Ошибка при отправки",
-}
 
 interface IPayments {
   periodId: string;
@@ -89,12 +83,12 @@ export interface IRequestHistory {
   comcRequestId?: number | null;
   requestId: string; // UUID
   packageSubscriptionId: number;
+  scheduleSourceGuid: string; // UUID
   status: keyof typeof EComcRequestStatus;
   resultType?: keyof typeof EComcResultType | null;
-  statusCode?: string | null;
-  statusDescription?: string | null;
-  kafkaSendStatus: keyof typeof ERequestHistoryKafkaStatus;
-  createdAt: string;
-  updatedAt: string;
+  errorCode?: string | null;
+  errorMessage?: string | null;
+  createdAt: string; // TIMESTAMPTZ
+  updatedAt: string; // TIMESTAMPTZ
   content: IContent;
 }

@@ -12,7 +12,8 @@ export interface IPaymentSchedule {
   dataName: string;
   dataTrfNumber: string;
   scheduleSourceGuid: string; // UUID
-  scheduleCreatedAt: string;
+  scheduleCreatedAt: string; // TIMESTAMPTZ
+  scheduleCancelledAt: string; // TIMESTAMPTZ
   utilityCurrencyTariff: string;
   utilityAmountFullCur: number;
   utilityPriority: number;
@@ -20,8 +21,8 @@ export interface IPaymentSchedule {
   vatDocumentTypeVatRate?: number | null;
   vatDocumentTypeAmountNdsCur?: number | null;
   processDocProcessCode: string;
-  processDocProcessStartDate?: string | null; // date
-  processDocProcessEndDate?: string | null; // date
-  createdAt: string;
-  updatedAt: string;
+  processDocProcessStartDate?: string | null; // DATE;
+  processDocProcessEndDate?: string | null; // DATE;
+  createdAt: string; // TIMESTAMPTZ
+  updatedAt: string; // TIMESTAMPTZ
 }

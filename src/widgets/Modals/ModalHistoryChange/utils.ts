@@ -40,7 +40,7 @@ export const configGenerated = (dataHistory: IRequestHistory[]) => {
     ) {
       return {
         [ComcRequestStatusView[key].status!]:
-          currentStatusPriority > statusPriority,
+          currentStatusPriority >= statusPriority,
         active: currentStatusPriority >= statusPriority,
         key: key,
         content: val,

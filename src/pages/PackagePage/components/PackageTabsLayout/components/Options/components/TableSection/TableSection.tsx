@@ -21,7 +21,6 @@ export const TableSection: FC<IProps> = ({ tableKey, filters }) => {
       pagination: pagination,
     },
     {
-      // enabled: !!filters?.length,
       enabled: !filters?.length,
     },
   );

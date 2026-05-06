@@ -23,6 +23,50 @@ export const statusConfig: TTag<keyof typeof EPeriodsStatus> = {
     kind: "primary",
     text: EPeriodsStatus.CREATED,
   },
+  PAYMENT_PROCESSED: {
+    kind: "primary",
+    text: EPeriodsStatus.PAYMENT_PROCESSED,
+  },
+  INCOME_NDS_PROCESSED: {
+    kind: "primary",
+    text: EPeriodsStatus.INCOME_NDS_PROCESSED,
+  },
+  INCOME_PROCESSED: {
+    kind: "primary",
+    text: EPeriodsStatus.INCOME_PROCESSED,
+  },
+  DEBT_ACCOUNTED: {
+    kind: "primary",
+    text: EPeriodsStatus.DEBT_ACCOUNTED,
+  },
+  ACCOUNTS_SETTLED: {
+    kind: "primary",
+    text: EPeriodsStatus.ACCOUNTS_SETTLED,
+  },
+  ADDITIONAL_DEBT_ACCOUNTED: {
+    kind: "warning",
+    text: EPeriodsStatus.ADDITIONAL_DEBT_ACCOUNTED,
+  },
+  PAYMENT_REFUNDED: {
+    kind: "success",
+    text: EPeriodsStatus.PAYMENT_REFUNDED,
+  },
+  ANNULLED: {
+    kind: "danger",
+    text: EPeriodsStatus.ANNULLED,
+  },
+  CARD_INDEXED: {
+    kind: "primary",
+    text: EPeriodsStatus.CARD_INDEXED,
+  },
+  DECLINED: {
+    kind: "danger",
+    text: EPeriodsStatus.DECLINED,
+  },
+  REVOKED: {
+    kind: "warning",
+    text: EPeriodsStatus.REVOKED,
+  },
   COMPLETED: {
     kind: "success",
     text: EPeriodsStatus.COMPLETED,
@@ -30,6 +74,10 @@ export const statusConfig: TTag<keyof typeof EPeriodsStatus> = {
   CANCEL: {
     kind: "warning",
     text: EPeriodsStatus.CANCEL,
+  },
+  ERROR: {
+    kind: "danger",
+    text: EPeriodsStatus.ERROR,
   },
 };
 

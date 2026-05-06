@@ -10,8 +10,8 @@ export interface IPackage {
   subscriptionId: number;
   status: keyof typeof EPackageStatus;
   accountNumber: string;
-  activationDateTime: string;
-  deactivationDateTime?: string | null;
-  createdAt: string;
-  updatedAt: string;
+  activationDateTime: string; // TIMESTAMPTZ
+  deactivationDateTime?: string | null; // TIMESTAMPTZ
+  createdAt: string; // TIMESTAMPTZ
+  updatedAt: string; // TIMESTAMPTZ
 }
