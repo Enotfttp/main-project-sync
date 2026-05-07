@@ -1,5 +1,6 @@
 import { Column, DARK_THEME, LIGHT_THEME, Tag } from "@admiral-ds/react-ui";
 import { EOptionStatus } from "@entities/options/types";
+import { findThemeStorage } from "@shared/common";
 import { TTag } from "@shared/types/types";
 import React from "react";
 
@@ -37,18 +38,10 @@ export const columnList: Column[] = [
     title: "Статус",
     width: "20%",
     renderCell: (status: string) => {
-      const themeStorage = localStorage.getItem("theme");
-      let shortNameTheme = "light";
-      let config;
-      if (themeStorage) {
-        shortNameTheme = JSON.parse(themeStorage).state.shortNameTheme;
-      }
+      const theme = findThemeStorage();
 
-      if (shortNameTheme === "dark") {
-        config = statusConfig(DARK_THEME)[status];
-      } else {
-        config = statusConfig(LIGHT_THEME)[status];
-      }
+      const config = statusConfig(theme)[status];
+
       if (!config) return null;
 
       return <Tag {...config}>{config.text}</Tag>;

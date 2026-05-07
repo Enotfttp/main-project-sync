@@ -2,11 +2,15 @@ import {
   StyledInfo,
   StyledInfoRow,
   StyledPeriodDetailPage,
+  StyledStatus,
   StyledTitle,
 } from "./PeriodDetail.styled";
 import { T } from "@admiral-ds/react-ui";
 import { useGetPeriod } from "@entities/periods/hook";
-import { EPeriodsResultType, EPeriodsStatus } from "@entities/periods/types";
+import {
+  resultStatusConfig,
+  statusConfig,
+} from "@pages/PeriodsPage/components/TableSection/column";
 import React from "react";
 import { useParams } from "react-router-dom";
 
@@ -14,6 +18,16 @@ export const PeriodDetail = () => {
   const { idPeriod } = useParams();
 
   const { data } = useGetPeriod(idPeriod);
+
+  const resultStatusConf = React.useMemo(
+    () => (data?.resultType ? resultStatusConfig[data.resultType] : null),
+    [data?.resultType],
+  );
+
+  const statusConf = React.useMemo(
+    () => (data?.status ? statusConfig[data.status] : null),
+    [data?.status],
+  );
 
   return (
     <StyledPeriodDetailPage>
@@ -26,12 +40,12 @@ export const PeriodDetail = () => {
           </StyledInfoRow>
         )}
 
-        {data?.resultType && (
+        {resultStatusConf && (
           <StyledInfoRow>
             <T font="Main/S">Статус оплаты:</T>
-            <T font="Additional/L">
-              {EPeriodsResultType[data?.resultType] ?? ""}
-            </T>
+            <StyledStatus {...resultStatusConf} dimension="m">
+              {resultStatusConf.text}
+            </StyledStatus>
           </StyledInfoRow>
         )}
 
@@ -49,10 +63,12 @@ export const PeriodDetail = () => {
           </StyledInfoRow>
         )}
 
-        {data?.status && (
+        {statusConf && (
           <StyledInfoRow>
-            <T font="Main/XS-bold">Статус:</T>
-            <T font="Additional/L">{EPeriodsStatus[data?.status] ?? ""}</T>
+            <T font="Main/S">Статус:</T>
+            <StyledStatus {...statusConf} dimension="m">
+              {statusConf.text}
+            </StyledStatus>
           </StyledInfoRow>
         )}
 
