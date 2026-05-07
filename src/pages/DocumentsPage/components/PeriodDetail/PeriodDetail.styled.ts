@@ -1,4 +1,4 @@
-import { T } from "@admiral-ds/react-ui";
+import { T, Tag } from "@admiral-ds/react-ui";
 import styled from "styled-components";
 
 export const StyledPeriodDetailPage = styled.div`
@@ -25,4 +25,8 @@ export const StyledInfoRow = styled.div`
   span:first-child {
     text-decoration: underline;
   }
+`;
+
+export const StyledStatus = styled(Tag)`
+  align-self: flex-start;
 `;

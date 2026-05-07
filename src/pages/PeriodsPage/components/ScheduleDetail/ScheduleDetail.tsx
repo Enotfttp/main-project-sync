@@ -2,11 +2,13 @@ import {
   StyledInfo,
   StyledInfoRow,
   StyledScheduleDetailPage,
+  StyledStatus,
   StyledTitle,
 } from "./ScheduleDetail.styled";
 import { T } from "@admiral-ds/react-ui";
 import { useGetSchedule } from "@entities/schedule/hook";
-import { EPaymentScheduleStatus } from "@entities/schedule/types";
+import { statusConfig } from "@pages/PackagePage/components/PackageTabsLayout/components/Schedule/components/TableSection/column";
+import { findThemeStorage } from "@shared/common";
 import React from "react";
 import { useParams } from "react-router-dom";
 
@@ -14,6 +16,16 @@ export const ScheduleDetail = () => {
   const { idSchedule } = useParams();
 
   const { data } = useGetSchedule(idSchedule);
+
+  const statusDataConfig = React.useMemo(() => {
+    if (!data?.status) return "";
+    const theme = findThemeStorage();
+
+    const config = statusConfig(theme)[data?.status];
+
+    if (!config) return null;
+    return config;
+  }, [data?.status]);
 
   return (
     <StyledScheduleDetailPage>
@@ -26,12 +38,12 @@ export const ScheduleDetail = () => {
           </StyledInfoRow>
         )}
 
-        {data?.status && (
+        {statusDataConfig && (
           <StyledInfoRow>
             <T font="Main/S">Статус:</T>
-            <T font="Additional/L">
-              {EPaymentScheduleStatus[data?.status] ?? ""}
-            </T>
+            <StyledStatus {...statusDataConfig} dimension="m">
+              {statusDataConfig?.text || ""}
+            </StyledStatus>
           </StyledInfoRow>
         )}
 

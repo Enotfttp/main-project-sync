@@ -1,3 +1,5 @@
+import { DARK_THEME, LIGHT_THEME } from "@admiral-ds/react-ui";
+
 export function uid(): string {
   return (performance.now().toString(36) + Math.random().toString(36)).replace(
     /\./g,
@@ -37,3 +39,18 @@ export function normalizedDate(date: string, withTime?: boolean) {
 
   return normalizedDate;
 }
+
+export const findThemeStorage = () => {
+  const themeStorage = localStorage.getItem("theme");
+  let shortNameTheme = "light";
+
+  if (themeStorage) {
+    shortNameTheme = JSON.parse(themeStorage).state.shortNameTheme;
+  }
+
+  if (shortNameTheme === "dark") {
+    return DARK_THEME;
+  } else {
+    return LIGHT_THEME;
+  }
+};
