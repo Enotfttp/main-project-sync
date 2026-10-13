@@ -1,5 +1,3 @@
-import { FilterValue } from "@features/Filter/Filter.types";
-
 export type TPaginationData = {
   pageSize: number;
   pageSizes: number[];
@@ -13,7 +11,7 @@ export type TPaginationTable = {
 };
 
 export type FilterWithPagination = {
-  filters?: FilterValue;
+  filters?: Record<string, string>;
   pagination?: TPaginationTable;
 };
 

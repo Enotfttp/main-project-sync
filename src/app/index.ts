@@ -1,2 +1,3 @@
-export { AppRouter } from "./AppRouter";
-export { ErrorBoundary, routes, routesPath } from "./providers";
+export { ErrorBoundary } from "./errorBoundary/ErrorBoundary";
+export { AppRouter, routesPath, routes } from "./providers";
+export { GlobalStyle } from "./styles/index.styled";

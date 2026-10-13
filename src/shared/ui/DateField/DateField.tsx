@@ -1,6 +1,5 @@
 import { DateField, DateFieldProps } from "@admiral-ds/react-ui";
-import { RenderField } from "@features/Fields/RenderFields.types";
-import { calculateMaxDate, parseDateString } from "@features/Filter/utils";
+import { calculateMaxDate, parseStringToDate } from "@shared/lib";
 import React from "react";
 import { Field, FieldProps } from "react-final-form";
 import styled from "styled-components";
@@ -11,14 +10,13 @@ const StyledDateField = styled(DateField)`
   }
 `;
 
-type TProps = Omit<
-  FieldProps<string> & DateFieldProps & Partial<RenderField>,
-  "children"
-> & {
+type TProps = Omit<FieldProps<string> & DateFieldProps, "children"> & {
   label: string;
   name: string;
   multiline?: boolean;
   width?: string;
+  dateDifference?: string;
+  errorText?: string;
 };
 
 export const DateFieldUI = ({ ...props }: TProps) => {
@@ -29,7 +27,7 @@ export const DateFieldUI = ({ ...props }: TProps) => {
       if (!dateFrom || !dateTo || dateTo.includes("__")) return undefined;
 
       const maxDate = calculateMaxDate(dateFrom, props.dateDifference);
-      const parsedDateTo = parseDateString(dateTo);
+      const parsedDateTo = parseStringToDate(dateTo);
 
       if (maxDate && parsedDateTo) {
         if (parsedDateTo > maxDate) {

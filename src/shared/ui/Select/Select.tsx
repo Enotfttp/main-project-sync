@@ -3,11 +3,15 @@ import {
   Select as SelectTemplate,
   SelectProps,
 } from "@admiral-ds/react-ui";
-import { ISearchWithFilter } from "@features/SearchWithFilter/SearchWithFilter.types";
+
+export interface ISelectOption {
+  value: string;
+  label: string;
+}
 
 interface ISelect extends SelectProps {
   placeholder: string;
-  options: ISearchWithFilter[];
+  options: ISelectOption[];
 }
 
 export const Select = ({ placeholder = "", options, ...props }: ISelect) => {
