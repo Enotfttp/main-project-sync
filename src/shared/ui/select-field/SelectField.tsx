@@ -1,5 +1,5 @@
+import { ISelectOption } from "../select/Select";
 import { Option, SelectField, SelectProps } from "@admiral-ds/react-ui";
-import { ISelectOption } from "@shared/ui/Select/Select";
 import React from "react";
 import { Field, FieldProps } from "react-final-form";
 import styled from "styled-components";

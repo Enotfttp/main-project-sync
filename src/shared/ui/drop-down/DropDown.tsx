@@ -3,7 +3,7 @@ import {
   DropDownStyled,
   StyledSSystemSmallArrowUpOutline,
   StyledSystemSmallArrowDownOutline,
-} from "@shared/ui/DropDown/DropDown.styled";
+} from "./DropDown.styled";
 import React, { useState } from "react";
 
 interface IProps {

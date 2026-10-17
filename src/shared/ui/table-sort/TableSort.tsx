@@ -1,4 +1,8 @@
-import { PaginationTable } from "./components";
+import {
+  PaginationTable,
+  TPaginationData,
+  TPaginationTable,
+} from "./components";
 import { StyledAdditionalBlock, StyledTableSort } from "./TableSort.styled";
 import {
   Column,
@@ -8,10 +12,6 @@ import {
   TableRow,
 } from "@admiral-ds/react-ui";
 import { Loader } from "@shared/ui";
-import {
-  TPaginationData,
-  TPaginationTable,
-} from "@shared/ui/TableSort/components/Pagination.types";
 import { useIsFetching } from "@tanstack/react-query";
 import * as React from "react";
 
