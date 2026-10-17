@@ -1,3 +1,2 @@
-export * from "./axiosInstance";
-export * from "./interceptors";
+export * from "./instance";
 export * from "./error";

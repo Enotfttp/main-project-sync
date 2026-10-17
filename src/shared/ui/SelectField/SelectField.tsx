@@ -1,5 +1,5 @@
 import { Option, SelectField, SelectProps } from "@admiral-ds/react-ui";
-import { ISearchWithFilter } from "@features/SearchWithFilter/SearchWithFilter.types";
+import { ISelectOption } from "@shared/ui/Select/Select";
 import React from "react";
 import { Field, FieldProps } from "react-final-form";
 import styled from "styled-components";
@@ -15,7 +15,7 @@ type TProps = Omit<FieldProps<string> & SelectProps, "children"> & {
   name: string;
   multiline?: boolean;
   width?: string;
-  options?: ISearchWithFilter[];
+  options?: ISelectOption[];
 };
 
 export const SelectFieldUI = ({ options = [], ...props }: TProps) => {

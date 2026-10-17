@@ -1,9 +1,9 @@
 import { StyledChip } from "./Search.styled";
-import { MultiInputField } from "@admiral-ds/react-ui";
 import type { InputExFieldProps } from "@admiral-ds/react-ui";
-import { uid } from "@shared/common";
-import { useState } from "react";
+import { MultiInputField } from "@admiral-ds/react-ui";
 import type { ChangeEvent } from "react";
+import { useState } from "react";
+import { v7 } from "uuid";
 
 interface ISearch extends InputExFieldProps {
   listValue: React.ComponentProps<typeof StyledChip>[];
@@ -40,7 +40,7 @@ export const Search = ({
 
     if (newValue) {
       setListValue((prevState) => {
-        return [...prevState, { id: uid(), children: newValue }];
+        return [...prevState, { id: v7(), children: newValue }];
       });
       setValue("");
     }
