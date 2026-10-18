@@ -1,7 +1,8 @@
+import { Page } from "@shared/ui";
 import { FC } from "react";
 
 const SchedulePage: FC = () => {
-  return <>SchedulePage</>;
+  return <Page>SchedulePage</Page>;
 };
 
 export default SchedulePage;

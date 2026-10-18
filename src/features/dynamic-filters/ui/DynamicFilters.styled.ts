@@ -9,7 +9,7 @@ export const StyledBgBlock = styled.div`
   position: absolute;
   width: 100vw;
   height: 100vh;
-  background-color: ${({ theme }) => theme.color["Opacity/modal"]};
+  background-color: ${({ theme }) => theme.color["Opacity/Modal"]};
 `;
 
 export const StyledAdditionalBlock = styled.div`

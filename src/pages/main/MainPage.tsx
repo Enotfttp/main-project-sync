@@ -1,8 +1,24 @@
-import { StyledMainPage } from "./MainPage.styled";
-import { FC } from "react";
+import { getVisibleServiceGroups } from "./model/servise";
+import { PageSearch, ServiceGroup } from "./ui";
+import { Page } from "@shared/ui";
+import { FC, useState } from "react";
 
 const MainPage: FC = () => {
-  return <StyledMainPage>MainPage</StyledMainPage>;
+  const [searchText, setSearchText] = useState("");
+  const serviceGroups = getVisibleServiceGroups(searchText);
+
+  return (
+    <Page>
+      <PageSearch value={searchText} onChange={setSearchText} />
+      {serviceGroups.map((group) => (
+        <ServiceGroup
+          key={group.id}
+          title={group.title}
+          services={group.services}
+        />
+      ))}
+    </Page>
+  );
 };
 
 export default MainPage;

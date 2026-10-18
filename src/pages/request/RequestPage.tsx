@@ -1,5 +1,6 @@
 import { filterVariants } from "./filters";
 import { DynamicFilters, FilterCancelActions } from "@features/dynamic-filters";
+import { Page } from "@shared/ui";
 import { FC } from "react";
 
 const RequestPage: FC = () => {
@@ -7,7 +8,12 @@ const RequestPage: FC = () => {
     reset();
   };
 
-  return <DynamicFilters variants={filterVariants} onCancel={handleCancel} />;
+  return (
+    <>
+      <DynamicFilters variants={filterVariants} onCancel={handleCancel} />
+      <Page>RequestPage</Page>
+    </>
+  );
 };
 
 export default RequestPage;

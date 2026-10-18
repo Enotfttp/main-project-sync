@@ -17,20 +17,18 @@ export const routes: RouteObject[] = [
     path: routesPath.root,
     element: withSuspense(MainPage),
     errorElement: <RouterErrorBoundary />,
-    children: [
-      {
-        path: routesPath.request.root,
-        element: withSuspense(RequestPage),
-      },
-      {
-        path: routesPath.schedule.root,
-        element: withSuspense(SchedulePage),
-      },
-      {
-        path: routesPath.package.root,
-        element: withSuspense(PackagePage),
-      },
-    ],
+  },
+  {
+    path: routesPath.request.root,
+    element: withSuspense(RequestPage),
+  },
+  {
+    path: routesPath.schedule.root,
+    element: withSuspense(SchedulePage),
+  },
+  {
+    path: routesPath.package.root,
+    element: withSuspense(PackagePage),
   },
   {
     path: "*",
