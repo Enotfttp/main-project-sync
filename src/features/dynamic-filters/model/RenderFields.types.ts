@@ -13,7 +13,7 @@ export interface IOption {
   label: string;
 }
 
-export interface RenderField {
+export interface IRenderField {
   id: string;
   name: string;
   type: RenderFieldType;
@@ -50,7 +50,7 @@ export interface RenderField {
     | Date
     | { min: number; max: number }
     | string[];
-  includeField?: Record<string, Partial<RenderField>>;
+  includeField?: Record<string, Partial<IRenderField>>;
 }
 
 export type TValue =

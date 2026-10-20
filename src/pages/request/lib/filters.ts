@@ -1,6 +1,6 @@
-import { FilterVariant, RenderField } from "@features/dynamic-filters";
+import { FilterVariant, IRenderField } from "@features/dynamic-filters";
 
-const standartFields: RenderField[] = [
+const standartFields: IRenderField[] = [
   {
     id: "id",
     name: "id",
@@ -45,7 +45,7 @@ const standartFields: RenderField[] = [
   },
 ];
 
-const commonFields: RenderField[] = [
+const commonFields: IRenderField[] = [
   {
     id: "accountNumber",
     name: "accountNumber",

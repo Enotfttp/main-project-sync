@@ -1,4 +1,4 @@
-import { getVisibleServiceGroups } from "./model/servise";
+import { getVisibleServiceGroups } from "./lib/servise";
 import { PageSearch, ServiceGroup } from "./ui";
 import { Page } from "@shared/ui";
 import { FC, useState } from "react";

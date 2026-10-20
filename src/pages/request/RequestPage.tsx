@@ -1,17 +1,42 @@
-import { filterVariants } from "./filters";
-import { DynamicFilters, FilterCancelActions } from "@features/dynamic-filters";
-import { Page } from "@shared/ui";
+import { filterVariants } from "./lib/filters";
+import { Filter, Table } from "./ui";
+import { useFilters } from "@features/dynamic-filters";
+import { getFieldsFromMutlyFilters } from "@shared/lib";
+import { Container, FiltersView, Page } from "@shared/ui";
 import { FC } from "react";
 
 const RequestPage: FC = () => {
-  const handleCancel = ({ reset }: FilterCancelActions) => {
-    reset();
-  };
+  const {
+    filters: filtersValue,
+    tableKey,
+    variant,
+    isShowFilters,
+    handleResetFilters,
+    handleApplyFilters,
+    handleRemoveField,
+    handleClose,
+    handleOpenFilter,
+  } = useFilters();
 
   return (
     <>
-      <DynamicFilters variants={filterVariants} onCancel={handleCancel} />
-      <Page>RequestPage</Page>
+      <Filter
+        onApplyFilters={handleApplyFilters}
+        onResetFilters={handleResetFilters}
+        isShowFilters={isShowFilters}
+        onCancel={handleClose}
+      />
+      <Page>
+        <Container>
+          <FiltersView
+            filtersValue={filtersValue}
+            handleClose={handleRemoveField}
+            fields={getFieldsFromMutlyFilters(filterVariants, variant)}
+            handleOpenFilter={handleOpenFilter}
+          />
+          <Table tableKey={tableKey} filters={filtersValue} />
+        </Container>
+      </Page>
     </>
   );
 };

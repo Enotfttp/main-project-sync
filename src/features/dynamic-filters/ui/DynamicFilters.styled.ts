@@ -7,6 +7,7 @@ export const StyledFilter = styled.div`
 
 export const StyledBgBlock = styled.div`
   position: absolute;
+  z-index: 999;
   width: 100vw;
   height: 100vh;
   background-color: ${({ theme }) => theme.color["Opacity/Modal"]};

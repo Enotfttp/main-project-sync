@@ -1,4 +1,4 @@
-import { RenderField } from "../model/RenderFields.types";
+import { IRenderField } from "../model/RenderFields.types";
 import {
   CheckboxFieldUI,
   DateFieldUI,
@@ -8,7 +8,7 @@ import {
 } from "@shared/ui";
 import React from "react";
 
-export const renderField = (field: RenderField) => {
+export const renderField = (field: IRenderField) => {
   const { validate: _validate, ...inputProps } = field;
 
   switch (field?.type) {

@@ -1,5 +1,5 @@
-import { FilterValue } from "../model/DynamicFilters.types";
-import { RenderField } from "../model/RenderFields.types";
+import { TFilterValue } from "../model/DynamicFilters.types";
+import { IRenderField } from "@features/dynamic-filters";
 import { required } from "@shared/lib";
 
 // Универсальный тип для данных с произвольными ключами
@@ -7,7 +7,7 @@ type DataRecord = Record<string, string | number | boolean | Date | null>;
 
 export const filterData = <T extends DataRecord>(
   data: T[],
-  filters: FilterValue,
+  filters: TFilterValue,
 ): T[] => {
   return data.filter((item) =>
     Object.entries(filters).every(([key, value]) => {
@@ -50,8 +50,8 @@ export const filterData = <T extends DataRecord>(
   );
 };
 
-export const validate = (values: FilterValue, fields: RenderField[]) => {
-  const errors: Partial<RenderField> = {};
+export const validate = (values: TFilterValue, fields: IRenderField[]) => {
+  const errors: Partial<IRenderField> = {};
 
   fields.forEach((field) => {
     const value = values[field.name];

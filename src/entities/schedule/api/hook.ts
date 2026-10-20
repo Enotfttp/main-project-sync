@@ -3,15 +3,15 @@ import {
   IScheduleDetails,
   IScheduleFilter,
   ISchedulePeriods,
-  ISchedules,
+  TSchedulesPaginationResponse,
 } from "../model/types";
-import { TPaginationFilter } from "@shared/types";
+import { TFilterPaginationRequest } from "@shared/types";
 import { QueryKey, useQuery, UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetSchedules = (
-  filters?: TPaginationFilter<IScheduleFilter>,
+  filters?: TFilterPaginationRequest<IScheduleFilter>,
   options?: Omit<
-    UseQueryOptions<ISchedules, Error, QueryKey>,
+    UseQueryOptions<TSchedulesPaginationResponse, Error, QueryKey>,
     "queryKey" | "queryFn"
   >,
 ) => {

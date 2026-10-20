@@ -11,7 +11,7 @@ import {
 } from "./DynamicFilters.styled";
 import { renderField } from "./RenderFields";
 import { validate } from "../lib/validate";
-import { FilterConfig, FilterValue } from "../model/DynamicFilters.types";
+import { FilterConfig, TFilterValue } from "../model/DynamicFilters.types";
 import { ServiceCloseOutline } from "@admiral-ds/icons";
 import {
   Button,
@@ -20,12 +20,12 @@ import {
   IconButton,
   T,
 } from "@admiral-ds/react-ui";
-import { RenderField } from "@features/dynamic-filters";
+import { IRenderField } from "@features/dynamic-filters";
 import { FC, useMemo, useState } from "react";
 import { Form } from "react-final-form";
 
-const getInitialValues = (fields: RenderField[]): FilterValue =>
-  fields.reduce<FilterValue>((acc, field) => {
+const getInitialValues = (fields: IRenderField[]): TFilterValue =>
+  fields.reduce<TFilterValue>((acc, field) => {
     acc[field.name] = field.defaultValue ?? "";
     return acc;
   }, {});
@@ -35,6 +35,7 @@ export const DynamicFilters: FC<FilterConfig> = ({
   onApply,
   onReset,
   onCancel,
+  isShowFilters = true,
   ...props
 }) => {
   const variants = "variants" in props ? props.variants : undefined;
@@ -52,13 +53,19 @@ export const DynamicFilters: FC<FilterConfig> = ({
     onVariantChange?.(nextVariant.label);
   };
 
+  const onSubmit = (values) => {
+    onApply?.(values, activeVariant?.label);
+  };
+
+  if (!isShowFilters) return null;
+
   return (
     <StyledBgBlock>
       <StyledAdditionalBlock>
-        <Form<FilterValue>
+        <Form<TFilterValue>
           key={activeVariant?.label ?? "fields"}
           initialValues={initialValues}
-          onSubmit={(values) => onApply?.(values, activeVariant?.label)}
+          onSubmit={onSubmit}
           validate={(values) => validate(values, fields)}
         >
           {({ handleSubmit, errors, form }) => {
@@ -84,7 +91,11 @@ export const DynamicFilters: FC<FilterConfig> = ({
                       )}
                     </StyledFilterTitle>
 
-                    <IconButton dimension="s" type="button">
+                    <IconButton
+                      dimension="s"
+                      type="button"
+                      onClick={() => onCancel?.()}
+                    >
                       <ServiceCloseOutline />
                     </IconButton>
                   </StyledFilterHeader>
@@ -113,9 +124,7 @@ export const DynamicFilters: FC<FilterConfig> = ({
                         dimension="s"
                         appearance="secondary"
                         type="button"
-                        onClick={() =>
-                          onCancel?.({ reset: () => form.reset() })
-                        }
+                        onClick={() => onCancel?.()}
                       >
                         Отмена
                       </Button>

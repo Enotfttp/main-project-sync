@@ -1,22 +1,32 @@
-import { FilterValue } from "../model/DynamicFilters.types";
+import { TFilterValue } from "../model/DynamicFilters.types";
 import { useCallback, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 export const handleSetFilters = (
-  newFilters: FilterValue,
-  prevState?: FilterValue,
+  newFilters: TFilterValue,
+  prevState?: TFilterValue,
 ) => ({ ...prevState, ...newFilters });
 
 export const useFilters = () => {
-  const navigate = useNavigate();
-  const [filters, setFilters] = useState<FilterValue>();
+  const [variant, setVariant] = useState<string | undefined>();
+  const [filters, setFilters] = useState<TFilterValue>();
   const [tableKey, setTableKey] = useState(0); // Для принудительного обновления таблицы
+  const [isShowFilters, setIsShowFilters] = useState(true); // Для принудительного обновления таблицы
 
-  const handleApplyFilters = useCallback((newFilters: FilterValue) => {
-    setFilters((prevState) => handleSetFilters(newFilters, prevState));
+  const handleApplyFilters = useCallback(
+    (newFilters: TFilterValue, variant?: string) => {
+      setFilters((prevState) => handleSetFilters(newFilters, prevState));
+      setVariant(variant);
+      // Обновляем ключ таблицы чтобы она пересоздалась
+      setTableKey((prev) => prev + 1);
+    },
+    [],
+  );
 
-    // Обновляем ключ таблицы чтобы она пересоздалась
-    setTableKey((prev) => prev + 1);
+  const handleClose = useCallback(() => {
+    setIsShowFilters(false);
+  }, []);
+  const handleOpenFilter = useCallback(() => {
+    setIsShowFilters(true);
   }, []);
 
   const handleResetFilters = useCallback(() => {
@@ -24,19 +34,26 @@ export const useFilters = () => {
     setTableKey((prev) => prev + 1);
   }, []);
 
-  const onRowClick = useCallback(
-    (path: string) => {
-      navigate(path);
-    },
-    [navigate],
-  );
+  const handleRemoveField = useCallback((id: string) => {
+    setFilters((prev) => {
+      const nextFilters = { ...prev };
+      delete nextFilters[id];
+      return nextFilters;
+    });
+    setTableKey((prev) => prev + 1);
+  }, []);
 
   return {
     filters,
     tableKey,
-    onRowClick,
+    isShowFilters,
+    variant,
+    setIsShowFilters,
     handleApplyFilters,
     handleResetFilters,
+    handleRemoveField,
     setFilters,
+    handleClose,
+    handleOpenFilter,
   };
 };

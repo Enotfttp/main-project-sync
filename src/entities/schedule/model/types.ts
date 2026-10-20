@@ -1,3 +1,5 @@
+import { ITableDataPaginationResponse } from "@shared/types";
+
 export interface IScheduleFilter {
   scheduleSourceGuid?: UUID;
   dateFrom?: IsoDate;
@@ -22,6 +24,9 @@ export interface ISchedulePeriods {
   periodsInfo: IPeriodInfo[];
   errorInfo: IErrorInfo;
 }
+
+export type TSchedulesPaginationResponse =
+  ITableDataPaginationResponse<ISchedules>;
 
 interface IScheduleInfo {
   scheduleSourceGuid: UUID;

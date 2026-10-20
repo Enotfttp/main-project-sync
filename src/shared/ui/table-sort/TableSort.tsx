@@ -1,9 +1,6 @@
-import {
-  PaginationTable,
-  TPaginationData,
-  TPaginationTable,
-} from "./components";
-import { StyledAdditionalBlock, StyledTableSort } from "./TableSort.styled";
+import { StyledTableSort } from "./TableSort.styled";
+import { TPaginationData, TPaginationTable } from "../../types";
+import { PaginationTable } from "./components/PaginationTable";
 import {
   Column,
   PaginationOneProps,
@@ -31,19 +28,13 @@ type TableSortProps =
       pagination?: TPaginationData;
       isPagination?: true;
       paginationProp?: PaginationOneProps;
-      isVisibleAdditionalBlock?: boolean;
     } & TableProps)
   | ({
       queryKey: string;
-      isPagination?: false;
-      isVisibleAdditionalBlock?: boolean;
+      isPagination?: never;
     } & TableProps);
 
-export const TableSort = ({
-  queryKey,
-  isVisibleAdditionalBlock = false,
-  ...props
-}: TableSortProps) => {
+export const TableSort = ({ queryKey, ...props }: TableSortProps) => {
   const isFetching = useIsFetching({ queryKey: [queryKey] });
   const [rows, setRows] = React.useState([...props.rowList]);
   const [cols, setCols] = React.useState([...props.columnList]);
@@ -212,28 +203,7 @@ export const TableSort = ({
     return <Loader />;
   }
 
-  return isVisibleAdditionalBlock ? (
-    <StyledAdditionalBlock>
-      <StyledTableSort>
-        <Table
-          {...props}
-          columnList={cols}
-          rowList={rows}
-          dimension="m"
-          onSortChange={handleSort}
-          onColumnResize={handleResize}
-        />
-        {props?.isPagination && props?.pagination && (
-          <PaginationTable
-            {...props?.paginationProp}
-            handlePaginationChange={props?.handlePaginationChange}
-            handleResetSortCols={handleResetSortCols}
-            {...props?.pagination}
-          />
-        )}
-      </StyledTableSort>
-    </StyledAdditionalBlock>
-  ) : (
+  return (
     <StyledTableSort>
       <Table
         {...props}
@@ -248,7 +218,9 @@ export const TableSort = ({
           {...props?.paginationProp}
           handlePaginationChange={props?.handlePaginationChange}
           handleResetSortCols={handleResetSortCols}
-          {...props?.pagination}
+          pageSize={props?.pagination.size}
+          totalItems={props?.pagination.totalElements}
+          page={props?.pagination.number}
         />
       )}
     </StyledTableSort>

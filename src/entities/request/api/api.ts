@@ -2,15 +2,15 @@ import {
   IRequestDetails,
   IRequestFilter,
   IRequestHistory,
-  IRequests,
+  TRequestsPaginationResponse,
 } from "../model/types";
 import { axiosInstance } from "@shared/api";
-import { TPaginationFilter } from "@shared/types";
+import { TFilterPaginationRequest } from "@shared/types";
 
 class RequestService {
   async getRequests(
-    filters?: TPaginationFilter<IRequestFilter>,
-  ): Promise<IRequests> {
+    filters?: TFilterPaginationRequest<IRequestFilter>,
+  ): Promise<TRequestsPaginationResponse> {
     const response = await axiosInstance.post(`/requests`, {
       filters: filters,
     });

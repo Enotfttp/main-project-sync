@@ -1,10 +1,10 @@
-import { RenderField, TValue } from "./RenderFields.types";
+import { IRenderField, TValue } from "./RenderFields.types";
 
-export type FilterValue = Record<string, TValue>;
+export type TFilterValue = Record<string, TValue>;
 
 export interface FilterVariant {
   label: string;
-  fields: RenderField[];
+  fields: IRenderField[];
 }
 
 export interface FilterCancelActions {
@@ -12,16 +12,17 @@ export interface FilterCancelActions {
 }
 
 interface FilterHandlers {
-  onApply?: (values: FilterValue, variant?: string) => void;
+  onApply?: (values: TFilterValue, variant?: string) => void;
   onVariantChange?: (variant: string) => void;
   onReset?: () => void;
-  onCancel?: (actions: FilterCancelActions) => void;
+  onCancel?: () => void;
+  isShowFilters?: boolean;
 }
 
 export type FilterConfig = FilterHandlers &
   (
     | {
-        fields: RenderField[];
+        fields: IRenderField[];
         variants?: never;
       }
     | {
