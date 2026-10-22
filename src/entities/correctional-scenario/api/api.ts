@@ -1,4 +1,5 @@
 import {
+  IAccountInfo,
   ICorrectionalScenario,
   ICorrectionalScenarioFilter,
 } from "../model/types";
@@ -8,8 +9,18 @@ class CorrectionalScenarioService {
   async getCorrectionalScenario(
     filters?: ICorrectionalScenarioFilter,
   ): Promise<ICorrectionalScenario> {
-    const response = await axiosInstance.post("/correctional-scenario", {
+    const response = await axiosInstance.post("/operations/accounts", {
       filters,
+    });
+    return response.data;
+  }
+
+  async patchCorrectionalScenario(
+    id: UUID,
+    fields: IAccountInfo,
+  ): Promise<void> {
+    const response = await axiosInstance.patch(`/operations/accounts/${id}`, {
+      fields,
     });
     return response.data;
   }

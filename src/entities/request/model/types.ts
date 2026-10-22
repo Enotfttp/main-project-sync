@@ -24,9 +24,14 @@ export interface IRequestDetails {
   requestInfo: IRequestInfoDetails;
   errorInfo?: IErrorInfo;
 }
+
 export interface IRequestHistory {
   requestHistory: IRequestHistoryInfo;
   errorInfo?: IErrorInfo;
+}
+
+export interface IRequestContent {
+  content: string;
 }
 
 export type TRequestsPaginationResponse =
@@ -50,7 +55,6 @@ interface IRequestInfoDetails {
   requestStatus: TRequestStatus;
   resultType?: TResultType;
   accountCode: string;
-  content: string;
   createdAt: IsoDate;
   updatedAt: IsoDate;
 }

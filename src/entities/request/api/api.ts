@@ -1,4 +1,5 @@
 import {
+  IRequestContent,
   IRequestDetails,
   IRequestFilter,
   IRequestHistory,
@@ -17,12 +18,17 @@ class RequestService {
     return response.data;
   }
 
-  async getRequest(id?: string): Promise<IRequestDetails> {
+  async getRequest(id?: UUID): Promise<IRequestDetails> {
     const response = await axiosInstance.get(`/requests/${id}`);
     return response.data;
   }
 
-  async getRequestHistory(id?: string): Promise<IRequestHistory> {
+  async getRequestContent(id?: UUID): Promise<IRequestContent> {
+    const response = await axiosInstance.get(`/requests/${id}/content`);
+    return response.data;
+  }
+
+  async getRequestHistory(id?: UUID): Promise<IRequestHistory> {
     const response = await axiosInstance.get(`/requests/${id}/history`);
     return response.data;
   }
