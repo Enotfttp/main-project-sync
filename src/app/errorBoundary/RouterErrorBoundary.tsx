@@ -2,7 +2,6 @@ import { NotFoundPage } from "./NotFoundPage";
 import {
   ErrorContainer,
   ErrorLayout,
-  StyledButton,
   StyledButtonBlock,
   StyledErrorDetails,
   StyledSubtitleError,
@@ -11,7 +10,7 @@ import {
 import { Button } from "@admiral-ds/react-ui";
 import { routesPath } from "@app/providers/config/routesPath";
 import * as React from "react";
-import { useNavigate, useRouteError } from "react-router-dom";
+import { useNavigate, useRevalidator, useRouteError } from "react-router-dom";
 
 export const RouterErrorBoundary = ({
   type = "page",
@@ -19,14 +18,33 @@ export const RouterErrorBoundary = ({
   type?: "page" | "modal";
 }) => {
   const navigate = useNavigate();
-  const error = useRouteError() as Error & { status: number };
-  if (error?.status === 404) return <NotFoundPage />;
+  const revalidator = useRevalidator();
+
+  const error = useRouteError() as (Error & { status: number }) | undefined;
+  const status = error?.status ?? 500;
+
+  const handleClose = () => {
+    const hustoryIndex = window.history.state?.idx;
+
+    if (typeof hustoryIndex === "number" && hustoryIndex > 0) {
+      navigate(-1);
+      return;
+    }
+
+    navigate(routesPath.root);
+  };
+
+  const handleRetry = () => {
+    revalidator.revalidate();
+  };
+
+  if (status === 404) return <NotFoundPage />;
 
   return (
     <ErrorLayout>
       <ErrorContainer type={type}>
         <StyledTitleError font="Header/HL2">
-          Ошибка {error?.status || 500}
+          Ошибка {status || 500}
         </StyledTitleError>
         <StyledSubtitleError font="Subtitle/Subtitle 3">
           На сервере произошла непредвиденная ошибка. Пожалуйста, подождите -
@@ -34,24 +52,14 @@ export const RouterErrorBoundary = ({
           команды
         </StyledSubtitleError>
 
-        {error?.status === 500 ? (
-          <StyledButtonBlock>
-            <Button appearance="secondary" dimension="m">
-              Закрыть
-            </Button>
-            <Button appearance="primary" dimension="m">
-              Переотправить запрос
-            </Button>
-          </StyledButtonBlock>
-        ) : (
-          <StyledButton
-            appearance="secondary"
-            dimension="m"
-            onClick={() => navigate(routesPath.root)}
-          >
-            Перейти на главную страницу
-          </StyledButton>
-        )}
+        <StyledButtonBlock>
+          <Button appearance="secondary" dimension="m" onClick={handleClose}>
+            Закрыть
+          </Button>
+          <Button appearance="primary" dimension="m" onClick={handleRetry}>
+            Переотправить запрос
+          </Button>
+        </StyledButtonBlock>
 
         {import.meta.env.VITE_APP_STAND === "development" && error && (
           <StyledErrorDetails className="error-details">
