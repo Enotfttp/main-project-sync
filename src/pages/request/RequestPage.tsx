@@ -14,8 +14,8 @@ const RequestPage: FC = () => {
     handleResetFilters,
     handleApplyFilters,
     handleRemoveField,
-    handleClose,
-    handleOpenFilter,
+    handleCloseFilters,
+    handleOpenFilters,
   } = useFilters();
 
   return (
@@ -24,7 +24,8 @@ const RequestPage: FC = () => {
         onApplyFilters={handleApplyFilters}
         onResetFilters={handleResetFilters}
         isShowFilters={isShowFilters}
-        onCancel={handleClose}
+        filtersValue={filtersValue}
+        onCancel={handleCloseFilters}
       />
       <Page>
         <Container>
@@ -32,7 +33,7 @@ const RequestPage: FC = () => {
             filtersValue={filtersValue}
             handleClose={handleRemoveField}
             fields={getFieldsFromMutlyFilters(filterVariants, variant)}
-            handleOpenFilter={handleOpenFilter}
+            handleOpenFilters={handleOpenFilters}
           />
           <Table tableKey={tableKey} filters={filtersValue} />
         </Container>

@@ -7,6 +7,7 @@ export const handleSetFilters = (
 ) => ({ ...prevState, ...newFilters });
 
 export const useFilters = () => {
+  // Ключ варианта
   const [variant, setVariant] = useState<string | undefined>();
   const [filters, setFilters] = useState<TFilterValue>();
   const [tableKey, setTableKey] = useState(0); // Для принудительного обновления таблицы
@@ -22,10 +23,11 @@ export const useFilters = () => {
     [],
   );
 
-  const handleClose = useCallback(() => {
+  const handleCloseFilters = useCallback(() => {
     setIsShowFilters(false);
   }, []);
-  const handleOpenFilter = useCallback(() => {
+
+  const handleOpenFilters = useCallback(() => {
     setIsShowFilters(true);
   }, []);
 
@@ -53,7 +55,7 @@ export const useFilters = () => {
     handleResetFilters,
     handleRemoveField,
     setFilters,
-    handleClose,
-    handleOpenFilter,
+    handleCloseFilters,
+    handleOpenFilters,
   };
 };

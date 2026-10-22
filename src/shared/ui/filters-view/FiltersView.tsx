@@ -15,7 +15,7 @@ interface IProps {
   totalElements?: number;
   handleClose(id: string): void;
   filtersValue?: TFilterValue;
-  handleOpenFilter(): void;
+  handleOpenFilters(): void;
 }
 
 export const FiltersView: FC<IProps> = ({
@@ -23,7 +23,7 @@ export const FiltersView: FC<IProps> = ({
   handleClose,
   filtersValue,
   totalElements,
-  handleOpenFilter,
+  handleOpenFilters,
 }) => (
   <StyledFiltersView>
     <WrapperFilters>
@@ -58,7 +58,7 @@ export const FiltersView: FC<IProps> = ({
         </T>
       )}
       <IconButton
-        onClick={handleOpenFilter}
+        onClick={handleOpenFilters}
         dimension="s"
         appearance="primary"
         type="button"

@@ -7,16 +7,13 @@ export interface FilterVariant {
   fields: IRenderField[];
 }
 
-export interface FilterCancelActions {
-  reset(): void;
-}
-
 interface FilterHandlers {
   onApply?: (values: TFilterValue, variant?: string) => void;
   onVariantChange?: (variant: string) => void;
   onReset?: () => void;
   onCancel?: () => void;
   isShowFilters?: boolean;
+  filtersValue?: TFilterValue;
 }
 
 export type FilterConfig = FilterHandlers &

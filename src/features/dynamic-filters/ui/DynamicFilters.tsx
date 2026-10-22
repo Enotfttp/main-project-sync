@@ -24,9 +24,13 @@ import { IRenderField } from "@features/dynamic-filters";
 import { FC, useMemo, useState } from "react";
 import { Form } from "react-final-form";
 
-const getInitialValues = (fields: IRenderField[]): TFilterValue =>
+const getInitialValues = (
+  fields: IRenderField[],
+  filtersValue?: TFilterValue,
+): TFilterValue =>
   fields.reduce<TFilterValue>((acc, field) => {
-    acc[field.name] = field.defaultValue ?? "";
+    acc[field.name] =
+      filtersValue?.[field.name]?.toString() ?? field.defaultValue ?? null;
     return acc;
   }, {});
 
@@ -36,6 +40,7 @@ export const DynamicFilters: FC<FilterConfig> = ({
   onReset,
   onCancel,
   isShowFilters = true,
+  filtersValue,
   ...props
 }) => {
   const variants = "variants" in props ? props.variants : undefined;
@@ -43,7 +48,10 @@ export const DynamicFilters: FC<FilterConfig> = ({
   const activeVariant = variants?.[selectedIndex];
   const fields = activeVariant?.fields ?? props.fields ?? [];
 
-  const initialValues = useMemo(() => getInitialValues(fields), [fields]);
+  const initialValues = useMemo(
+    () => getInitialValues(fields, filtersValue),
+    [fields, filtersValue],
+  );
 
   const handleVariantChange = (index: number) => {
     const nextVariant = variants?.[index];
@@ -68,7 +76,7 @@ export const DynamicFilters: FC<FilterConfig> = ({
           onSubmit={onSubmit}
           validate={(values) => validate(values, fields)}
         >
-          {({ handleSubmit, errors, form }) => {
+          {({ handleSubmit, pristine, form }) => {
             return (
               <form onSubmit={handleSubmit}>
                 <StyledFilter>
@@ -129,7 +137,7 @@ export const DynamicFilters: FC<FilterConfig> = ({
                         Отмена
                       </Button>
                       <Button
-                        disabled={Boolean(errors && Object.keys(errors).length)}
+                        disabled={pristine}
                         dimension="s"
                         type="submit"
                         appearance="primary"
