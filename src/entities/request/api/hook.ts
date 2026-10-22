@@ -1,5 +1,6 @@
 import { requestService } from "./api";
 import {
+  IRequestContent,
   IRequestDetails,
   IRequestFilter,
   IRequestHistory,
@@ -32,6 +33,20 @@ export const useGetRequest = (
   return useQuery({
     queryKey: ["request", id],
     queryFn: () => requestService.getRequest(id),
+    ...options,
+  });
+};
+
+export const useGetRequestContent = (
+  id?: string,
+  options?: Omit<
+    UseQueryOptions<IRequestContent, Error, QueryKey>,
+    "queryKey" | "queryFn"
+  >,
+) => {
+  return useQuery({
+    queryKey: ["request", "content", id],
+    queryFn: () => requestService.getRequestContent(id),
     ...options,
   });
 };

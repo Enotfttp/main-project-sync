@@ -17,12 +17,12 @@ class ScheduleService {
     return response.data;
   }
 
-  async getSchedule(id?: string): Promise<IScheduleDetails> {
+  async getSchedule(id: UUID): Promise<IScheduleDetails> {
     const response = await axiosInstance.get(`/schedules/${id}`);
     return response.data;
   }
 
-  async getSchedulePeriods(id?: string): Promise<ISchedulePeriods> {
+  async getSchedulePeriods(id: UUID): Promise<ISchedulePeriods> {
     const response = await axiosInstance.get(`/schedules/${id}/periods`);
     return response.data;
   }

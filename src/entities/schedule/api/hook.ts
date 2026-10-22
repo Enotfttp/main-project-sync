@@ -23,7 +23,7 @@ export const useGetSchedules = (
 };
 
 export const useGetSchedule = (
-  id?: string,
+  id: UUID,
   options?: Omit<
     UseQueryOptions<IScheduleDetails, Error, QueryKey>,
     "queryKey" | "queryFn"
@@ -37,7 +37,7 @@ export const useGetSchedule = (
 };
 
 export const useGetSchedulePeriods = (
-  id?: string,
+  id: UUID,
   options?: Omit<
     UseQueryOptions<ISchedulePeriods, Error, QueryKey>,
     "queryKey" | "queryFn"

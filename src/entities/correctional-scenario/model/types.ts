@@ -9,7 +9,7 @@ export interface ICorrectionalScenario {
   accountInfo: IAccountInfo;
 }
 
-interface IAccountInfo {
+export interface IAccountInfo {
   iterimAccountCode: string;
   accrueAccountCode: string;
 }
