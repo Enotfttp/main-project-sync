@@ -1,6 +1,6 @@
-import { TPaginationTable } from "./Pagination.types";
 import type { PaginationOneProps } from "@admiral-ds/react-ui";
 import { PaginationOne, useId } from "@admiral-ds/react-ui";
+import { TPaginationTable } from "@shared/types";
 import * as React from "react";
 
 export const PaginationTable = ({

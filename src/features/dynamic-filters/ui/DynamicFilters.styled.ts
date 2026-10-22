@@ -6,9 +6,9 @@ export const StyledFilter = styled.div`
 `;
 
 export const StyledBgBlock = styled.div`
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
+  position: fixed;
+  inset: 0;
+  z-index: ${({ theme }) => theme.zIndex.modal};
   background-color: ${({ theme }) => theme.color["Opacity/Modal"]};
 `;
 

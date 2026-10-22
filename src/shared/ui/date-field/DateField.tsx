@@ -1,14 +1,8 @@
-import { DateField, DateFieldProps } from "@admiral-ds/react-ui";
+import { CalendarAnchor, StyledDateField } from "./DateFieldUI.styled";
+import { DateFieldProps, DropdownProvider } from "@admiral-ds/react-ui";
 import { calculateMaxDate, parseStringToDate } from "@shared/lib";
-import React from "react";
+import React, { RefObject, useRef } from "react";
 import { Field, FieldProps } from "react-final-form";
-import styled from "styled-components";
-
-const StyledDateField = styled(DateField)`
-  label {
-    color: ${({ theme }) => theme.color["Neutral/Neutral 90"]} !important;
-  }
-`;
 
 type TProps = Omit<FieldProps<string> & DateFieldProps, "children"> & {
   label: string;
@@ -20,6 +14,8 @@ type TProps = Omit<FieldProps<string> & DateFieldProps, "children"> & {
 };
 
 export const DateFieldUI = ({ ...props }: TProps) => {
+  const calendarRef = useRef<HTMLDivElement>(null);
+
   const validateDateRange = (value: string) => {
     if (props.type === "date-range" && props?.dateDifference && value) {
       const [dateFrom, dateTo] = value.split("-").map((s) => s?.trim());
@@ -49,16 +45,24 @@ export const DateFieldUI = ({ ...props }: TProps) => {
           input.onChange(value);
         };
         return (
-          <StyledDateField
-            {...input}
-            {...props}
-            type={props.type}
-            onChange={handleChange}
-            required={props?.required}
-            status={meta.touched && meta.error && "error"}
-            extraText={meta.touched && (meta.error || "")}
-            data-testid={`form-date-${input.name}`}
-          />
+          <DropdownProvider
+            rootRef={calendarRef as unknown as RefObject<HTMLElement>}
+          >
+            <CalendarAnchor ref={calendarRef}>
+              <StyledDateField
+                {...input}
+                {...props}
+                alignDropdown="flex-end"
+                dropdownContaierStyle={{ marginLeft: "auto" }}
+                type={props.type}
+                onChange={handleChange}
+                required={props?.required}
+                status={meta.touched && meta.error && "error"}
+                extraText={meta.touched && (meta.error || "")}
+                data-testid={`form-date-${input.name}`}
+              />
+            </CalendarAnchor>
+          </DropdownProvider>
         );
       }}
     </Field>

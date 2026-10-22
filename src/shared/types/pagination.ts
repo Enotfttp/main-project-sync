@@ -3,6 +3,19 @@ export type TPaginationTable = {
   pageSize: number;
 };
 
-export type TPaginationFilter<T extends object> = {
-  filters: T;
+export type TPaginationData = {
+  size: number;
+  totalElements: number;
+  totalPages: number;
+  number: number;
 };
+
+export type TFilterPaginationRequest<T extends object> = {
+  filters?: T;
+  page?: TPaginationTable;
+};
+
+export interface ITableDataPaginationResponse<T> {
+  data: T[];
+  page: TPaginationData;
+}

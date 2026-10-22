@@ -11,4 +11,5 @@ export { DateFieldUI } from "./date-field/DateField";
 export { SelectFieldUI } from "./select-field/SelectField";
 export { CheckboxFieldUI } from "./checkbox-field/CheckboxField";
 export { RangeWithInput } from "./range-with-input/RangeWithInput";
-export { Page } from "./page/Page";
+export { Page, Container } from "./page/Page";
+export { FiltersView } from "./filters-view/FiltersView";

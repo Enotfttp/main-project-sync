@@ -3,15 +3,15 @@ import {
   IRequestDetails,
   IRequestFilter,
   IRequestHistory,
-  IRequests,
+  TRequestsPaginationResponse,
 } from "../model/types";
-import { TPaginationFilter } from "@shared/types";
+import { TFilterPaginationRequest } from "@shared/types";
 import { QueryKey, useQuery, UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetRequests = (
-  filters?: TPaginationFilter<IRequestFilter>,
+  filters?: TFilterPaginationRequest<IRequestFilter>,
   options?: Omit<
-    UseQueryOptions<IRequests, Error, QueryKey>,
+    UseQueryOptions<TRequestsPaginationResponse, Error, QueryKey>,
     "queryKey" | "queryFn"
   >,
 ) => {

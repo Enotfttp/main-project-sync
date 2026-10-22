@@ -2,15 +2,15 @@ import {
   IScheduleDetails,
   IScheduleFilter,
   ISchedulePeriods,
-  ISchedules,
+  TSchedulesPaginationResponse,
 } from "../model/types";
 import { axiosInstance } from "@shared/api";
-import { TPaginationFilter } from "@shared/types";
+import { TFilterPaginationRequest } from "@shared/types";
 
 class ScheduleService {
   async getSchedules(
-    filters?: TPaginationFilter<IScheduleFilter>,
-  ): Promise<ISchedules> {
+    filters?: TFilterPaginationRequest<IScheduleFilter>,
+  ): Promise<TSchedulesPaginationResponse> {
     const response = await axiosInstance.post(`/schedules`, {
       filters: filters,
     });

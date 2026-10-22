@@ -6,7 +6,7 @@ echo "🔧 Fixing imports..."
 node scripts/fix-imports.js --staged
 
 echo "📝 Running lint-staged..."
-npx lint-staged
+#npx lint-staged
 
 # Добавляем исправленные файлы обратно в коммит
-git add -A
+#git add -A

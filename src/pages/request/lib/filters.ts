@@ -1,6 +1,6 @@
-import { FilterVariant, RenderField } from "@features/dynamic-filters";
+import { FilterVariant, IRenderField } from "@features/dynamic-filters";
 
-const standartFields: RenderField[] = [
+const standardFields: IRenderField[] = [
   {
     id: "id",
     name: "id",
@@ -45,24 +45,24 @@ const standartFields: RenderField[] = [
   },
 ];
 
-const commonFields: RenderField[] = [
+const commonFields: IRenderField[] = [
   {
-    id: "accountNumber",
-    name: "accountNumber",
-    type: "date",
-    label: "Дата подключения подписки",
-    placeholder: "Введите дату подключения подписки...",
+    id: "accountCode",
+    name: "accountCode",
+    type: "number",
+    label: "Номер счёта",
+    placeholder: "Введите номер счёта...",
   },
   {
-    id: "accountNumber",
-    name: "accountNumber",
-    type: "date",
-    label: "Дата подключения подписки",
-    placeholder: "Введите дату подключения подписки...",
+    id: "inn",
+    name: "inn",
+    type: "number",
+    label: "ИНН",
+    placeholder: "Введите ИНН...",
   },
 ];
 
 export const filterVariants: FilterVariant[] = [
-  { label: "Стандартный", fields: standartFields },
+  { label: "Стандартный", fields: standardFields },
   { label: "Общий", fields: commonFields },
 ];
