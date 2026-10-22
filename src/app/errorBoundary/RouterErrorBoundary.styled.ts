@@ -1,13 +1,36 @@
+import { Button, T } from "@admiral-ds/react-ui";
 import styled from "styled-components";
 
-export const ErrorContainer = styled.div`
-  position: absolute;
-  top: 50%;
-  right: 50%;
-  transform: translate(-50%, -50%);
+export const ErrorLayout = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  padding: 32px;
+  box-sizing: border-box;
+`;
+
+export const ErrorContainer = styled.div`
+  display: flex;
+  text-align: center;
   flex-direction: column;
+  justify-content: center;
+  max-width: 600px;
   gap: 32px;
+`;
+
+export const StyledTitleError = styled(T)`
+  color: ${({ theme }) => theme.color["Neutral/Neutral 50"]};
+`;
+
+export const StyledSubtitleError = styled(T)`
+  color: ${({ theme }) => theme.color["Neutral/Neutral 40"]};
+`;
+
+export const StyledButton = styled(Button)`
+  width: fit-content;
+  margin: 0 auto;
 `;
 
 export const StyledButtonBlock = styled.div`
