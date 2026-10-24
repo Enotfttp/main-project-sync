@@ -88,7 +88,7 @@ interface IErrorInfo {
   errorMessage: string;
 }
 
-const EventType = {
+export const EventType = {
   PACKAGE_ACTIVATION: "Подключение ПУ",
   OPTION_ACTIVATION: "Подключение ДО",
   PACKAGE_PROLONGATION: "Пролонгация ПУ",
@@ -106,7 +106,7 @@ const EventType = {
 
 type TEventType = (typeof EventType)[keyof typeof EventType];
 
-const RequestStatus = {
+export const RequestStatus = {
   CREATED: "Создан",
   ACCEPTED: "Принят",
   REJECTED: "Отклонен",
@@ -117,7 +117,7 @@ const RequestStatus = {
 
 type TRequestStatus = (typeof RequestStatus)[keyof typeof RequestStatus];
 
-const ResultType = {
+export const ResultType = {
   OPERATION_SUCCESS: "Запрос исполнен",
   OPERATION_DECLINE: "Запрос отклонен",
   CARD_INDEX_PLAN: "Выполнен учёт требований",
@@ -128,7 +128,7 @@ const ResultType = {
 
 type TResultType = (typeof ResultType)[keyof typeof ResultType];
 
-const PutToOutboxStatus = {
+export const PutToOutboxStatus = {
   NEW: "Новый",
   IN_PROGRESS: "В обработке",
   DONE: "Отправлен",
@@ -139,7 +139,7 @@ const PutToOutboxStatus = {
 type TPutToOutboxStatus =
   (typeof PutToOutboxStatus)[keyof typeof PutToOutboxStatus];
 
-const ScheduleStatus = {
+export const ScheduleStatus = {
   CREATED: "Создан",
   PROCESSED: "В обработке",
   COMPLETED: "Обработан",
@@ -149,7 +149,7 @@ const ScheduleStatus = {
 
 type TScheduleStatus = (typeof ScheduleStatus)[keyof typeof ScheduleStatus];
 
-const ProcessCode = {
+export const ProcessCode = {
   TOCART: "с картотекой",
   DECLINE: "без картотеки",
 } as const;

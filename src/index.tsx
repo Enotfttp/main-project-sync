@@ -4,6 +4,7 @@ import {
   LIGHT_THEME,
 } from "@admiral-ds/react-ui";
 import { AppRouter, GlobalStyle } from "@app/index";
+import { enableMocking } from "@mocks/index";
 import { Loader } from "@shared/ui";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -32,22 +33,24 @@ const ReactQueryDevtoolsProduction = React.lazy(() =>
   ),
 );
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <ThemeProvider theme={LIGHT_THEME}>
-      <GlobalStyle />
-      <DropdownProvider>
-        <FontsVTBGroup />
-        <QueryClientProvider client={queryClient}>
-          <AppRouter />
-          <ReactQueryDevtools initialIsOpen />
-          {import.meta.env.VITE_APP_STAND === "development" && (
-            <React.Suspense fallback={<Loader />}>
-              <ReactQueryDevtoolsProduction />
-            </React.Suspense>
-          )}
-        </QueryClientProvider>
-      </DropdownProvider>
-    </ThemeProvider>
-  </StrictMode>,
-);
+enableMocking().then(() => {
+  createRoot(document.getElementById("root")!).render(
+    <StrictMode>
+      <ThemeProvider theme={LIGHT_THEME}>
+        <GlobalStyle />
+        <DropdownProvider>
+          <FontsVTBGroup />
+          <QueryClientProvider client={queryClient}>
+            <AppRouter />
+            <ReactQueryDevtools initialIsOpen />
+            {import.meta.env.VITE_APP_STAND === "development" && (
+              <React.Suspense fallback={<Loader />}>
+                <ReactQueryDevtoolsProduction />
+              </React.Suspense>
+            )}
+          </QueryClientProvider>
+        </DropdownProvider>
+      </ThemeProvider>
+    </StrictMode>,
+  );
+});
