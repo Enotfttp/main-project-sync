@@ -1,3 +1,11 @@
+import {
+  TEventType,
+  TProcessCode,
+  TPutToOutboxStatus,
+  TRequestStatus,
+  TResultType,
+  TScheduleStatus,
+} from "./status";
 import { ITableDataPaginationResponse } from "@shared/types";
 
 export interface IScheduleFilter {
@@ -87,71 +95,3 @@ interface IErrorInfo {
   errorCode: string;
   errorMessage: string;
 }
-
-const EventType = {
-  PACKAGE_ACTIVATION: "Подключение ПУ",
-  OPTION_ACTIVATION: "Подключение ДО",
-  PACKAGE_PROLONGATION: "Пролонгация ПУ",
-  OPTION_PROLONGATION: "Пролонгация ДО",
-  PACKAGE_CHANGE: "Смена ПУ",
-  PACKAGE_MIGRATION: "Миграция ПУ",
-  OPTION_MIGRATION: "Миграция ДО",
-  PRE_OPTION_ACTIVATION: "ВТБ-Касса",
-  PRIORITY_CHANGE: "Смена приоритета",
-  SHEDULE_UPDATE: "Обновление данных",
-  DISABLE_PACKAGE: "Отключение ПУ",
-  DISABLE_OPTION: "Отключение ДО",
-  CANCEL_FEE: "Отмена графика",
-} as const;
-
-type TEventType = (typeof EventType)[keyof typeof EventType];
-
-const RequestStatus = {
-  CREATED: "Создан",
-  ACCEPTED: "Принят",
-  REJECTED: "Отклонен",
-  PROCESSED: "В обработке",
-  COMPLETED: "Обработан",
-  ERROR: "В ошибке",
-} as const;
-
-type TRequestStatus = (typeof RequestStatus)[keyof typeof RequestStatus];
-
-const ResultType = {
-  OPERATION_SUCCESS: "Запрос исполнен",
-  OPERATION_DECLINE: "Запрос отклонен",
-  CARD_INDEX_PLAN: "Выполнен учёт требований",
-  CARD_INDEX_DONE: "Поставлен в картотеку",
-  ANNULMENT: "Запрос аннулирован",
-  CANCELLATION: "Запрос отменен",
-} as const;
-
-type TResultType = (typeof ResultType)[keyof typeof ResultType];
-
-const PutToOutboxStatus = {
-  NEW: "Новый",
-  IN_PROGRESS: "В обработке",
-  DONE: "Отправлен",
-  ERROR: "Ошибка отправки",
-  NOT_SUPPORTED: "Не подлежит отправке",
-} as const;
-
-type TPutToOutboxStatus =
-  (typeof PutToOutboxStatus)[keyof typeof PutToOutboxStatus];
-
-const ScheduleStatus = {
-  CREATED: "Создан",
-  PROCESSED: "В обработке",
-  COMPLETED: "Обработан",
-  CANCEL: "Отменен",
-  ERROR: "В ошибке",
-} as const;
-
-type TScheduleStatus = (typeof ScheduleStatus)[keyof typeof ScheduleStatus];
-
-const ProcessCode = {
-  TOCART: "с картотекой",
-  DECLINE: "без картотеки",
-} as const;
-
-type TProcessCode = (typeof ProcessCode)[keyof typeof ProcessCode];

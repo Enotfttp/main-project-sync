@@ -1,5 +1,6 @@
 import { columnList } from "../../lib/columns";
 import { routesPath } from "@app/providers";
+import { useGetRequests } from "@entities/request/api/hook.ts";
 import { TFilterValue } from "@features/dynamic-filters";
 import { TPaginationTable } from "@shared/types";
 import { TableSort } from "@shared/ui";
@@ -15,10 +16,10 @@ interface IProps {
 export const Table: FC<IProps> = ({ tableKey, filters }) => {
   const navigate = useNavigate();
   const [pagination, setPagination] = useState<TPaginationTable>();
-  // const { data: requests } = useGetRequests({
-  //   filters: filters,
-  //   pagination: pagination,
-  // });
+  const { data: requests } = useGetRequests({
+    filters: filters,
+    pagination: pagination,
+  });
 
   const handlePaginationChange = useCallback((pagination: TPaginationTable) => {
     setPagination(pagination);
