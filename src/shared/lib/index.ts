@@ -1,4 +1,5 @@
 export * from "./hooks/hooks";
 export * from "./utils/utils";
 export * from "./utils/date";
+export * from "./utils/enum";
 export * from "./utils/validate";

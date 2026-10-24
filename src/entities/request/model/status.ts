@@ -1,4 +1,4 @@
-const EventType = {
+export const EventType = {
   PACKAGE_ACTIVATION: "Подключение ПУ",
   OPTION_ACTIVATION: "Подключение ДО",
   PACKAGE_PROLONGATION: "Пролонгация ПУ",
@@ -18,7 +18,7 @@ export type TEventType = keyof typeof EventType;
 
 export const mapEventType = (status: TEventType) => EventType[status];
 
-const RequestStatus = {
+export const RequestStatus = {
   CREATED: "Создан",
   ACCEPTED: "Принят",
   REJECTED: "Отклонен",
@@ -32,7 +32,7 @@ export type TRequestStatus = keyof typeof RequestStatus;
 export const mapRequestStatus = (status: TRequestStatus) =>
   RequestStatus[status];
 
-const ResultType = {
+export const ResultType = {
   OPERATION_SUCCESS: "Запрос исполнен",
   OPERATION_DECLINE: "Запрос отклонен",
   CARD_INDEX_PLAN: "Выполнен учёт требований",
@@ -45,7 +45,7 @@ export type TResultType = keyof typeof ResultType;
 
 export const mapResultType = (status: TResultType) => ResultType[status];
 
-const PutToOutboxStatus = {
+export const PutToOutboxStatus = {
   NEW: "Новый",
   IN_PROGRESS: "В обработке",
   DONE: "Отправлен",
