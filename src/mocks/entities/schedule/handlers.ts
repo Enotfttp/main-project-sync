@@ -5,7 +5,7 @@ import {
   ISchedulePeriods,
   RequestStatus,
   TSchedulesPaginationResponse,
-} from "@entities/schedule/model/types";
+} from "@entities/schedule/model";
 import {
   apiPath,
   filterItems,
@@ -20,10 +20,10 @@ export const handlers = [
     await delay();
     const { filters, page } = await readListRequest<IScheduleFilter>(request);
     const items = filterItems(scheduleDb.all(), filters).map(toScheduleInfo);
-    const { data, page: pageInfo } = paginate(items, page);
+    const { content, page: pageInfo } = paginate(items, page);
 
     return HttpResponse.json<TSchedulesPaginationResponse>({
-      data: [{ schedulesInfo: data }],
+      content: content,
       page: pageInfo,
     });
   }),

@@ -2,7 +2,7 @@ import {
   EventType,
   IRequestDetails,
   IRequestHistory,
-  IRequests,
+  IRequestInfo,
   PutToOutboxStatus,
   RequestStatus,
   ResultType,
@@ -14,12 +14,12 @@ import {
   fakeFutureIsoDate,
   fakeInn,
   fakeIsoDate,
-  fakeUuid,
   faker,
+  fakeUuid,
 } from "@mocks/lib";
 import { keysOf } from "@shared/lib";
 
-type TRequestInfo = IRequests["requestsInfo"][number];
+type TRequestInfo = IRequestInfo[][number];
 type TErrorInfo = NonNullable<IRequestDetails["errorInfo"]>;
 
 export type TRequestMock = TRequestInfo & {

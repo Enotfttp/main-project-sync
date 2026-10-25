@@ -1,13 +1,13 @@
 import {
   EventType,
   IScheduleDetails,
+  IScheduleInfo,
   ISchedulePeriods,
   ProcessCode,
   PutToOutboxStatus,
   RequestStatus,
   ResultType,
   ScheduleStatus,
-  TSchedulesPaginationResponse,
 } from "@entities/schedule/model";
 import { packageDb } from "@mocks/entities/package/factory";
 import {
@@ -20,8 +20,7 @@ import {
 } from "@mocks/lib";
 import { valuesOf } from "@shared/lib";
 
-type TScheduleInfo =
-  TSchedulesPaginationResponse["data"][number]["schedulesInfo"][number];
+type TScheduleInfo = IScheduleInfo[][number];
 type TScheduleDetailsInfo = IScheduleDetails["scheduleInfo"];
 type TPeriodInfo = ISchedulePeriods["periodsInfo"][number];
 

@@ -4,12 +4,12 @@ import {
   ICorrectionalScenario,
   ICorrectionalScenarioFilter,
 } from "../model/types";
-import { QueryKey, useQuery, UseQueryOptions } from "@tanstack/react-query";
+import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetCorrectionalScenario = (
   filters?: ICorrectionalScenarioFilter,
   options?: Omit<
-    UseQueryOptions<ICorrectionalScenario, Error, QueryKey>,
+    UseQueryOptions<ICorrectionalScenario, Error>,
     "queryKey" | "queryFn"
   >,
 ) => {
@@ -23,10 +23,7 @@ export const useGetCorrectionalScenario = (
 export const usePatchCorrectionalScenario = (
   id: UUID,
   fields: IAccountInfo,
-  options?: Omit<
-    UseQueryOptions<void, Error, QueryKey>,
-    "queryKey" | "queryFn"
-  >,
+  options?: Omit<UseQueryOptions<void, Error>, "queryKey" | "queryFn">,
 ) => {
   return useQuery({
     queryKey: ["correctional-scenario", id, fields],

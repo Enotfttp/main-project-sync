@@ -20,10 +20,10 @@ export const handlers = [
     await delay();
     const { filters, page } = await readListRequest<IRequestFilter>(request);
     const items = filterItems(requestDb.all(), filters).map(toRequestInfo);
-    const { data, page: pageInfo } = paginate(items, page);
+    const { content, page: pageInfo } = paginate(items, page);
 
     return HttpResponse.json<TRequestsPaginationResponse>({
-      data: [{ requestsInfo: data }],
+      content: content,
       page: pageInfo,
     });
   }),

@@ -11,7 +11,7 @@ import { QueryKey, useQuery, UseQueryOptions } from "@tanstack/react-query";
 export const useGetSchedules = (
   filters?: TFilterPaginationRequest<IScheduleFilter>,
   options?: Omit<
-    UseQueryOptions<TSchedulesPaginationResponse, Error, QueryKey>,
+    UseQueryOptions<TSchedulesPaginationResponse, Error>,
     "queryKey" | "queryFn"
   >,
 ) => {
@@ -25,7 +25,7 @@ export const useGetSchedules = (
 export const useGetSchedule = (
   id: UUID,
   options?: Omit<
-    UseQueryOptions<IScheduleDetails, Error, QueryKey>,
+    UseQueryOptions<IScheduleDetails, Error>,
     "queryKey" | "queryFn"
   >,
 ) => {
@@ -39,7 +39,7 @@ export const useGetSchedule = (
 export const useGetSchedulePeriods = (
   id: UUID,
   options?: Omit<
-    UseQueryOptions<ISchedulePeriods, Error, QueryKey>,
+    UseQueryOptions<ISchedulePeriods, Error>,
     "queryKey" | "queryFn"
   >,
 ) => {

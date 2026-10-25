@@ -8,6 +8,7 @@ import {
 import { SystemFilterOutline } from "@admiral-ds/icons";
 import { Chips, IconButton, T } from "@admiral-ds/react-ui";
 import { IRenderField, TFilterValue } from "@features/dynamic-filters";
+import { normalizedDate } from "@shared/lib";
 import { FC } from "react";
 
 interface IProps {
@@ -18,6 +19,23 @@ interface IProps {
   handleOpenFilters(): void;
 }
 
+const getValueSelectField = (
+  field: IRenderField,
+  filtersValue: TFilterValue,
+) => {
+  const value = filtersValue[field.id];
+
+  if (field.type === "date" || field.type === "date-range") {
+    return normalizedDate(value as IsoDate);
+  }
+
+  if (field.type === "select") {
+    return field!.options?.find((el) => el.value === value)!.label;
+  }
+
+  return "";
+};
+
 export const FiltersView: FC<IProps> = ({
   fields,
   handleClose,
@@ -27,20 +45,20 @@ export const FiltersView: FC<IProps> = ({
 }) => (
   <StyledFiltersView>
     <WrapperFilters>
-      {fields.map(({ id, label }) => (
-        <WrapperInfo key={id}>
+      {fields.map((field) => (
+        <WrapperInfo key={field.id}>
           <T font="Additional/S" color="Neutral/Neutral 50">
-            {label}
+            {field.label}
           </T>
           <WrapperChip dimension="m">
-            {filtersValue?.[id] ? (
+            {filtersValue?.[field.id] ? (
               <Chips
                 dimension="m"
                 appearance="filled"
-                key={id}
-                onClose={() => handleClose(id)}
+                key={field.id}
+                onClose={() => handleClose(field.id)}
               >
-                {filtersValue[id].toString()}
+                {getValueSelectField(field, filtersValue)}
               </Chips>
             ) : (
               <T font="Additional/S" color="Neutral/Neutral 50">

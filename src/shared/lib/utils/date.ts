@@ -27,29 +27,68 @@ export function normalizedDate(date: IsoDate, withTime?: boolean) {
   });
 }
 
+/** Разделитель дат внутри значения интервала */
+export const DATE_RANGE_SEPARATOR = " - ";
+
+const DATE_MASK = "__.__.____";
+const DISPLAY_DATE = /^\d{2}\.\d{2}\.\d{4}$/;
+
+const splitDateValue = (value: string, isRange?: boolean) =>
+  isRange ? value.split(DATE_RANGE_SEPARATOR) : [value];
+
 /**
- * Метод для нормализации строковой даты в дату
+ * Метод для перевода даты из поля ввода в формат iso yyyy-mm-dd,
+ * для интервала - в `yyyy-mm-dd - yyyy-mm-dd`.
+ * Для незаполненной до конца даты возвращает null.
  *
- * @param dateStr Дата в строке
+ * @param value Дата по маске dd.mm.yyyy
+ * @param isRange флаг интервала дат
  */
-export const parseStringToDate = (dateStr: string): Date | null => {
-  try {
-    const [day, month, year] = dateStr.split(".").map(Number);
-    if (day && month && year) {
-      return new Date(year, month, day);
-    }
-  } catch {
-    return null;
-  }
-  return null;
+export const toIsoDateValue = (
+  value: string,
+  isRange?: boolean,
+): string | null => {
+  const isoParts = splitDateValue(value, isRange).map((part) => {
+    const displayDate = part.trim();
+    const [day, month, year] = displayDate.split(".");
+    const isoDate = `${year}-${month}-${day}` as IsoDate;
+
+    // Отсекаем незаполненные и несуществующие даты вроде 31.02.2026
+    return normalizedDate(isoDate) === displayDate ? isoDate : "";
+  });
+
+  if (isoParts.some((part) => !part)) return null;
+
+  return isoParts.join(DATE_RANGE_SEPARATOR);
+};
+
+/**
+ * Метод для перевода iso даты в значение маски поля ввода
+ *
+ * @param value Дата в формате yyyy-mm-dd
+ * @param isRange флаг интервала дат
+ */
+export const toDisplayDateValue = (
+  value: string,
+  isRange?: boolean,
+): string => {
+  if (!value) return "";
+
+  const displayParts = splitDateValue(value, isRange).map((part) => {
+    const displayDate = normalizedDate(part.trim() as IsoDate);
+
+    return DISPLAY_DATE.test(displayDate) ? displayDate : DATE_MASK;
+  });
+
+  return displayParts.join(DATE_RANGE_SEPARATOR);
 };
 
 export const calculateMaxDate = (
-  fromDateStr: string,
+  fromIsoDate: string,
   dateDifference?: string,
 ): Date | undefined => {
-  const fromDate = parseStringToDate(fromDateStr);
-  if (!fromDate) return;
+  const fromDate = new Date(fromIsoDate);
+  if (isNaN(fromDate.getTime())) return;
 
   const resultDate = new Date(fromDate);
 

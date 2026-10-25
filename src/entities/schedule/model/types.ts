@@ -20,10 +20,6 @@ export interface IScheduleFilter {
   amountFullCur?: number;
 }
 
-export interface ISchedules {
-  schedulesInfo: IScheduleInfo[];
-}
-
 export interface IScheduleDetails {
   scheduleInfo: IScheduleInfoDetails;
 }
@@ -34,9 +30,9 @@ export interface ISchedulePeriods {
 }
 
 export type TSchedulesPaginationResponse =
-  ITableDataPaginationResponse<ISchedules>;
+  ITableDataPaginationResponse<IScheduleInfo>;
 
-interface IScheduleInfo {
+export interface IScheduleInfo {
   scheduleSourceGuid: UUID;
   date: IsoDate;
   scheduleStatus: TScheduleStatus;

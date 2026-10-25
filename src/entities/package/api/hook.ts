@@ -1,10 +1,10 @@
 import { packageService } from "./api";
 import { TFilterPaginationRequest } from "@shared/types";
-import { QueryKey, useQuery, UseQueryOptions } from "@tanstack/react-query";
+import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetPackages = (
   filters?: TFilterPaginationRequest<any>,
-  options?: Omit<UseQueryOptions<any, Error, QueryKey>, "queryKey" | "queryFn">,
+  options?: Omit<UseQueryOptions<any, Error>, "queryKey" | "queryFn">,
 ) => {
   return useQuery({
     queryKey: ["packages", filters],
@@ -15,7 +15,7 @@ export const useGetPackages = (
 
 export const useGetPackage = (
   id: UUID,
-  options?: Omit<UseQueryOptions<any, Error, QueryKey>, "queryKey" | "queryFn">,
+  options?: Omit<UseQueryOptions<any, Error>, "queryKey" | "queryFn">,
 ) => {
   return useQuery({
     queryKey: ["package", id],
@@ -27,7 +27,7 @@ export const useGetPackage = (
 export const useGetPackageOptions = (
   id: UUID,
   filters: TFilterPaginationRequest<any>,
-  options?: Omit<UseQueryOptions<any, Error, QueryKey>, "queryKey" | "queryFn">,
+  options?: Omit<UseQueryOptions<any, Error>, "queryKey" | "queryFn">,
 ) => {
   return useQuery({
     queryKey: ["options", id, filters],

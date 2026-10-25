@@ -8,16 +8,14 @@ import {
 const DEFAULT_PAGE_SIZE = 8;
 
 /**
- * Сервисы отправляют тело вида `{ filters: { filters, page } }`.
+ * Сервисы отправляют тело вида `{ filters, page }`
  */
 export const readListRequest = async <F extends object>(request: Request) => {
-  const body = await readJson<{ filters?: TFilterPaginationRequest<F> }>(
-    request,
-  );
+  const body = await readJson<TFilterPaginationRequest<F>>(request);
 
   return {
-    filters: body?.filters?.filters,
-    page: body?.filters?.page,
+    filters: body?.filters,
+    page: body?.page,
   };
 };
 
@@ -50,7 +48,7 @@ export const filterItems = <T extends object>(
   filters?: object,
 ): T[] => {
   if (!filters) return items;
-
+  console.log("items: ", items, filters);
   const entries = Object.entries(filters).filter(
     ([, value]) => !isEmpty(value),
   );
@@ -84,7 +82,7 @@ export const paginate = <T>(
   const start = (number - 1) * size;
 
   return {
-    data: items.slice(start, start + size),
+    content: items.slice(start, start + size),
     page: {
       size,
       number,
