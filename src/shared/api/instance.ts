@@ -8,6 +8,8 @@ export const axiosInstance = axios.create({
     "X-Requested-Id": v7(),
     "X-System-Code": "COMC",
   },
+  // Массивы без индексов: sort=a,asc&sort=b,desc
+  paramsSerializer: { indexes: null },
 });
 
 declare module "axios" {

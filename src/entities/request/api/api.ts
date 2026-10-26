@@ -3,18 +3,27 @@ import {
   IRequestDetails,
   IRequestFilter,
   IRequestHistory,
+  IRequestInfo,
   TRequestsPaginationResponse,
 } from "../model/types";
-import { axiosInstance } from "@shared/api";
+import { axiosInstance, toListParams } from "@shared/api";
 import { TFilterPaginationRequest } from "@shared/types";
 
 class RequestService {
-  async getRequests(
-    filters?: TFilterPaginationRequest<IRequestFilter>,
-  ): Promise<TRequestsPaginationResponse> {
-    const response = await axiosInstance.post(`/requests`, {
-      ...filters,
-    });
+  async getRequests({
+    filters,
+    ...listParams
+  }: TFilterPaginationRequest<
+    IRequestFilter,
+    IRequestInfo
+  > = {}): Promise<TRequestsPaginationResponse> {
+    const response = await axiosInstance.post(
+      `/requests`,
+      { ...filters },
+      {
+        params: toListParams(listParams),
+      },
+    );
     return response.data;
   }
 

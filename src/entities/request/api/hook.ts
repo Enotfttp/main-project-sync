@@ -4,23 +4,49 @@ import {
   IRequestDetails,
   IRequestFilter,
   IRequestHistory,
+  IRequestInfo,
   TRequestsPaginationResponse,
 } from "../model/types";
 import { TFilterPaginationRequest } from "@shared/types";
-import { useQuery, UseQueryOptions } from "@tanstack/react-query";
+import {
+  useQuery,
+  useQueryClient,
+  UseQueryOptions,
+} from "@tanstack/react-query";
+import { useCallback } from "react";
+
+type TRequestsRequest = TFilterPaginationRequest<IRequestFilter, IRequestInfo>;
+
+const getRequestsQueryOptions = (request?: TRequestsRequest) => ({
+  queryKey: ["requests", request],
+  queryFn: () => requestService.getRequests(request),
+});
 
 export const useGetRequests = (
-  filters?: TFilterPaginationRequest<IRequestFilter>,
+  request?: TRequestsRequest,
   options?: Omit<
     UseQueryOptions<TRequestsPaginationResponse, Error>,
     "queryKey" | "queryFn"
   >,
 ) => {
   return useQuery({
-    queryKey: ["requests", filters],
-    queryFn: () => requestService.getRequests(filters),
+    ...getRequestsQueryOptions(request),
     ...options,
   });
+};
+
+/**
+ * Загружает список заявок вне рендера и кладёт результат в кэш,
+ * чтобы таблица с тем же запросом не ходила за данными повторно.
+ */
+export const useFetchRequests = () => {
+  const queryClient = useQueryClient();
+
+  return useCallback(
+    (request?: TRequestsRequest) =>
+      queryClient.query(getRequestsQueryOptions(request)),
+    [queryClient],
+  );
 };
 
 export const useGetRequest = (

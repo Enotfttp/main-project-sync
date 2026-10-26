@@ -2,6 +2,7 @@ import { scheduleDb, toScheduleInfo } from "./factory";
 import {
   IScheduleDetails,
   IScheduleFilter,
+  IScheduleInfo,
   ISchedulePeriods,
   RequestStatus,
   TSchedulesPaginationResponse,
@@ -12,20 +13,22 @@ import {
   notFound,
   paginate,
   readListRequest,
+  sortItems,
 } from "@mocks/lib";
 import { delay, http, HttpResponse } from "msw";
 
 export const handlers = [
   http.post(apiPath("/schedules"), async ({ request }) => {
     await delay();
-    const { filters, page } = await readListRequest<IScheduleFilter>(request);
+    const { filters, page, sort } = await readListRequest<
+      IScheduleFilter,
+      IScheduleInfo
+    >(request);
     const items = filterItems(scheduleDb.all(), filters).map(toScheduleInfo);
-    const { content, page: pageInfo } = paginate(items, page);
 
-    return HttpResponse.json<TSchedulesPaginationResponse>({
-      content: content,
-      page: pageInfo,
-    });
+    return HttpResponse.json<TSchedulesPaginationResponse>(
+      paginate(sortItems(items, sort), page),
+    );
   }),
 
   http.get(apiPath("/schedules/:id"), async ({ params }) => {

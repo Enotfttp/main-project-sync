@@ -8,7 +8,7 @@ export interface FilterVariant {
 }
 
 interface FilterHandlers {
-  onApply?: (values: TFilterValue, variant?: string) => void;
+  onApply?: (values: TFilterValue, variant?: string) => void | Promise<void>;
   onVariantChange?: (variant: string) => void;
   onReset?: () => void;
   onCancel?: () => void;

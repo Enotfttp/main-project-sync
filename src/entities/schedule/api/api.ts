@@ -1,19 +1,28 @@
 import {
   IScheduleDetails,
   IScheduleFilter,
+  IScheduleInfo,
   ISchedulePeriods,
   TSchedulesPaginationResponse,
 } from "../model/types";
-import { axiosInstance } from "@shared/api";
+import { axiosInstance, toListParams } from "@shared/api";
 import { TFilterPaginationRequest } from "@shared/types";
 
 class ScheduleService {
-  async getSchedules(
-    filters?: TFilterPaginationRequest<IScheduleFilter>,
-  ): Promise<TSchedulesPaginationResponse> {
-    const response = await axiosInstance.post(`/schedules`, {
-      filters: filters,
-    });
+  async getSchedules({
+    filters,
+    ...listParams
+  }: TFilterPaginationRequest<
+    IScheduleFilter,
+    IScheduleInfo
+  > = {}): Promise<TSchedulesPaginationResponse> {
+    const response = await axiosInstance.post(
+      `/schedules`,
+      { ...filters },
+      {
+        params: toListParams(listParams),
+      },
+    );
     return response.data;
   }
 

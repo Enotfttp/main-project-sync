@@ -25,7 +25,7 @@ const RequestPage: FC = () => {
         onResetFilters={handleResetFilters}
         isShowFilters={isShowFilters}
         filtersValue={filtersValue}
-        onCancel={handleCloseFilters}
+        onClose={handleCloseFilters}
       />
       <Page>
         <Container>

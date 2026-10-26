@@ -3,20 +3,62 @@ import {
   ITableDataPaginationResponse,
   TFilterPaginationRequest,
   TPaginationTable,
+  TSort,
+  TSortDirection,
 } from "@shared/types";
 
 const DEFAULT_PAGE_SIZE = 8;
 
 /**
- * Сервисы отправляют тело вида `{ filters, page }`
+ * Сервисы отправляют фильтры в body,
+ * а пагинацию и сортировку в query: `?sort=field,asc&page=1&size=25`
  */
-export const readListRequest = async <F extends object>(request: Request) => {
-  const body = await readJson<TFilterPaginationRequest<F>>(request);
+export const readListRequest = async <F extends object, S extends object = F>(
+  request: Request,
+): Promise<TFilterPaginationRequest<F, S>> => {
+  const params = new URL(request.url).searchParams;
+
+  const page = params.has("page")
+    ? {
+        page: Number(params.get("page")),
+        pageSize: Number(params.get("size")) || DEFAULT_PAGE_SIZE,
+      }
+    : undefined;
+
+  const sort = params.getAll("sort").map((value) => {
+    const [field, direction = "asc"] = value.split(",");
+    return { field, direction: direction as TSortDirection } as TSort<S>;
+  });
 
   return {
-    filters: body?.filters,
-    page: body?.page,
+    filters: await readJson<F>(request),
+    page,
+    sort,
   };
+};
+
+/**
+ * Сортировка по нескольким полям в порядке их передачи
+ */
+export const sortItems = <T extends object>(
+  items: T[],
+  sort?: TSort<T>[],
+): T[] => {
+  if (!sort?.length) return items;
+
+  return [...items].sort((a, b) => {
+    for (const { field, direction } of sort) {
+      const left = a[field];
+      const right = b[field];
+      if (left === right) continue;
+      if (left === undefined || left === null) return 1;
+      if (right === undefined || right === null) return -1;
+
+      const result = left > right ? 1 : -1;
+      return direction === "desc" ? -result : result;
+    }
+    return 0;
+  });
 };
 
 const isEmpty = (value: unknown) =>

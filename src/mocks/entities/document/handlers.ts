@@ -6,6 +6,7 @@ import {
   notFound,
   paginate,
   readListRequest,
+  sortItems,
 } from "@mocks/lib";
 import { delay, http, HttpResponse } from "msw";
 
@@ -24,12 +25,13 @@ export const handlers = [
     }
 
     const ownerId = searchParams.get(ownerKey);
-    const { filters, page } = await readListRequest(request);
+    const { filters, page, sort } = await readListRequest(request);
     const documents = documentDb
       .where((document: IDocumentMock) => document[ownerKey] === ownerId)
       .map(toDocumentInfo);
+    const items = filterItems(documents, filters);
 
-    return HttpResponse.json(paginate(filterItems(documents, filters), page));
+    return HttpResponse.json(paginate(sortItems(items, sort), page));
   }),
 
   http.get(apiPath("/documents/:id"), async ({ params }) => {
