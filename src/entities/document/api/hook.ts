@@ -1,10 +1,10 @@
 import { documentService } from "./api";
 import { TFilterPaginationRequest } from "@shared/types";
-import { QueryKey, useQuery, UseQueryOptions } from "@tanstack/react-query";
+import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetDocument = (
   id: UUID,
-  options?: Omit<UseQueryOptions<any, Error, QueryKey>, "queryKey" | "queryFn">,
+  options?: Omit<UseQueryOptions<any, Error>, "queryKey" | "queryFn">,
 ) => {
   return useQuery({
     queryKey: ["document", id],
@@ -16,7 +16,7 @@ export const useGetDocument = (
 export const useGetDocumentsPeriod = (
   id: UUID,
   filters?: TFilterPaginationRequest<any>,
-  options?: Omit<UseQueryOptions<any, Error, QueryKey>, "queryKey" | "queryFn">,
+  options?: Omit<UseQueryOptions<any, Error>, "queryKey" | "queryFn">,
 ) => {
   return useQuery({
     queryKey: ["documents", "period", id, filters],
@@ -28,7 +28,7 @@ export const useGetDocumentsPeriod = (
 export const useGetDocumentsPackage = (
   id: UUID,
   filters?: TFilterPaginationRequest<any>,
-  options?: Omit<UseQueryOptions<any, Error, QueryKey>, "queryKey" | "queryFn">,
+  options?: Omit<UseQueryOptions<any, Error>, "queryKey" | "queryFn">,
 ) => {
   return useQuery({
     queryKey: ["documents", "package", id, filters],
@@ -40,7 +40,7 @@ export const useGetDocumentsPackage = (
 export const useGetDocumentsOption = (
   id: UUID,
   filters?: TFilterPaginationRequest<any>,
-  options?: Omit<UseQueryOptions<any, Error, QueryKey>, "queryKey" | "queryFn">,
+  options?: Omit<UseQueryOptions<any, Error>, "queryKey" | "queryFn">,
 ) => {
   return useQuery({
     queryKey: ["documents", "option", id, filters],
@@ -51,7 +51,7 @@ export const useGetDocumentsOption = (
 
 export const useGetDocumentHistory = (
   id: UUID,
-  options?: Omit<UseQueryOptions<any, Error, QueryKey>, "queryKey" | "queryFn">,
+  options?: Omit<UseQueryOptions<any, Error>, "queryKey" | "queryFn">,
 ) => {
   return useQuery({
     queryKey: ["documents", "history", id],

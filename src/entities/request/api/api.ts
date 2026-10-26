@@ -13,7 +13,7 @@ class RequestService {
     filters?: TFilterPaginationRequest<IRequestFilter>,
   ): Promise<TRequestsPaginationResponse> {
     const response = await axiosInstance.post(`/requests`, {
-      filters: filters,
+      ...filters,
     });
     return response.data;
   }

@@ -1,4 +1,4 @@
-import { IServiceGroupConfig } from "../model/types.ts";
+import { IServiceGroupConfig } from "../model/types";
 import { routesPath } from "@app/providers";
 
 export const mainServiceGroups: IServiceGroupConfig[] = [

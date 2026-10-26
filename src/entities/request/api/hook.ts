@@ -7,12 +7,12 @@ import {
   TRequestsPaginationResponse,
 } from "../model/types";
 import { TFilterPaginationRequest } from "@shared/types";
-import { QueryKey, useQuery, UseQueryOptions } from "@tanstack/react-query";
+import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetRequests = (
   filters?: TFilterPaginationRequest<IRequestFilter>,
   options?: Omit<
-    UseQueryOptions<TRequestsPaginationResponse, Error, QueryKey>,
+    UseQueryOptions<TRequestsPaginationResponse, Error>,
     "queryKey" | "queryFn"
   >,
 ) => {
@@ -24,9 +24,9 @@ export const useGetRequests = (
 };
 
 export const useGetRequest = (
-  id?: string,
+  id?: UUID,
   options?: Omit<
-    UseQueryOptions<IRequestDetails, Error, QueryKey>,
+    UseQueryOptions<IRequestDetails, Error>,
     "queryKey" | "queryFn"
   >,
 ) => {
@@ -38,9 +38,9 @@ export const useGetRequest = (
 };
 
 export const useGetRequestContent = (
-  id?: string,
+  id?: UUID,
   options?: Omit<
-    UseQueryOptions<IRequestContent, Error, QueryKey>,
+    UseQueryOptions<IRequestContent, Error>,
     "queryKey" | "queryFn"
   >,
 ) => {
@@ -52,9 +52,9 @@ export const useGetRequestContent = (
 };
 
 export const useGetRequestHistory = (
-  id?: string,
+  id?: UUID,
   options?: Omit<
-    UseQueryOptions<IRequestHistory, Error, QueryKey>,
+    UseQueryOptions<IRequestHistory, Error>,
     "queryKey" | "queryFn"
   >,
 ) => {

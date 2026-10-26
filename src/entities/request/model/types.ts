@@ -16,10 +16,6 @@ export interface IRequestFilter {
   inn?: string;
 }
 
-export interface IRequests {
-  requestsInfo: IRequestInfo[];
-}
-
 export interface IRequestDetails {
   requestInfo: IRequestInfoDetails;
   errorInfo?: IErrorInfo;
@@ -35,9 +31,9 @@ export interface IRequestContent {
 }
 
 export type TRequestsPaginationResponse =
-  ITableDataPaginationResponse<IRequests>;
+  ITableDataPaginationResponse<IRequestInfo>;
 
-interface IRequestInfo {
+export interface IRequestInfo {
   requestId: UUID;
   date: IsoDate;
   eventType: TEventType;

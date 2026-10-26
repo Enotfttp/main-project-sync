@@ -16,6 +16,6 @@ export type TFilterPaginationRequest<T extends object> = {
 };
 
 export interface ITableDataPaginationResponse<T> {
-  data: T[];
+  content: T[];
   page: TPaginationData;
 }

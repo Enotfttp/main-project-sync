@@ -33,7 +33,7 @@ export const PaginationTable = ({
         setPageSize(pageSize);
         handleResetSortCols();
       }}
-      style={{ flexGrow: 1 }}
+      style={{ marginTop: "auto", flexShrink: 0 }}
       page={curPage}
       pageSize={pageSize}
       totalItems={totalElements}
