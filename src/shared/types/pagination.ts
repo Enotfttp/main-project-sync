@@ -15,7 +15,6 @@ export type TFilterPaginationRequest<T extends object> = {
   page?: TPaginationTable;
 };
 
-export interface ITableDataPaginationResponse<T> {
+export interface ITableDataPaginationResponse<T> extends TPaginationData {
   content: T[];
-  page: TPaginationData;
 }

@@ -1,8 +1,11 @@
+import { IPackageInfo, TPackagePaginationResponse } from "../model/types";
 import { axiosInstance } from "@shared/api";
 import { TFilterPaginationRequest } from "@shared/types";
 
 class PackageService {
-  async getPackages(filters?: TFilterPaginationRequest<any>): Promise<any> {
+  async getPackages(
+    filters?: TFilterPaginationRequest<IPackageInfo>,
+  ): Promise<TPackagePaginationResponse> {
     const response = await axiosInstance.post(`/packages`, {
       filters: filters,
     });

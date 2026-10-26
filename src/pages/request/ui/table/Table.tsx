@@ -16,7 +16,9 @@ interface IProps {
 export const Table: FC<IProps> = ({ tableKey, filters }) => {
   const navigate = useNavigate();
   const [pagination, setPagination] = useState<TPaginationTable>();
-  const { data } = useGetRequests(
+  const {
+    data: { content, ...page },
+  } = useGetRequests(
     {
       filters: filters,
       page: pagination,
@@ -37,11 +39,11 @@ export const Table: FC<IProps> = ({ tableKey, filters }) => {
       isPagination
       key={tableKey}
       columnList={columnList}
-      rowList={data?.content || []}
+      rowList={content}
       onRowClick={handleRowClick}
       queryKey="documents"
       handlePaginationChange={handlePaginationChange}
-      pagination={data?.page}
+      pagination={page}
     />
   );
 };

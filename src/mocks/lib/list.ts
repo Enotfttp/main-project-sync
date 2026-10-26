@@ -83,11 +83,9 @@ export const paginate = <T>(
 
   return {
     content: items.slice(start, start + size),
-    page: {
-      size,
-      number,
-      totalPages,
-      totalElements: items.length,
-    },
+    size,
+    number,
+    totalPages,
+    totalElements: items.length,
   };
 };
