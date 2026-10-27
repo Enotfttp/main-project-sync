@@ -2,6 +2,7 @@ import { scheduleService } from "./api";
 import {
   IScheduleDetails,
   IScheduleFilter,
+  IScheduleInfo,
   ISchedulePeriods,
   TSchedulesPaginationResponse,
 } from "../model/types";
@@ -9,15 +10,15 @@ import { TFilterPaginationRequest } from "@shared/types";
 import { QueryKey, useQuery, UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetSchedules = (
-  filters?: TFilterPaginationRequest<IScheduleFilter>,
+  request?: TFilterPaginationRequest<IScheduleFilter, IScheduleInfo>,
   options?: Omit<
     UseQueryOptions<TSchedulesPaginationResponse, Error>,
     "queryKey" | "queryFn"
   >,
 ) => {
   return useQuery({
-    queryKey: ["schedules", filters],
-    queryFn: () => scheduleService.getSchedules(filters),
+    queryKey: ["schedules", request],
+    queryFn: () => scheduleService.getSchedules(request),
     ...options,
   });
 };

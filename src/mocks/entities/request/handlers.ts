@@ -4,6 +4,7 @@ import {
   IRequestDetails,
   IRequestFilter,
   IRequestHistory,
+  IRequestInfo,
   TRequestsPaginationResponse,
 } from "@entities/request/model";
 import {
@@ -12,20 +13,22 @@ import {
   notFound,
   paginate,
   readListRequest,
+  sortItems,
 } from "@mocks/lib";
 import { delay, http, HttpResponse } from "msw";
 
 export const handlers = [
   http.post(apiPath("/requests"), async ({ request }) => {
     await delay();
-    const { filters, page } = await readListRequest<IRequestFilter>(request);
+    const { filters, page, sort } = await readListRequest<
+      IRequestFilter,
+      IRequestInfo
+    >(request);
     const items = filterItems(requestDb.all(), filters).map(toRequestInfo);
-    const { content, page: pageInfo } = paginate(items, page);
 
-    return HttpResponse.json<TRequestsPaginationResponse>({
-      content: content,
-      page: pageInfo,
-    });
+    return HttpResponse.json<TRequestsPaginationResponse>(
+      paginate(sortItems(items, sort), page),
+    );
   }),
 
   http.get(apiPath("/requests/:id"), async ({ params }) => {

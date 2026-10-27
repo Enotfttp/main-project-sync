@@ -5,6 +5,7 @@ import {
   StyledFilterActions,
   StyledFilterActionsGroup,
   StyledFilterBody,
+  StyledFilterError,
   StyledFilterField,
   StyledFilterHeader,
   StyledFilterTitle,
@@ -21,6 +22,7 @@ import {
   T,
 } from "@admiral-ds/react-ui";
 import { IRenderField } from "@features/dynamic-filters";
+import { getErrorMessage } from "@shared/api";
 import { FC, useMemo, useState } from "react";
 import { Form } from "react-final-form";
 
@@ -45,6 +47,7 @@ export const DynamicFilters: FC<FilterConfig> = ({
 }) => {
   const variants = "variants" in props ? props.variants : undefined;
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [applyError, setApplyError] = useState<string | null>(null);
   const activeVariant = variants?.[selectedIndex];
   const fields = activeVariant?.fields ?? props.fields ?? [];
 
@@ -58,11 +61,17 @@ export const DynamicFilters: FC<FilterConfig> = ({
     if (!nextVariant || index === selectedIndex) return;
 
     setSelectedIndex(index);
+    setApplyError(null);
     onVariantChange?.(nextVariant.label);
   };
 
-  const onSubmit = (values) => {
-    onApply?.(values, activeVariant?.label);
+  const onSubmit = async (values: TFilterValue) => {
+    setApplyError(null);
+    try {
+      await onApply?.(values, activeVariant?.label);
+    } catch (error) {
+      setApplyError(getErrorMessage(error));
+    }
   };
 
   if (!isShowFilters) return null;
@@ -76,7 +85,7 @@ export const DynamicFilters: FC<FilterConfig> = ({
           onSubmit={onSubmit}
           validate={(values) => validate(values, fields)}
         >
-          {({ handleSubmit, pristine, form }) => {
+          {({ handleSubmit, pristine, submitting, form }) => {
             return (
               <form onSubmit={handleSubmit}>
                 <StyledFilter>
@@ -115,11 +124,20 @@ export const DynamicFilters: FC<FilterConfig> = ({
                     ))}
                   </StyledFilterBody>
 
+                  {applyError && (
+                    <StyledFilterError>
+                      <T font="Body/Body 2 Short" color="Error/Error 60 Main">
+                        {applyError}
+                      </T>
+                    </StyledFilterError>
+                  )}
+
                   <StyledFilterActions>
                     <Button
                       dimension="s"
                       onClick={() => {
                         form.reset();
+                        setApplyError(null);
                         onReset?.();
                       }}
                       appearance="secondary"
@@ -138,6 +156,7 @@ export const DynamicFilters: FC<FilterConfig> = ({
                       </Button>
                       <Button
                         disabled={pristine}
+                        loading={submitting}
                         dimension="s"
                         type="submit"
                         appearance="primary"

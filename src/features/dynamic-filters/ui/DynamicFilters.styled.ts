@@ -64,6 +64,11 @@ export const StyledFilterActions = styled.div`
   align-items: center;
 `;
 
+export const StyledFilterError = styled.div`
+  margin-bottom: 12px;
+  text-align: right;
+`;
+
 export const StyledFilterActionsGroup = styled.div`
   display: flex;
   justify-content: space-between;

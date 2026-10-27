@@ -1,11 +1,16 @@
 import { filterVariants } from "../../lib/filters";
-import { DynamicFilters, TFilterValue } from "@features/dynamic-filters";
+import { useFetchRequests } from "@entities/request/api/hook";
+import {
+  DynamicFilters,
+  handleSetFilters,
+  TFilterValue,
+} from "@features/dynamic-filters";
 import React from "react";
 
 interface FilterSectionProps {
   onApplyFilters: (filters: TFilterValue, variant?: string) => void;
   onResetFilters: () => void;
-  onCancel: () => void;
+  onClose: () => void;
   isShowFilters: boolean;
   filtersValue?: TFilterValue;
 }
@@ -13,12 +18,21 @@ interface FilterSectionProps {
 export const Filter: React.FC<FilterSectionProps> = ({
   onApplyFilters,
   onResetFilters,
-  onCancel,
+  onClose,
   isShowFilters,
   filtersValue,
 }) => {
-  const handleApply = (filterValues: TFilterValue, variant?: string) => {
+  const fetchRequests = useFetchRequests();
+
+  // Закрываем фильтры только после успешного ответа,
+  // иначе ошибка показывается в самой форме
+  const handleApply = async (filterValues: TFilterValue, variant?: string) => {
+    await fetchRequests({
+      filters: handleSetFilters(filterValues, filtersValue),
+    });
+
     onApplyFilters(filterValues, variant);
+    onClose();
   };
 
   return (
@@ -26,7 +40,7 @@ export const Filter: React.FC<FilterSectionProps> = ({
       isShowFilters={isShowFilters}
       variants={filterVariants}
       filtersValue={filtersValue}
-      onCancel={onCancel}
+      onCancel={onClose}
       onReset={onResetFilters}
       onApply={handleApply}
     />
