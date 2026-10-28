@@ -14,6 +14,7 @@ interface FilterHandlers {
   onCancel?: () => void;
   isShowFilters?: boolean;
   filtersValue?: TFilterValue;
+  variant?: string;
 }
 
 export type FilterConfig = FilterHandlers &
