@@ -5,9 +5,10 @@ import {
   WrapperFilters,
   WrapperInfo,
 } from "./FiltersView.styled";
+import { TFilterValue } from "../model/DynamicFilters.types";
+import { IRenderField } from "../model/RenderFields.types";
 import { SystemFilterOutline } from "@admiral-ds/icons";
 import { Chips, IconButton, T } from "@admiral-ds/react-ui";
-import { IRenderField, TFilterValue } from "@features/dynamic-filters";
 import { normalizedDate } from "@shared/lib";
 import { FC } from "react";
 
@@ -30,7 +31,7 @@ const getValueSelectField = (
   }
 
   if (field.type === "select") {
-    return field!.options?.find((el) => el.value === value)!.label;
+    return field.options?.find((el) => el.value === value)!.label;
   }
 
   return "";

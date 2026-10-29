@@ -13,6 +13,7 @@ interface FilterSectionProps {
   onClose: () => void;
   isShowFilters: boolean;
   filtersValue?: TFilterValue;
+  variant?: string;
 }
 
 export const Filter: React.FC<FilterSectionProps> = ({
@@ -21,17 +22,21 @@ export const Filter: React.FC<FilterSectionProps> = ({
   onClose,
   isShowFilters,
   filtersValue,
+  variant,
 }) => {
   const fetchRequests = useFetchRequests();
 
   // Закрываем фильтры только после успешного ответа,
   // иначе ошибка показывается в самой форме
-  const handleApply = async (filterValues: TFilterValue, variant?: string) => {
+  const handleApply = async (
+    filterValues: TFilterValue,
+    nextVariant?: string,
+  ) => {
     await fetchRequests({
       filters: handleSetFilters(filterValues, filtersValue),
     });
 
-    onApplyFilters(filterValues, variant);
+    onApplyFilters(filterValues, nextVariant);
     onClose();
   };
 
@@ -40,6 +45,7 @@ export const Filter: React.FC<FilterSectionProps> = ({
       isShowFilters={isShowFilters}
       variants={filterVariants}
       filtersValue={filtersValue}
+      variant={variant}
       onCancel={onClose}
       onReset={onResetFilters}
       onApply={handleApply}

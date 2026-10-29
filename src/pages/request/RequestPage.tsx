@@ -1,9 +1,14 @@
 import { filterVariants } from "./lib/filters";
 import { Filter, Table } from "./ui";
-import { useFilters } from "@features/dynamic-filters";
-import { getFieldsFromMutlyFilters } from "@shared/lib";
-import { Container, FiltersView, Page } from "@shared/ui";
+import {
+  FiltersView,
+  getVariantFields,
+  useFilters,
+} from "@features/dynamic-filters";
+import { Container, Page } from "@shared/ui";
 import { FC } from "react";
+
+const REQUEST_FILTERS_ID = "request";
 
 const RequestPage: FC = () => {
   const {
@@ -16,7 +21,7 @@ const RequestPage: FC = () => {
     handleRemoveField,
     handleCloseFilters,
     handleOpenFilters,
-  } = useFilters();
+  } = useFilters(REQUEST_FILTERS_ID);
 
   return (
     <>
@@ -25,6 +30,7 @@ const RequestPage: FC = () => {
         onResetFilters={handleResetFilters}
         isShowFilters={isShowFilters}
         filtersValue={filtersValue}
+        variant={variant}
         onClose={handleCloseFilters}
       />
       <Page>
@@ -32,7 +38,7 @@ const RequestPage: FC = () => {
           <FiltersView
             filtersValue={filtersValue}
             handleClose={handleRemoveField}
-            fields={getFieldsFromMutlyFilters(filterVariants, variant)}
+            fields={getVariantFields(filterVariants, variant)}
             handleOpenFilters={handleOpenFilters}
           />
           <Table tableKey={tableKey} filters={filtersValue} />

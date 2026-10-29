@@ -13,6 +13,7 @@ import {
 import { renderField } from "./RenderFields";
 import { validate } from "../lib/validate";
 import { FilterConfig, TFilterValue } from "../model/DynamicFilters.types";
+import { IRenderField } from "../model/RenderFields.types";
 import { ServiceCloseOutline } from "@admiral-ds/icons";
 import {
   Button,
@@ -21,7 +22,6 @@ import {
   IconButton,
   T,
 } from "@admiral-ds/react-ui";
-import { IRenderField } from "@features/dynamic-filters";
 import { getErrorMessage } from "@shared/api";
 import { FC, useMemo, useState } from "react";
 import { Form } from "react-final-form";
@@ -36,6 +36,16 @@ const getInitialValues = (
     return acc;
   }, {});
 
+const getVariantIndex = (
+  variants: readonly { label: string }[] | undefined,
+  variant?: string,
+) => {
+  if (!variants?.length || !variant) return 0;
+
+  const index = variants.findIndex((item) => item.label === variant);
+  return index >= 0 ? index : 0;
+};
+
 export const DynamicFilters: FC<FilterConfig> = ({
   onVariantChange,
   onApply,
@@ -43,10 +53,13 @@ export const DynamicFilters: FC<FilterConfig> = ({
   onCancel,
   isShowFilters = true,
   filtersValue,
+  variant,
   ...props
 }) => {
   const variants = "variants" in props ? props.variants : undefined;
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(() =>
+    getVariantIndex(variants, variant),
+  );
   const [applyError, setApplyError] = useState<string | null>(null);
   const activeVariant = variants?.[selectedIndex];
   const fields = activeVariant?.fields ?? props.fields ?? [];
@@ -94,14 +107,14 @@ export const DynamicFilters: FC<FilterConfig> = ({
                       <T font="Header/H6">Фильтры</T>
                       {variants && variants.length > 1 && (
                         <ContentSwitcher dimension="s" appearance="primary">
-                          {variants.map((variant, index) => (
+                          {variants.map((item, index) => (
                             <ContentSwitcherItem
-                              key={variant.label}
+                              key={item.label}
                               type="button"
                               active={index === selectedIndex}
                               onClick={() => handleVariantChange(index)}
                             >
-                              {variant.label}
+                              {item.label}
                             </ContentSwitcherItem>
                           ))}
                         </ContentSwitcher>
