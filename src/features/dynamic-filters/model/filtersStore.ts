@@ -1,4 +1,3 @@
-import { handleSetFilters } from "../lib/setFilters";
 import { TFilterValue } from "./DynamicFilters.types";
 import { create } from "zustand";
 
@@ -43,7 +42,7 @@ export const useFiltersStore = create<FiltersStore>((set) => ({
     set((state) => ({
       pages: updatePage(state.pages, pageId, (page) => ({
         ...page,
-        filters: handleSetFilters(filters, page.filters),
+        filters,
         variant,
       })),
     })),

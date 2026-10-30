@@ -7,7 +7,7 @@ import {
   TSchedulesPaginationResponse,
 } from "../model/types";
 import { TFilterPaginationRequest } from "@shared/types";
-import { QueryKey, useQuery, UseQueryOptions } from "@tanstack/react-query";
+import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetSchedules = (
   request?: TFilterPaginationRequest<IScheduleFilter, IScheduleInfo>,

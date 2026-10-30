@@ -11,10 +11,12 @@ export const PaginationTable = ({
   handlePaginationChange?(pagination: TPaginationTable): void;
   handleResetSortCols(): void;
 }) => {
-  const [pageSize, setPageSize] = React.useState(props.pageSize || 1);
-  const [curPage, setPage] = React.useState(props.page || 1);
-  const pageSizes = props.pageSizes || [8, 20, 50, 100, 200];
-  const totalElements = props.totalItems || 100;
+  const pageSizes = props.pageSizes ?? [8, 20, 50, 100, 200];
+  const [pageSize, setPageSize] = React.useState(
+    props.pageSize ?? pageSizes[0],
+  );
+  const [curPage, setPage] = React.useState(props.page ?? 1);
+  const totalElements = props.totalItems ?? 0;
 
   const leftButtonProps = { "data-testid": useId() };
   const rightButtonProps = { "data-testid": useId() };

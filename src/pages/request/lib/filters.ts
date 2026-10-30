@@ -1,5 +1,14 @@
-import { EventType, RequestStatus } from "@entities/request/model";
-import { FilterVariant, IRenderField } from "@features/dynamic-filters";
+import {
+  EventType,
+  IRequestFilter,
+  RequestStatus,
+} from "@entities/request/model";
+import {
+  FilterVariant,
+  IRenderField,
+  TFilterValue,
+  TValue,
+} from "@features/dynamic-filters";
 
 const standardFields: IRenderField[] = [
   {
@@ -75,3 +84,43 @@ export const filterVariants: FilterVariant[] = [
   { label: "Стандартный", fields: standardFields },
   { label: "Общий", fields: commonFields },
 ];
+
+const text = (value: TValue | undefined) =>
+  typeof value === "string" && value ? value : undefined;
+
+const enumKey = <T extends object>(record: T, value: TValue | undefined) => {
+  const normalized = text(value);
+
+  if (!normalized || !Object.hasOwn(record, normalized)) return;
+
+  return normalized as Extract<keyof T, string>;
+};
+
+/**
+ * Форма хранит одну дату поступления, а контракт списка — границы дня.
+ */
+export const toRequestFilter = (
+  filters?: TFilterValue,
+): IRequestFilter | undefined => {
+  if (!filters) return;
+
+  const requestFilter: IRequestFilter = {};
+  const requestId = text(filters.requestId);
+  const accountCode = text(filters.accountCode);
+  const inn = text(filters.inn);
+  const date = text(filters.date);
+  const requestStatus = enumKey(RequestStatus, filters.requestStatus);
+  const eventType = enumKey(EventType, filters.eventType);
+
+  if (requestId) requestFilter.requestId = requestId;
+  if (accountCode) requestFilter.accountCode = accountCode;
+  if (inn) requestFilter.inn = inn;
+  if (date) {
+    requestFilter.dateFrom = date;
+    requestFilter.dateTo = date;
+  }
+  if (requestStatus) requestFilter.requestStatus = requestStatus;
+  if (eventType) requestFilter.eventType = eventType;
+
+  return requestFilter;
+};
