@@ -1,10 +1,6 @@
-import { filterVariants } from "../../lib/filters";
+import { filterVariants, toRequestFilter } from "../../lib/filters";
 import { useFetchRequests } from "@entities/request/api/hook";
-import {
-  DynamicFilters,
-  handleSetFilters,
-  TFilterValue,
-} from "@features/dynamic-filters";
+import { DynamicFilters, TFilterValue } from "@features/dynamic-filters";
 import React from "react";
 
 interface FilterSectionProps {
@@ -33,7 +29,7 @@ export const Filter: React.FC<FilterSectionProps> = ({
     nextVariant?: string,
   ) => {
     await fetchRequests({
-      filters: handleSetFilters(filterValues, filtersValue),
+      filters: toRequestFilter(filterValues),
     });
 
     onApplyFilters(filterValues, nextVariant);

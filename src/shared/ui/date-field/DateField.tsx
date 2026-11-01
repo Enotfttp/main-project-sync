@@ -25,26 +25,31 @@ type TInputProps = TProps & Pick<FieldRenderProps<string>, "input" | "meta">;
  * а в значении формы хранит её в формате iso yyyy-mm-dd.
  * Пока дата заполнена не полностью, в форме лежит null,
  * поэтому маска хранится в своём состоянии.
+ * Пустая строка и null при сверке считаются одним значением.
  */
+const committedValue = (value?: string | null) => value || null;
+
 const DateInput = ({ input, meta, ...props }: TInputProps) => {
   const isRange = props.type === "date-range";
   const [maskValue, setMaskValue] = useState(() =>
     toDisplayDateValue(input.value, isRange),
   );
   // Последнее значение, которое поле само положило в форму
-  const ownValue = useRef(input.value);
+  const ownValue = useRef<string | null>(committedValue(input.value));
+
+  const displayValue = toDisplayDateValue(input.value || "", isRange);
 
   // Значение формы изменили извне (сброс фильтра, новые значения фильтров)
-  if (input.value !== ownValue.current) {
-    ownValue.current = input.value;
-    setMaskValue(toDisplayDateValue(input.value, isRange));
+  if (committedValue(input.value) !== ownValue.current) {
+    ownValue.current = committedValue(input.value);
+    setMaskValue(displayValue);
   }
 
   const handleChange = ({ currentTarget: { value } }) => {
     const isoValue = toIsoDateValue(value, isRange);
 
     setMaskValue(value);
-    ownValue.current = isoValue ?? "";
+    ownValue.current = committedValue(isoValue);
     input.onChange(isoValue);
   };
 

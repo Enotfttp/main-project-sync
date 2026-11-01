@@ -1,6 +1,7 @@
 import { columnList } from "../../lib/columns";
+import { toRequestFilter } from "../../lib/filters";
 import { RequestDetails } from "../details/RequestDetails";
-import { useGetRequests } from "@entities/request/api/hook";
+import { REQUESTS_QUERY_KEY, useGetRequests } from "@entities/request/api/hook";
 import { hasFilledFilter, TFilterValue } from "@features/dynamic-filters";
 import { addIdTableRowData } from "@shared/lib";
 import { TPaginationTable } from "@shared/types";
@@ -24,7 +25,7 @@ export const Table: FC<IProps> = ({ tableKey, filters }) => {
   const hasFilters = hasFilledFilter(filters);
   const { data } = useGetRequests(
     {
-      filters: filters,
+      filters: toRequestFilter(filters),
       page: pagination,
     },
     { enabled: hasFilters, staleTime: FRESH_TIME },
@@ -50,12 +51,15 @@ export const Table: FC<IProps> = ({ tableKey, filters }) => {
         columnList={columnList}
         rowList={rows}
         onRowClick={handleRowClick}
-        queryKey="documents"
+        queryKey={REQUESTS_QUERY_KEY}
         handlePaginationChange={handlePaginationChange}
         pagination={hasFilters ? data : undefined}
       />
       {requestId && (
-        <RequestDetails id={requestId} onClose={() => setRequestId(undefined)} />
+        <RequestDetails
+          id={requestId}
+          onClose={() => setRequestId(undefined)}
+        />
       )}
     </>
   );

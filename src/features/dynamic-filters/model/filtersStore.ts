@@ -1,7 +1,6 @@
 import { TFilterValue } from "./DynamicFilters.types";
 import { readStoredPages, writeStoredPages } from "../lib/filterStorage";
 import { hasFilledFilter } from "../lib/hasFilledFilter";
-import { handleSetFilters } from "../lib/setFilters";
 import { create } from "zustand";
 
 /**
@@ -66,7 +65,7 @@ export const useFiltersStore = create<FiltersStore>((set) => ({
       savePages(
         updatePage(state.pages, pageId, (page) => ({
           ...page,
-          filters: handleSetFilters(filters, page.filters),
+          filters,
           variant,
         })),
       ),

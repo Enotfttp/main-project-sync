@@ -90,7 +90,7 @@ export const filterItems = <T extends object>(
   filters?: object,
 ): T[] => {
   if (!filters) return items;
-  console.log("items: ", items, filters);
+
   const entries = Object.entries(filters).filter(
     ([, value]) => !isEmpty(value),
   );

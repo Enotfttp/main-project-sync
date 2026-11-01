@@ -5,39 +5,21 @@ import {
   WrapperFilters,
   WrapperInfo,
 } from "./FiltersView.styled";
+import { formatFilterValue } from "../lib/formatFilterValue";
 import { isFilledFilterValue } from "../lib/hasFilledFilter";
 import { TFilterValue } from "../model/DynamicFilters.types";
-import { IRenderField, TValue } from "../model/RenderFields.types";
+import { IRenderField } from "../model/RenderFields.types";
 import { SystemFilterOutline } from "@admiral-ds/icons";
 import { Chips, IconButton, T } from "@admiral-ds/react-ui";
-import { normalizedDate } from "@shared/lib";
 import { FC } from "react";
 
 interface IProps {
   fields: IRenderField[];
   totalElements?: number;
-  handleClose(id: string): void;
+  handleClose(name: string): void;
   filtersValue?: TFilterValue;
   handleOpenFilters(): void;
 }
-
-const getChipLabel = (field: IRenderField, value: Exclude<TValue, null>) => {
-  if (field.type === "date" || field.type === "date-range") {
-    return normalizedDate(value as IsoDate);
-  }
-
-  if (field.type === "select" || field.type === "multiselect") {
-    return (Array.isArray(value) ? value : [value])
-      .map(
-        (item) =>
-          field.options?.find((option) => option.value === item)?.label ??
-          String(item),
-      )
-      .join(", ");
-  }
-
-  return String(value);
-};
 
 export const FiltersView: FC<IProps> = ({
   fields,
@@ -49,10 +31,10 @@ export const FiltersView: FC<IProps> = ({
   <StyledFiltersView>
     <WrapperFilters>
       {fields.map((field) => {
-        const value = filtersValue?.[field.id];
+        const value = filtersValue?.[field.name];
 
         return (
-          <WrapperInfo key={field.id}>
+          <WrapperInfo key={field.name}>
             <T font="Additional/S" color="Neutral/Neutral 50">
               {field.label}
             </T>
@@ -61,10 +43,9 @@ export const FiltersView: FC<IProps> = ({
                 <Chips
                   dimension="m"
                   appearance="filled"
-                  key={field.id}
-                  onClose={() => handleClose(field.id)}
+                  onClose={() => handleClose(field.name)}
                 >
-                  {getChipLabel(field, value)}
+                  {formatFilterValue(field, value)}
                 </Chips>
               ) : (
                 <T font="Additional/S" color="Neutral/Neutral 50">
