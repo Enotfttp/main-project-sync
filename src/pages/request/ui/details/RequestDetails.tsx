@@ -1,5 +1,3 @@
-import { InfoRow, SectionTitle } from "./InfoRow";
-import { Rows } from "./RequestDetails.styled";
 import { RequestMessage } from "./RequestMessage";
 import { Button, Link } from "@admiral-ds/react-ui";
 import { ErrorBoundary } from "@app/errorBoundary/ErrorBoundary";
@@ -8,7 +6,7 @@ import { useGetRequest } from "@entities/request/api/hook";
 import { mapEventType, mapResultType } from "@entities/request/model";
 import { RequestStatusTag } from "@entities/request/ui";
 import { normalizedDate } from "@shared/lib";
-import { Modal } from "@shared/ui";
+import { InfoRow, Modal, Rows, SectionTitle } from "@shared/ui";
 import { FC, useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 
@@ -96,28 +94,21 @@ export const RequestDetails: FC<IProps> = ({ id, onClose }) => {
     <ErrorBoundary onClose={onClose}>
       <Modal
         isOpen
-        setClose={onClose}
+        onClose={onClose}
         dimension="xl"
         title={routesPath.request.detail.label}
+        actions={
+          <Button
+            type="button"
+            appearance="secondary"
+            dimension="m"
+            onClick={onClose}
+          >
+            Закрыть
+          </Button>
+        }
       >
-        {{
-          contentChildren: (
-            <RequestInfo
-              id={id}
-              onOpenMessage={() => setMessageOpen(true)}
-            />
-          ),
-          btnChildren: (
-            <Button
-              type="button"
-              appearance="secondary"
-              dimension="m"
-              onClick={onClose}
-            >
-              Закрыть
-            </Button>
-          ),
-        }}
+        <RequestInfo id={id} onOpenMessage={() => setMessageOpen(true)} />
       </Modal>
       {isMessageOpen && (
         <RequestMessage id={id} onClose={() => setMessageOpen(false)} />

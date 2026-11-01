@@ -9,14 +9,10 @@ export const ErrorModal: FC<IErrorState> = ({
 }) => (
   <Modal
     isOpen
-    setClose={onClose}
+    onClose={onClose}
     dimension="l"
     aria-label={`Ошибка ${status}`}
   >
-    {{
-      contentChildren: (
-        <ErrorState status={status} onClose={onClose} {...props} />
-      ),
-    }}
+    <ErrorState status={status} onClose={onClose} {...props} />
   </Modal>
 );

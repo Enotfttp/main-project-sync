@@ -1,8 +1,8 @@
-import { MessageText } from "./RequestDetails.styled";
-import { Button } from "@admiral-ds/react-ui";
+import { SystemArrowLeftOutline } from "@admiral-ds/icons";
+import { Button, TextButton } from "@admiral-ds/react-ui";
 import { ErrorBoundary } from "@app/errorBoundary/ErrorBoundary";
 import { useGetRequestContent } from "@entities/request/api/hook";
-import { Modal } from "@shared/ui";
+import { MessageText, Modal } from "@shared/ui";
 import { FC } from "react";
 
 interface IProps {
@@ -46,11 +46,23 @@ const MessageActions: FC<IProps> = ({ id, onClose }) => {
 
 export const RequestMessage: FC<IProps> = ({ id, onClose }) => (
   <ErrorBoundary onClose={onClose}>
-    <Modal isOpen setClose={onClose} dimension="xl" title="Сообщение">
-      {{
-        contentChildren: <MessageContent id={id} />,
-        btnChildren: <MessageActions id={id} onClose={onClose} />,
-      }}
+    <Modal
+      isOpen
+      onClose={onClose}
+      dimension="xl"
+      title="Сообщение"
+      header={
+        <TextButton
+          type="button"
+          dimension="s"
+          text="Назад"
+          iconStart={<SystemArrowLeftOutline />}
+          onClick={onClose}
+        />
+      }
+      actions={<MessageActions id={id} onClose={onClose} />}
+    >
+      <MessageContent id={id} />
     </Modal>
   </ErrorBoundary>
 );

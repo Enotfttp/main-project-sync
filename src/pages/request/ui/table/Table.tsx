@@ -1,9 +1,8 @@
 import { columnList } from "../../lib/columns";
 import { toRequestFilter } from "../../lib/filters";
-import { RequestDetails } from "../details/RequestDetails";
 import { REQUESTS_QUERY_KEY, useGetRequests } from "@entities/request/api/hook";
 import { hasFilledFilter, TFilterValue } from "@features/dynamic-filters";
-import { addIdTableRowData } from "@shared/lib";
+import { addIdTableRowData, additionalHover } from "@shared/lib";
 import { TPaginationTable } from "@shared/types";
 import { TableSort } from "@shared/ui";
 import { FC, useCallback, useMemo, useState } from "react";
@@ -17,11 +16,11 @@ const FRESH_TIME = 5_000;
 interface IProps {
   tableKey: number;
   filters?: TFilterValue;
+  onRowClick: (id: string) => void;
 }
 
-export const Table: FC<IProps> = ({ tableKey, filters }) => {
+export const Table: FC<IProps> = ({ tableKey, filters, onRowClick }) => {
   const [pagination, setPagination] = useState<TPaginationTable>();
-  const [requestId, setRequestId] = useState<string>();
   const hasFilters = hasFilledFilter(filters);
   const { data } = useGetRequests(
     {
@@ -31,7 +30,10 @@ export const Table: FC<IProps> = ({ tableKey, filters }) => {
     { enabled: hasFilters, staleTime: FRESH_TIME },
   );
   const rows = useMemo(
-    () => (hasFilters ? addIdTableRowData("requestId", data?.content) : []),
+    () =>
+      hasFilters
+        ? additionalHover(addIdTableRowData("requestId", data?.content))
+        : [],
     [data?.content, hasFilters],
   );
 
@@ -39,28 +41,23 @@ export const Table: FC<IProps> = ({ tableKey, filters }) => {
     setPagination(pagination);
   }, []);
 
-  const handleRowClick = (rowId: string | number) => {
-    setRequestId(String(rowId));
-  };
+  const handleRowClick = useCallback(
+    (rowId: string | number) => {
+      onRowClick(String(rowId));
+    },
+    [onRowClick],
+  );
 
   return (
-    <>
-      <TableSort
-        isPagination
-        key={tableKey}
-        columnList={columnList}
-        rowList={rows}
-        onRowClick={handleRowClick}
-        queryKey={REQUESTS_QUERY_KEY}
-        handlePaginationChange={handlePaginationChange}
-        pagination={hasFilters ? data : undefined}
-      />
-      {requestId && (
-        <RequestDetails
-          id={requestId}
-          onClose={() => setRequestId(undefined)}
-        />
-      )}
-    </>
+    <TableSort
+      isPagination
+      key={tableKey}
+      columnList={columnList}
+      rowList={rows}
+      onRowClick={handleRowClick}
+      queryKey={REQUESTS_QUERY_KEY}
+      handlePaginationChange={handlePaginationChange}
+      pagination={hasFilters ? data : undefined}
+    />
   );
 };

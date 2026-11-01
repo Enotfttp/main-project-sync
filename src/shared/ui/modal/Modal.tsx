@@ -1,3 +1,4 @@
+import { ModalHeader } from "./Modal.styled";
 import { Loader } from "../loader/Loader";
 import type { ModalProps } from "@admiral-ds/react-ui";
 import {
@@ -6,50 +7,52 @@ import {
   ModalContent,
   ModalTitle,
 } from "@admiral-ds/react-ui";
-import { ReactNode, Suspense } from "react";
+import { FC, ReactNode, Suspense, useId } from "react";
 
-interface IModal extends Omit<ModalProps, "children"> {
+interface IModal extends Omit<ModalProps, "children" | "onClose" | "title"> {
   isOpen: boolean;
-  setClose: (value: boolean) => void;
-  title?: string;
-  children: {
-    contentChildren: ReactNode;
-    btnChildren?: ReactNode;
-  };
+  onClose: () => void;
+  title?: ReactNode;
+  header?: ReactNode;
+  children: ReactNode;
+  actions?: ReactNode;
 }
 
-export const Modal = ({
+export const Modal: FC<IModal> = ({
   isOpen,
-  setClose,
-  children,
+  onClose,
   title,
+  header,
+  children,
+  actions,
+  closeOnEscapeKeyDown = true,
+  closeOnOutsideClick = true,
   ...props
-}: IModal) => {
+}) => {
+  const titleId = useId();
+
+  if (!isOpen) return null;
+
   return (
-    <>
-      {isOpen && (
-        <ModalTemplate
-          {...props}
-          onClose={() => {
-            setClose(false);
-          }}
-          aria-labelledby="modal-title"
-        >
-          {title && <ModalTitle id="modal-title">{title}</ModalTitle>}
-          <Suspense
-            fallback={
-              <ModalContent>
-                <Loader />
-              </ModalContent>
-            }
-          >
-            <ModalContent>{children.contentChildren}</ModalContent>
-            {children.btnChildren && (
-              <ModalButtonPanel>{children.btnChildren}</ModalButtonPanel>
-            )}
-          </Suspense>
-        </ModalTemplate>
-      )}
-    </>
+    <ModalTemplate
+      {...props}
+      closeOnEscapeKeyDown={closeOnEscapeKeyDown}
+      closeOnOutsideClick={closeOnOutsideClick}
+      onClose={onClose}
+      aria-labelledby={title ? titleId : undefined}
+    >
+      {header && <ModalHeader>{header}</ModalHeader>}
+      {title && <ModalTitle id={titleId}>{title}</ModalTitle>}
+      <Suspense
+        fallback={
+          <ModalContent>
+            <Loader />
+          </ModalContent>
+        }
+      >
+        <ModalContent>{children}</ModalContent>
+        {actions && <ModalButtonPanel>{actions}</ModalButtonPanel>}
+      </Suspense>
+    </ModalTemplate>
   );
 };
