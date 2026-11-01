@@ -1,6 +1,7 @@
 import { columnList } from "../../lib/columns";
+import { toRequestFilter } from "../../lib/filters";
 import { routesPath } from "@app/providers";
-import { useGetRequests } from "@entities/request/api/hook";
+import { REQUESTS_QUERY_KEY, useGetRequests } from "@entities/request/api/hook";
 import { TFilterValue } from "@features/dynamic-filters";
 import { addIdTableRowData } from "@shared/lib";
 import { TPaginationTable } from "@shared/types";
@@ -25,7 +26,7 @@ export const Table: FC<IProps> = ({ tableKey, filters }) => {
   const [pagination, setPagination] = useState<TPaginationTable>();
   const { data } = useGetRequests(
     {
-      filters: filters,
+      filters: toRequestFilter(filters),
       page: pagination,
     },
     { enabled: !!filters, staleTime: FRESH_TIME },
@@ -50,7 +51,7 @@ export const Table: FC<IProps> = ({ tableKey, filters }) => {
       columnList={columnList}
       rowList={rows}
       onRowClick={handleRowClick}
-      queryKey="documents"
+      queryKey={REQUESTS_QUERY_KEY}
       handlePaginationChange={handlePaginationChange}
       pagination={data}
     />
