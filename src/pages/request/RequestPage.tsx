@@ -1,10 +1,11 @@
 import { filterVariants } from "./lib/filters";
-import { Filter, Table } from "./ui";
+import { Filter, RequestDetails, Table } from "./ui";
 import {
   FiltersView,
   getVariantFields,
   useFilters,
 } from "@features/dynamic-filters";
+import { useModal } from "@features/modal";
 import { Container, Page } from "@shared/ui";
 import { FC } from "react";
 
@@ -22,6 +23,8 @@ const RequestPage: FC = () => {
     handleCloseFilters,
     handleOpenFilters,
   } = useFilters(REQUEST_FILTERS_ID);
+  const { id, open, close } = useModal();
+  console.log(filtersValue);
 
   return (
     <>
@@ -41,9 +44,10 @@ const RequestPage: FC = () => {
             fields={getVariantFields(filterVariants, variant)}
             handleOpenFilters={handleOpenFilters}
           />
-          <Table tableKey={tableKey} filters={filtersValue} />
+          <Table tableKey={tableKey} filters={filtersValue} onRowClick={open} />
         </Container>
       </Page>
+      {id && <RequestDetails id={id} onClose={close} />}
     </>
   );
 };

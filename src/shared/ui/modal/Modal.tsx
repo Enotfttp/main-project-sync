@@ -1,3 +1,4 @@
+import { ModalHeader } from "./Modal.styled";
 import type { ModalProps } from "@admiral-ds/react-ui";
 import {
   Modal as ModalTemplate,
@@ -5,42 +6,44 @@ import {
   ModalContent,
   ModalTitle,
 } from "@admiral-ds/react-ui";
-import * as React from "react";
+import { FC, ReactNode, useId } from "react";
 
-interface IModal extends Omit<ModalProps, "children"> {
+interface IModal extends Omit<ModalProps, "children" | "onClose" | "title"> {
   isOpen: boolean;
-  setClose: (value: boolean) => void;
-  title?: string;
-  children: {
-    contentChildren: React.ReactNode;
-    btnChildren?: React.ReactNode;
-  };
+  onClose: () => void;
+  title?: ReactNode;
+  header?: ReactNode;
+  children: ReactNode;
+  actions?: ReactNode;
 }
 
-export const Modal = ({
+export const Modal: FC<IModal> = ({
   isOpen,
-  setClose,
-  children,
+  onClose,
   title,
+  header,
+  children,
+  actions,
+  closeOnEscapeKeyDown = true,
+  closeOnOutsideClick = true,
   ...props
-}: IModal) => {
+}) => {
+  const titleId = useId();
+
+  if (!isOpen) return null;
+
   return (
-    <>
-      {isOpen && (
-        <ModalTemplate
-          {...props}
-          onClose={() => {
-            setClose(false);
-          }}
-          aria-labelledby="modal-title"
-        >
-          {title && <ModalTitle id="modal-title">{title}</ModalTitle>}
-          <ModalContent>{children.contentChildren}</ModalContent>
-          {children?.btnChildren && (
-            <ModalButtonPanel>{children.btnChildren}</ModalButtonPanel>
-          )}
-        </ModalTemplate>
-      )}
-    </>
+    <ModalTemplate
+      {...props}
+      closeOnEscapeKeyDown={closeOnEscapeKeyDown}
+      closeOnOutsideClick={closeOnOutsideClick}
+      onClose={onClose}
+      aria-labelledby={title ? titleId : undefined}
+    >
+      {header && <ModalHeader>{header}</ModalHeader>}
+      {title && <ModalTitle id={titleId}>{title}</ModalTitle>}
+      <ModalContent>{children}</ModalContent>
+      {actions && <ModalButtonPanel>{actions}</ModalButtonPanel>}
+    </ModalTemplate>
   );
 };
