@@ -17,8 +17,10 @@ import { useCallback } from "react";
 
 type TRequestsRequest = TFilterPaginationRequest<IRequestFilter, IRequestInfo>;
 
+export const REQUESTS_QUERY_KEY = "requests";
+
 const getRequestsQueryOptions = (request?: TRequestsRequest) => ({
-  queryKey: ["requests", request],
+  queryKey: [REQUESTS_QUERY_KEY, request],
   queryFn: () => requestService.getRequests(request),
 });
 

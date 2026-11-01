@@ -57,17 +57,29 @@ export const DynamicFilters: FC<FilterConfig> = ({
   ...props
 }) => {
   const variants = "variants" in props ? props.variants : undefined;
-  const [selectedIndex, setSelectedIndex] = useState(() =>
-    getVariantIndex(variants, variant),
-  );
+  const appliedIndex = getVariantIndex(variants, variant);
+  const [selectedIndex, setSelectedIndex] = useState(appliedIndex);
   const [applyError, setApplyError] = useState<string | null>(null);
+  // Пересоздаём форму при сбросе: иначе RFF вернёт applied-значения,
+  // а DateField оставит незавершённую маску при value === null
+  const [formKey, setFormKey] = useState(0);
+  const [cleared, setCleared] = useState(false);
   const activeVariant = variants?.[selectedIndex];
   const fields = activeVariant?.fields ?? props.fields ?? [];
 
+  if (filtersValue && cleared) {
+    setCleared(false);
+  }
+
   const initialValues = useMemo(
-    () => getInitialValues(fields, filtersValue),
-    [fields, filtersValue],
+    () => getInitialValues(fields, cleared ? undefined : filtersValue),
+    [cleared, fields, filtersValue],
   );
+
+  // Пока панель закрыта, черновик не должен расходиться с уже применённым вариантом
+  if (!isShowFilters && selectedIndex !== appliedIndex) {
+    setSelectedIndex(appliedIndex);
+  }
 
   const handleVariantChange = (index: number) => {
     const nextVariant = variants?.[index];
@@ -76,6 +88,13 @@ export const DynamicFilters: FC<FilterConfig> = ({
     setSelectedIndex(index);
     setApplyError(null);
     onVariantChange?.(nextVariant.label);
+  };
+
+  const handleReset = () => {
+    setCleared(true);
+    setApplyError(null);
+    onReset?.();
+    setFormKey((key) => key + 1);
   };
 
   const onSubmit = async (values: TFilterValue) => {
@@ -93,95 +112,89 @@ export const DynamicFilters: FC<FilterConfig> = ({
     <StyledBgBlock>
       <StyledAdditionalBlock>
         <Form<TFilterValue>
-          key={activeVariant?.label ?? "fields"}
+          key={`${activeVariant?.label ?? "fields"}-${formKey}`}
           initialValues={initialValues}
           onSubmit={onSubmit}
           validate={(values) => validate(values, fields)}
         >
-          {({ handleSubmit, pristine, submitting, form }) => {
-            return (
-              <form onSubmit={handleSubmit}>
-                <StyledFilter>
-                  <StyledFilterHeader>
-                    <StyledFilterTitle>
-                      <T font="Header/H6">Фильтры</T>
-                      {variants && variants.length > 1 && (
-                        <ContentSwitcher dimension="s" appearance="primary">
-                          {variants.map((item, index) => (
-                            <ContentSwitcherItem
-                              key={item.label}
-                              type="button"
-                              active={index === selectedIndex}
-                              onClick={() => handleVariantChange(index)}
-                            >
-                              {item.label}
-                            </ContentSwitcherItem>
-                          ))}
-                        </ContentSwitcher>
-                      )}
-                    </StyledFilterTitle>
+          {({ handleSubmit, pristine, submitting }) => (
+            <form onSubmit={handleSubmit}>
+              <StyledFilter>
+                <StyledFilterHeader>
+                  <StyledFilterTitle>
+                    <T font="Header/H6">Фильтры</T>
+                    {variants && variants.length > 1 && (
+                      <ContentSwitcher dimension="s" appearance="primary">
+                        {variants.map((item, index) => (
+                          <ContentSwitcherItem
+                            key={item.label}
+                            type="button"
+                            active={index === selectedIndex}
+                            onClick={() => handleVariantChange(index)}
+                          >
+                            {item.label}
+                          </ContentSwitcherItem>
+                        ))}
+                      </ContentSwitcher>
+                    )}
+                  </StyledFilterTitle>
 
-                    <IconButton
+                  <IconButton
+                    dimension="s"
+                    type="button"
+                    onClick={() => onCancel?.()}
+                  >
+                    <ServiceCloseOutline />
+                  </IconButton>
+                </StyledFilterHeader>
+                <StyledFilterBody>
+                  {fields.map((field) => (
+                    <StyledFilterField key={field.id}>
+                      {renderField(field)}
+                    </StyledFilterField>
+                  ))}
+                </StyledFilterBody>
+
+                {applyError && (
+                  <StyledFilterError>
+                    <T font="Body/Body 2 Short" color="Error/Error 60 Main">
+                      {applyError}
+                    </T>
+                  </StyledFilterError>
+                )}
+
+                <StyledFilterActions>
+                  <Button
+                    dimension="s"
+                    onClick={handleReset}
+                    appearance="secondary"
+                    type="button"
+                  >
+                    Сбросить фильтр
+                  </Button>
+                  <StyledFilterActionsGroup>
+                    <Button
                       dimension="s"
+                      appearance="secondary"
                       type="button"
                       onClick={() => onCancel?.()}
                     >
-                      <ServiceCloseOutline />
-                    </IconButton>
-                  </StyledFilterHeader>
-                  <StyledFilterBody>
-                    {fields.map((field) => (
-                      <StyledFilterField key={field.id}>
-                        {renderField(field)}
-                      </StyledFilterField>
-                    ))}
-                  </StyledFilterBody>
-
-                  {applyError && (
-                    <StyledFilterError>
-                      <T font="Body/Body 2 Short" color="Error/Error 60 Main">
-                        {applyError}
-                      </T>
-                    </StyledFilterError>
-                  )}
-
-                  <StyledFilterActions>
-                    <Button
-                      dimension="s"
-                      onClick={() => {
-                        form.reset();
-                        setApplyError(null);
-                        onReset?.();
-                      }}
-                      appearance="secondary"
-                      type="button"
-                    >
-                      Сбросить фильтр
+                      Отмена
                     </Button>
-                    <StyledFilterActionsGroup>
-                      <Button
-                        dimension="s"
-                        appearance="secondary"
-                        type="button"
-                        onClick={() => onCancel?.()}
-                      >
-                        Отмена
-                      </Button>
-                      <Button
-                        disabled={pristine}
-                        loading={submitting}
-                        dimension="s"
-                        type="submit"
-                        appearance="primary"
-                      >
-                        Применить
-                      </Button>
-                    </StyledFilterActionsGroup>
-                  </StyledFilterActions>
-                </StyledFilter>
-              </form>
-            );
-          }}
+                    <Button
+                      disabled={pristine}
+                      loading={submitting}
+                      dimension="s"
+                      type="submit"
+                      appearance="primary"
+                    >
+                      Применить
+                    </Button>
+                  </StyledFilterActionsGroup>
+                </StyledFilterActions>
+              </StyledFilter>
+            </form>
+          )}
         </Form>
       </StyledAdditionalBlock>
     </StyledBgBlock>
