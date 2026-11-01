@@ -1,14 +1,11 @@
 import { columnList } from "../../lib/columns";
 import { toRequestFilter } from "../../lib/filters";
-import { routesPath } from "@app/providers";
 import { REQUESTS_QUERY_KEY, useGetRequests } from "@entities/request/api/hook";
 import { TFilterValue } from "@features/dynamic-filters";
-import { addIdTableRowData } from "@shared/lib";
+import { addIdTableRowData, additionalHover } from "@shared/lib";
 import { TPaginationTable } from "@shared/types";
 import { TableSort } from "@shared/ui";
-import * as React from "react";
 import { FC, useCallback, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 /**
  * Список уже загружается при применении фильтров, поэтому ответ какое-то время
@@ -19,10 +16,10 @@ const FRESH_TIME = 5_000;
 interface IProps {
   tableKey: number;
   filters?: TFilterValue;
+  onRowClick: (id: string) => void;
 }
 
-export const Table: FC<IProps> = ({ tableKey, filters }) => {
-  const navigate = useNavigate();
+export const Table: FC<IProps> = ({ tableKey, filters, onRowClick }) => {
   const [pagination, setPagination] = useState<TPaginationTable>();
   const { data } = useGetRequests(
     {
@@ -32,7 +29,7 @@ export const Table: FC<IProps> = ({ tableKey, filters }) => {
     { enabled: !!filters, staleTime: FRESH_TIME },
   );
   const rows = useMemo(
-    () => addIdTableRowData("requestId", data?.content),
+    () => additionalHover(addIdTableRowData("requestId", data?.content)),
     [data?.content],
   );
 
@@ -40,9 +37,12 @@ export const Table: FC<IProps> = ({ tableKey, filters }) => {
     setPagination(pagination);
   }, []);
 
-  const handleRowClick = () => {
-    navigate(routesPath.package.root);
-  };
+  const handleRowClick = useCallback(
+    (rowId: string | number) => {
+      onRowClick(String(rowId));
+    },
+    [onRowClick],
+  );
 
   return (
     <TableSort

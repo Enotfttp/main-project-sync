@@ -1,6 +1,8 @@
 export { Loader } from "./loader/Loader";
 export { HorizontalTabsTemplate } from "./horizontal-tabs-template/HorizontalTabsTemplate";
 export { Modal } from "./modal/Modal";
+export { InfoRow, SectionTitle } from "./modal/InfoRow";
+export { MessageText, Rows, State } from "./modal/Modal.styled";
 export { Search } from "./search/Search";
 export { TableSort } from "./table-sort/TableSort";
 export { Select } from "./select/Select";
