@@ -1,9 +1,11 @@
 import { TFilterValue } from "./DynamicFilters.types";
+import { readStoredPages, writeStoredPages } from "../lib/filterStorage";
+import { hasFilledFilter } from "../lib/hasFilledFilter";
 import { create } from "zustand";
 
 /**
- * Применённые фильтры живут вне страницы: переход на другой маршрут
- * размонтирует её, а значения остаются до перезагрузки вкладки.
+ * Применённые фильтры живут вне страницы и переживают обновление вкладки.
+ * Пустой фильтр всегда открыт.
  */
 export interface PageFilterState {
   filters?: TFilterValue;
@@ -27,46 +29,77 @@ const createPageState = (): PageFilterState => ({
   isShowFilters: true,
 });
 
+const normalizePage = (page: PageFilterState): PageFilterState =>
+  hasFilledFilter(page.filters) ? page : { ...page, isShowFilters: true };
+
 const updatePage = (
   pages: Record<string, PageFilterState>,
   pageId: string,
   patch: (page: PageFilterState) => PageFilterState,
 ): Record<string, PageFilterState> => ({
   ...pages,
-  [pageId]: patch(pages[pageId] ?? createPageState()),
+  [pageId]: normalizePage(patch(pages[pageId] ?? createPageState())),
 });
 
-export const useFiltersStore = create<FiltersStore>((set) => ({
-  pages: {},
-  applyFilters: (pageId, filters, variant) =>
-    set((state) => ({
-      pages: updatePage(state.pages, pageId, (page) => ({
-        ...page,
-        filters,
-        variant,
-      })),
-    })),
-  resetFilters: (pageId) =>
-    set((state) => ({
-      pages: updatePage(state.pages, pageId, (page) => ({
-        ...page,
-        filters: undefined,
-      })),
-    })),
-  removeField: (pageId, fieldId) =>
-    set((state) => ({
-      pages: updatePage(state.pages, pageId, (page) => {
-        const nextFilters = { ...page.filters };
-        delete nextFilters[fieldId];
-
-        return { ...page, filters: nextFilters };
+const readPages = (): Record<string, PageFilterState> =>
+  Object.fromEntries(
+    Object.entries(readStoredPages()).map(([pageId, page]) => [
+      pageId,
+      normalizePage({
+        filters: page.filters,
+        variant: page.variant,
+        isShowFilters: page.isShowFilters ?? false,
       }),
-    })),
+    ]),
+  );
+
+const savePages = (pages: Record<string, PageFilterState>) => {
+  writeStoredPages(pages);
+  return { pages };
+};
+
+export const useFiltersStore = create<FiltersStore>((set) => ({
+  pages: readPages(),
+  applyFilters: (pageId, filters, variant) =>
+    set((state) =>
+      savePages(
+        updatePage(state.pages, pageId, (page) => ({
+          ...page,
+          filters,
+          variant,
+        })),
+      ),
+    ),
+  resetFilters: (pageId) =>
+    set((state) =>
+      savePages(
+        updatePage(state.pages, pageId, (page) => ({
+          ...page,
+          filters: undefined,
+        })),
+      ),
+    ),
+  removeField: (pageId, fieldId) =>
+    set((state) =>
+      savePages(
+        updatePage(state.pages, pageId, (page) => {
+          const nextFilters = { ...page.filters };
+          delete nextFilters[fieldId];
+
+          return {
+            ...page,
+            filters: hasFilledFilter(nextFilters) ? nextFilters : undefined,
+          };
+        }),
+      ),
+    ),
   setShowFilters: (pageId, isShowFilters) =>
-    set((state) => ({
-      pages: updatePage(state.pages, pageId, (page) => ({
-        ...page,
-        isShowFilters,
-      })),
-    })),
+    set((state) =>
+      savePages(
+        updatePage(state.pages, pageId, (page) => ({
+          ...page,
+          isShowFilters,
+        })),
+      ),
+    ),
 }));

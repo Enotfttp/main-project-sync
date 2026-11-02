@@ -5,10 +5,8 @@ import {
   WrapperFilters,
   WrapperInfo,
 } from "./FiltersView.styled";
-import {
-  formatFilterValue,
-  isFilledFilterValue,
-} from "../lib/formatFilterValue";
+import { formatFilterValue } from "../lib/formatFilterValue";
+import { isFilledFilterValue } from "../lib/hasFilledFilter";
 import { TFilterValue } from "../model/DynamicFilters.types";
 import { IRenderField } from "../model/RenderFields.types";
 import { SystemFilterOutline } from "@admiral-ds/icons";

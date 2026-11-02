@@ -1,7 +1,5 @@
 import { requestService } from "./api";
 import {
-  IRequestContent,
-  IRequestDetails,
   IRequestFilter,
   IRequestHistory,
   IRequestInfo,
@@ -12,6 +10,7 @@ import {
   useQuery,
   useQueryClient,
   UseQueryOptions,
+  useSuspenseQuery,
 } from "@tanstack/react-query";
 import { useCallback } from "react";
 
@@ -51,33 +50,17 @@ export const useFetchRequests = () => {
   );
 };
 
-export const useGetRequest = (
-  id?: UUID,
-  options?: Omit<
-    UseQueryOptions<IRequestDetails, Error>,
-    "queryKey" | "queryFn"
-  >,
-) => {
-  return useQuery({
+export const useGetRequest = (id?: UUID) =>
+  useSuspenseQuery({
     queryKey: ["request", id],
     queryFn: () => requestService.getRequest(id),
-    ...options,
   });
-};
 
-export const useGetRequestContent = (
-  id?: UUID,
-  options?: Omit<
-    UseQueryOptions<IRequestContent, Error>,
-    "queryKey" | "queryFn"
-  >,
-) => {
-  return useQuery({
+export const useGetRequestContent = (id?: UUID) =>
+  useSuspenseQuery({
     queryKey: ["request", "content", id],
     queryFn: () => requestService.getRequestContent(id),
-    ...options,
   });
-};
 
 export const useGetRequestHistory = (
   id?: UUID,
