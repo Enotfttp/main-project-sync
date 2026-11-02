@@ -37,3 +37,9 @@ export const getErrorMessage = (error: unknown): string => {
     response?.data?.message ?? response?.data?.error ?? DEFAULT_ERROR_MESSAGE
   );
 };
+
+export const getErrorStatus = (error: unknown): number => {
+  const status = (error as ApiError | undefined)?.response?.status;
+
+  return typeof status === "number" ? status : 500;
+};

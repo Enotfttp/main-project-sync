@@ -24,7 +24,6 @@ const RequestPage: FC = () => {
     handleOpenFilters,
   } = useFilters(REQUEST_FILTERS_ID);
   const { id, open, close } = useModal();
-  console.log(filtersValue);
 
   return (
     <>

@@ -1,5 +1,5 @@
 import { IServiceGroupConfig } from "../model/types";
-import { routesPath } from "@app/providers";
+import { routesPath } from "@app/routes";
 
 export const mainServiceGroups: IServiceGroupConfig[] = [
   {
