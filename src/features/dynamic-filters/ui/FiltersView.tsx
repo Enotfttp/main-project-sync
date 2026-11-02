@@ -5,8 +5,9 @@ import {
   WrapperFilters,
   WrapperInfo,
 } from "./FiltersView.styled";
+import { isFilledFilterValue } from "../lib/hasFilledFilter";
 import { TFilterValue } from "../model/DynamicFilters.types";
-import { IRenderField } from "../model/RenderFields.types";
+import { IRenderField, TValue } from "../model/RenderFields.types";
 import { SystemFilterOutline } from "@admiral-ds/icons";
 import { Chips, IconButton, T } from "@admiral-ds/react-ui";
 import { normalizedDate } from "@shared/lib";
@@ -20,21 +21,22 @@ interface IProps {
   handleOpenFilters(): void;
 }
 
-const getValueSelectField = (
-  field: IRenderField,
-  filtersValue: TFilterValue,
-) => {
-  const value = filtersValue[field.id];
-
+const getChipLabel = (field: IRenderField, value: Exclude<TValue, null>) => {
   if (field.type === "date" || field.type === "date-range") {
     return normalizedDate(value as IsoDate);
   }
 
-  if (field.type === "select") {
-    return field.options?.find((el) => el.value === value)!.label;
+  if (field.type === "select" || field.type === "multiselect") {
+    return (Array.isArray(value) ? value : [value])
+      .map(
+        (item) =>
+          field.options?.find((option) => option.value === item)?.label ??
+          String(item),
+      )
+      .join(", ");
   }
 
-  return "";
+  return String(value);
 };
 
 export const FiltersView: FC<IProps> = ({
@@ -46,29 +48,33 @@ export const FiltersView: FC<IProps> = ({
 }) => (
   <StyledFiltersView>
     <WrapperFilters>
-      {fields.map((field) => (
-        <WrapperInfo key={field.id}>
-          <T font="Additional/S" color="Neutral/Neutral 50">
-            {field.label}
-          </T>
-          <WrapperChip dimension="m">
-            {filtersValue?.[field.id] ? (
-              <Chips
-                dimension="m"
-                appearance="filled"
-                key={field.id}
-                onClose={() => handleClose(field.id)}
-              >
-                {getValueSelectField(field, filtersValue)}
-              </Chips>
-            ) : (
-              <T font="Additional/S" color="Neutral/Neutral 50">
-                -
-              </T>
-            )}
-          </WrapperChip>
-        </WrapperInfo>
-      ))}
+      {fields.map((field) => {
+        const value = filtersValue?.[field.id];
+
+        return (
+          <WrapperInfo key={field.id}>
+            <T font="Additional/S" color="Neutral/Neutral 50">
+              {field.label}
+            </T>
+            <WrapperChip dimension="m">
+              {isFilledFilterValue(value) ? (
+                <Chips
+                  dimension="m"
+                  appearance="filled"
+                  key={field.id}
+                  onClose={() => handleClose(field.id)}
+                >
+                  {getChipLabel(field, value)}
+                </Chips>
+              ) : (
+                <T font="Additional/S" color="Neutral/Neutral 50">
+                  -
+                </T>
+              )}
+            </WrapperChip>
+          </WrapperInfo>
+        );
+      })}
     </WrapperFilters>
     <StyledIconCount>
       {totalElements && (

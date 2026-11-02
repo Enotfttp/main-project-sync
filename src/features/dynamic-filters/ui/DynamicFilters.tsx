@@ -11,6 +11,7 @@ import {
   StyledFilterTitle,
 } from "./DynamicFilters.styled";
 import { renderField } from "./RenderFields";
+import { hasFilledFilter } from "../lib/hasFilledFilter";
 import { validate } from "../lib/validate";
 import { FilterConfig, TFilterValue } from "../model/DynamicFilters.types";
 import { IRenderField } from "../model/RenderFields.types";
@@ -35,6 +36,8 @@ const getInitialValues = (
       filtersValue?.[field.name]?.toString() ?? field.defaultValue ?? null;
     return acc;
   }, {});
+
+const EMPTY_FILTER_ERROR = "Заполните хотя бы одно значение фильтра";
 
 const getVariantIndex = (
   variants: readonly { label: string }[] | undefined,
@@ -79,6 +82,11 @@ export const DynamicFilters: FC<FilterConfig> = ({
   };
 
   const onSubmit = async (values: TFilterValue) => {
+    if (!hasFilledFilter(values)) {
+      setApplyError(EMPTY_FILTER_ERROR);
+      return;
+    }
+
     setApplyError(null);
     try {
       await onApply?.(values, activeVariant?.label);
@@ -98,7 +106,7 @@ export const DynamicFilters: FC<FilterConfig> = ({
           onSubmit={onSubmit}
           validate={(values) => validate(values, fields)}
         >
-          {({ handleSubmit, pristine, submitting, form }) => {
+          {({ handleSubmit, submitting, form }) => {
             return (
               <form onSubmit={handleSubmit}>
                 <StyledFilter>
@@ -168,7 +176,6 @@ export const DynamicFilters: FC<FilterConfig> = ({
                         Отмена
                       </Button>
                       <Button
-                        disabled={pristine}
                         loading={submitting}
                         dimension="s"
                         type="submit"

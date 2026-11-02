@@ -33,13 +33,6 @@ export const StyledButton = styled(Button)`
   margin: 0 auto;
 `;
 
-export const StyledButtonBlock = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-`;
-
 export const StyledErrorDetails = styled.details`
   margin-top: 15px;
   text-align: left;

@@ -1,13 +1,11 @@
 import { columnList } from "../../lib/columns";
-import { routesPath } from "@app/providers";
+import { RequestDetails } from "../details/RequestDetails";
 import { useGetRequests } from "@entities/request/api/hook";
-import { TFilterValue } from "@features/dynamic-filters";
+import { hasFilledFilter, TFilterValue } from "@features/dynamic-filters";
 import { addIdTableRowData } from "@shared/lib";
 import { TPaginationTable } from "@shared/types";
 import { TableSort } from "@shared/ui";
-import * as React from "react";
 import { FC, useCallback, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 /**
  * Список уже загружается при применении фильтров, поэтому ответ какое-то время
@@ -21,38 +19,44 @@ interface IProps {
 }
 
 export const Table: FC<IProps> = ({ tableKey, filters }) => {
-  const navigate = useNavigate();
   const [pagination, setPagination] = useState<TPaginationTable>();
+  const [requestId, setRequestId] = useState<string>();
+  const hasFilters = hasFilledFilter(filters);
   const { data } = useGetRequests(
     {
       filters: filters,
       page: pagination,
     },
-    { enabled: !!filters, staleTime: FRESH_TIME },
+    { enabled: hasFilters, staleTime: FRESH_TIME },
   );
   const rows = useMemo(
-    () => addIdTableRowData("requestId", data?.content),
-    [data?.content],
+    () => (hasFilters ? addIdTableRowData("requestId", data?.content) : []),
+    [data?.content, hasFilters],
   );
 
   const handlePaginationChange = useCallback((pagination: TPaginationTable) => {
     setPagination(pagination);
   }, []);
 
-  const handleRowClick = () => {
-    navigate(routesPath.package.root);
+  const handleRowClick = (rowId: string | number) => {
+    setRequestId(String(rowId));
   };
 
   return (
-    <TableSort
-      isPagination
-      key={tableKey}
-      columnList={columnList}
-      rowList={rows}
-      onRowClick={handleRowClick}
-      queryKey="documents"
-      handlePaginationChange={handlePaginationChange}
-      pagination={data}
-    />
+    <>
+      <TableSort
+        isPagination
+        key={tableKey}
+        columnList={columnList}
+        rowList={rows}
+        onRowClick={handleRowClick}
+        queryKey="documents"
+        handlePaginationChange={handlePaginationChange}
+        pagination={hasFilters ? data : undefined}
+      />
+      {requestId && (
+        <RequestDetails id={requestId} onClose={() => setRequestId(undefined)} />
+      )}
+    </>
   );
 };

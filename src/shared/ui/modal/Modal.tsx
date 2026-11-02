@@ -1,3 +1,4 @@
+import { Loader } from "../loader/Loader";
 import type { ModalProps } from "@admiral-ds/react-ui";
 import {
   Modal as ModalTemplate,
@@ -5,15 +6,15 @@ import {
   ModalContent,
   ModalTitle,
 } from "@admiral-ds/react-ui";
-import * as React from "react";
+import { ReactNode, Suspense } from "react";
 
 interface IModal extends Omit<ModalProps, "children"> {
   isOpen: boolean;
   setClose: (value: boolean) => void;
   title?: string;
   children: {
-    contentChildren: React.ReactNode;
-    btnChildren?: React.ReactNode;
+    contentChildren: ReactNode;
+    btnChildren?: ReactNode;
   };
 }
 
@@ -35,10 +36,18 @@ export const Modal = ({
           aria-labelledby="modal-title"
         >
           {title && <ModalTitle id="modal-title">{title}</ModalTitle>}
-          <ModalContent>{children.contentChildren}</ModalContent>
-          {children?.btnChildren && (
-            <ModalButtonPanel>{children.btnChildren}</ModalButtonPanel>
-          )}
+          <Suspense
+            fallback={
+              <ModalContent>
+                <Loader />
+              </ModalContent>
+            }
+          >
+            <ModalContent>{children.contentChildren}</ModalContent>
+            {children.btnChildren && (
+              <ModalButtonPanel>{children.btnChildren}</ModalButtonPanel>
+            )}
+          </Suspense>
         </ModalTemplate>
       )}
     </>
