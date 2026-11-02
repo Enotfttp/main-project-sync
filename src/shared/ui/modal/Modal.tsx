@@ -7,7 +7,6 @@ import {
   ModalContent,
   ModalTitle,
 } from "@admiral-ds/react-ui";
-import { ErrorBoundary } from "@app/errorBoundary/ErrorBoundary";
 import { FC, ReactNode, Suspense, useId } from "react";
 
 interface IModal extends Omit<ModalProps, "children" | "onClose" | "title"> {
@@ -35,27 +34,25 @@ export const Modal: FC<IModal> = ({
   if (!isOpen) return null;
 
   return (
-    <ErrorBoundary onClose={onClose}>
-      <ModalTemplate
-        {...props}
-        closeOnEscapeKeyDown={closeOnEscapeKeyDown}
-        closeOnOutsideClick={closeOnOutsideClick}
-        onClose={onClose}
-        aria-labelledby={title ? titleId : undefined}
+    <ModalTemplate
+      {...props}
+      closeOnEscapeKeyDown={closeOnEscapeKeyDown}
+      closeOnOutsideClick={closeOnOutsideClick}
+      onClose={onClose}
+      aria-labelledby={title ? titleId : undefined}
+    >
+      {header && <ModalHeader>{header}</ModalHeader>}
+      {title && <ModalTitle id={titleId}>{title}</ModalTitle>}
+      <Suspense
+        fallback={
+          <ModalContent>
+            <Loader />
+          </ModalContent>
+        }
       >
-        {header && <ModalHeader>{header}</ModalHeader>}
-        {title && <ModalTitle id={titleId}>{title}</ModalTitle>}
-        <Suspense
-          fallback={
-            <ModalContent>
-              <Loader />
-            </ModalContent>
-          }
-        >
-          <ModalContent>{children}</ModalContent>
-          {actions && <ModalButtonPanel>{actions}</ModalButtonPanel>}
-        </Suspense>
-      </ModalTemplate>
-    </ErrorBoundary>
+        <ModalContent>{children}</ModalContent>
+        {actions && <ModalButtonPanel>{actions}</ModalButtonPanel>}
+      </Suspense>
+    </ModalTemplate>
   );
 };

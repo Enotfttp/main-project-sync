@@ -1,12 +1,12 @@
+import { Modal } from "./Modal";
 import { RequestMessage } from "./RequestMessage";
 import { Button, Link } from "@admiral-ds/react-ui";
-import { ErrorBoundary } from "@app/errorBoundary/ErrorBoundary";
-import { routesPath } from "@app/providers";
+import { routesPath } from "@app/routes";
 import { useGetRequest } from "@entities/request/api/hook";
 import { mapEventType, mapResultType } from "@entities/request/model";
 import { RequestStatusTag } from "@entities/request/ui";
 import { normalizedDate } from "@shared/lib";
-import { InfoRow, Modal, Rows, SectionTitle } from "@shared/ui";
+import { InfoRow, Rows, SectionTitle } from "@shared/ui";
 import { FC, useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 
@@ -91,7 +91,7 @@ export const RequestDetails: FC<IProps> = ({ id, onClose }) => {
   }, [id]);
 
   return (
-    <ErrorBoundary onClose={onClose}>
+    <>
       <Modal
         isOpen
         onClose={onClose}
@@ -113,6 +113,6 @@ export const RequestDetails: FC<IProps> = ({ id, onClose }) => {
       {isMessageOpen && (
         <RequestMessage id={id} onClose={() => setMessageOpen(false)} />
       )}
-    </ErrorBoundary>
+    </>
   );
 };
