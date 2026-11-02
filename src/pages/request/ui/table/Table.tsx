@@ -1,7 +1,7 @@
 import { columnList } from "../../lib/columns";
 import { toRequestFilter } from "../../lib/filters";
 import { REQUESTS_QUERY_KEY, useGetRequests } from "@entities/request/api/hook";
-import { TFilterValue } from "@features/dynamic-filters";
+import { hasFilledFilter, TFilterValue } from "@features/dynamic-filters";
 import { addIdTableRowData, additionalHover } from "@shared/lib";
 import { TPaginationTable } from "@shared/types";
 import { TableSort } from "@shared/ui";
@@ -21,16 +21,20 @@ interface IProps {
 
 export const Table: FC<IProps> = ({ tableKey, filters, onRowClick }) => {
   const [pagination, setPagination] = useState<TPaginationTable>();
+  const hasFilters = hasFilledFilter(filters);
   const { data } = useGetRequests(
     {
       filters: toRequestFilter(filters),
       page: pagination,
     },
-    { enabled: !!filters, staleTime: FRESH_TIME },
+    { enabled: hasFilters, staleTime: FRESH_TIME },
   );
   const rows = useMemo(
-    () => additionalHover(addIdTableRowData("requestId", data?.content)),
-    [data?.content],
+    () =>
+      hasFilters
+        ? additionalHover(addIdTableRowData("requestId", data?.content))
+        : [],
+    [data?.content, hasFilters],
   );
 
   const handlePaginationChange = useCallback((pagination: TPaginationTable) => {
@@ -53,7 +57,7 @@ export const Table: FC<IProps> = ({ tableKey, filters, onRowClick }) => {
       onRowClick={handleRowClick}
       queryKey={REQUESTS_QUERY_KEY}
       handlePaginationChange={handlePaginationChange}
-      pagination={data}
+      pagination={hasFilters ? data : undefined}
     />
   );
 };

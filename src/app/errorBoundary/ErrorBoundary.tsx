@@ -1,45 +1,51 @@
-import { RouterErrorBoundary } from "./RouterErrorBoundary";
-import React, { Component, ReactNode } from "react";
+import { ErrorModal } from "@features/server-error";
+import { getErrorStatus } from "@shared/api";
+import { QueryErrorResetBoundary } from "@tanstack/react-query";
+import { Component, ReactNode } from "react";
 
 interface Props {
   children: ReactNode;
-  type?: "modal" | "page";
+  onClose: () => void;
 }
 
 interface State {
-  hasError: boolean;
-  error?: Error | null;
-  errorInfo?: React.ErrorInfo | null;
+  error: Error | null;
 }
 
-export class ErrorBoundary extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      hasError: false,
-      error: null,
-      errorInfo: null,
-    };
-  }
+class Boundary extends Component<Props & { onReset: () => void }, State> {
+  state: State = { error: null };
 
   static getDerivedStateFromError(error: Error): State {
-    return { hasError: true, error };
+    return { error };
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    this.setState({
-      error,
-      errorInfo: errorInfo,
-    });
-    // eslint-disable-next-line no-console
-    console.error("Uncaught error:", error, errorInfo);
-  }
+  private retry = () => {
+    this.props.onReset();
+    this.setState({ error: null });
+  };
 
   render() {
-    if (this.state.hasError) {
-      return <RouterErrorBoundary type={this.props?.type} />;
-    }
+    const { error } = this.state;
 
-    return this.props.children;
+    if (!error) return this.props.children;
+
+    return (
+      <ErrorModal
+        status={getErrorStatus(error)}
+        error={error}
+        onClose={this.props.onClose}
+        onRetry={this.retry}
+      />
+    );
   }
 }
+
+export const ErrorBoundary = ({ children, onClose }: Props) => (
+  <QueryErrorResetBoundary>
+    {({ reset }) => (
+      <Boundary onClose={onClose} onReset={reset}>
+        {children}
+      </Boundary>
+    )}
+  </QueryErrorResetBoundary>
+);

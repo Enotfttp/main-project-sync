@@ -1,7 +1,8 @@
 import { SystemArrowLeftOutline } from "@admiral-ds/icons";
-import { Button, Spinner, T, TextButton } from "@admiral-ds/react-ui";
+import { Button, TextButton } from "@admiral-ds/react-ui";
+import { ErrorBoundary } from "@app/errorBoundary/ErrorBoundary";
 import { useGetRequestContent } from "@entities/request/api/hook";
-import { MessageText, Modal, State } from "@shared/ui";
+import { MessageText, Modal } from "@shared/ui";
 import { FC } from "react";
 
 interface IProps {
@@ -9,16 +10,42 @@ interface IProps {
   onClose: () => void;
 }
 
-export const RequestMessage: FC<IProps> = ({ id, onClose }) => {
-  const { data, isLoading, isError } = useGetRequestContent(id as UUID);
+const MessageContent: FC<{ id: string }> = ({ id }) => {
+  const { data } = useGetRequestContent(id as UUID);
 
-  const handleCopy = () => {
-    if (!data?.content) return;
+  return <MessageText>{data.content}</MessageText>;
+};
 
-    void navigator.clipboard.writeText(data.content);
-  };
+const MessageActions: FC<IProps> = ({ id, onClose }) => {
+  const { data } = useGetRequestContent(id as UUID);
 
   return (
+    <>
+      <Button
+        type="button"
+        appearance="primary"
+        dimension="m"
+        disabled={!data.content}
+        onClick={() => {
+          if (data.content) void navigator.clipboard.writeText(data.content);
+        }}
+      >
+        Скопировать
+      </Button>
+      <Button
+        type="button"
+        appearance="secondary"
+        dimension="m"
+        onClick={onClose}
+      >
+        Закрыть
+      </Button>
+    </>
+  );
+};
+
+export const RequestMessage: FC<IProps> = ({ id, onClose }) => (
+  <ErrorBoundary onClose={onClose}>
     <Modal
       isOpen
       onClose={onClose}
@@ -33,39 +60,9 @@ export const RequestMessage: FC<IProps> = ({ id, onClose }) => {
           onClick={onClose}
         />
       }
-      actions={
-        <>
-          <Button
-            type="button"
-            appearance="primary"
-            dimension="m"
-            disabled={!data?.content}
-            onClick={handleCopy}
-          >
-            Скопировать
-          </Button>
-          <Button
-            type="button"
-            appearance="secondary"
-            dimension="m"
-            onClick={onClose}
-          >
-            Закрыть
-          </Button>
-        </>
-      }
+      actions={<MessageActions id={id} onClose={onClose} />}
     >
-      {isError ? (
-        <T font="Body/Body 2 Long" color="Error/Error 60 Main">
-          Не удалось получить сообщение
-        </T>
-      ) : isLoading || !data ? (
-        <State>
-          <Spinner dimension="m" />
-        </State>
-      ) : (
-        <MessageText>{data.content}</MessageText>
-      )}
+      <MessageContent id={id} />
     </Modal>
-  );
-};
+  </ErrorBoundary>
+);
