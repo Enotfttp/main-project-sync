@@ -1,6 +1,6 @@
 import { NotFoundPage } from "./NotFoundPage";
 import { ErrorLayout } from "./RouterErrorBoundary.styled";
-import { routesPath } from "@app/providers/config/routesPath";
+import { routesPath } from "../routes/routesPath";
 import { ErrorState } from "@features/server-error";
 import { useNavigate, useRevalidator, useRouteError } from "react-router-dom";
 

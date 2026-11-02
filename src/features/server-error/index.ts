@@ -1,1 +1,1 @@
-export { ErrorModal, ErrorState } from "./ui";
+export { ErrorBoundary, ErrorModal, ErrorState } from "./ui";

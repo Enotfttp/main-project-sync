@@ -1,4 +1,4 @@
-import { ErrorModal } from "@features/server-error";
+import { ErrorModal } from "./ErrorModal";
 import { getErrorStatus } from "@shared/api";
 import { QueryErrorResetBoundary } from "@tanstack/react-query";
 import { Component, ReactNode } from "react";
