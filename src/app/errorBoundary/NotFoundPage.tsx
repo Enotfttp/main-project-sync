@@ -6,7 +6,7 @@ import {
   StyledSubtitleError,
   StyledTitleError,
 } from "./RouterErrorBoundary.styled";
-import { routesPath } from "../index";
+import { routesPath } from "../routes/routesPath";
 import * as React from "react";
 import { useNavigate, useRouteError } from "react-router-dom";
 
