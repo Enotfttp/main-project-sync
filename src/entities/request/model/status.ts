@@ -8,7 +8,7 @@ export const EventType = {
   OPTION_MIGRATION: "Миграция ДО",
   PRE_OPTION_ACTIVATION: "ВТБ-Касса",
   PRIORITY_CHANGE: "Смена приоритета",
-  SHEDULE_UPDATE: "Обновление данных",
+  SCHEDULE_UPDATE: "Обновление данных",
   DISABLE_PACKAGE: "Отключение ПУ",
   DISABLE_OPTION: "Отключение ДО",
   CANCEL_FEE: "Отмена графика",
@@ -54,3 +54,6 @@ export const PutToOutboxStatus = {
 } as const;
 
 export type TPutToOutboxStatus = keyof typeof PutToOutboxStatus;
+
+export const mapPutToOutboxStatus = (status: TPutToOutboxStatus) =>
+  PutToOutboxStatus[status];

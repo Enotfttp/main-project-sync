@@ -9,19 +9,50 @@ import {
   TFilterValue,
   TValue,
 } from "@features/dynamic-filters";
+import {
+  addCalendarMonths,
+  DATE_RANGE_SEPARATOR,
+  parseIsoDate,
+  startOfToday,
+} from "@shared/lib";
+
+const THREE_MONTHS_ERROR = "Для вывода доступны данные за три месяца";
+const CURRENT_DAY_ERROR = "Для вывода доступны данные не позднее текущего дня";
+const PERIOD_ORDER_ERROR = "Окончание периода не может быть раньше его начала";
+
+const validateReceiptDate = (value: TValue | undefined) => {
+  if (typeof value !== "string" || !value) return;
+
+  const [fromIso, toIso] = value.split(DATE_RANGE_SEPARATOR);
+  const from = parseIsoDate(fromIso);
+  const to = parseIsoDate(toIso);
+  if (!from || !to) return;
+
+  if (to < from) return PERIOD_ORDER_ERROR;
+
+  const today = startOfToday();
+  const minDate = addCalendarMonths(today, -3);
+
+  if (from < minDate || to < minDate) return THREE_MONTHS_ERROR;
+  if (to > today) return CURRENT_DAY_ERROR;
+};
 
 const standardFields: IRenderField[] = [
   {
     id: "requestId",
     name: "requestId",
-    type: "number",
+    type: "uuid",
     label: "Идентификатор записи",
     placeholder: "Введите идентификатор записи...",
     validate: (value) => {
       if (!value) return;
 
-      if (Number(value) < 0) {
-        return "Идентификатор не может быть меньше 0";
+      if (Number(value) < 36) {
+        return "Допустим ввод не менее 36 символов";
+      }
+
+      if (Number(value) < 36) {
+        return "Допустим ввод не более 36 символов";
       }
     },
   },
@@ -50,9 +81,10 @@ const standardFields: IRenderField[] = [
   {
     id: "date",
     name: "date",
-    type: "date",
+    type: "date-range",
     label: "Дата поступления",
     placeholder: "Введите дату поступления...",
+    validate: validateReceiptDate,
   },
 ];
 
@@ -61,8 +93,18 @@ const commonFields: IRenderField[] = [
     id: "accountCode",
     name: "accountCode",
     type: "number",
-    label: "Номер счёта",
+    label: "Номер счёта ССК",
     placeholder: "Введите номер счёта...",
+    validate: (value) => {
+      if (!value) return;
+
+      if (String(value).length > 20) {
+        return "Допустим ввод не более 20 символов";
+      }
+      if (String(value).length < 20) {
+        return "Допустим ввод не менее 20 символов";
+      }
+    },
   },
   {
     id: "inn",
@@ -73,8 +115,11 @@ const commonFields: IRenderField[] = [
     validate: (value) => {
       if (!value) return;
 
-      if (!/^\d{10}(\d{2})?$/.test(String(value))) {
-        return "ИНН должен содержать 10 или 12 цифр";
+      if (String(value).length > 12) {
+        return "Допустим ввод не более 12 символов";
+      }
+      if (String(value).length < 10) {
+        return "Допустим ввод не менее 10 символов";
       }
     },
   },
@@ -96,9 +141,6 @@ const enumKey = <T extends object>(record: T, value: TValue | undefined) => {
   return normalized as Extract<keyof T, string>;
 };
 
-/**
- * Форма хранит одну дату поступления, а контракт списка — границы дня.
- */
 export const toRequestFilter = (
   filters?: TFilterValue,
 ): IRequestFilter | undefined => {
@@ -116,8 +158,9 @@ export const toRequestFilter = (
   if (accountCode) requestFilter.accountCode = accountCode;
   if (inn) requestFilter.inn = inn;
   if (date) {
-    requestFilter.dateFrom = date;
-    requestFilter.dateTo = date;
+    const [dateFrom, dateTo] = date.split(DATE_RANGE_SEPARATOR);
+    if (parseIsoDate(dateFrom)) requestFilter.dateFrom = dateFrom;
+    if (parseIsoDate(dateTo)) requestFilter.dateTo = dateTo;
   }
   if (requestStatus) requestFilter.requestStatus = requestStatus;
   if (eventType) requestFilter.eventType = eventType;

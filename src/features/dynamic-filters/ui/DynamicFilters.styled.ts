@@ -50,6 +50,7 @@ export const StyledFilterField = styled.div`
   display: flex;
   gap: 15px;
   flex-direction: column;
+  min-height: 88px;
 
   label {
     font-size: 14px;

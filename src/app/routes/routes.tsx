@@ -1,7 +1,13 @@
 import { routesPath } from "./routesPath";
 import { NotFoundPage } from "@app/errorBoundary/NotFoundPage";
 import { RouterErrorBoundary } from "@app/errorBoundary/RouterErrorBoundary";
-import { MainPage, PackagePage, RequestPage, SchedulePage } from "@pages/index";
+import {
+  MainPage,
+  PackagePage,
+  RequestHistoryPage,
+  RequestPage,
+  SchedulePage,
+} from "@pages/index";
 import { Loader } from "@shared/ui";
 import { ComponentType, LazyExoticComponent, Suspense } from "react";
 import { Outlet, RouteObject } from "react-router-dom";
@@ -26,6 +32,10 @@ export const routes: RouteObject[] = [
       {
         path: routesPath.request.root,
         element: withSuspense(RequestPage),
+      },
+      {
+        path: routesPath.request.detail.history.root,
+        element: withSuspense(RequestHistoryPage),
       },
       {
         path: routesPath.schedule.root,

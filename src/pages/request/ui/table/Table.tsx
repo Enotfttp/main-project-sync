@@ -1,8 +1,8 @@
 import { columnList } from "../../lib/columns";
 import { toRequestFilter } from "../../lib/filters";
-import { REQUESTS_QUERY_KEY, useGetRequests } from "@entities/request/api/hook";
+import { useGetRequests } from "@entities/request/api/hook";
 import { hasFilledFilter, TFilterValue } from "@features/dynamic-filters";
-import { addIdTableRowData, additionalHover } from "@shared/lib";
+import { addIdAndHoverTableRowData } from "@shared/lib";
 import { TPaginationTable } from "@shared/types";
 import { TableSort } from "@shared/ui";
 import { FC, useCallback, useMemo, useState } from "react";
@@ -32,7 +32,7 @@ export const Table: FC<IProps> = ({ tableKey, filters, onRowClick }) => {
   const rows = useMemo(
     () =>
       hasFilters
-        ? additionalHover(addIdTableRowData("requestId", data?.content))
+        ? addIdAndHoverTableRowData("requestId", data?.content, true)
         : [],
     [data?.content, hasFilters],
   );
@@ -55,7 +55,7 @@ export const Table: FC<IProps> = ({ tableKey, filters, onRowClick }) => {
       columnList={columnList}
       rowList={rows}
       onRowClick={handleRowClick}
-      queryKey={REQUESTS_QUERY_KEY}
+      queryKey="requests"
       handlePaginationChange={handlePaginationChange}
       pagination={hasFilters ? data : undefined}
     />

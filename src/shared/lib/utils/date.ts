@@ -33,7 +33,7 @@ export const DATE_RANGE_SEPARATOR = " - ";
 const DATE_MASK = "__.__.____";
 const DISPLAY_DATE = /^\d{2}\.\d{2}\.\d{4}$/;
 
-const splitDateValue = (value: string, isRange?: boolean) =>
+export const splitDateValue = (value: string, isRange?: boolean) =>
   isRange ? value.split(DATE_RANGE_SEPARATOR) : [value];
 
 /**
@@ -83,30 +83,67 @@ export const toDisplayDateValue = (
   return displayParts.join(DATE_RANGE_SEPARATOR);
 };
 
+const ISO_DATE = /^(\d{4})-(\d{2})-(\d{2})$/;
+const DATE_DIFFERENCE = /^(-?\d+)\s*([dmy])$/i;
+
+/** Календарная дата без времени. `yyyy-mm-dd` читается как локальная, не UTC. */
+export const parseIsoDate = (value?: string | null): Date | undefined => {
+  const match = value?.trim().match(ISO_DATE);
+  if (!match) return;
+
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const date = new Date(year, month - 1, day);
+
+  if (
+    date.getFullYear() !== year ||
+    date.getMonth() !== month - 1 ||
+    date.getDate() !== day
+  ) {
+    return;
+  }
+
+  return date;
+};
+
+export const startOfToday = () => {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+};
+
+/** Сдвиг на календарные месяцы. 31 января + 1 месяц — 28/29 февраля, не 2–3 марта. */
+export const addCalendarMonths = (date: Date, months: number) => {
+  const result = new Date(date.getFullYear(), date.getMonth(), 1);
+  result.setMonth(result.getMonth() + months);
+  const lastDay = new Date(
+    result.getFullYear(),
+    result.getMonth() + 1,
+    0,
+  ).getDate();
+  result.setDate(Math.min(date.getDate(), lastDay));
+  return result;
+};
+
+/**
+ * Верхняя граница интервала.
+ * `dateDifference` — одно значение `1d`, `1m` или `1y`, знак допустим: `-3m`.
+ */
 export const calculateMaxDate = (
   fromIsoDate: string,
   dateDifference?: string,
 ): Date | undefined => {
-  const fromDate = new Date(fromIsoDate);
-  if (isNaN(fromDate.getTime())) return;
+  const fromDate = parseIsoDate(fromIsoDate);
+  const difference = dateDifference?.trim().match(DATE_DIFFERENCE);
+  if (!fromDate || !difference) return;
 
-  const resultDate = new Date(fromDate);
+  const amount = Number(difference[1]);
+  const unit = difference[2].toLowerCase();
 
-  if (dateDifference) {
-    // Обработка временных интервалов из конфига
-    if (dateDifference.includes("y")) {
-      const years = parseInt(dateDifference.split("y")[0]) || 0;
-      resultDate.setFullYear(resultDate.getFullYear() + years);
-    }
-    if (dateDifference.includes("m")) {
-      const months = parseInt(dateDifference.split("m")[0]) || 0;
-      resultDate.setMonth(resultDate.getMonth() + months);
-    }
-    if (dateDifference.includes("d")) {
-      const days = parseInt(dateDifference.split("d")[0]) || 0;
-      resultDate.setDate(resultDate.getDate() + days);
-    }
-  }
+  if (unit === "y") return addCalendarMonths(fromDate, amount * 12);
+  if (unit === "m") return addCalendarMonths(fromDate, amount);
 
-  return resultDate;
+  const result = new Date(fromDate);
+  result.setDate(result.getDate() + amount);
+  return result;
 };

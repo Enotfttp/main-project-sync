@@ -7,6 +7,8 @@ export { Search } from "./search/Search";
 export { TableSort } from "./table-sort/TableSort";
 export { Select } from "./select/Select";
 export { InputFieldUI } from "./input-field/InputField";
+export { isUuid } from "./input-field/uuidMask";
+export { StatusTag } from "./status-tag/StatusTag";
 export { Notification } from "./notification/Notification";
 export { DropDown } from "./drop-down/DropDown";
 export { DateFieldUI } from "./date-field/DateField";

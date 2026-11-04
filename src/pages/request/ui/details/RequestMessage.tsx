@@ -1,7 +1,7 @@
-import { Modal } from "./Modal";
 import { SystemArrowLeftOutline } from "@admiral-ds/icons";
 import { Button, TextButton } from "@admiral-ds/react-ui";
 import { useGetRequestContent } from "@entities/request/api/hook";
+import { Modal } from "@features/modal";
 import { MessageText } from "@shared/ui";
 import { FC } from "react";
 

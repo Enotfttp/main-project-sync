@@ -4,10 +4,9 @@ export const routesPath = {
     root: "/requests",
     label: "Пакеты",
     detail: {
-      root: "requests/:id",
       label: "Подробная информация о запросе",
       history: {
-        root: "requests/:id/history",
+        root: "/requests/:id/history",
         label: "История запроса",
       },
     },
@@ -16,7 +15,6 @@ export const routesPath = {
     root: "/schedules",
     label: "Графки",
     detail: {
-      root: "schedules/:id",
       label: "Подробная информация о графике",
     },
   },
@@ -24,7 +22,6 @@ export const routesPath = {
     root: "/options",
     label: "Опции",
     detail: {
-      root: "options/:id",
       label: "Подробная информация об опции",
     },
   },
@@ -32,7 +29,6 @@ export const routesPath = {
     root: "/periods",
     label: "Периоды",
     detail: {
-      root: "periods/:id",
       label: "Подробная информация о периоде",
     },
   },
@@ -40,7 +36,6 @@ export const routesPath = {
     root: "/packages",
     label: "Пакеты",
     detail: {
-      root: "packages/:id",
       label: "Подробная информация о пакете услуг",
     },
   },
@@ -48,7 +43,6 @@ export const routesPath = {
     root: "/documents",
     label: "Документы",
     detail: {
-      root: "documents/:id",
       label: "Подробная информация о документе",
     },
   },

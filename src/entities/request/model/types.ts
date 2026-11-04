@@ -4,7 +4,10 @@ import {
   TRequestStatus,
   TResultType,
 } from "./status";
-import { ITableDataPaginationResponse } from "@shared/types";
+import {
+  ITableDataPaginationResponse,
+  TFilterPaginationRequest,
+} from "@shared/types";
 
 export interface IRequestFilter {
   requestId?: UUID;
@@ -16,22 +19,23 @@ export interface IRequestFilter {
   inn?: string;
 }
 
-export interface IRequestDetails {
-  requestInfo: IRequestInfoDetails;
-  errorInfo?: IErrorInfo;
-}
-
-export interface IRequestHistory {
-  requestHistory: IRequestHistoryInfo;
-  errorInfo?: IErrorInfo;
-}
-
 export interface IRequestContent {
   content: string;
 }
 
 export type TRequestsPaginationResponse =
   ITableDataPaginationResponse<IRequestInfo>;
+
+export type TRequestsRequest = TFilterPaginationRequest<
+  IRequestFilter,
+  IRequestInfo
+>;
+
+export type TRequestHistoryPaginationResponse =
+  ITableDataPaginationResponse<IRequestHistoryInfo>;
+
+export type TRequestHistoryRequest =
+  TFilterPaginationRequest<IRequestHistoryInfo> & { id: UUID };
 
 export interface IRequestInfo {
   requestId: UUID;
@@ -41,7 +45,7 @@ export interface IRequestInfo {
   resultType?: TResultType;
 }
 
-interface IRequestInfoDetails {
+export interface IRequestInfoDetails extends Partial<IErrorInfo> {
   requestId: UUID;
   scheduleSourceGuid: UUID;
   packageSubscriptionId: number;
@@ -55,13 +59,13 @@ interface IRequestInfoDetails {
   updatedAt: IsoDate;
 }
 
-interface IErrorInfo {
+export interface IErrorInfo {
   errorCode: string;
   errorMessage: string;
 }
 
-interface IRequestHistoryInfo {
-  requestId: UUID;
+export interface IRequestHistoryInfo extends Partial<IErrorInfo> {
+  requestHistoryId: UUID;
   eventType: TEventType;
   requestStatus: TRequestStatus;
   resultType?: TResultType;
