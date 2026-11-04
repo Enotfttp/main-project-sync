@@ -14,14 +14,18 @@ const standardFields: IRenderField[] = [
   {
     id: "requestId",
     name: "requestId",
-    type: "number",
+    type: "uuid",
     label: "Идентификатор записи",
     placeholder: "Введите идентификатор записи...",
     validate: (value) => {
       if (!value) return;
 
-      if (Number(value) < 0) {
-        return "Идентификатор не может быть меньше 0";
+      if (Number(value) < 36) {
+        return "Допустим ввод не менее 36 символов";
+      }
+
+      if (Number(value) < 36) {
+        return "Допустим ввод не более 36 символов";
       }
     },
   },
@@ -50,9 +54,14 @@ const standardFields: IRenderField[] = [
   {
     id: "date",
     name: "date",
-    type: "date",
+    type: "date-range",
     label: "Дата поступления",
     placeholder: "Введите дату поступления...",
+    validate: (value) => {
+      if (!value) return;
+
+      return "";
+    },
   },
 ];
 
@@ -61,8 +70,18 @@ const commonFields: IRenderField[] = [
     id: "accountCode",
     name: "accountCode",
     type: "number",
-    label: "Номер счёта",
+    label: "Номер счёта ССК",
     placeholder: "Введите номер счёта...",
+    validate: (value) => {
+      if (!value) return;
+
+      if (String(value).length > 20) {
+        return "Допустим ввод не более 20 символов";
+      }
+      if (String(value).length < 20) {
+        return "Допустим ввод не менее 20 символов";
+      }
+    },
   },
   {
     id: "inn",
@@ -73,8 +92,11 @@ const commonFields: IRenderField[] = [
     validate: (value) => {
       if (!value) return;
 
-      if (!/^\d{10}(\d{2})?$/.test(String(value))) {
-        return "ИНН должен содержать 10 или 12 цифр";
+      if (String(value).length > 12) {
+        return "Допустим ввод не более 12 символов";
+      }
+      if (String(value).length < 10) {
+        return "Допустим ввод не менее 10 символов";
       }
     },
   },

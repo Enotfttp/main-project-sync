@@ -1,9 +1,10 @@
 import {
   IRequestContent,
-  IRequestDetails,
   IRequestFilter,
-  IRequestHistory,
   IRequestInfo,
+  IRequestInfoDetails,
+  TRequestHistoryPaginationResponse,
+  TRequestHistoryRequest,
   TRequestsPaginationResponse,
 } from "../model/types";
 import { axiosInstance, toListParams } from "@shared/api";
@@ -27,7 +28,7 @@ class RequestService {
     return response.data;
   }
 
-  async getRequest(id?: UUID): Promise<IRequestDetails> {
+  async getRequest(id?: UUID): Promise<IRequestInfoDetails> {
     const response = await axiosInstance.get(`/requests/${id}`);
     return response.data;
   }
@@ -37,8 +38,13 @@ class RequestService {
     return response.data;
   }
 
-  async getRequestHistory(id?: UUID): Promise<IRequestHistory> {
-    const response = await axiosInstance.get(`/requests/${id}/history`);
+  async getRequestHistory({
+    id,
+    ...listParams
+  }: TRequestHistoryRequest): Promise<TRequestHistoryPaginationResponse> {
+    const response = await axiosInstance.get(`/requests/${id}/history`, {
+      params: toListParams(listParams),
+    });
     return response.data;
   }
 }

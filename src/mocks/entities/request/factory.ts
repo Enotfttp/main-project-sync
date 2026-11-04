@@ -1,8 +1,9 @@
 import {
   EventType,
-  IRequestDetails,
-  IRequestHistory,
+  IErrorInfo,
+  IRequestHistoryInfo,
   IRequestInfo,
+  IRequestInfoDetails,
   PutToOutboxStatus,
   RequestStatus,
   ResultType,
@@ -20,13 +21,14 @@ import {
 import { keysOf } from "@shared/lib";
 
 type TRequestInfo = IRequestInfo[][number];
-type TErrorInfo = NonNullable<IRequestDetails["errorInfo"]>;
+type TRequestHistoryInfo = IRequestHistoryInfo[][number];
+type TErrorInfo = NonNullable<IErrorInfo>;
 
 export type TRequestMock = TRequestInfo & {
   accountCode: string;
   inn: string;
-  details: IRequestDetails["requestInfo"];
-  history: IRequestHistory["requestHistory"];
+  details: IRequestInfoDetails;
+  history: IRequestHistoryInfo;
   content: string;
   errorInfo?: TErrorInfo;
 };
@@ -39,6 +41,7 @@ const putToOutboxStatuses = keysOf(PutToOutboxStatus);
 export const createRequest = (): TRequestMock => {
   const schedule = faker.helpers.arrayElement(scheduleDb.all());
   const requestId = fakeUuid();
+  const requestHistoryId = fakeUuid();
   const eventType = faker.helpers.arrayElement(eventTypes);
   const requestStatus = faker.helpers.arrayElement(requestStatuses);
   const resultType =
@@ -61,6 +64,14 @@ export const createRequest = (): TRequestMock => {
     2,
   );
 
+  const errorInfo =
+    requestStatus === "ERROR"
+      ? {
+          errorCode: `E-${faker.string.numeric(3)}`,
+          errorMessage: faker.lorem.sentence(),
+        }
+      : undefined;
+
   return {
     requestId,
     date: requestDate,
@@ -70,13 +81,7 @@ export const createRequest = (): TRequestMock => {
     accountCode,
     inn: fakeInn(),
     content,
-    errorInfo:
-      requestStatus === "ERROR"
-        ? {
-            errorCode: `E-${faker.string.numeric(3)}`,
-            errorMessage: faker.lorem.sentence(),
-          }
-        : undefined,
+    errorInfo,
     details: {
       requestId,
       scheduleSourceGuid: schedule.scheduleSourceGuid,
@@ -89,9 +94,10 @@ export const createRequest = (): TRequestMock => {
       accountCode,
       createdAt,
       updatedAt,
+      ...errorInfo,
     },
     history: {
-      requestId,
+      requestHistoryId,
       eventType,
       requestStatus,
       resultType,
@@ -99,6 +105,7 @@ export const createRequest = (): TRequestMock => {
       content,
       createdAt,
       updatedAt,
+      ...errorInfo,
     },
   };
 };
@@ -117,4 +124,10 @@ export const toRequestInfo = ({
   eventType,
   requestStatus,
   resultType,
+});
+
+export const toRequestHistoryInfo = ({
+  history,
+}: TRequestMock): TRequestHistoryInfo => ({
+  ...history,
 });

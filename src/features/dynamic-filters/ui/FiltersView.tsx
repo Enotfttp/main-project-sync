@@ -14,11 +14,11 @@ import { Chips, IconButton, T } from "@admiral-ds/react-ui";
 import { FC } from "react";
 
 interface IProps {
-  fields: IRenderField[];
+  fields?: IRenderField[];
   totalElements?: number;
-  handleClose(name: string): void;
+  handleClose?(name: string): void;
   filtersValue?: TFilterValue;
-  handleOpenFilters(): void;
+  handleOpenFilters?(): void;
 }
 
 export const FiltersView: FC<IProps> = ({
@@ -30,32 +30,37 @@ export const FiltersView: FC<IProps> = ({
 }) => (
   <StyledFiltersView>
     <WrapperFilters>
-      {fields.map((field) => {
-        const value = filtersValue?.[field.name];
+      {!!fields?.length &&
+        fields.map((field) => {
+          const value = filtersValue?.[field.name];
 
-        return (
-          <WrapperInfo key={field.name}>
-            <T font="Additional/S" color="Neutral/Neutral 50">
-              {field.label}
-            </T>
-            <WrapperChip dimension="m">
-              {isFilledFilterValue(value) ? (
-                <Chips
-                  dimension="m"
-                  appearance="filled"
-                  onClose={() => handleClose(field.name)}
-                >
-                  {formatFilterValue(field, value)}
-                </Chips>
-              ) : (
-                <T font="Additional/S" color="Neutral/Neutral 50">
-                  -
-                </T>
-              )}
-            </WrapperChip>
-          </WrapperInfo>
-        );
-      })}
+          return (
+            <WrapperInfo key={field.name}>
+              <T font="Additional/S" color="Neutral/Neutral 50">
+                {field.label}
+              </T>
+              <WrapperChip dimension="m">
+                {isFilledFilterValue(value) ? (
+                  <Chips
+                    dimension="m"
+                    appearance="filled"
+                    onClose={() => {
+                      if (typeof handleClose === "function") {
+                        handleClose(field.name);
+                      }
+                    }}
+                  >
+                    {formatFilterValue(field, value)}
+                  </Chips>
+                ) : (
+                  <T font="Additional/S" color="Neutral/Neutral 50">
+                    -
+                  </T>
+                )}
+              </WrapperChip>
+            </WrapperInfo>
+          );
+        })}
     </WrapperFilters>
     <StyledIconCount>
       {totalElements && (
@@ -63,14 +68,16 @@ export const FiltersView: FC<IProps> = ({
           Найдено: {totalElements}
         </T>
       )}
-      <IconButton
-        onClick={handleOpenFilters}
-        dimension="s"
-        appearance="primary"
-        type="button"
-      >
-        <SystemFilterOutline />
-      </IconButton>
+      {!!fields?.length && (
+        <IconButton
+          onClick={handleOpenFilters}
+          dimension="s"
+          appearance="primary"
+          type="button"
+        >
+          <SystemFilterOutline />
+        </IconButton>
+      )}
     </StyledIconCount>
   </StyledFiltersView>
 );

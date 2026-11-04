@@ -1,11 +1,10 @@
 import { requestService } from "./api";
 import {
-  IRequestFilter,
-  IRequestHistory,
-  IRequestInfo,
+  TRequestHistoryPaginationResponse,
+  TRequestHistoryRequest,
   TRequestsPaginationResponse,
+  TRequestsRequest,
 } from "../model/types";
-import { TFilterPaginationRequest } from "@shared/types";
 import {
   useQuery,
   useQueryClient,
@@ -14,12 +13,8 @@ import {
 } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-type TRequestsRequest = TFilterPaginationRequest<IRequestFilter, IRequestInfo>;
-
-export const REQUESTS_QUERY_KEY = "requests";
-
 const getRequestsQueryOptions = (request?: TRequestsRequest) => ({
-  queryKey: [REQUESTS_QUERY_KEY, request],
+  queryKey: ["requests", request],
   queryFn: () => requestService.getRequests(request),
 });
 
@@ -63,15 +58,15 @@ export const useGetRequestContent = (id?: UUID) =>
   });
 
 export const useGetRequestHistory = (
-  id?: UUID,
+  params: TRequestHistoryRequest,
   options?: Omit<
-    UseQueryOptions<IRequestHistory, Error>,
+    UseQueryOptions<TRequestHistoryPaginationResponse, Error>,
     "queryKey" | "queryFn"
   >,
 ) => {
   return useQuery({
-    queryKey: ["request", "history", id],
-    queryFn: () => requestService.getRequestHistory(id),
+    queryKey: ["request", "history", params],
+    queryFn: () => requestService.getRequestHistory(params),
     ...options,
   });
 };

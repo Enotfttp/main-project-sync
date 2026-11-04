@@ -1,6 +1,7 @@
 export type RenderFieldType =
   | "text"
   | "number"
+  | "uuid"
   | "date"
   | "date-range"
   | "select"

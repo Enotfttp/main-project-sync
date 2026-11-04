@@ -1,2 +1,2 @@
 export { RequestStatusTag } from "./request-status-tag/RequestStatusTag";
-export { ResultTypeTag } from "./result-type-tag/ResultTypeTag";
+export { PutToOutboxStatusTag } from "./put-to-outbox-status-tag/PutToOutboxStatusTag";

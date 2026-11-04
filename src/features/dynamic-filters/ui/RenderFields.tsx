@@ -14,6 +14,7 @@ export const renderField = (field: IRenderField) => {
   switch (field?.type) {
     case "number":
     case "text":
+    case "uuid":
       return <InputFieldUI {...inputProps} dimension="m" />;
 
     case "date":

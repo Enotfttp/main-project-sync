@@ -1,5 +1,6 @@
 import { mapRequestStatus, TRequestStatus } from "../../model";
-import { Tag, TagKind } from "@admiral-ds/react-ui";
+import { TagKind } from "@admiral-ds/react-ui";
+import { StatusTag } from "@shared/ui";
 import { FC } from "react";
 
 const requestStatusKind: Record<TRequestStatus, TagKind> = {
@@ -20,5 +21,9 @@ export const RequestStatusTag: FC<RequestStatusTagProps> = ({ status }) => {
     return null;
   }
 
-  return <Tag kind={requestStatusKind[status]}>{mapRequestStatus(status)}</Tag>;
+  return (
+    <StatusTag kind={requestStatusKind[status]}>
+      {mapRequestStatus(status)}
+    </StatusTag>
+  );
 };

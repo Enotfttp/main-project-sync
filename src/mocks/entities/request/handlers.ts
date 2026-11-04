@@ -1,10 +1,11 @@
-import { requestDb, toRequestInfo } from "./factory";
+import { requestDb, toRequestHistoryInfo, toRequestInfo } from "./factory";
 import {
   IRequestContent,
-  IRequestDetails,
   IRequestFilter,
-  IRequestHistory,
+  IRequestHistoryInfo,
   IRequestInfo,
+  IRequestInfoDetails,
+  TRequestHistoryPaginationResponse,
   TRequestsPaginationResponse,
 } from "@entities/request/model";
 import {
@@ -36,9 +37,8 @@ export const handlers = [
     const item = requestDb.find(params.id);
     if (!item) return notFound();
 
-    return HttpResponse.json<IRequestDetails>({
-      requestInfo: item.details,
-      errorInfo: item.errorInfo,
+    return HttpResponse.json<IRequestInfoDetails>({
+      ...item.details,
     });
   }),
 
@@ -50,14 +50,19 @@ export const handlers = [
     return HttpResponse.json<IRequestContent>({ content: item.content });
   }),
 
-  http.get(apiPath("/requests/:id/history"), async ({ params }) => {
+  http.get(apiPath("/requests/:id/history"), async ({ request, params }) => {
     await delay();
-    const item = requestDb.find(params.id);
-    if (!item) return notFound();
+    const { filters, page, sort } = await readListRequest<
+      IRequestFilter,
+      IRequestHistoryInfo
+    >(request);
 
-    return HttpResponse.json<IRequestHistory>({
-      requestHistory: item.history,
-      errorInfo: item.errorInfo,
-    });
+    const items = filterItems(requestDb.all(), filters).map(
+      toRequestHistoryInfo,
+    );
+
+    return HttpResponse.json<TRequestHistoryPaginationResponse>(
+      paginate(sortItems(items, sort), page),
+    );
   }),
 ];

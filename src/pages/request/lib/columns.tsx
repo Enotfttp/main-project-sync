@@ -1,6 +1,6 @@
 import { Column } from "@admiral-ds/react-ui";
-import { mapEventType } from "@entities/request/model";
-import { RequestStatusTag, ResultTypeTag } from "@entities/request/ui";
+import { mapEventType, mapResultType } from "@entities/request/model";
+import { RequestStatusTag } from "@entities/request/ui";
 import { normalizedDate } from "@shared/lib";
 import React from "react";
 
@@ -39,7 +39,7 @@ export const columnList: Column[] = [
     title: "Результат обработки",
     width: "20%",
     renderCell(status) {
-      return <ResultTypeTag status={status} />;
+      return mapResultType(status);
     },
   },
 ];

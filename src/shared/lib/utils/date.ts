@@ -33,7 +33,7 @@ export const DATE_RANGE_SEPARATOR = " - ";
 const DATE_MASK = "__.__.____";
 const DISPLAY_DATE = /^\d{2}\.\d{2}\.\d{4}$/;
 
-const splitDateValue = (value: string, isRange?: boolean) =>
+export const splitDateValue = (value: string, isRange?: boolean) =>
   isRange ? value.split(DATE_RANGE_SEPARATOR) : [value];
 
 /**
