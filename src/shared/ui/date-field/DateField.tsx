@@ -3,10 +3,11 @@ import { DateFieldProps } from "@admiral-ds/react-ui";
 import {
   calculateMaxDate,
   DATE_RANGE_SEPARATOR,
+  parseIsoDate,
   toDisplayDateValue,
   toIsoDateValue,
 } from "@shared/lib";
-import React, { useRef, useState } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { Field, FieldProps, FieldRenderProps } from "react-final-form";
 
 type TProps = Omit<FieldProps<string> & DateFieldProps, "children"> & {
@@ -23,42 +24,54 @@ type TInputProps = TProps & Pick<FieldRenderProps<string>, "input" | "meta">;
 /**
  * Поле ввода даты показывает дату по маске dd.mm.yyyy,
  * а в значении формы хранит её в формате iso yyyy-mm-dd.
- * Пока дата заполнена не полностью, в форме лежит null,
- * поэтому маска хранится в своём состоянии.
+ * Пока дата заполнена не полностью, в форме лежит null.
+ * Маска остаётся неуправляемой: запись value из React сбрасывает курсор,
+ * и следующая цифра попадает не в ту ячейку.
  * Пустая строка и null при сверке считаются одним значением.
  */
 const committedValue = (value?: string | null) => value || null;
 
-const DateInput = ({ input, meta, ...props }: TInputProps) => {
+const DateInput = ({
+  input,
+  meta,
+  dateDifference: _dateDifference,
+  errorText: _errorText,
+  ...props
+}: TInputProps) => {
   const isRange = props.type === "date-range";
-  const [maskValue, setMaskValue] = useState(() =>
-    toDisplayDateValue(input.value, isRange),
-  );
+  const fieldRef = useRef<HTMLInputElement>(null);
   // Последнее значение, которое поле само положило в форму
   const ownValue = useRef<string | null>(committedValue(input.value));
 
-  const displayValue = toDisplayDateValue(input.value || "", isRange);
+  useLayoutEffect(() => {
+    const node = fieldRef.current;
+    if (!node || committedValue(input.value) === ownValue.current) return;
 
-  // Значение формы изменили извне (сброс фильтра, новые значения фильтров)
-  if (committedValue(input.value) !== ownValue.current) {
     ownValue.current = committedValue(input.value);
-    setMaskValue(displayValue);
-  }
+    const display = toDisplayDateValue(input.value || "", isRange);
+    if (node.value !== display) node.value = display;
+  }, [input.value, isRange]);
 
-  const handleChange = ({ currentTarget: { value } }) => {
+  const handleChange = ({
+    currentTarget: { value },
+  }: {
+    currentTarget: { value: string };
+  }) => {
     const isoValue = toIsoDateValue(value, isRange);
 
-    setMaskValue(value);
     ownValue.current = committedValue(isoValue);
     input.onChange(isoValue);
   };
 
+  const { value: _formValue, onChange: _formOnChange, ...fieldProps } = input;
+
   return (
     <StyledDateField
-      {...input}
+      {...fieldProps}
       {...props}
+      ref={fieldRef}
       type={props.type}
-      value={maskValue}
+      defaultValue={toDisplayDateValue(input.value || "", isRange)}
       onChange={handleChange}
       required={props?.required}
       status={meta.touched && meta.error && "error"}
@@ -70,24 +83,20 @@ const DateInput = ({ input, meta, ...props }: TInputProps) => {
 
 export const DateFieldUI = ({ ...props }: TProps) => {
   const validateDateRange = (value?: string | null) => {
-    if (props.type === "date-range" && props?.dateDifference && value) {
-      const [isoDateFrom, isoDateTo] = value.split(DATE_RANGE_SEPARATOR);
+    if (props.type !== "date-range" || !props.dateDifference || !value) return;
 
-      const maxDate = calculateMaxDate(isoDateFrom, props.dateDifference);
-      const dateTo = new Date(isoDateTo ?? "");
+    const [isoDateFrom, isoDateTo] = value.split(DATE_RANGE_SEPARATOR);
+    const maxDate = calculateMaxDate(isoDateFrom, props.dateDifference);
+    const dateTo = parseIsoDate(isoDateTo);
 
-      if (maxDate && dateTo > maxDate) {
-        return props?.errorText || "";
-      }
-    }
-    return undefined;
+    if (maxDate && dateTo && dateTo > maxDate) return props.errorText;
   };
 
   return (
     <Field
+      {...props}
       data-testid="form-date-field"
       validate={validateDateRange}
-      {...props}
     >
       {({ input, meta }) => <DateInput {...props} input={input} meta={meta} />}
     </Field>
