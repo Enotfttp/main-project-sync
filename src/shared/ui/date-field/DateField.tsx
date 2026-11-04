@@ -3,10 +3,11 @@ import { DateFieldProps } from "@admiral-ds/react-ui";
 import {
   calculateMaxDate,
   DATE_RANGE_SEPARATOR,
+  parseIsoDate,
   toDisplayDateValue,
   toIsoDateValue,
 } from "@shared/lib";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Field, FieldProps, FieldRenderProps } from "react-final-form";
 
 type TProps = Omit<FieldProps<string> & DateFieldProps, "children"> & {
@@ -29,7 +30,13 @@ type TInputProps = TProps & Pick<FieldRenderProps<string>, "input" | "meta">;
  */
 const committedValue = (value?: string | null) => value || null;
 
-const DateInput = ({ input, meta, ...props }: TInputProps) => {
+const DateInput = ({
+  input,
+  meta,
+  dateDifference: _dateDifference,
+  errorText: _errorText,
+  ...props
+}: TInputProps) => {
   const isRange = props.type === "date-range";
   const [maskValue, setMaskValue] = useState(() =>
     toDisplayDateValue(input.value, isRange),
@@ -70,24 +77,20 @@ const DateInput = ({ input, meta, ...props }: TInputProps) => {
 
 export const DateFieldUI = ({ ...props }: TProps) => {
   const validateDateRange = (value?: string | null) => {
-    if (props.type === "date-range" && props?.dateDifference && value) {
-      const [isoDateFrom, isoDateTo] = value.split(DATE_RANGE_SEPARATOR);
+    if (props.type !== "date-range" || !props.dateDifference || !value) return;
 
-      const maxDate = calculateMaxDate(isoDateFrom, props.dateDifference);
-      const dateTo = new Date(isoDateTo ?? "");
+    const [isoDateFrom, isoDateTo] = value.split(DATE_RANGE_SEPARATOR);
+    const maxDate = calculateMaxDate(isoDateFrom, props.dateDifference);
+    const dateTo = parseIsoDate(isoDateTo);
 
-      if (maxDate && dateTo > maxDate) {
-        return props?.errorText || "";
-      }
-    }
-    return undefined;
+    if (maxDate && dateTo && dateTo > maxDate) return props.errorText;
   };
 
   return (
     <Field
+      {...props}
       data-testid="form-date-field"
       validate={validateDateRange}
-      {...props}
     >
       {({ input, meta }) => <DateInput {...props} input={input} meta={meta} />}
     </Field>

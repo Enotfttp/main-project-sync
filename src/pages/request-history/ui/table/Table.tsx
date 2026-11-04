@@ -3,14 +3,15 @@ import { useGetRequestHistory } from "@entities/request/api/hook";
 import { addIdAndHoverTableRowData } from "@shared/lib";
 import { TPaginationTable } from "@shared/types";
 import { TableSort } from "@shared/ui";
-import { FC, useCallback, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 
 interface IProps {
   onRowClick: (id: string) => void;
+  onTotalElementsChange: (totalElements?: number) => void;
 }
 
-export const Table: FC<IProps> = ({ onRowClick }) => {
+export const Table: FC<IProps> = ({ onRowClick, onTotalElementsChange }) => {
   const { id } = useParams();
 
   if (!id) throw new Error("Нет id запроса");
@@ -18,6 +19,10 @@ export const Table: FC<IProps> = ({ onRowClick }) => {
   const [pagination, setPagination] = useState<TPaginationTable>();
 
   const { data } = useGetRequestHistory({ id: id, page: pagination });
+
+  useEffect(() => {
+    onTotalElementsChange(data?.totalElements);
+  }, [data?.totalElements, onTotalElementsChange]);
 
   const rows = useMemo(
     () => addIdAndHoverTableRowData("requestHistoryId", data?.content),

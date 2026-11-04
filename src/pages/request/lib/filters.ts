@@ -9,6 +9,33 @@ import {
   TFilterValue,
   TValue,
 } from "@features/dynamic-filters";
+import {
+  addCalendarMonths,
+  DATE_RANGE_SEPARATOR,
+  parseIsoDate,
+  startOfToday,
+} from "@shared/lib";
+
+const THREE_MONTHS_ERROR = "Для вывода доступны данные за три месяца";
+const CURRENT_DAY_ERROR = "Для вывода доступны данные не позднее текущего дня";
+const PERIOD_ORDER_ERROR = "Окончание периода не может быть раньше его начала";
+
+const validateReceiptDate = (value: TValue | undefined) => {
+  if (typeof value !== "string" || !value) return;
+
+  const [fromIso, toIso] = value.split(DATE_RANGE_SEPARATOR);
+  const from = parseIsoDate(fromIso);
+  const to = parseIsoDate(toIso);
+  if (!from || !to) return;
+
+  if (to < from) return PERIOD_ORDER_ERROR;
+
+  const today = startOfToday();
+  const minDate = addCalendarMonths(today, -3);
+
+  if (from < minDate || to < minDate) return THREE_MONTHS_ERROR;
+  if (to > today) return CURRENT_DAY_ERROR;
+};
 
 const standardFields: IRenderField[] = [
   {
@@ -57,11 +84,7 @@ const standardFields: IRenderField[] = [
     type: "date-range",
     label: "Дата поступления",
     placeholder: "Введите дату поступления...",
-    validate: (value) => {
-      if (!value) return;
-
-      return "";
-    },
+    validate: validateReceiptDate,
   },
 ];
 
