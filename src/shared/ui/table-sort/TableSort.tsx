@@ -1,4 +1,4 @@
-import { StyledTableSort } from "./TableSort.styled";
+import { StyledPagination, StyledTableSort } from "./TableSort.styled";
 import { TPaginationData, TPaginationTable } from "../../types";
 import { PaginationTable } from "./components/PaginationTable";
 import {
@@ -214,14 +214,16 @@ export const TableSort = ({ queryKey, ...props }: TableSortProps) => {
         onColumnResize={handleResize}
       />
       {props?.isPagination && props?.pagination && (
-        <PaginationTable
-          {...props?.paginationProp}
-          handlePaginationChange={props?.handlePaginationChange}
-          handleResetSortCols={handleResetSortCols}
-          pageSize={props?.pagination.size}
-          totalItems={props?.pagination.totalElements}
-          page={props?.pagination.number}
-        />
+        <StyledPagination>
+          <PaginationTable
+            {...props?.paginationProp}
+            handlePaginationChange={props?.handlePaginationChange}
+            handleResetSortCols={handleResetSortCols}
+            pageSize={props?.pagination.size}
+            totalItems={props?.pagination.totalElements}
+            page={props?.pagination.number}
+          />
+        </StyledPagination>
       )}
     </StyledTableSort>
   );

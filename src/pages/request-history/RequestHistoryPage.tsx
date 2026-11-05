@@ -1,6 +1,6 @@
 import { Table } from "./ui";
 import { FiltersView } from "@features/dynamic-filters";
-import { Container, Page } from "@shared/ui";
+import { Container, Page, PageBack } from "@shared/ui";
 import { FC, useCallback, useState } from "react";
 
 const RequestHistoryPage: FC = () => {
@@ -12,6 +12,7 @@ const RequestHistoryPage: FC = () => {
 
   return (
     <Page>
+      <PageBack />
       <Container>
         <FiltersView totalElements={totalElements} />
         <Table
