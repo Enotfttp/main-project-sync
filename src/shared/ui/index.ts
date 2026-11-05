@@ -16,3 +16,4 @@ export { SelectFieldUI } from "./select-field/SelectField";
 export { CheckboxFieldUI } from "./checkbox-field/CheckboxField";
 export { RangeWithInput } from "./range-with-input/RangeWithInput";
 export { Page, Container } from "./page/Page";
+export { PageBack } from "./page-back/PageBack";

@@ -6,7 +6,7 @@ import {
   useFilters,
 } from "@features/dynamic-filters";
 import { useModal } from "@features/modal";
-import { Container, Page } from "@shared/ui";
+import { Container, Page, PageBack } from "@shared/ui";
 import { FC } from "react";
 
 const REQUEST_FILTERS_ID = "request";
@@ -36,6 +36,7 @@ const RequestPage: FC = () => {
         onClose={handleCloseFilters}
       />
       <Page>
+        <PageBack />
         <Container>
           <FiltersView
             filtersValue={filtersValue}
