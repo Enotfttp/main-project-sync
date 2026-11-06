@@ -1,10 +1,9 @@
 import { scheduleDb, toScheduleInfo } from "./factory";
 import {
-  IScheduleDetails,
   IScheduleFilter,
   IScheduleInfo,
+  IScheduleInfoDetails,
   ISchedulePeriods,
-  RequestStatus,
   TSchedulesPaginationResponse,
 } from "@entities/schedule/model";
 import {
@@ -36,8 +35,8 @@ export const handlers = [
     const schedule = scheduleDb.find(params.id);
     if (!schedule) return notFound();
 
-    return HttpResponse.json<IScheduleDetails>({
-      scheduleInfo: schedule.details,
+    return HttpResponse.json<IScheduleInfoDetails>({
+      ...schedule.details,
     });
   }),
 
@@ -47,7 +46,7 @@ export const handlers = [
     if (!schedule) return notFound();
 
     const hasError = schedule.periods.some(
-      (period) => period.requestStatus === RequestStatus.ERROR,
+      (period) => period.requestStatus === "ERROR",
     );
 
     return HttpResponse.json<ISchedulePeriods>({

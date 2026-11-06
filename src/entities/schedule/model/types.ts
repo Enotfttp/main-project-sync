@@ -6,7 +6,10 @@ import {
   TResultType,
   TScheduleStatus,
 } from "./status";
-import { ITableDataPaginationResponse } from "@shared/types";
+import {
+  ITableDataPaginationResponse,
+  TFilterPaginationRequest,
+} from "@shared/types";
 
 export interface IScheduleFilter {
   scheduleSourceGuid?: UUID;
@@ -14,14 +17,8 @@ export interface IScheduleFilter {
   dateTo?: IsoDate;
   scheduleStatus?: string;
   startDateFrom?: IsoDate;
-  startDateTo?: IsoDate;
-  endDateFrom?: IsoDate;
   endDateTo?: IsoDate;
   amountFullCur?: number;
-}
-
-export interface IScheduleDetails {
-  scheduleInfo: IScheduleInfoDetails;
 }
 
 export interface ISchedulePeriods {
@@ -31,6 +28,11 @@ export interface ISchedulePeriods {
 
 export type TSchedulesPaginationResponse =
   ITableDataPaginationResponse<IScheduleInfo>;
+
+export type TSchedulesRequest = TFilterPaginationRequest<
+  IScheduleFilter,
+  IScheduleInfo
+>;
 
 export interface IScheduleInfo {
   scheduleSourceGuid: UUID;
@@ -43,7 +45,7 @@ export interface IScheduleInfo {
   processCode: TProcessCode;
 }
 
-interface IScheduleInfoDetails {
+export interface IScheduleInfoDetails {
   scheduleSourceGuid: UUID;
   scheduleStatus: TScheduleStatus;
   scheduleCreatedAt: IsoDate;
@@ -55,14 +57,20 @@ interface IScheduleInfoDetails {
   currencyAccount?: string;
   processCode: TProcessCode;
   packageInfo: IPackageInfo;
+  optionInfo?: IOptionInfo;
   paymentInfo: IPaymentInfo;
   createdAt: IsoDate;
   updatedAt: IsoDate;
-  requiresPriorityChange: string;
+  requiresPriorityChange?: string;
 }
 
 interface IPackageInfo {
   packageSubscriptionId: number;
+  name: string;
+  trfNumber: string;
+}
+interface IOptionInfo {
+  optionSubscriptionId: number;
   name: string;
   trfNumber: string;
 }

@@ -1,7 +1,7 @@
 import {
-  IScheduleDetails,
   IScheduleFilter,
   IScheduleInfo,
+  IScheduleInfoDetails,
   ISchedulePeriods,
   TSchedulesPaginationResponse,
 } from "../model/types";
@@ -26,7 +26,7 @@ class ScheduleService {
     return response.data;
   }
 
-  async getSchedule(id: UUID): Promise<IScheduleDetails> {
+  async getSchedule(id: UUID): Promise<IScheduleInfoDetails> {
     const response = await axiosInstance.get(`/schedules/${id}`);
     return response.data;
   }

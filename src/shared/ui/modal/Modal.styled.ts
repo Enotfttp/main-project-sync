@@ -24,15 +24,15 @@ export const Value = styled.div`
   word-break: break-word;
 `;
 
-export const Section = styled.div`
+export const SectionTitle = styled.div`
   display: flex;
-  align-items: center;
   gap: 8px;
-  margin: 8px -24px;
-  padding: 6px 24px;
+  align-items: center;
+  padding: 4px 8px;
   background-color: ${({ theme }) => theme.color["Primary/Primary 10"]};
   text-transform: uppercase;
-
+  border-radius: 4px;
+  margin-top: 24px;
   svg {
     width: 20px;
     height: 20px;

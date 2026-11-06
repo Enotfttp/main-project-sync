@@ -9,8 +9,6 @@ import { useModal } from "@features/modal";
 import { Container, Page, PageBack } from "@shared/ui";
 import { FC } from "react";
 
-const REQUEST_FILTERS_ID = "request";
-
 const RequestPage: FC = () => {
   const {
     filters: filtersValue,
@@ -22,7 +20,7 @@ const RequestPage: FC = () => {
     handleRemoveField,
     handleCloseFilters,
     handleOpenFilters,
-  } = useFilters(REQUEST_FILTERS_ID);
+  } = useFilters("request");
   const { id, open, close } = useModal();
 
   return (

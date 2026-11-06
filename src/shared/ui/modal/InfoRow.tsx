@@ -1,5 +1,4 @@
-import { Row, Section, Value } from "./Modal.styled";
-import { ServiceInfoOutline } from "@admiral-ds/icons";
+import { Row, SectionTitle, Value } from "./Modal.styled";
 import { T } from "@admiral-ds/react-ui";
 import { FC, ReactNode } from "react";
 
@@ -32,11 +31,19 @@ export const InfoRow: FC<IInfoRowProps> = ({ label, children }) => (
   </Row>
 );
 
-export const SectionTitle: FC<{ title: string }> = ({ title }) => (
-  <Section>
-    <ServiceInfoOutline />
-    <T font="Subtitle/Subtitle 3" color="Primary/Primary 60 Main">
-      {title}
-    </T>
-  </Section>
+export const SectionInfo: FC<{
+  title: string;
+  icon: ReactNode;
+  children: ReactNode;
+}> = ({ title, icon, children }) => (
+  <>
+    <SectionTitle>
+      {icon}
+      <T font="Subtitle/Subtitle 3" color="Primary/Primary 60 Main">
+        {title}
+      </T>
+    </SectionTitle>
+
+    {children}
+  </>
 );

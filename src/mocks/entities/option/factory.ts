@@ -4,17 +4,19 @@ import {
   fakeAmount,
   fakeFutureIsoDate,
   fakeIsoDate,
-  fakeUuid,
   faker,
+  fakeUuid,
 } from "@mocks/lib";
 
 /** Контракт бэкенда ещё не описан в `@entities/option/model/types`. */
 export interface IOptionMock {
   optionId: UUID;
+  optionSubscriptionId: number;
   packageId: UUID;
   name: string;
   status: "ACTIVE" | "DISABLED" | "PENDING";
   amountFullCur: number;
+  trfNumber: string;
   startDate: IsoDate;
   endDate: IsoDate;
   createdAt: IsoDate;
@@ -35,6 +37,8 @@ export const createOption = (): IOptionMock => {
 
   return {
     optionId: fakeUuid(),
+    optionSubscriptionId: faker.number.int({ min: 100_000, max: 999_999 }),
+    trfNumber: faker.string.numeric(3),
     packageId: faker.helpers.arrayElement(packageDb.all()).packageId,
     name: faker.helpers.arrayElement(optionNames),
     status: faker.helpers.arrayElement(["ACTIVE", "DISABLED", "PENDING"]),

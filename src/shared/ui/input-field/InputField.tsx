@@ -55,7 +55,7 @@ export const InputFieldUI = ({
             <StyledNumberInputField
               {...input}
               {...props}
-              precision={0}
+              precision={2}
               thousand=""
               displayPlusMinusIcons={false}
               minValue={toLimit(min) ?? 0}
