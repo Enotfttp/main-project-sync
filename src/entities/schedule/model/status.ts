@@ -8,13 +8,15 @@ export const EventType = {
   OPTION_MIGRATION: "Миграция ДО",
   PRE_OPTION_ACTIVATION: "ВТБ-Касса",
   PRIORITY_CHANGE: "Смена приоритета",
-  SHEDULE_UPDATE: "Обновление данных",
+  SCHEDULE_UPDATE: "Обновление данных",
   DISABLE_PACKAGE: "Отключение ПУ",
   DISABLE_OPTION: "Отключение ДО",
   CANCEL_FEE: "Отмена графика",
 } as const;
 
-export type TEventType = (typeof EventType)[keyof typeof EventType];
+export type TEventType = keyof typeof EventType;
+
+export const mapEventType = (status: TEventType) => EventType[status];
 
 export const RequestStatus = {
   CREATED: "Создан",
@@ -25,7 +27,7 @@ export const RequestStatus = {
   ERROR: "В ошибке",
 } as const;
 
-export type TRequestStatus = (typeof RequestStatus)[keyof typeof RequestStatus];
+export type TRequestStatus = keyof typeof RequestStatus;
 
 export const ResultType = {
   OPERATION_SUCCESS: "Запрос исполнен",
@@ -36,7 +38,7 @@ export const ResultType = {
   CANCELLATION: "Запрос отменен",
 } as const;
 
-export type TResultType = (typeof ResultType)[keyof typeof ResultType];
+export type TResultType = keyof typeof ResultType;
 
 export const PutToOutboxStatus = {
   NEW: "Новый",
@@ -46,8 +48,7 @@ export const PutToOutboxStatus = {
   NOT_SUPPORTED: "Не подлежит отправке",
 } as const;
 
-export type TPutToOutboxStatus =
-  (typeof PutToOutboxStatus)[keyof typeof PutToOutboxStatus];
+export type TPutToOutboxStatus = keyof typeof PutToOutboxStatus;
 
 export const ScheduleStatus = {
   CREATED: "Создан",
@@ -57,12 +58,16 @@ export const ScheduleStatus = {
   ERROR: "В ошибке",
 } as const;
 
-export type TScheduleStatus =
-  (typeof ScheduleStatus)[keyof typeof ScheduleStatus];
+export type TScheduleStatus = keyof typeof ScheduleStatus;
+
+export const mapScheduleStatus = (status: TScheduleStatus) =>
+  ScheduleStatus[status];
 
 export const ProcessCode = {
   TOCART: "с картотекой",
   DECLINE: "без картотеки",
 } as const;
 
-export type TProcessCode = (typeof ProcessCode)[keyof typeof ProcessCode];
+export type TProcessCode = keyof typeof ProcessCode;
+
+export const mapProcessCode = (code: TProcessCode) => ProcessCode[code];

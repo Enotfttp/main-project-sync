@@ -7,35 +7,15 @@ import {
   FilterVariant,
   IRenderField,
   TFilterValue,
-  TValue,
 } from "@features/dynamic-filters";
 import {
-  addCalendarMonths,
   DATE_RANGE_SEPARATOR,
+  enumKey,
   parseIsoDate,
-  startOfToday,
+  text,
+  validateInn,
+  validateReceiptDate,
 } from "@shared/lib";
-
-const THREE_MONTHS_ERROR = "Для вывода доступны данные за три месяца";
-const CURRENT_DAY_ERROR = "Для вывода доступны данные не позднее текущего дня";
-const PERIOD_ORDER_ERROR = "Окончание периода не может быть раньше его начала";
-
-const validateReceiptDate = (value: TValue | undefined) => {
-  if (typeof value !== "string" || !value) return;
-
-  const [fromIso, toIso] = value.split(DATE_RANGE_SEPARATOR);
-  const from = parseIsoDate(fromIso);
-  const to = parseIsoDate(toIso);
-  if (!from || !to) return;
-
-  if (to < from) return PERIOD_ORDER_ERROR;
-
-  const today = startOfToday();
-  const minDate = addCalendarMonths(today, -3);
-
-  if (from < minDate || to < minDate) return THREE_MONTHS_ERROR;
-  if (to > today) return CURRENT_DAY_ERROR;
-};
 
 const standardFields: IRenderField[] = [
   {
@@ -44,17 +24,7 @@ const standardFields: IRenderField[] = [
     type: "uuid",
     label: "Идентификатор записи",
     placeholder: "Введите идентификатор записи...",
-    validate: (value) => {
-      if (!value) return;
-
-      if (Number(value) < 36) {
-        return "Допустим ввод не менее 36 символов";
-      }
-
-      if (Number(value) < 36) {
-        return "Допустим ввод не более 36 символов";
-      }
-    },
+    validate: validateInn,
   },
   {
     id: "requestStatus",
@@ -129,17 +99,6 @@ export const filterVariants: FilterVariant[] = [
   { label: "Стандартный", fields: standardFields },
   { label: "Общий", fields: commonFields },
 ];
-
-const text = (value: TValue | undefined) =>
-  typeof value === "string" && value ? value : undefined;
-
-const enumKey = <T extends object>(record: T, value: TValue | undefined) => {
-  const normalized = text(value);
-
-  if (!normalized || !Object.hasOwn(record, normalized)) return;
-
-  return normalized as Extract<keyof T, string>;
-};
 
 export const toRequestFilter = (
   filters?: TFilterValue,

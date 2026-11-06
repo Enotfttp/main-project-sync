@@ -71,6 +71,14 @@ export const routesPath = {
           },
         },
       },
+      period: {
+        root: "/schedules/:id/periods",
+        label: "Список периодов по графику №:id",
+        detail: {
+          root: "/schedules/:id/periods?idPeriod=:idPeriod",
+          label: "Подробная информация по периоду",
+        },
+      },
     },
   },
   package: {

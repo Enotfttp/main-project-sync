@@ -1,32 +1,57 @@
 import { scheduleService } from "./api";
 import {
-  IScheduleDetails,
-  IScheduleFilter,
-  IScheduleInfo,
+  IScheduleInfoDetails,
   ISchedulePeriods,
   TSchedulesPaginationResponse,
+  TSchedulesRequest,
 } from "../model/types";
-import { TFilterPaginationRequest } from "@shared/types";
-import { useQuery, UseQueryOptions } from "@tanstack/react-query";
+import {
+  useQuery,
+  useQueryClient,
+  UseQueryOptions,
+} from "@tanstack/react-query";
+import { useCallback } from "react";
+
+const getSchedulesQueryOptions = (request?: TSchedulesRequest) => ({
+  queryKey: ["schedules", request],
+  queryFn: () => scheduleService.getSchedules(request),
+});
 
 export const useGetSchedules = (
-  request?: TFilterPaginationRequest<IScheduleFilter, IScheduleInfo>,
+  request?: TSchedulesRequest,
   options?: Omit<
     UseQueryOptions<TSchedulesPaginationResponse, Error>,
     "queryKey" | "queryFn"
   >,
 ) => {
   return useQuery({
+    ...getSchedulesQueryOptions(request),
+    ...options,
+
     queryKey: ["schedules", request],
     queryFn: () => scheduleService.getSchedules(request),
     ...options,
   });
 };
 
+/**
+ * Загружает список заявок вне рендера и кладёт результат в кэш,
+ * чтобы таблица с тем же запросом не ходила за данными повторно.
+ */
+export const useFetchSchedules = () => {
+  const queryClient = useQueryClient();
+
+  return useCallback(
+    (request?: TSchedulesRequest) =>
+      queryClient.query(getSchedulesQueryOptions(request)),
+    [queryClient],
+  );
+};
+
 export const useGetSchedule = (
   id: UUID,
   options?: Omit<
-    UseQueryOptions<IScheduleDetails, Error>,
+    UseQueryOptions<IScheduleInfoDetails, Error>,
     "queryKey" | "queryFn"
   >,
 ) => {

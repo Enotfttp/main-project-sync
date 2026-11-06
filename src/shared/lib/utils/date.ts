@@ -4,7 +4,7 @@
  * @param date Дата в UTC
  * @param withTime флаг от которого зависит какую дату возвращать с временем или нет
  */
-export function normalizedDate(date: IsoDate, withTime?: boolean) {
+export function normalizedDate(date?: IsoDate, withTime?: boolean) {
   if (!date) return "";
   const newDate = new Date(date);
 
