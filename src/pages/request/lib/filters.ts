@@ -13,9 +13,11 @@ import {
   enumKey,
   parseIsoDate,
   text,
-  validateInn,
+  validateCountNum,
   validateReceiptDate,
 } from "@shared/lib";
+
+const validateInn = validateCountNum(36, 36);
 
 const standardFields: IRenderField[] = [
   {

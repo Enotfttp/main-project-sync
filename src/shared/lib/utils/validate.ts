@@ -6,19 +6,24 @@ import {
   startOfToday,
 } from "@shared/lib";
 
-export const required = <T>(value?: T) => {
-  if (typeof value !== "number" && !value) {
-    return "Данное поле обязательное";
-  }
-  if (Array.isArray(value) && !value.length) {
-    return "Данное поле обязательное";
-  }
-  return undefined;
-};
-
 const THREE_MONTHS_ERROR = "Для вывода доступны данные за три месяца";
 const CURRENT_DAY_ERROR = "Для вывода доступны данные не позднее текущего дня";
 const PERIOD_ORDER_ERROR = "Окончание периода не может быть раньше его начала";
+const REQUIRED_FIELD = "Данное поле обязательное";
+
+const regExpPackageName = new RegExp(
+  /^(?=.{1,255}$)[а-яёА-ЯЁ0-9()""./\\_\\-]+$/i,
+);
+
+export const required = <T>(value?: T) => {
+  if (typeof value !== "number" && !value) {
+    return REQUIRED_FIELD;
+  }
+  if (Array.isArray(value) && !value.length) {
+    return REQUIRED_FIELD;
+  }
+  return undefined;
+};
 
 export const validateReceiptDate = (value: TValue | undefined) => {
   if (typeof value !== "string" || !value) return;
@@ -37,18 +42,6 @@ export const validateReceiptDate = (value: TValue | undefined) => {
   if (to > today) return CURRENT_DAY_ERROR;
 };
 
-export const validateInn = (value: TValue | undefined) => {
-  if (!value) return;
-
-  if (Number(value) < 36) {
-    return "Допустим ввод не менее 36 символов";
-  }
-
-  if (Number(value) < 36) {
-    return "Допустим ввод не более 36 символов";
-  }
-};
-
 export const validateAmount = (value: TValue | undefined) => {
   if (!value || typeof value !== "string") return;
   const [first, second] = value.split(",");
@@ -59,4 +52,28 @@ export const validateAmount = (value: TValue | undefined) => {
   if (second && second.length > 2) {
     return "Заполните поле, согласно формату 18,2";
   }
+};
+
+export const validatePackageName = (value: TValue | undefined) => {
+  if (!value || typeof value !== "string") return;
+
+  const trimValue = value.trim();
+
+  if (trimValue.match(regExpPackageName)) {
+    return "Недопустимый формат данных";
+  }
+};
+
+export const validateCountNum = (minCount: number, maxCount: number) => {
+  return function (value: TValue | undefined) {
+    if (!value) return;
+
+    if (Number(value) < minCount) {
+      return `Допустим ввод не менее ${minCount} символов`;
+    }
+
+    if (Number(value) < maxCount) {
+      return `Допустим ввод не более ${maxCount} символов`;
+    }
+  };
 };

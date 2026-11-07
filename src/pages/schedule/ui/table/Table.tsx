@@ -55,7 +55,7 @@ export const Table: FC<IProps> = ({ tableKey, filters, onRowClick }) => {
       columnList={columnList}
       rowList={rows}
       onRowClick={handleRowClick}
-      queryKey="requests"
+      queryKey="schedules"
       handlePaginationChange={handlePaginationChange}
       pagination={hasFilters ? data : undefined}
     />

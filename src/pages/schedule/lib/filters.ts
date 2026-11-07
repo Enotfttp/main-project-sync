@@ -7,9 +7,11 @@ import {
   parseIsoDate,
   text,
   validateAmount,
-  validateInn,
+  validateCountNum,
   validateReceiptDate,
 } from "@shared/lib";
+
+const validateInn = validateCountNum(36, 36);
 
 export const filters: IRenderField[] = [
   {

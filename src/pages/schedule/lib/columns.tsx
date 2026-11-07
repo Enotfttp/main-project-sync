@@ -43,7 +43,7 @@ export const columnList: Column[] = [
     },
   },
   {
-    name: "amountFullCur ",
+    name: "amountFullCur",
     title: "Сумма оплаты",
     width: "12%",
   },

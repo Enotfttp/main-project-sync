@@ -27,10 +27,6 @@ export const useGetSchedules = (
   return useQuery({
     ...getSchedulesQueryOptions(request),
     ...options,
-
-    queryKey: ["schedules", request],
-    queryFn: () => scheduleService.getSchedules(request),
-    ...options,
   });
 };
 
