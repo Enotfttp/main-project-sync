@@ -1,18 +1,52 @@
 import { TPackageStatus } from "./status";
-import { ITableDataPaginationResponse } from "@shared/types";
+import {
+  ITableDataPaginationResponse,
+  TFilterPaginationRequest,
+} from "@shared/types";
+
+export interface IPackageFilter {
+  packageSubscriptionId?: number;
+  packageName?: string;
+  packageStatus?: TPackageStatus;
+  activationDateFrom?: IsoDate;
+  activationDateTo?: IsoDate;
+  deactivationDateFrom?: IsoDate;
+  deactivationDateTo?: IsoDate;
+  amountFullCur?: number;
+  paymentPeriodFrom?: IsoDate;
+  paymentPeriodTo?: IsoDate;
+}
 
 export interface IPackageInfo {
-  packageSubscriptionId: string;
+  packageSubscriptionId: number;
   packageName: string;
   packageStatus: TPackageStatus;
-  activationDateFrom: IsoDate;
-  activationDateTo: IsoDate;
-  deactivationDateFrom: IsoDate;
-  deactivationDateTo: IsoDate;
+  activationDate: IsoDate;
+  deactivationDate: IsoDate;
   amountFullCur: number;
   paymentPeriodFrom: IsoDate;
   paymentPeriodTo: IsoDate;
 }
 
-export type TPackagePaginationResponse =
+export type TPackagesPaginationResponse =
   ITableDataPaginationResponse<IPackageInfo>;
+
+export type TPackagesRequest = TFilterPaginationRequest<
+  IPackageFilter,
+  IPackageInfo
+>;
+
+export interface IPackageInfoDetails {
+  packageSubscriptionId: number;
+  packageName: string;
+  packageStatus: TPackageStatus;
+  activationDate: IsoDate;
+  deactivationDate: IsoDate;
+  amountFullCur: number;
+  paymentPeriodFrom: IsoDate;
+  paymentPeriodTo: IsoDate;
+  accountNumber: string;
+  accountCode: string;
+  createdAt: IsoDate;
+  updatedAt: IsoDate;
+}

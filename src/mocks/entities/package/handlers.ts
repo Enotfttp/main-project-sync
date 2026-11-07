@@ -1,4 +1,10 @@
-import { packageDb } from "./factory";
+import { packageDb, toPackageInfo } from "./factory";
+import {
+  IPackageFilter,
+  IPackageInfo,
+  IPackageInfoDetails,
+  TPackagesPaginationResponse,
+} from "@entities/package/model";
 import { optionDb } from "@mocks/entities/option/factory";
 import {
   apiPath,
@@ -13,17 +19,25 @@ import { delay, http, HttpResponse } from "msw";
 export const handlers = [
   http.post(apiPath("/packages"), async ({ request }) => {
     await delay();
-    const { filters, page, sort } = await readListRequest(request);
-    const items = filterItems(packageDb.all(), filters);
+    const { filters, page, sort } = await readListRequest<
+      IPackageFilter,
+      IPackageInfo
+    >(request);
+    const items = filterItems(packageDb.all(), filters).map(toPackageInfo);
 
-    return HttpResponse.json(paginate(sortItems(items, sort), page));
+    return HttpResponse.json<TPackagesPaginationResponse>(
+      paginate(sortItems(items, sort), page),
+    );
   }),
 
   http.get(apiPath("/packages/:id"), async ({ params }) => {
-    await delay();
-    const item = packageDb.find(params.id);
+    await delay(5000);
+    const packageItems = packageDb.find(params.id);
+    if (!packageItems) return notFound();
 
-    return item ? HttpResponse.json(item) : notFound();
+    return HttpResponse.json<IPackageInfoDetails>({
+      ...packageItems.details,
+    });
   }),
 
   http.post(apiPath("/packages/:id/options"), async ({ params, request }) => {

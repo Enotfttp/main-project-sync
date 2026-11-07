@@ -83,13 +83,13 @@ export const createSchedule = (): TScheduleMock => {
       eventType: faker.helpers.arrayElement(eventTypes),
       tbi: faker.string.numeric(4),
       priority,
-      accountCode: pkg.accountCode,
+      accountCode: pkg.details.accountCode,
       currencyAccount: faker.finance.currencyCode(),
       processCode,
       packageInfo: {
         packageSubscriptionId: pkg.packageSubscriptionId,
-        name: pkg.name,
-        trfNumber: pkg.trfNumber,
+        name: pkg.details.packageName,
+        trfNumber: faker.system.semver(),
       },
       optionInfo: {
         optionSubscriptionId: opt.optionSubscriptionId,
