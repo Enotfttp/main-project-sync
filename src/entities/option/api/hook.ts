@@ -1,6 +1,24 @@
 import { optionService } from "./api";
-import { IOptionInfoDetails } from "../model";
-import { useQuery, UseQueryOptions } from "@tanstack/react-query";
+import {
+  IOptionInfoDetails,
+  TOptionsPaginationResponse,
+  TOptionsRequest,
+} from "../model";
+import { UseQueryOptions, useSuspenseQuery } from "@tanstack/react-query";
+
+export const useGetOptions = (
+  params: TOptionsRequest,
+  options?: Omit<
+    UseQueryOptions<TOptionsPaginationResponse, Error>,
+    "queryKey" | "queryFn"
+  >,
+) => {
+  return useSuspenseQuery({
+    queryKey: ["options", params],
+    queryFn: () => optionService.getOptions(params),
+    ...options,
+  });
+};
 
 export const useGetOption = (
   id: UUID,
@@ -9,7 +27,7 @@ export const useGetOption = (
     "queryKey" | "queryFn"
   >,
 ) => {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: ["option", id],
     queryFn: () => optionService.getOption(id),
     ...options,

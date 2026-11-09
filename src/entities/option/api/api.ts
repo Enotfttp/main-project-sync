@@ -1,7 +1,25 @@
-import { IOptionInfoDetails } from "../model";
-import { axiosInstance } from "@shared/api";
+import {
+  IOptionInfoDetails,
+  TOptionsPaginationResponse,
+  TOptionsRequest,
+} from "../model";
+import { axiosInstance, toListParams } from "@shared/api";
 
 class OptionService {
+  async getOptions({
+    optionSubscriptionId,
+    ...listParams
+  }: TOptionsRequest): Promise<TOptionsPaginationResponse> {
+    const response = await axiosInstance.post(
+      `/options`,
+      { optionSubscriptionId },
+      {
+        params: toListParams(listParams),
+      },
+    );
+    return response.data;
+  }
+
   async getOption(id: UUID): Promise<IOptionInfoDetails> {
     const response = await axiosInstance.get(`/options/${id}`);
     return response.data;

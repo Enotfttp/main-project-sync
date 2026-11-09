@@ -13,6 +13,7 @@ export const PackagePage = lazy(() => import("@pages/package/PackagePage"));
 export const PackageInfoPage = lazy(
   () => import("@pages/package-info/PackageInfoPage"),
 );
+export const OptionPage = lazy(() => import("@pages/option/OptionPage"));
 export const OptionInfoPage = lazy(
   () => import("@pages/option-info/OptionInfoPage"),
 );

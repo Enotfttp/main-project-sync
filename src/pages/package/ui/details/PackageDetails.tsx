@@ -5,19 +5,19 @@ import { routesPath } from "@app/routes";
 import { useGetPackage } from "@entities/package/api/hook";
 import { PackageStatusTag } from "@entities/package/ui";
 import { Modal } from "@features/modal";
-import { normalizedDate } from "@shared/lib";
+import { normalizedDate, resolveChildPath } from "@shared/lib";
 import { InfoRow, SectionInfo } from "@shared/ui";
 import { FC } from "react";
-import { generatePath, useNavigate } from "react-router-dom";
+import { generatePath, useLocation, useNavigate } from "react-router-dom";
 
 interface IProps {
   id: string;
   onClose: () => void;
 }
 
-const PackageInfo: FC<{ id: string }> = ({ id }) => {
+const PackageInfo: FC<{ id: UUID }> = ({ id }) => {
   const navigate = useNavigate();
-  const { data } = useGetPackage(id as UUID);
+  const { data } = useGetPackage(id);
 
   const redirectToDocumentPage = () => {
     navigate(generatePath(routesPath.package.detail.document.root));
@@ -74,11 +74,12 @@ const PackageInfo: FC<{ id: string }> = ({ id }) => {
 
 export const PackageDetails: FC<IProps> = ({ id, onClose }) => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  const optionPath = resolveChildPath(pathname, "option");
 
   const handleRedirect = () => {
-    navigate(
-      generatePath(routesPath.package.detail.option.root, { idOption: id }),
-    );
+    if (optionPath) navigate(optionPath);
   };
 
   return (

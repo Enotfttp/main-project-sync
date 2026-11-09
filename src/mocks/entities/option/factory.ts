@@ -1,52 +1,70 @@
-import { packageDb } from "@mocks/entities/package/factory";
+import {
+  IOptionInfo,
+  IOptionInfoDetails,
+  OptionStatus,
+} from "@entities/option/model";
 import {
   createCollection,
+  fakeAccountCode,
   fakeAmount,
   fakeFutureIsoDate,
   fakeIsoDate,
   faker,
-  fakeUuid,
 } from "@mocks/lib";
+import { keysOf } from "@shared/lib";
 
-/** Контракт бэкенда ещё не описан в `@entities/option-info/model/types`. */
-export interface IOptionMock {
-  optionId: UUID;
-  optionSubscriptionId: number;
-  packageId: UUID;
-  name: string;
-  status: "ACTIVE" | "DISABLED" | "PENDING";
-  amountFullCur: number;
-  trfNumber: string;
-  startDate: IsoDate;
-  endDate: IsoDate;
-  createdAt: IsoDate;
-}
+export type IOptionMock = IOptionInfo & {
+  details: IOptionInfoDetails;
+};
 
-const optionNames = [
-  "СМС-информирование",
-  "Зарплатный проект",
-  "Эквайринг",
-  "Валютный контроль",
-  "Дополнительный пользователь",
-  "Корпоративная карта",
-];
+const optionStatuses = keysOf(OptionStatus);
 
 export const createOption = (): IOptionMock => {
+  const optionSubscriptionId = faker.number.int({
+    min: 100_000,
+    max: 999_999,
+  });
+  const optionName = `Опция «${faker.lorem.words(1)}»`;
+  const optionStatus = faker.helpers.arrayElement(optionStatuses);
+  const activationDate = fakeIsoDate();
+  const deactivationDate = fakeFutureIsoDate(activationDate);
+  const paymentPeriodFrom = fakeIsoDate();
+  const paymentPeriodTo = fakeFutureIsoDate(paymentPeriodFrom);
+  const amountFullCur = fakeAmount();
   const createdAt = fakeIsoDate();
-  const startDate = fakeFutureIsoDate(createdAt);
 
   return {
-    optionId: fakeUuid(),
-    optionSubscriptionId: faker.number.int({ min: 100_000, max: 999_999 }),
-    trfNumber: faker.string.numeric(3),
-    packageId: faker.helpers.arrayElement(packageDb.all()).packageId,
-    name: faker.helpers.arrayElement(optionNames),
-    status: faker.helpers.arrayElement(["ACTIVE", "DISABLED", "PENDING"]),
-    amountFullCur: fakeAmount(),
-    startDate,
-    endDate: fakeFutureIsoDate(startDate),
-    createdAt,
+    optionSubscriptionId,
+    optionName,
+    optionStatus,
+    activationDate,
+    deactivationDate,
+    amountFullCur,
+    paymentPeriodFrom,
+    paymentPeriodTo,
+    details: {
+      optionSubscriptionId,
+      optionName,
+      optionStatus,
+      activationDate,
+      deactivationDate,
+      amountFullCur,
+      paymentPeriodFrom,
+      paymentPeriodTo,
+      accountCode: fakeAccountCode(),
+      createdAt,
+      updatedAt: fakeFutureIsoDate(createdAt),
+    },
   };
 };
 
-export const optionDb = createCollection("optionId", createOption, 90);
+export const optionDb = createCollection(
+  "optionSubscriptionId",
+  createOption,
+  50,
+);
+
+export const toOptionInfo = ({
+  details: _details,
+  ...info
+}: IOptionMock): IOptionInfo => info;

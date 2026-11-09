@@ -57,6 +57,10 @@ export const routes: RouteObject[] = [
         element: withSuspense(PackageInfoPage),
       },
       {
+        path: routesPath.package.detail.option.root,
+        element: withSuspense(OptionInfoPage),
+      },
+      {
         path: routesPath.request.detail.option.root,
         element: withSuspense(OptionInfoPage),
       },

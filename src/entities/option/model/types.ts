@@ -4,23 +4,10 @@ import {
   TFilterPaginationRequest,
 } from "@shared/types";
 
-export interface IOptionFilter {
-  packageSubscriptionId?: number;
-  packageName?: string;
-  packageStatus?: TOptionStatus;
-  activationDateFrom?: IsoDate;
-  activationDateTo?: IsoDate;
-  deactivationDateFrom?: IsoDate;
-  deactivationDateTo?: IsoDate;
-  amountFullCur?: number;
-  paymentPeriodFrom?: IsoDate;
-  paymentPeriodTo?: IsoDate;
-}
-
 export interface IOptionInfo {
-  packageSubscriptionId: number;
-  packageName: string;
-  packageStatus: TOptionStatus;
+  optionSubscriptionId: number;
+  optionName: string;
+  optionStatus: TOptionStatus;
   activationDate: IsoDate;
   deactivationDate: IsoDate;
   amountFullCur: number;
@@ -31,21 +18,19 @@ export interface IOptionInfo {
 export type TOptionsPaginationResponse =
   ITableDataPaginationResponse<IOptionInfo>;
 
-export type TOptionsRequest = TFilterPaginationRequest<
-  IOptionFilter,
-  IOptionInfo
->;
+export type TOptionsRequest = TFilterPaginationRequest<object, IOptionInfo> & {
+  optionSubscriptionId: UUID;
+};
 
 export interface IOptionInfoDetails {
-  packageSubscriptionId: number;
-  packageName: string;
-  packageStatus: TOptionStatus;
+  optionSubscriptionId: number;
+  optionName: string;
+  optionStatus: TOptionStatus;
   activationDate: IsoDate;
   deactivationDate: IsoDate;
   amountFullCur: number;
   paymentPeriodFrom: IsoDate;
   paymentPeriodTo: IsoDate;
-  accountNumber: string;
   accountCode: string;
   createdAt: IsoDate;
   updatedAt: IsoDate;
