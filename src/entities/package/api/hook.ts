@@ -6,9 +6,9 @@ import {
 } from "@entities/package/model";
 import { TFilterPaginationRequest } from "@shared/types";
 import {
-  useQuery,
   useQueryClient,
   UseQueryOptions,
+  useSuspenseQuery,
 } from "@tanstack/react-query";
 import { useCallback } from "react";
 
@@ -24,7 +24,7 @@ export const useGetPackages = (
     "queryKey" | "queryFn"
   >,
 ) => {
-  return useQuery({
+  return useSuspenseQuery({
     ...getPackagesQueryOptions(request),
     ...options,
   });
@@ -51,7 +51,7 @@ export const useGetPackage = (
     "queryKey" | "queryFn"
   >,
 ) => {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: ["package", id],
     queryFn: () => packageService.getPackage(id),
     ...options,
@@ -64,7 +64,7 @@ export const useGetPackageOptions = (
   filters: TFilterPaginationRequest<any>,
   options?: Omit<UseQueryOptions<any, Error>, "queryKey" | "queryFn">,
 ) => {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: ["options", id, filters],
     queryFn: () => packageService.getPackageOptions(id, filters),
     ...options,

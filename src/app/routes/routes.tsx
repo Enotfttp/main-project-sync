@@ -3,9 +3,12 @@ import { NotFoundPage } from "@app/errorBoundary/NotFoundPage";
 import { RouterErrorBoundary } from "@app/errorBoundary/RouterErrorBoundary";
 import {
   MainPage,
+  OptionInfoPage,
+  PackageInfoPage,
   PackagePage,
   RequestHistoryPage,
   RequestPage,
+  ScheduleInfoPage,
   SchedulePage,
 } from "@pages/index";
 import { Loader } from "@shared/ui";
@@ -42,8 +45,20 @@ export const routes: RouteObject[] = [
         element: withSuspense(SchedulePage),
       },
       {
+        path: routesPath.request.detail.schedule.root,
+        element: withSuspense(ScheduleInfoPage),
+      },
+      {
         path: routesPath.package.root,
         element: withSuspense(PackagePage),
+      },
+      {
+        path: routesPath.request.detail.package.root,
+        element: withSuspense(PackageInfoPage),
+      },
+      {
+        path: routesPath.request.detail.option.root,
+        element: withSuspense(OptionInfoPage),
       },
     ],
   },

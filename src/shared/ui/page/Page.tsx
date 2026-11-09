@@ -18,3 +18,18 @@ export const Container = styled.div`
   background-color: ${({ theme }) => theme.color["Neutral/Neutral 00"]};
   gap: 24px;
 `;
+
+export const InfoPage = styled(Page)`
+  height: auto;
+  min-height: 100vh;
+`;
+
+export const InfoPageContainer = styled(Container)`
+  gap: 0;
+`;
+
+export const InfoPageActions = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+`;

@@ -6,9 +6,9 @@ import {
   TSchedulesRequest,
 } from "../model/types";
 import {
-  useQuery,
   useQueryClient,
   UseQueryOptions,
+  useSuspenseQuery,
 } from "@tanstack/react-query";
 import { useCallback } from "react";
 
@@ -24,7 +24,7 @@ export const useGetSchedules = (
     "queryKey" | "queryFn"
   >,
 ) => {
-  return useQuery({
+  return useSuspenseQuery({
     ...getSchedulesQueryOptions(request),
     ...options,
   });
@@ -51,7 +51,7 @@ export const useGetSchedule = (
     "queryKey" | "queryFn"
   >,
 ) => {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: ["schedule", id],
     queryFn: () => scheduleService.getSchedule(id),
     ...options,
@@ -65,7 +65,7 @@ export const useGetSchedulePeriods = (
     "queryKey" | "queryFn"
   >,
 ) => {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: ["schedule", "periods", id],
     queryFn: () => scheduleService.getSchedulePeriods(id),
     ...options,

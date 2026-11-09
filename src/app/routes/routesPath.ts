@@ -27,7 +27,7 @@ export const routesPath = {
           },
         },
         option: {
-          root: "/requests/:id/schedules/:id/option/:idPackage",
+          root: "/requests/:id/schedules/:id/option-info/:idPackage",
           label: "Информация по опции",
           document: {
             root: "/requests/:id/schedules/:id/package/:idOption/documents",
@@ -38,6 +38,14 @@ export const routesPath = {
             },
           },
         },
+      },
+      package: {
+        root: "/requests/:id/package/:idPackage",
+        label: "Информация по пакету",
+      },
+      option: {
+        root: "/requests/:id/option/:idOption",
+        label: "Информация по опции",
       },
     },
   },
@@ -60,7 +68,7 @@ export const routesPath = {
         },
       },
       option: {
-        root: "/schedules/:id/option/:idPackage",
+        root: "/schedules/:id/option-info/:idPackage",
         label: "Информация по опции",
         document: {
           root: "/schedules/:id/package/:idOption/documents",

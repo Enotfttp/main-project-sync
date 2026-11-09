@@ -8,7 +8,7 @@ import {
   fakeUuid,
 } from "@mocks/lib";
 
-/** Контракт бэкенда ещё не описан в `@entities/option/model/types`. */
+/** Контракт бэкенда ещё не описан в `@entities/option-info/model/types`. */
 export interface IOptionMock {
   optionId: UUID;
   optionSubscriptionId: number;

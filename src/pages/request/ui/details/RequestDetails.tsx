@@ -34,7 +34,10 @@ const RequestInfo: FC<{ id: string; onOpenMessage: () => void }> = ({
         <InfoRow label="Идентификатор графика оплат">
           <Link
             as={RouterLink}
-            to={`${routesPath.schedule.root}/${data.scheduleSourceGuid}`}
+            to={generatePath(routesPath.request.detail.schedule.root, {
+              id,
+              idSchedule: data.scheduleSourceGuid,
+            })}
             dimension="s"
             appearance="primary"
           >
@@ -44,13 +47,32 @@ const RequestInfo: FC<{ id: string; onOpenMessage: () => void }> = ({
         <InfoRow label="Идентификатор пакета услуг">
           <Link
             as={RouterLink}
-            to={`${routesPath.package.root}/${data.packageSubscriptionId}`}
+            to={generatePath(routesPath.request.detail.package.root, {
+              id,
+              idPackage: String(data.packageSubscriptionId),
+            })}
             dimension="s"
             appearance="primary"
           >
             {data.packageSubscriptionId}
           </Link>
         </InfoRow>
+        {data?.optionSubscriptionId && (
+          <InfoRow label="Идентификатор дополнительной опцииг">
+            <Link
+              as={RouterLink}
+              to={generatePath(routesPath.request.detail.option.root, {
+                id,
+                idOption: String(data.optionSubscriptionId),
+              })}
+              dimension="s"
+              appearance="primary"
+            >
+              {data.optionSubscriptionId}
+            </Link>
+          </InfoRow>
+        )}
+
         <InfoRow label="Дата поступления запроса">
           {normalizedDate(data.requestDate)}
         </InfoRow>

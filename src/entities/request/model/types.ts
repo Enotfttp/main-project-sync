@@ -49,6 +49,7 @@ export interface IRequestInfoDetails extends Partial<IErrorInfo> {
   requestId: UUID;
   scheduleSourceGuid: UUID;
   packageSubscriptionId: number;
+  optionSubscriptionId?: number;
   requestDate: IsoDate;
   requestCreated: IsoDate;
   eventType: TEventType;
