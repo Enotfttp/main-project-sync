@@ -1,3 +1,4 @@
+import { routesPath } from "@app/routes";
 import { generatePath, matchPath } from "react-router-dom";
 
 export type TPageRoutes = {
@@ -15,6 +16,7 @@ type TRouteNode = {
   pattern: string;
   label: string;
   parent: TRouteNode | null;
+  children: Record<string, TRouteNode>;
 };
 
 type TRouteSource = {
@@ -49,7 +51,7 @@ const collectRoutes = (
   parent: TRouteNode,
   acc: TRouteNode[],
 ) => {
-  for (const value of Object.values(source)) {
+  for (const [key, value] of Object.entries(source)) {
     const route = readRoute(value);
     if (!route) continue;
 
@@ -57,8 +59,10 @@ const collectRoutes = (
       pattern: normalizePattern(route.root),
       label: route.label,
       parent,
+      children: {},
     };
 
+    parent.children[key] = node;
     acc.push(node);
     collectRoutes(value as object, node, acc);
   }
@@ -118,10 +122,7 @@ const compilePath = (
   return `${path}?${query.toString()}`;
 };
 
-export const resolvePageNavigation = (
-  pathname: string,
-  routes: TPageRoutes,
-): TPageNavigation | null => {
+const flattenRoutes = (routes: TPageRoutes) => {
   const home = readRoute(routes);
   if (!home) return null;
 
@@ -129,14 +130,29 @@ export const resolvePageNavigation = (
     pattern: normalizePattern(home.root),
     label: home.label,
     parent: null,
+    children: {},
   };
   const flatRoutes = [homeRoute];
   collectRoutes(routes, homeRoute, flatRoutes);
 
-  const matched = flatRoutes
-    .map((route) => ({ route, match: matchRoute(route.pattern, pathname) }))
-    .find((item) => item.match);
+  return flatRoutes;
+};
 
+const matchCurrentRoute = (pathname: string) => {
+  const flatRoutes = flattenRoutes(routesPath);
+  if (!flatRoutes) return null;
+
+  return (
+    flatRoutes
+      .map((route) => ({ route, match: matchRoute(route.pattern, pathname) }))
+      .find((item) => item.match) ?? null
+  );
+};
+
+export const resolvePageNavigation = (
+  pathname: string,
+): TPageNavigation | null => {
+  const matched = matchCurrentRoute(pathname);
   if (!matched?.match || !matched.route.parent) return null;
 
   const params = matched.match.params ?? {};
@@ -148,4 +164,31 @@ export const resolvePageNavigation = (
     backLabel: formatRouteLabel(matched.route.parent.label, params),
     title: formatRouteLabel(matched.route.label, params),
   };
+};
+
+/**
+ * Путь дочернего экрана текущей ветки.
+ * Ключ — имя узла в дереве маршрутов (`period`, `package`), не конкретный URL.
+ * params - значения которых ещё нет в адресе, например id.
+ */
+export const resolveChildPath = (
+  pathname: string,
+  childKey: string,
+  params?: Record<string, string>,
+): string | null => {
+  const matched = matchCurrentRoute(pathname);
+  if (!matched?.match) return null;
+
+  const child = matched.route.children[childKey];
+  if (!child) return null;
+
+  const nextParams: Record<string, string | undefined> = {
+    ...matched.match.params,
+  };
+
+  for (const [key, value] of Object.entries(params ?? {})) {
+    nextParams[key] = value;
+  }
+
+  return compilePath(child.pattern, nextParams);
 };

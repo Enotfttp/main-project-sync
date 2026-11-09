@@ -86,6 +86,7 @@ export const createRequest = (): TRequestMock => {
       requestId,
       scheduleSourceGuid: schedule.scheduleSourceGuid,
       packageSubscriptionId: schedule.details.packageInfo.packageSubscriptionId,
+      optionSubscriptionId: schedule.details.optionInfo?.optionSubscriptionId,
       requestDate,
       requestCreated: createdAt,
       eventType,
