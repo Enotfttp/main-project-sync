@@ -7,12 +7,12 @@ import { axiosInstance, toListParams } from "@shared/api";
 
 class OptionService {
   async getOptions({
-    optionSubscriptionId,
+    packageSubscriptionId,
     ...listParams
   }: TOptionsRequest): Promise<TOptionsPaginationResponse> {
     const response = await axiosInstance.post(
       `/options`,
-      { optionSubscriptionId },
+      { packageSubscriptionId },
       {
         params: toListParams(listParams),
       },

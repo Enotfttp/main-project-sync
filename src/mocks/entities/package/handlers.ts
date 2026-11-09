@@ -31,7 +31,7 @@ export const handlers = [
   }),
 
   http.get(apiPath("/packages/:id"), async ({ params }) => {
-    await delay(5000);
+    await delay();
     const packageItems = packageDb.find(params.id);
     if (!packageItems) return notFound();
 

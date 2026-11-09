@@ -7,11 +7,10 @@ import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 
 interface IProps {
-  onRowClick: (id: string) => void;
   onTotalElementsChange: (totalElements?: number) => void;
 }
 
-export const Table: FC<IProps> = ({ onRowClick, onTotalElementsChange }) => {
+export const Table: FC<IProps> = ({ onTotalElementsChange }) => {
   const { id } = useParams();
 
   if (!id) throw new Error("Нет id запроса");
@@ -33,19 +32,11 @@ export const Table: FC<IProps> = ({ onRowClick, onTotalElementsChange }) => {
     setPagination(pagination);
   }, []);
 
-  const handleRowClick = useCallback(
-    (rowId: string | number) => {
-      onRowClick(String(rowId));
-    },
-    [onRowClick],
-  );
-
   return (
     <TableSort
       isPagination
       columnList={columnList}
       rowList={rows}
-      onRowClick={handleRowClick}
       queryKey="request-history"
       handlePaginationChange={handlePaginationChange}
       pagination={(data?.totalElements || 0) > 25 ? data : undefined}

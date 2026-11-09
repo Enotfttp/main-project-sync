@@ -11,7 +11,7 @@ export const PaginationTable = ({
   handlePaginationChange?(pagination: TPaginationTable): void;
   handleResetSortCols(): void;
 }) => {
-  const pageSizes = props.pageSizes ?? [8, 20, 50, 100, 200];
+  const pageSizes = props.pageSizes ?? [25, 50, 100, 200];
   const [pageSize, setPageSize] = React.useState(
     props.pageSize ?? pageSizes[0],
   );

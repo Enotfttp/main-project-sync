@@ -4,6 +4,7 @@ import { RouterErrorBoundary } from "@app/errorBoundary/RouterErrorBoundary";
 import {
   MainPage,
   OptionInfoPage,
+  OptionPage,
   PackageInfoPage,
   PackagePage,
   RequestHistoryPage,
@@ -21,6 +22,30 @@ const withSuspense = (Component: LazyExoticComponent<ComponentType>) => (
   </Suspense>
 );
 
+const page = (
+  path: string,
+  Page: LazyExoticComponent<ComponentType>,
+): RouteObject => ({
+  path,
+  element: withSuspense(Page),
+});
+
+const PackageInfoPages = [
+  routesPath.request.detail.package.root,
+  routesPath.schedule.detail.package.root,
+].map((path) => page(path, PackageInfoPage));
+
+const OptionInfoPages = [
+  routesPath.request.detail.option.root,
+  routesPath.schedule.detail.option.root,
+].map((path) => page(path, OptionInfoPage));
+
+const OptionPages = [
+  routesPath.request.detail.package.option.root,
+  routesPath.schedule.detail.package.option.root,
+  routesPath.package.detail.option.root,
+].map((path) => page(path, OptionPage));
+
 const RootLayout = () => <Outlet />;
 
 export const routes: RouteObject[] = [
@@ -28,6 +53,9 @@ export const routes: RouteObject[] = [
     element: <RootLayout />,
     errorElement: <RouterErrorBoundary />,
     children: [
+      ...PackageInfoPages,
+      ...OptionInfoPages,
+      ...OptionPages,
       {
         path: routesPath.root,
         element: withSuspense(MainPage),
@@ -51,18 +79,6 @@ export const routes: RouteObject[] = [
       {
         path: routesPath.package.root,
         element: withSuspense(PackagePage),
-      },
-      {
-        path: routesPath.request.detail.package.root,
-        element: withSuspense(PackageInfoPage),
-      },
-      {
-        path: routesPath.package.detail.option.root,
-        element: withSuspense(OptionInfoPage),
-      },
-      {
-        path: routesPath.request.detail.option.root,
-        element: withSuspense(OptionInfoPage),
       },
     ],
   },

@@ -19,7 +19,7 @@ export type TOptionsPaginationResponse =
   ITableDataPaginationResponse<IOptionInfo>;
 
 export type TOptionsRequest = TFilterPaginationRequest<object, IOptionInfo> & {
-  optionSubscriptionId: UUID;
+  packageSubscriptionId: UUID;
 };
 
 export interface IOptionInfoDetails {

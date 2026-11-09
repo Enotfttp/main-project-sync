@@ -4,7 +4,6 @@ import {
   TPackagesPaginationResponse,
   TPackagesRequest,
 } from "@entities/package/model";
-import { TFilterPaginationRequest } from "@shared/types";
 import {
   useQueryClient,
   UseQueryOptions,
@@ -54,19 +53,6 @@ export const useGetPackage = (
   return useSuspenseQuery({
     queryKey: ["package", id],
     queryFn: () => packageService.getPackage(id),
-    ...options,
-  });
-};
-
-// TODO.FIX TS
-export const useGetPackageOptions = (
-  id: UUID,
-  filters: TFilterPaginationRequest<any>,
-  options?: Omit<UseQueryOptions<any, Error>, "queryKey" | "queryFn">,
-) => {
-  return useSuspenseQuery({
-    queryKey: ["options", id, filters],
-    queryFn: () => packageService.getPackageOptions(id, filters),
     ...options,
   });
 };

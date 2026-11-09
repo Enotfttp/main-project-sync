@@ -76,42 +76,40 @@ export const PackageDetails: FC<IProps> = ({ id, onClose }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const optionPath = resolveChildPath(pathname, "option");
+  const optionPath = resolveChildPath(pathname, "option", { id });
 
   const handleRedirect = () => {
     if (optionPath) navigate(optionPath);
   };
 
   return (
-    <>
-      <Modal
-        isOpen
-        onClose={onClose}
-        dimension="xl"
-        title={routesPath.package.detail.label}
-        actions={
-          <ModalButtonBlock>
-            <Button
-              type="button"
-              appearance="primary"
-              dimension="m"
-              onClick={handleRedirect}
-            >
-              Получить информацию по опциям
-            </Button>
-            <Button
-              type="button"
-              appearance="secondary"
-              dimension="m"
-              onClick={onClose}
-            >
-              Закрыть
-            </Button>
-          </ModalButtonBlock>
-        }
-      >
-        <PackageInfo id={id} />
-      </Modal>
-    </>
+    <Modal
+      isOpen
+      onClose={onClose}
+      dimension="xl"
+      title={routesPath.package.detail.label}
+      actions={
+        <ModalButtonBlock>
+          <Button
+            type="button"
+            appearance="primary"
+            dimension="m"
+            onClick={handleRedirect}
+          >
+            Получить информацию по опциям
+          </Button>
+          <Button
+            type="button"
+            appearance="secondary"
+            dimension="m"
+            onClick={onClose}
+          >
+            Закрыть
+          </Button>
+        </ModalButtonBlock>
+      }
+    >
+      <PackageInfo id={id} />
+    </Modal>
   );
 };

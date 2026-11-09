@@ -7,7 +7,7 @@ import {
   TSortDirection,
 } from "@shared/types";
 
-const DEFAULT_PAGE_SIZE = 8;
+const DEFAULT_PAGE_SIZE = 25;
 
 /**
  * Сервисы отправляют фильтры в body,

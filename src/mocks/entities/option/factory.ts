@@ -3,6 +3,7 @@ import {
   IOptionInfoDetails,
   OptionStatus,
 } from "@entities/option/model";
+import { packageDb } from "@mocks/entities/package/factory";
 import {
   createCollection,
   fakeAccountCode,
@@ -14,12 +15,14 @@ import {
 import { keysOf } from "@shared/lib";
 
 export type IOptionMock = IOptionInfo & {
+  packageSubscriptionId: number;
   details: IOptionInfoDetails;
 };
 
 const optionStatuses = keysOf(OptionStatus);
 
 export const createOption = (): IOptionMock => {
+  const pkg = faker.helpers.arrayElement(packageDb.all());
   const optionSubscriptionId = faker.number.int({
     min: 100_000,
     max: 999_999,
@@ -35,6 +38,7 @@ export const createOption = (): IOptionMock => {
 
   return {
     optionSubscriptionId,
+    packageSubscriptionId: pkg.packageSubscriptionId,
     optionName,
     optionStatus,
     activationDate,
@@ -66,5 +70,6 @@ export const optionDb = createCollection(
 
 export const toOptionInfo = ({
   details: _details,
+  packageSubscriptionId: _packageSubscriptionId,
   ...info
 }: IOptionMock): IOptionInfo => info;

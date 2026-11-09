@@ -14,7 +14,10 @@ export const handlers = [
   http.post(apiPath("/options"), async ({ request }) => {
     await delay();
     const { filters, page, sort } = await readListRequest(request);
-    const items = filterItems(optionDb.all(), filters).map(toOptionInfo);
+
+    const items = filterItems(optionDb.all(), { filters: filters }).map(
+      toOptionInfo,
+    );
 
     return HttpResponse.json(paginate(sortItems(items, sort), page));
   }),

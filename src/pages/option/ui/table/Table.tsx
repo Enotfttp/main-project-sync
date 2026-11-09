@@ -12,14 +12,14 @@ interface IProps {
 }
 
 export const Table: FC<IProps> = ({ onRowClick, onTotalElementsChange }) => {
-  const { idOption } = useParams();
+  const { id } = useParams();
 
-  if (!idOption) throw new Error("Нет id опции");
+  if (!id) throw new Error("Нет id опции");
 
   const [pagination, setPagination] = useState<TPaginationTable>();
 
   const { data } = useGetOptions({
-    optionSubscriptionId: idOption,
+    packageSubscriptionId: id,
     page: pagination,
   });
 
@@ -28,10 +28,11 @@ export const Table: FC<IProps> = ({ onRowClick, onTotalElementsChange }) => {
   }, [data?.totalElements, onTotalElementsChange]);
 
   const rows = useMemo(
-    () => addIdAndHoverTableRowData("optionSubscriptionId", data?.content),
+    () =>
+      addIdAndHoverTableRowData("optionSubscriptionId", data?.content, true),
     [data?.content],
   );
-
+  //
   const handlePaginationChange = useCallback((pagination: TPaginationTable) => {
     setPagination(pagination);
   }, []);
