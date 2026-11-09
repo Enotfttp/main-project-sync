@@ -1,7 +1,7 @@
 import { ServiceInfoSolid, SystemTuneSolid } from "@admiral-ds/icons";
 import { Button } from "@admiral-ds/react-ui";
 import { useGetOption } from "@entities/option/api/hook";
-import { PackageStatusTag } from "@entities/package/ui";
+import { OptionStatusTag } from "@entities/option/ui";
 import { normalizedDate, resolveChildPath } from "@shared/lib";
 import { InfoRow, SectionInfo } from "@shared/ui";
 import { FC } from "react";
@@ -11,9 +11,10 @@ interface IProps {
   id: UUID;
 }
 export const OptionInfo: FC<IProps> = ({ id }) => {
-  const { data } = useGetOption(id);
   const navigate = useNavigate();
   const { pathname } = useLocation();
+
+  const { data } = useGetOption(id);
 
   const documentPath = resolveChildPath(pathname, "document");
 
@@ -26,10 +27,10 @@ export const OptionInfo: FC<IProps> = ({ id }) => {
   return (
     <>
       <SectionInfo title="Основная информация" icon={<ServiceInfoSolid />}>
-        <InfoRow label="Номер пакета">{data?.packageSubscriptionId}</InfoRow>
-        <InfoRow label="Наименование  пакета">{data.packageName}</InfoRow>
-        <InfoRow label="Статус пакета">
-          <PackageStatusTag status={data.packageStatus} />
+        <InfoRow label="Номер опции">{data?.optionSubscriptionId}</InfoRow>
+        <InfoRow label="Наименование  опции">{data.optionName}</InfoRow>
+        <InfoRow label="Статус опции">
+          <OptionStatusTag status={data.optionStatus} />
         </InfoRow>
         <InfoRow label="Дата поступления">
           {normalizedDate(data.activationDate)}
@@ -42,9 +43,7 @@ export const OptionInfo: FC<IProps> = ({ id }) => {
           {normalizedDate(data.paymentPeriodFrom)} -{" "}
           {normalizedDate(data.paymentPeriodTo)}
         </InfoRow>
-        <InfoRow label="Номер счёта по которому оказана услуга">
-          {data.accountNumber}
-        </InfoRow>
+
         <InfoRow label="Номер счёта ССК">{data.accountCode}</InfoRow>
         <InfoRow label="Документы">
           <Button

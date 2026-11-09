@@ -65,34 +65,43 @@ const ScheduleInfo: FC<{ id: string }> = ({ id }) => {
         <InfoRow label="Идентификатор">
           <Link
             as={RouterLink}
-            to={`${routesPath.schedule.root}/${data.scheduleSourceGuid}`}
+            to={generatePath(routesPath.schedule.detail.package.root, {
+              id,
+              idPackage: String(data.packageInfo.packageSubscriptionId),
+            })}
             dimension="s"
             appearance="primary"
           >
-            {data.scheduleSourceGuid}
+            {data.packageInfo.packageSubscriptionId}
           </Link>
         </InfoRow>
 
         <InfoRow label="Наименование">{data.packageInfo.name}</InfoRow>
         <InfoRow label="Номер">{data.packageInfo.trfNumber}</InfoRow>
       </SectionInfo>
-      <SectionInfo
-        title="Информация по дополнительной опции"
-        icon={<ServiceHelpSolid />}
-      >
-        <InfoRow label="Идентификатор">
-          <Link
-            as={RouterLink}
-            to={`${routesPath.schedule.root}/${data.scheduleSourceGuid}`}
-            dimension="s"
-            appearance="primary"
-          >
-            {data.scheduleSourceGuid}
-          </Link>
-        </InfoRow>
-        <InfoRow label="Наименование">{data.optionInfo?.name}</InfoRow>
-        <InfoRow label="Номер">{data.optionInfo?.trfNumber}</InfoRow>
-      </SectionInfo>
+
+      {data?.optionInfo && (
+        <SectionInfo
+          title="Информация по дополнительной опции"
+          icon={<ServiceHelpSolid />}
+        >
+          <InfoRow label="Идентификатор">
+            <Link
+              as={RouterLink}
+              to={generatePath(routesPath.schedule.detail.option.root, {
+                id,
+                idOption: String(data.optionInfo.optionSubscriptionId),
+              })}
+              dimension="s"
+              appearance="primary"
+            >
+              {data.optionInfo?.optionSubscriptionId}
+            </Link>
+          </InfoRow>
+          <InfoRow label="Наименование">{data.optionInfo.name}</InfoRow>
+          <InfoRow label="Номер">{data.optionInfo.trfNumber}</InfoRow>
+        </SectionInfo>
+      )}
 
       <SectionInfo title="Комиссии и суммы, RUB" icon={<CategoryWorkSolid />}>
         <InfoRow label="Общая сумма комиссии, с НДС">
@@ -138,35 +147,33 @@ export const ScheduleDetails: FC<IProps> = ({ id, onClose }) => {
   };
 
   return (
-    <>
-      <Modal
-        isOpen
-        onClose={onClose}
-        dimension="xl"
-        title={routesPath.schedule.detail.label}
-        actions={
-          <ModalButtonBlock>
-            <Button
-              type="button"
-              appearance="primary"
-              dimension="m"
-              onClick={handleRedirect}
-            >
-              Получить информацию по периодам
-            </Button>
-            <Button
-              type="button"
-              appearance="secondary"
-              dimension="m"
-              onClick={onClose}
-            >
-              Закрыть
-            </Button>
-          </ModalButtonBlock>
-        }
-      >
-        <ScheduleInfo id={id} />
-      </Modal>
-    </>
+    <Modal
+      isOpen
+      onClose={onClose}
+      dimension="xl"
+      title={routesPath.schedule.detail.label}
+      actions={
+        <ModalButtonBlock>
+          <Button
+            type="button"
+            appearance="primary"
+            dimension="m"
+            onClick={handleRedirect}
+          >
+            Получить информацию по периодам
+          </Button>
+          <Button
+            type="button"
+            appearance="secondary"
+            dimension="m"
+            onClick={onClose}
+          >
+            Закрыть
+          </Button>
+        </ModalButtonBlock>
+      }
+    >
+      <ScheduleInfo id={id} />
+    </Modal>
   );
 };

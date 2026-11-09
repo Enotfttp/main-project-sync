@@ -31,7 +31,7 @@ export const handlers = [
   }),
 
   http.get(apiPath("/packages/:id"), async ({ params }) => {
-    await delay(5000);
+    await delay();
     const packageItems = packageDb.find(params.id);
     if (!packageItems) return notFound();
 
@@ -45,7 +45,9 @@ export const handlers = [
     if (!packageDb.find(params.id)) return notFound();
 
     const { filters, page, sort } = await readListRequest(request);
-    const options = optionDb.where((option) => option.packageId === params.id);
+    const options = optionDb.where(
+      (option) => String(option.optionSubscriptionId) === params.id,
+    );
     const items = filterItems(options, filters);
 
     return HttpResponse.json(paginate(sortItems(items, sort), page));

@@ -1,10 +1,5 @@
 import { routesPath } from "@app/routes";
-import { generatePath, matchPath } from "react-router-dom";
-
-export type TPageRoutes = {
-  root: string;
-  label: string;
-};
+import { generatePath, matchPath, type Params } from "react-router-dom";
 
 export type TPageNavigation = {
   to: string;
@@ -19,53 +14,60 @@ type TRouteNode = {
   children: Record<string, TRouteNode>;
 };
 
-type TRouteSource = {
-  root: string;
-  label: string;
+type TMatchedRoute = {
+  route: TRouteNode;
+  params: Params;
 };
 
 const paramPattern = () => /:([A-Za-z0-9_]+)/g;
 
-const readRoute = (value: unknown): TRouteSource | null => {
+const readRoute = (value: unknown) => {
   if (typeof value !== "object" || value === null) return null;
   if (!("root" in value) || !("label" in value)) return null;
 
-  const { root, label } = value as {
-    root: unknown;
-    label: unknown;
-  };
-
+  const { root, label } = value as { root: unknown; label: unknown };
   if (typeof root !== "string" || typeof label !== "string") return null;
 
-  return {
-    root,
-    label,
-  };
+  return { root, label };
 };
 
-const normalizePattern = (path: string) =>
-  path.startsWith("/") ? path : `/${path}`;
-
-const collectRoutes = (
-  source: object,
-  parent: TRouteNode,
-  acc: TRouteNode[],
-) => {
+const attachRoutes = (source: object, parent: TRouteNode) => {
   for (const [key, value] of Object.entries(source)) {
     const route = readRoute(value);
     if (!route) continue;
 
     const node: TRouteNode = {
-      pattern: normalizePattern(route.root),
+      pattern: route.root.startsWith("/") ? route.root : `/${route.root}`,
       label: route.label,
       parent,
       children: {},
     };
 
     parent.children[key] = node;
-    acc.push(node);
-    collectRoutes(value as object, node, acc);
+    attachRoutes(value as object, node);
   }
+};
+
+const createRouteTree = (): TRouteNode | null => {
+  const home = readRoute(routesPath);
+  if (!home) return null;
+
+  const root: TRouteNode = {
+    pattern: home.root.startsWith("/") ? home.root : `/${home.root}`,
+    label: home.label,
+    parent: null,
+    children: {},
+  };
+
+  attachRoutes(routesPath, root);
+  return root;
+};
+
+let routeTree: TRouteNode | null | undefined;
+
+const getRouteTree = () => {
+  if (routeTree === undefined) routeTree = createRouteTree();
+  return routeTree;
 };
 
 const splitPattern = (pattern: string) => {
@@ -78,31 +80,41 @@ const splitPattern = (pattern: string) => {
   };
 };
 
-const matchRoute = (pattern: string, pathname: string) => {
-  const { pathname: patternPath, search } = splitPattern(pattern);
-  // Query-адрес — модалка поверх страницы, а не отдельная страница в шапке.
-  if (search) return null;
+const matchCurrentRoute = (pathname: string): TMatchedRoute | null => {
+  const visit = (node: TRouteNode): TMatchedRoute | null => {
+    const { pathname: patternPath, search } = splitPattern(node.pattern);
+    // Query-адрес — модалка поверх страницы, а не отдельная страница.
+    if (!search) {
+      const match = matchPath({ path: patternPath, end: true }, pathname);
+      if (match) return { route: node, params: match.params };
+    }
 
-  return matchPath({ path: patternPath, end: true }, pathname);
+    for (const child of Object.values(node.children)) {
+      const found = visit(child);
+      if (found) return found;
+    }
+
+    return null;
+  };
+
+  const tree = getRouteTree();
+  return tree ? visit(tree) : null;
 };
 
-/** Подставляет параметры URL в шаблон: "История по запросу №:requestId". */
-const formatRouteLabel = (
-  template: string,
-  params: Record<string, string | undefined>,
-) =>
+/** Подставляет параметры URL в шаблон: "История по запросу №:id". */
+const formatRouteLabel = (template: string, params: Params) =>
   template
     .replace(paramPattern(), (_, name: string) => params[name] ?? "")
     .trim();
 
-const compilePath = (
-  pattern: string,
-  params: Record<string, string | undefined>,
-) => {
+const compilePath = (pattern: string, params: Params) => {
   const { pathname, search } = splitPattern(pattern);
-  const used: Record<string, string> = {};
+  const names = [...pathname.matchAll(paramPattern())].map(([, name]) => name);
+  // Одинаковые имена в одном пути нельзя различить, например `:id` дважды.
+  if (new Set(names).size !== names.length) return null;
 
-  for (const [, name] of pathname.matchAll(paramPattern())) {
+  const used: Record<string, string> = {};
+  for (const name of names) {
     const value = params[name];
     if (!value) return null;
     used[name] = value;
@@ -122,54 +134,40 @@ const compilePath = (
   return `${path}?${query.toString()}`;
 };
 
-const flattenRoutes = (routes: TPageRoutes) => {
-  const home = readRoute(routes);
-  if (!home) return null;
+const findChildRoute = (route: TRouteNode, childKey: string) => {
+  const direct = route.children[childKey];
+  if (direct) return direct;
 
-  const homeRoute: TRouteNode = {
-    pattern: normalizePattern(home.root),
-    label: home.label,
-    parent: null,
-    children: {},
-  };
-  const flatRoutes = [homeRoute];
-  collectRoutes(routes, homeRoute, flatRoutes);
+  for (const nested of Object.values(route.children)) {
+    if (!splitPattern(nested.pattern).search) continue;
 
-  return flatRoutes;
-};
+    const child = nested.children[childKey];
+    if (child) return child;
+  }
 
-const matchCurrentRoute = (pathname: string) => {
-  const flatRoutes = flattenRoutes(routesPath);
-  if (!flatRoutes) return null;
-
-  return (
-    flatRoutes
-      .map((route) => ({ route, match: matchRoute(route.pattern, pathname) }))
-      .find((item) => item.match) ?? null
-  );
+  return null;
 };
 
 export const resolvePageNavigation = (
   pathname: string,
 ): TPageNavigation | null => {
   const matched = matchCurrentRoute(pathname);
-  if (!matched?.match || !matched.route.parent) return null;
+  if (!matched?.route.parent) return null;
 
-  const params = matched.match.params ?? {};
-  const to = compilePath(matched.route.parent.pattern, params);
+  const to = compilePath(matched.route.parent.pattern, matched.params);
   if (!to) return null;
 
   return {
     to,
-    backLabel: formatRouteLabel(matched.route.parent.label, params),
-    title: formatRouteLabel(matched.route.label, params),
+    backLabel: formatRouteLabel(matched.route.parent.label, matched.params),
+    title: formatRouteLabel(matched.route.label, matched.params),
   };
 };
 
 /**
  * Путь дочернего экрана текущей ветки.
- * Ключ — имя узла в дереве маршрутов (`period`, `package`), не конкретный URL.
- * params - значения которых ещё нет в адресе, например id.
+ * Ключ — имя узла в дереве маршрутов (`option`, `document`), не конкретный URL.
+ * params — значения, которых ещё нет в pathname, например id из query модалки.
  */
 export const resolveChildPath = (
   pathname: string,
@@ -177,18 +175,10 @@ export const resolveChildPath = (
   params?: Record<string, string>,
 ): string | null => {
   const matched = matchCurrentRoute(pathname);
-  if (!matched?.match) return null;
+  if (!matched) return null;
 
-  const child = matched.route.children[childKey];
+  const child = findChildRoute(matched.route, childKey);
   if (!child) return null;
 
-  const nextParams: Record<string, string | undefined> = {
-    ...matched.match.params,
-  };
-
-  for (const [key, value] of Object.entries(params ?? {})) {
-    nextParams[key] = value;
-  }
-
-  return compilePath(child.pattern, nextParams);
+  return compilePath(child.pattern, { ...matched.params, ...params });
 };

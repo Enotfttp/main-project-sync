@@ -93,8 +93,8 @@ export const createSchedule = (): TScheduleMock => {
       },
       optionInfo: {
         optionSubscriptionId: opt.optionSubscriptionId,
-        name: opt.name,
-        trfNumber: opt.trfNumber,
+        name: opt.optionName,
+        trfNumber: faker.string.numeric(4),
       },
       paymentInfo: {
         amountFullNdsCur: Number((amountFullCur + amountNdsCur).toFixed(2)),

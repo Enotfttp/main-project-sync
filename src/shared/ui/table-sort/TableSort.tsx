@@ -17,7 +17,7 @@ const StrToTime = (str: string) => {
   return new Date(res).getTime();
 };
 
-const MAX_SORT_LEVEL = 2;
+const MAX_SORT_LEVEL = 1;
 
 type SortColumn = { [key: string]: { sort: "asc" | "desc"; type?: string } };
 

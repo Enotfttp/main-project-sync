@@ -27,7 +27,7 @@ export const routesPath = {
           },
         },
         option: {
-          root: "/requests/:id/schedules/:id/option-info/:idPackage",
+          root: "/requests/:id/schedules/:id/option/:idPackage",
           label: "Информация по опции",
           document: {
             root: "/requests/:id/schedules/:id/package/:idOption/documents",
@@ -42,6 +42,22 @@ export const routesPath = {
       package: {
         root: "/requests/:id/package/:idPackage",
         label: "Информация по пакету",
+        option: {
+          root: "/requests/:id/package/:idPackage/options",
+          label: "Список опций по пакету №:id",
+          detail: {
+            root: "/requests/:id/package/:idPackage/options?id=:idOption",
+            label: "Подробная информация по опции",
+            document: {
+              root: "/requests/:id/package/:idPackage/options/:id/documents",
+              label: "Список документов по опции №:id",
+              detail: {
+                root: "/requests/:id/package/:idPackage/options/:idOption/documents?id=:idDocument",
+                label: "Подробная информация по документу",
+              },
+            },
+          },
+        },
       },
       option: {
         root: "/requests/:id/option/:idOption",
@@ -58,6 +74,18 @@ export const routesPath = {
       package: {
         root: "/schedules/:id/package/:idPackage",
         label: "Информация по пакету",
+        option: {
+          root: "/schedules/:id/package/:idPackage/options",
+          label: "Список опций по пакету №:idPackage",
+          document: {
+            root: "/schedules/:id/package/:idPackage/options/:idOption/documents",
+            label: "Список документов по опции №:idOption",
+            detail: {
+              root: "/schedules/:id/package/:idPackage/options/:idOption/documents/:idDocument",
+              label: "Подробная информация по документу",
+            },
+          },
+        },
         document: {
           root: "/schedules/:id/package/:idPackage/documents",
           label: "Список документов по пакету №:idPackage",
@@ -68,7 +96,7 @@ export const routesPath = {
         },
       },
       option: {
-        root: "/schedules/:id/option-info/:idPackage",
+        root: "/schedules/:id/option/:idOption",
         label: "Информация по опции",
         document: {
           root: "/schedules/:id/package/:idOption/documents",

@@ -15,10 +15,7 @@ const RequestHistoryPage: FC = () => {
       <PageBack />
       <Container>
         <FiltersView totalElements={totalElements} />
-        <Table
-          onRowClick={open}
-          onTotalElementsChange={handleTotalElementsChange}
-        />
+        <Table onTotalElementsChange={handleTotalElementsChange} />
       </Container>
     </Page>
   );
