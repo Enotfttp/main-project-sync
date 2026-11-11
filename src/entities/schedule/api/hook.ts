@@ -1,7 +1,8 @@
 import { scheduleService } from "./api";
 import {
   IScheduleInfoDetails,
-  ISchedulePeriods,
+  TPeriodsPaginationResponse,
+  TPeriodsRequest,
   TSchedulesPaginationResponse,
   TSchedulesRequest,
 } from "../model/types";
@@ -59,15 +60,15 @@ export const useGetSchedule = (
 };
 
 export const useGetSchedulePeriods = (
-  id: UUID,
+  params: TPeriodsRequest,
   options?: Omit<
-    UseQueryOptions<ISchedulePeriods, Error>,
+    UseQueryOptions<TPeriodsPaginationResponse, Error>,
     "queryKey" | "queryFn"
   >,
 ) => {
   return useSuspenseQuery({
-    queryKey: ["schedule", "periods", id],
-    queryFn: () => scheduleService.getSchedulePeriods(id),
+    queryKey: ["schedule", "periods", params],
+    queryFn: () => scheduleService.getSchedulePeriods(params),
     ...options,
   });
 };

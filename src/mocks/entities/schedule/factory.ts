@@ -2,11 +2,7 @@ import {
   EventType,
   IScheduleInfo,
   IScheduleInfoDetails,
-  ISchedulePeriods,
   ProcessCode,
-  PutToOutboxStatus,
-  RequestStatus,
-  ResultType,
   ScheduleStatus,
 } from "@entities/schedule/model";
 import { optionDb } from "@mocks/entities/option/factory";
@@ -22,34 +18,14 @@ import {
 import { keysOf } from "@shared/lib";
 
 type TScheduleInfo = IScheduleInfo[][number];
-type TPeriodInfo = ISchedulePeriods["periodsInfo"][number];
 
 export type TScheduleMock = TScheduleInfo & {
   details: IScheduleInfoDetails;
-  periods: TPeriodInfo[];
 };
 
 const scheduleStatuses = keysOf(ScheduleStatus);
 const processCodes = keysOf(ProcessCode);
 const eventTypes = keysOf(EventType);
-const requestStatuses = keysOf(RequestStatus);
-const resultTypes = keysOf(ResultType);
-const putToOutboxStatuses = keysOf(PutToOutboxStatus);
-
-const createPeriod = (): TPeriodInfo => {
-  const createdAt = fakeIsoDate();
-
-  return {
-    requestId: fakeUuid(),
-    eventType: faker.helpers.arrayElement(eventTypes),
-    requestStatus: faker.helpers.arrayElement(requestStatuses),
-    resultType: faker.helpers.arrayElement(resultTypes),
-    putToOutboxStatus: faker.helpers.arrayElement(putToOutboxStatuses),
-    content: JSON.stringify({ amount: fakeAmount() }),
-    createdAt,
-    updatedAt: fakeFutureIsoDate(createdAt),
-  };
-};
 
 export const createSchedule = (): TScheduleMock => {
   const pkg = faker.helpers.arrayElement(packageDb.all());
@@ -106,11 +82,8 @@ export const createSchedule = (): TScheduleMock => {
       },
       createdAt,
       updatedAt: fakeFutureIsoDate(createdAt),
-      requiresPriorityChange: faker.helpers.arrayElement(["Y", "N"]),
+      requiresPriorityChange: faker.datatype.boolean(),
     },
-    periods: faker.helpers.multiple(createPeriod, {
-      count: { min: 1, max: 6 },
-    }),
   };
 };
 
@@ -122,6 +95,5 @@ export const scheduleDb = createCollection(
 
 export const toScheduleInfo = ({
   details: _details,
-  periods: _periods,
   ...info
 }: TScheduleMock): TScheduleInfo => info;

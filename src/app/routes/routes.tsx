@@ -7,6 +7,7 @@ import {
   OptionPage,
   PackageInfoPage,
   PackagePage,
+  PeriodPage,
   RequestHistoryPage,
   RequestPage,
   ScheduleInfoPage,
@@ -46,6 +47,11 @@ const OptionPages = [
   routesPath.package.detail.option.root,
 ].map((path) => page(path, OptionPage));
 
+const PeriodPages = [
+  routesPath.request.detail.schedule.period.root,
+  routesPath.schedule.detail.period.root,
+].map((path) => page(path, PeriodPage));
+
 const RootLayout = () => <Outlet />;
 
 export const routes: RouteObject[] = [
@@ -56,6 +62,7 @@ export const routes: RouteObject[] = [
       ...PackageInfoPages,
       ...OptionInfoPages,
       ...OptionPages,
+      ...PeriodPages,
       {
         path: routesPath.root,
         element: withSuspense(MainPage),

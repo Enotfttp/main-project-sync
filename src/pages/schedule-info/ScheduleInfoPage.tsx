@@ -1,6 +1,6 @@
 import { ScheduleInfo } from "./ui/ScheduleInfo";
 import { Button } from "@admiral-ds/react-ui";
-import { resolveChildPath } from "@shared/lib";
+import { routesPath } from "@app/routes";
 import { PageBack } from "@shared/ui";
 import {
   InfoPage,
@@ -8,19 +8,21 @@ import {
   InfoPageContainer,
 } from "@shared/ui/page/Page";
 import { FC } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { generatePath, useNavigate, useParams } from "react-router-dom";
 
 export const ScheduleInfoPage: FC = () => {
-  const { idSchedule } = useParams();
-  const { pathname } = useLocation();
+  const { id, idSchedule } = useParams();
   const navigate = useNavigate();
 
   if (!idSchedule) throw new Error("Нет id графика");
 
-  const periodPath = resolveChildPath(pathname, "period");
-
   const handlePeriods = () => {
-    if (periodPath) navigate(periodPath);
+    navigate(
+      generatePath(routesPath.request.detail.schedule.period.root, {
+        id,
+        idSchedule: idSchedule,
+      }),
+    );
   };
 
   return (

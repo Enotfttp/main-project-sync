@@ -1,6 +1,7 @@
 import {
   IScheduleInfoDetails,
-  ISchedulePeriods,
+  TPeriodsPaginationResponse,
+  TPeriodsRequest,
   TSchedulesPaginationResponse,
   TSchedulesRequest,
 } from "../model/types";
@@ -26,8 +27,16 @@ class ScheduleService {
     return response.data;
   }
 
-  async getSchedulePeriods(id: UUID): Promise<ISchedulePeriods> {
-    const response = await axiosInstance.get(`/schedules/${id}/periods`);
+  async getSchedulePeriods({
+    scheduleSourceGuid,
+    ...listParams
+  }: TPeriodsRequest): Promise<TPeriodsPaginationResponse> {
+    const response = await axiosInstance.get(
+      `/schedules/${scheduleSourceGuid}/periods`,
+      {
+        params: toListParams(listParams),
+      },
+    );
     return response.data;
   }
 }
