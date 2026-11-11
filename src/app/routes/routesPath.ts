@@ -14,6 +14,18 @@ export const routesPath = {
       schedule: {
         root: "/requests/:id/schedules/:idSchedule",
         label: "Информация по графику",
+        period: {
+          root: "/requests/:id/schedules/:idSchedule/periods",
+          label: "Список периодов по графику №:idSchedule",
+          document: {
+            root: "/requests/:id/schedules/:id/periods/:idPeriod/documents",
+            label: "Список документов по периоду №:idPackage",
+            detail: {
+              root: "/requests/:id/schedules/:id/periods/:idPeriod/documents?id=:idDocument",
+              label: "Подробная информация о документе",
+            },
+          },
+        },
         package: {
           root: "/requests/:id/schedules/:id/package/:idPackage",
           label: "Информация по пакету",
@@ -21,8 +33,8 @@ export const routesPath = {
             root: "/requests/:id/schedules/:id/package/:idPackage/documents",
             label: "Список документов по пакету №:idPackage",
             detail: {
-              root: "/requests/:id/schedules/:id/package/:idPackage/documents/:idDocument",
-              label: "Подробная информация по документу",
+              root: "/requests/:id/schedules/:id/package/:idPackage/documents?id=:idDocument",
+              label: "Подробная информация о документ",
             },
           },
         },

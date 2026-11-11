@@ -18,38 +18,6 @@ export type TEventType = keyof typeof EventType;
 
 export const mapEventType = (status: TEventType) => EventType[status];
 
-export const RequestStatus = {
-  CREATED: "Создан",
-  ACCEPTED: "Принят",
-  REJECTED: "Отклонен",
-  PROCESSED: "В обработке",
-  COMPLETED: "Обработан",
-  ERROR: "В ошибке",
-} as const;
-
-export type TRequestStatus = keyof typeof RequestStatus;
-
-export const ResultType = {
-  OPERATION_SUCCESS: "Запрос исполнен",
-  OPERATION_DECLINE: "Запрос отклонен",
-  CARD_INDEX_PLAN: "Выполнен учёт требований",
-  CARD_INDEX_DONE: "Поставлен в картотеку",
-  ANNULMENT: "Запрос аннулирован",
-  CANCELLATION: "Запрос отменен",
-} as const;
-
-export type TResultType = keyof typeof ResultType;
-
-export const PutToOutboxStatus = {
-  NEW: "Новый",
-  IN_PROGRESS: "В обработке",
-  DONE: "Отправлен",
-  ERROR: "Ошибка отправки",
-  NOT_SUPPORTED: "Не подлежит отправке",
-} as const;
-
-export type TPutToOutboxStatus = keyof typeof PutToOutboxStatus;
-
 export const ScheduleStatus = {
   CREATED: "Создан",
   PROCESSED: "В обработке",
@@ -71,3 +39,35 @@ export const ProcessCode = {
 export type TProcessCode = keyof typeof ProcessCode;
 
 export const mapProcessCode = (code: TProcessCode) => ProcessCode[code];
+
+export const PeriodStatus = {
+  CREATED: "Создан",
+  PAYMENT_PROCESSED: "Отнесено на промежуточный счет",
+  INCOME_NDS_PROCESSED: " НДС отнесено на доходы",
+  INCOME_PROCESSED: "Отнесено на доходы",
+  DEBT_ACCOUNTED: "Учет требований",
+  ACCOUNTS_SETTLED: "Урегулирование счетов",
+  ADDITIONAL_DEBT_ACCOUNTED: "Доучет требований",
+  PAYMENT_REFUNDED: "Выполнен возврат",
+  ANNULLED: "Аннулирован",
+  CARD_INDEXED: "В картотеке",
+  DECLINED: "Оплата не выполнена",
+  REVOKED: "Отозван",
+  COMPLETED: "Обработан ",
+  CANCEL: "Отменен",
+  ERROR: "В ошибке",
+} as const;
+
+export type TPeriodStatus = keyof typeof PeriodStatus;
+
+export const mapPeriodStatus = (status: TPeriodStatus) => PeriodStatus[status];
+
+export const ResultType = {
+  ITERIM_ACCOUNT: "Отнесено на промежуточный счет ",
+  BANK_INCOME_ACCOUNT: "Отнесено на доходы",
+  ANNULMENT: "Аннулирован",
+} as const;
+
+export type TResultType = keyof typeof ResultType;
+
+export const mapResultType = (status: TResultType) => ResultType[status];

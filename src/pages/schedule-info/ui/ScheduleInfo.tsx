@@ -114,7 +114,7 @@ export const ScheduleInfo: FC<IProps> = ({ id }) => {
           {normalizedDate(data.updatedAt)}
         </InfoRow>
         <InfoRow label="Флаг необходимости обновления приоритета">
-          {data.requiresPriorityChange}
+          {data?.requiresPriorityChange ? "Да" : "Нет"}
         </InfoRow>
       </SectionInfo>
     </>

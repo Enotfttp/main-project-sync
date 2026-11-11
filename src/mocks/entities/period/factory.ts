@@ -1,45 +1,48 @@
+import {
+  IPeriodInfo,
+  IScheduleInfo,
+  PeriodStatus,
+  ResultType,
+} from "@entities/schedule/model";
 import { scheduleDb } from "@mocks/entities/schedule/factory";
 import {
   createCollection,
   fakeAmount,
   fakeFutureIsoDate,
   fakeIsoDate,
-  fakeUuid,
   faker,
+  fakeUuid,
 } from "@mocks/lib";
+import { keysOf } from "@shared/lib";
 
-/** Контракт бэкенда ещё не описан в `@entities/period/model/types`. */
-export interface IPeriodMock {
-  periodId: UUID;
-  scheduleSourceGuid: UUID;
-  status: "PLANNED" | "PAID" | "OVERDUE" | "CANCELLED";
-  amountFullCur: number;
-  startDate: IsoDate;
-  endDate: IsoDate;
-  createdAt: IsoDate;
-  updatedAt: IsoDate;
-}
+export type TPeriodMock = IPeriodInfo & {
+  scheduleSourceGuid: IScheduleInfo["scheduleSourceGuid"];
+};
 
-export const createPeriod = (): IPeriodMock => {
+const periodStatus = keysOf(PeriodStatus);
+const resultTypes = keysOf(ResultType);
+
+const createPeriod = (): TPeriodMock => {
+  const schedule = faker.helpers.arrayElement(scheduleDb.all());
   const createdAt = fakeIsoDate();
   const startDate = fakeFutureIsoDate(createdAt);
+  const endDate = fakeFutureIsoDate(startDate);
 
   return {
+    scheduleSourceGuid: schedule.scheduleSourceGuid,
     periodId: fakeUuid(),
-    scheduleSourceGuid: faker.helpers.arrayElement(scheduleDb.all())
-      .scheduleSourceGuid,
-    status: faker.helpers.arrayElement([
-      "PLANNED",
-      "PAID",
-      "OVERDUE",
-      "CANCELLED",
-    ]),
-    amountFullCur: fakeAmount(),
+    status: faker.helpers.arrayElement(periodStatus),
+    resultType: faker.helpers.arrayElement(resultTypes),
     startDate,
-    endDate: fakeFutureIsoDate(startDate),
-    createdAt,
-    updatedAt: fakeFutureIsoDate(createdAt),
+    endDate,
+    amount: fakeAmount(),
+    additionalAmount: fakeAmount(),
   };
 };
 
 export const periodDb = createCollection("periodId", createPeriod, 80);
+
+export const toPeriodInfo = ({
+  scheduleSourceGuid: _scheduleSourceGuid,
+  ...info
+}: TPeriodMock): IPeriodInfo => info;

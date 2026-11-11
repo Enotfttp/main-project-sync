@@ -1,8 +1,7 @@
 import {
   TEventType,
+  TPeriodStatus,
   TProcessCode,
-  TPutToOutboxStatus,
-  TRequestStatus,
   TResultType,
   TScheduleStatus,
 } from "./status";
@@ -21,11 +20,6 @@ export interface IScheduleFilter {
   amountFullCur?: number;
 }
 
-export interface ISchedulePeriods {
-  periodsInfo: IPeriodInfo[];
-  errorInfo: IErrorInfo;
-}
-
 export type TSchedulesPaginationResponse =
   ITableDataPaginationResponse<IScheduleInfo>;
 
@@ -33,6 +27,13 @@ export type TSchedulesRequest = TFilterPaginationRequest<
   IScheduleFilter,
   IScheduleInfo
 >;
+
+export type TPeriodsPaginationResponse =
+  ITableDataPaginationResponse<IPeriodInfo>;
+
+export type TPeriodsRequest = TFilterPaginationRequest<object, IPeriodInfo> & {
+  scheduleSourceGuid: UUID;
+};
 
 export interface IScheduleInfo {
   scheduleSourceGuid: UUID;
@@ -61,7 +62,7 @@ export interface IScheduleInfoDetails {
   paymentInfo: IPaymentInfo;
   createdAt: IsoDate;
   updatedAt: IsoDate;
-  requiresPriorityChange?: string;
+  requiresPriorityChange?: boolean;
 }
 
 interface IPackageInfo {
@@ -84,18 +85,12 @@ interface IPaymentInfo {
   endDate?: IsoDate;
 }
 
-interface IPeriodInfo {
-  requestId: UUID;
-  eventType: TEventType;
-  requestStatus: TRequestStatus;
+export interface IPeriodInfo {
+  periodId: UUID;
+  status: TPeriodStatus;
   resultType: TResultType;
-  putToOutboxStatus: TPutToOutboxStatus;
-  content: string;
-  createdAt: IsoDate;
-  updatedAt: IsoDate;
-}
-
-interface IErrorInfo {
-  errorCode: string;
-  errorMessage: string;
+  startDate: IsoDate;
+  endDate: IsoDate;
+  amount: number;
+  additionalAmount: number;
 }

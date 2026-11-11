@@ -17,3 +17,5 @@ export const OptionPage = lazy(() => import("@pages/option/OptionPage"));
 export const OptionInfoPage = lazy(
   () => import("@pages/option-info/OptionInfoPage"),
 );
+
+export const PeriodPage = lazy(() => import("@pages/period/PeriodPage"));

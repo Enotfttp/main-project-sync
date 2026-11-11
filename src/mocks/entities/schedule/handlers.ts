@@ -1,11 +1,13 @@
 import { scheduleDb, toScheduleInfo } from "./factory";
 import {
+  IPeriodInfo,
   IScheduleFilter,
   IScheduleInfo,
   IScheduleInfoDetails,
-  ISchedulePeriods,
+  TPeriodsPaginationResponse,
   TSchedulesPaginationResponse,
 } from "@entities/schedule/model";
+import { periodDb, toPeriodInfo } from "@mocks/entities/period/factory";
 import {
   apiPath,
   filterItems,
@@ -40,20 +42,16 @@ export const handlers = [
     });
   }),
 
-  http.get(apiPath("/schedules/:id/periods"), async ({ params }) => {
+  http.get(apiPath("/schedules/:id/periods"), async ({ request }) => {
     await delay();
-    const schedule = scheduleDb.find(params.id);
-    if (!schedule) return notFound();
 
-    const hasError = schedule.periods.some(
-      (period) => period.requestStatus === "ERROR",
+    const { filters, page, sort } = await readListRequest<object, IPeriodInfo>(
+      request,
     );
+    const items = filterItems(periodDb.all(), filters).map(toPeriodInfo);
 
-    return HttpResponse.json<ISchedulePeriods>({
-      periodsInfo: schedule.periods,
-      errorInfo: hasError
-        ? { errorCode: "E-500", errorMessage: "Ошибка обработки периода" }
-        : { errorCode: "", errorMessage: "" },
-    });
+    return HttpResponse.json<TPeriodsPaginationResponse>(
+      paginate(sortItems(items, sort), page),
+    );
   }),
 ];

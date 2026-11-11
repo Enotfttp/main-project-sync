@@ -147,7 +147,8 @@ const findChildRoute = (route: TRouteNode, childKey: string) => {
 
   return null;
 };
-
+// /requests/98b0915a-24ba-4192-a471-f2cdf6df2709/schedules/476f020a-0d88-4823-a593-1f0cc422bace/periods
+// /requests/5fef2e50-6818-4d65-a5e0-74e166e3a2f9/package/510091/options
 export const resolvePageNavigation = (
   pathname: string,
 ): TPageNavigation | null => {

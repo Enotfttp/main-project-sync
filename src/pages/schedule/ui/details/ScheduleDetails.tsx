@@ -130,7 +130,7 @@ const ScheduleInfo: FC<{ id: string }> = ({ id }) => {
           {normalizedDate(data.updatedAt)}
         </InfoRow>
         <InfoRow label="Флаг необходимости обновления приоритета">
-          {data.requiresPriorityChange}
+          {data?.requiresPriorityChange ? "Да" : "Нет"}
         </InfoRow>
       </SectionInfo>
     </>
@@ -141,9 +141,7 @@ export const ScheduleDetails: FC<IProps> = ({ id, onClose }) => {
   const navigate = useNavigate();
 
   const handleRedirect = () => {
-    navigate(
-      generatePath(routesPath.schedule.detail.period.root, { idPeriod: id }),
-    );
+    navigate(generatePath(routesPath.schedule.detail.period.root, { id }));
   };
 
   return (
