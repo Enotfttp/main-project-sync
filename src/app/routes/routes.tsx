@@ -2,6 +2,7 @@ import { routesPath } from "./routesPath";
 import { NotFoundPage } from "@app/errorBoundary/NotFoundPage";
 import { RouterErrorBoundary } from "@app/errorBoundary/RouterErrorBoundary";
 import {
+  DocumentPage,
   MainPage,
   OptionInfoPage,
   OptionPage,
@@ -52,6 +53,18 @@ const PeriodPages = [
   routesPath.schedule.detail.period.root,
 ].map((path) => page(path, PeriodPage));
 
+const DocumentPages = [
+  routesPath.request.detail.schedule.option.document.root,
+  routesPath.request.detail.schedule.package.document.root,
+  routesPath.request.detail.package.document.root,
+  routesPath.request.detail.option.document.root,
+  routesPath.schedule.detail.period.document.root,
+  routesPath.schedule.detail.package.document.root,
+  routesPath.schedule.detail.option.document.root,
+  routesPath.package.detail.document.root,
+  routesPath.package.detail.option.detail.document.root,
+].map((path) => page(path, DocumentPage));
+
 const RootLayout = () => <Outlet />;
 
 export const routes: RouteObject[] = [
@@ -63,6 +76,7 @@ export const routes: RouteObject[] = [
       ...OptionInfoPages,
       ...OptionPages,
       ...PeriodPages,
+      ...DocumentPages,
       {
         path: routesPath.root,
         element: withSuspense(MainPage),

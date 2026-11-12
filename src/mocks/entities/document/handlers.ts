@@ -1,4 +1,4 @@
-import { documentDb, IDocumentMock, toDocumentInfo } from "./factory";
+import { documentDb, TDocumentMock, toDocumentInfo } from "./factory";
 import {
   apiPath,
   badRequest,
@@ -10,7 +10,11 @@ import {
 } from "@mocks/lib";
 import { delay, http, HttpResponse } from "msw";
 
-const ownerKeys = ["periodId", "packageId", "optionId"] as const;
+const ownerKeys = [
+  "periodId",
+  "packageSubscriptionId",
+  "optionSubscriptionId",
+] as const;
 
 export const handlers = [
   /** `/documents?periodId=` | `?packageId=` | `?optionId=` */
@@ -27,7 +31,7 @@ export const handlers = [
     const ownerId = searchParams.get(ownerKey);
     const { filters, page, sort } = await readListRequest(request);
     const documents = documentDb
-      .where((document: IDocumentMock) => document[ownerKey] === ownerId)
+      .where((document: TDocumentMock) => document[ownerKey] === ownerId)
       .map(toDocumentInfo);
     const items = filterItems(documents, filters);
 
@@ -39,16 +43,5 @@ export const handlers = [
     const item = documentDb.find(params.id);
 
     return item ? HttpResponse.json(toDocumentInfo(item)) : notFound();
-  }),
-
-  http.get(apiPath("/documents/:id/history"), async ({ params }) => {
-    await delay();
-    const item = documentDb.find(params.id);
-    if (!item) return notFound();
-
-    return HttpResponse.json({
-      documentId: item.documentId,
-      history: item.history,
-    });
   }),
 ];

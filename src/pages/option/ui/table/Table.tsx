@@ -32,7 +32,7 @@ export const Table: FC<IProps> = ({ onRowClick, onTotalElementsChange }) => {
       addIdAndHoverTableRowData("optionSubscriptionId", data?.content, true),
     [data?.content],
   );
-  //
+
   const handlePaginationChange = useCallback((pagination: TPaginationTable) => {
     setPagination(pagination);
   }, []);

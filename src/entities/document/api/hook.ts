@@ -1,61 +1,57 @@
 import { documentService } from "./api";
-import { TFilterPaginationRequest } from "@shared/types";
-import { useQuery, UseQueryOptions } from "@tanstack/react-query";
+import {
+  IDocumentInfoInfoDetails,
+  TDocumentsPaginationResponse,
+  TDocumentsRequest,
+} from "../model";
+import { UseQueryOptions, useSuspenseQuery } from "@tanstack/react-query";
+
+const getDocumentsQueryOptions = (params: TDocumentsRequest) => {
+  let extQueryKey;
+  let queryFn;
+
+  if (params?.periodId) {
+    extQueryKey = "period";
+    queryFn = documentService.getDocumentsPeriod;
+  }
+  if (params?.packageSubscriptionId) {
+    extQueryKey = "package";
+    queryFn = documentService.getDocumentsPackage;
+  }
+  if (params?.optionSubscriptionId) {
+    extQueryKey = "option";
+    queryFn = documentService.getDocumentsOption;
+  }
+
+  return {
+    queryKey: ["documents", extQueryKey, params],
+    queryFn: () => queryFn(params),
+  };
+};
+
+export const useGetDocuments = (
+  params: TDocumentsRequest,
+  options?: Omit<
+    UseQueryOptions<TDocumentsPaginationResponse, Error>,
+    "queryKey" | "queryFn"
+  >,
+) => {
+  return useSuspenseQuery({
+    ...getDocumentsQueryOptions(params),
+    ...options,
+  });
+};
 
 export const useGetDocument = (
   id: UUID,
-  options?: Omit<UseQueryOptions<any, Error>, "queryKey" | "queryFn">,
+  options?: Omit<
+    UseQueryOptions<IDocumentInfoInfoDetails, Error>,
+    "queryKey" | "queryFn"
+  >,
 ) => {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: ["document", id],
     queryFn: () => documentService.getDocument(id),
-    ...options,
-  });
-};
-
-export const useGetDocumentsPeriod = (
-  id: UUID,
-  filters?: TFilterPaginationRequest<any>,
-  options?: Omit<UseQueryOptions<any, Error>, "queryKey" | "queryFn">,
-) => {
-  return useQuery({
-    queryKey: ["documents", "period", id, filters],
-    queryFn: () => documentService.getDocumentsPeriod(id, filters),
-    ...options,
-  });
-};
-
-export const useGetDocumentsPackage = (
-  id: UUID,
-  filters?: TFilterPaginationRequest<any>,
-  options?: Omit<UseQueryOptions<any, Error>, "queryKey" | "queryFn">,
-) => {
-  return useQuery({
-    queryKey: ["documents", "package", id, filters],
-    queryFn: () => documentService.getDocumentsPackage(id, filters),
-    ...options,
-  });
-};
-
-export const useGetDocumentsOption = (
-  id: UUID,
-  filters?: TFilterPaginationRequest<any>,
-  options?: Omit<UseQueryOptions<any, Error>, "queryKey" | "queryFn">,
-) => {
-  return useQuery({
-    queryKey: ["documents", "option", id, filters],
-    queryFn: () => documentService.getDocumentsOption(id, filters),
-    ...options,
-  });
-};
-
-export const useGetDocumentHistory = (
-  id: UUID,
-  options?: Omit<UseQueryOptions<any, Error>, "queryKey" | "queryFn">,
-) => {
-  return useQuery({
-    queryKey: ["documents", "history", id],
-    queryFn: () => documentService.getDocumentHistory(id),
     ...options,
   });
 };

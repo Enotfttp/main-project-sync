@@ -61,8 +61,8 @@ export const routesPath = {
             root: "/requests/:id/package/:idPackage/options?id=:idOption",
             label: "Подробная информация по опции",
             document: {
-              root: "/requests/:id/package/:idPackage/options/:id/documents",
-              label: "Список документов по опции №:id",
+              root: "/requests/:id/package/:idPackage/options/:idOption/documents",
+              label: "Список документов по опции №:idOption",
               detail: {
                 root: "/requests/:id/package/:idPackage/options/:idOption/documents?id=:idDocument",
                 label: "Подробная информация по документу",
@@ -70,10 +70,26 @@ export const routesPath = {
             },
           },
         },
+        document: {
+          root: "/requests/:id/package/:idPackage/documents",
+          label: "Список документов по пакету №:idOption",
+          detail: {
+            root: "/requests/:id/package/:idPackage/documents?id=:idDocument",
+            label: "Подробная информация по документу",
+          },
+        },
       },
       option: {
         root: "/requests/:id/option/:idOption",
         label: "Информация по опции",
+        document: {
+          root: "/requests/:id/option/:idOption/documents",
+          label: "Список документов по опции №:idOption",
+          detail: {
+            root: "/requests/:id/option/:idOption/documents?id=:idDocument",
+            label: "Подробная информация по документу",
+          },
+        },
       },
     },
   },
@@ -122,9 +138,13 @@ export const routesPath = {
       period: {
         root: "/schedules/:id/periods",
         label: "Список периодов по графику №:id",
-        detail: {
-          root: "/schedules/:id/periods?idPeriod=:idPeriod",
-          label: "Подробная информация по периоду",
+        document: {
+          root: "/schedules/:id/periods/:idPeriod/documents",
+          label: "Список документов по опции №:idOption",
+          detail: {
+            root: "/schedules/:id/periods/:idPeriod/documents/:idDocument",
+            label: "Подробная информация по документу",
+          },
         },
       },
     },
@@ -152,7 +172,7 @@ export const routesPath = {
         },
       },
       document: {
-        root: "/packages/:id/documents",
+        root: "/packages/:idPackage/documents",
         label: "Список документов по пакету №:id",
         detail: {
           root: "/packages/:id/documents?id=:idDocument",

@@ -1,56 +1,55 @@
+import {
+  IDocumentInfoInfoDetails,
+  TDocumentsPaginationResponse,
+  TDocumentsRequest,
+} from "../model";
 import { axiosInstance, toListParams } from "@shared/api";
-import { TFilterPaginationRequest } from "@shared/types";
 
 class DocumentService {
-  async getDocument(id: UUID): Promise<any> {
+  async getDocumentsPeriod({
+    periodId,
+    ...listParams
+  }: TDocumentsRequest): Promise<TDocumentsPaginationResponse> {
+    const response = await axiosInstance.post(
+      `/documents`,
+      {},
+      {
+        params: { periodId, ...toListParams(listParams) },
+      },
+    );
+    return response.data;
+  }
+
+  async getDocumentsPackage({
+    packageSubscriptionId,
+    ...listParams
+  }: TDocumentsRequest): Promise<TDocumentsPaginationResponse> {
+    const response = await axiosInstance.post(
+      `/documents`,
+      {},
+      {
+        params: { packageSubscriptionId, ...toListParams(listParams) },
+      },
+    );
+    return response.data;
+  }
+
+  async getDocumentsOption({
+    optionSubscriptionId,
+    ...listParams
+  }: TDocumentsRequest): Promise<TDocumentsPaginationResponse> {
+    const response = await axiosInstance.post(
+      `/documents`,
+      {},
+      {
+        params: { optionSubscriptionId, ...toListParams(listParams) },
+      },
+    );
+    return response.data;
+  }
+
+  async getDocument(id: UUID): Promise<IDocumentInfoInfoDetails> {
     const response = await axiosInstance.get(`/documents/${id}`);
-    return response.data;
-  }
-
-  async getDocumentsPeriod(
-    id: UUID,
-    { filters, ...listParams }: TFilterPaginationRequest<any> = {},
-  ): Promise<any> {
-    const response = await axiosInstance.post(
-      `/documents`,
-      { ...filters },
-      {
-        params: { periodId: id, ...toListParams(listParams) },
-      },
-    );
-    return response.data;
-  }
-
-  async getDocumentsPackage(
-    id: UUID,
-    { filters, ...listParams }: TFilterPaginationRequest<any> = {},
-  ): Promise<any> {
-    const response = await axiosInstance.post(
-      `/documents`,
-      { ...filters },
-      {
-        params: { packageId: id, ...toListParams(listParams) },
-      },
-    );
-    return response.data;
-  }
-
-  async getDocumentsOption(
-    id: UUID,
-    { filters, ...listParams }: TFilterPaginationRequest<any> = {},
-  ): Promise<any> {
-    const response = await axiosInstance.post(
-      `/documents`,
-      { ...filters },
-      {
-        params: { optionId: id, ...toListParams(listParams) },
-      },
-    );
-    return response.data;
-  }
-
-  async getDocumentHistory(id: UUID): Promise<any> {
-    const response = await axiosInstance.get(`/documents/${id}/history`);
     return response.data;
   }
 }

@@ -8,7 +8,7 @@ import { Link as RouterLink, useLocation } from "react-router-dom";
 export const PageBack: FC = () => {
   const { pathname } = useLocation();
   const navigation = useMemo(() => resolvePageNavigation(pathname), [pathname]);
-  console.log("navigation: ", pathname);
+
   if (!navigation) return null;
 
   return (
