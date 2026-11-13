@@ -1,6 +1,6 @@
 import { documentService } from "./api";
 import {
-  IDocumentInfoInfoDetails,
+  IDocumentInfoDetails,
   TDocumentsPaginationResponse,
   TDocumentsRequest,
 } from "../model";
@@ -45,7 +45,7 @@ export const useGetDocuments = (
 export const useGetDocument = (
   id: UUID,
   options?: Omit<
-    UseQueryOptions<IDocumentInfoInfoDetails, Error>,
+    UseQueryOptions<IDocumentInfoDetails, Error>,
     "queryKey" | "queryFn"
   >,
 ) => {

@@ -21,7 +21,7 @@ const OptionInfo: FC<{ id: UUID }> = ({ id }) => {
 
   const { data } = useGetOption(id);
 
-  const documentPath = resolveChildPath(pathname, "document");
+  const documentPath = resolveChildPath(pathname, "document", { idOption: id });
 
   const redirectToDocumentPage = () => {
     if (documentPath) navigate(documentPath);

@@ -39,6 +39,7 @@ const PackageInfoPages = [
 
 const OptionInfoPages = [
   routesPath.request.detail.option.root,
+  routesPath.request.detail.schedule.option.root,
   routesPath.schedule.detail.option.root,
 ].map((path) => page(path, OptionInfoPage));
 
@@ -54,15 +55,18 @@ const PeriodPages = [
 ].map((path) => page(path, PeriodPage));
 
 const DocumentPages = [
-  routesPath.request.detail.schedule.option.document.root,
+  routesPath.request.detail.schedule.period.document.root,
   routesPath.request.detail.schedule.package.document.root,
+  routesPath.request.detail.schedule.option.document.root,
+  routesPath.request.detail.package.option.detail.document.root,
   routesPath.request.detail.package.document.root,
   routesPath.request.detail.option.document.root,
   routesPath.schedule.detail.period.document.root,
+  routesPath.schedule.detail.package.option.document.root,
   routesPath.schedule.detail.package.document.root,
   routesPath.schedule.detail.option.document.root,
-  routesPath.package.detail.document.root,
   routesPath.package.detail.option.detail.document.root,
+  routesPath.package.detail.document.root,
 ].map((path) => page(path, DocumentPage));
 
 const RootLayout = () => <Outlet />;

@@ -1,4 +1,5 @@
 import { documentDb, TDocumentMock, toDocumentInfo } from "./factory";
+import { IDocumentInfoDetails } from "@entities/document/model";
 import {
   apiPath,
   badRequest,
@@ -17,7 +18,6 @@ const ownerKeys = [
 ] as const;
 
 export const handlers = [
-  /** `/documents?periodId=` | `?packageId=` | `?optionId=` */
   http.post(apiPath("/documents"), async ({ request }) => {
     await delay();
     const searchParams = new URL(request.url).searchParams;
@@ -31,17 +31,23 @@ export const handlers = [
     const ownerId = searchParams.get(ownerKey);
     const { filters, page, sort } = await readListRequest(request);
     const documents = documentDb
-      .where((document: TDocumentMock) => document[ownerKey] === ownerId)
+      .where(
+        (document: TDocumentMock) =>
+          String(document[ownerKey]) === String(ownerId),
+      )
       .map(toDocumentInfo);
     const items = filterItems(documents, filters);
 
     return HttpResponse.json(paginate(sortItems(items, sort), page));
   }),
 
-  http.get(apiPath("/documents/:id"), async ({ params }) => {
+  http.get(apiPath("/documents/:documentId"), async ({ params }) => {
     await delay();
-    const item = documentDb.find(params.id);
+    const document = documentDb.find(params.documentId);
+    if (!document) return notFound();
 
-    return item ? HttpResponse.json(toDocumentInfo(item)) : notFound();
+    return HttpResponse.json<IDocumentInfoDetails>({
+      ...document.details,
+    });
   }),
 ];

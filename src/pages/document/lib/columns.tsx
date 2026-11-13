@@ -1,4 +1,7 @@
-import { DocumentsAccountDetailOutline } from "@admiral-ds/icons";
+import {
+  DocumentsAccountDetailOutline,
+  ServiceInfoSolid,
+} from "@admiral-ds/icons";
 import { Column, Flex, Hint, IconButton } from "@admiral-ds/react-ui";
 import {
   IDocumentInfo,
@@ -19,8 +22,8 @@ const Purpose: FC<{ row: IDocumentInfo }> = ({ row }) => {
       visible={visible}
       onVisibilityChange={handleVisibility}
     >
-      <IconButton dimension="m">
-        <DocumentsAccountDetailOutline aria-hidden />
+      <IconButton dimension="m" appearance="primary">
+        <ServiceInfoSolid aria-hidden />
       </IconButton>
     </Hint>
   );
@@ -33,12 +36,13 @@ const DocumentTypeMerge: FC<{ row: IDocumentInfo }> = ({ row }) => {
 
   return (
     <Flex.Container>
-      <Flex.Row>
+      <Flex.Row style={{ alignItems: "center" }}>
         {row.documentType}
         {row.documentMerged && (
           <Hint
             renderContent={() => "Объединённый документ"}
             visible={visible}
+            visibilityTrigger="hover"
             onVisibilityChange={handleVisibility}
           >
             <IconButton dimension="m" appearance="primary">
@@ -58,9 +62,9 @@ export const columnList: Column[] = [
     width: "14%",
   },
   {
-    name: "documentDate ",
+    name: "documentDate",
     title: "Дата документа",
-    width: "12",
+    width: "12%",
     renderCell: (date) => {
       return normalizedDate(date);
     },

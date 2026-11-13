@@ -1,5 +1,5 @@
 import {
-  IDocumentInfoInfoDetails,
+  IDocumentInfoDetails,
   TDocumentsPaginationResponse,
   TDocumentsRequest,
 } from "../model";
@@ -48,7 +48,7 @@ class DocumentService {
     return response.data;
   }
 
-  async getDocument(id: UUID): Promise<IDocumentInfoInfoDetails> {
+  async getDocument(id: UUID): Promise<IDocumentInfoDetails> {
     const response = await axiosInstance.get(`/documents/${id}`);
     return response.data;
   }

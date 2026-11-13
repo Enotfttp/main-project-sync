@@ -1,7 +1,7 @@
 import { optionDb, toOptionInfo } from "./factory";
+import { IOptionInfo } from "@entities/option/model";
 import {
   apiPath,
-  filterItems,
   notFound,
   paginate,
   readListRequest,
@@ -12,13 +12,18 @@ import { delay, http, HttpResponse } from "msw";
 export const handlers = [
   http.post(apiPath("/options"), async ({ request }) => {
     await delay();
-    const { filters, page, sort } = await readListRequest(request);
+    const { filters, page, sort } = await readListRequest<
+      { packageSubscriptionId?: string },
+      IOptionInfo
+    >(request);
+    const packageId = filters?.packageSubscriptionId;
+    const owned = optionDb
+      .where(
+        (option) => String(option.packageSubscriptionId) === String(packageId),
+      )
+      .map(toOptionInfo);
 
-    const items = filterItems(optionDb.all(), { filters: filters }).map(
-      toOptionInfo,
-    );
-
-    return HttpResponse.json(paginate(sortItems(items, sort), page));
+    return HttpResponse.json(paginate(sortItems(owned, sort), page));
   }),
 
   http.get(apiPath("/options/:id"), async ({ params }) => {

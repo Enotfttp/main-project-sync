@@ -6,7 +6,7 @@ import {
   DocumentStatus,
   DocumentType,
   IDocumentInfo,
-  IDocumentInfoInfoDetails,
+  IDocumentInfoDetails,
   OrderStatus,
 } from "@entities/document/model";
 import {
@@ -24,7 +24,7 @@ export type TDocumentMock = IDocumentInfo & {
   periodId?: UUID;
   packageSubscriptionId?: number;
   optionSubscriptionId?: number;
-  details: IDocumentInfoInfoDetails;
+  details: IDocumentInfoDetails;
 };
 
 const documentTypes = keysOf(DocumentType);
@@ -47,7 +47,7 @@ export const createDocument = (): TDocumentMock => {
   const documentMerged = faker.datatype.boolean();
   const purpose = faker.lorem.text();
 
-  const generateDetail = (): IDocumentInfoInfoDetails => {
+  const generateDetail = (): IDocumentInfoDetails => {
     const accountCode = faker.helpers.arrayElement(accountCodes);
     const rateType = faker.helpers.arrayElement(rateTypes);
     const createdAt = fakeIsoDate();

@@ -11,14 +11,15 @@ interface IProps {
 }
 
 export const Table: FC<IProps> = ({ onTotalElementsChange }) => {
-  const { id } = useParams();
+  const { id, idSchedule } = useParams();
+  const scheduleSourceGuid = id || idSchedule;
 
-  if (!id) throw new Error("Нет id периода");
+  if (!scheduleSourceGuid) throw new Error("Нет id графика");
 
   const [pagination, setPagination] = useState<TPaginationTable>();
 
   const { data } = useGetSchedulePeriods({
-    scheduleSourceGuid: id,
+    scheduleSourceGuid,
     page: pagination,
   });
 

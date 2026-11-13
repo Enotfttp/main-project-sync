@@ -33,7 +33,7 @@ export type TDocumentsRequest = TFilterPaginationRequest<
   optionSubscriptionId?: UUID;
 };
 
-export interface IDocumentInfoInfoDetails {
+export interface IDocumentInfoDetails {
   documentId: UUID;
   documentLabel: string;
   documentDate: IsoDate;

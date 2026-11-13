@@ -1,18 +1,19 @@
 import { ModalButtonBlock } from "./DocumentDetails.styled";
 import {
+  DocumentsAccountDetailOutline,
   FinancePercentSolid,
   ServiceInfoSolid,
   ServicePlusCircleSolid,
   SystemTuneSolid,
 } from "@admiral-ds/icons";
-import { Button } from "@admiral-ds/react-ui";
+import { Button, IconButton } from "@admiral-ds/react-ui";
 import { routesPath } from "@app/routes";
 import { useGetDocument } from "@entities/document/api/hook";
 import { Modal } from "@features/modal";
-import { normalizedDate } from "@shared/lib";
+import { normalizedDate, resolveChildPath } from "@shared/lib";
 import { InfoRow, SectionInfo } from "@shared/ui";
-import { FC } from "react";
-import { generatePath, useNavigate } from "react-router-dom";
+import React, { FC } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface IProps {
   id: string;
@@ -21,10 +22,16 @@ interface IProps {
 
 const DocumentInfo: FC<{ id: UUID }> = ({ id }) => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+
   const { data } = useGetDocument(id);
 
-  const redirectToUnionDocumentPage = () => {
-    navigate(generatePath(routesPath.package.detail.document.root));
+  const documentUnionPath = resolveChildPath(pathname, "document", {
+    idOption: id,
+  });
+
+  const handleRedirect = () => {
+    if (documentUnionPath) navigate(documentUnionPath);
   };
 
   if (!data) return;
@@ -49,7 +56,18 @@ const DocumentInfo: FC<{ id: UUID }> = ({ id }) => {
         <InfoRow label="Дата документа">
           {normalizedDate(data.documentDate)}
         </InfoRow>
-        <InfoRow label="Вид документа">{data.documentType}</InfoRow>
+        <InfoRow label="Вид документа">
+          {data.documentType}
+          {data.documentMerged && (
+            <IconButton
+              dimension="m"
+              appearance="primary"
+              onClick={handleRedirect}
+            >
+              <DocumentsAccountDetailOutline />
+            </IconButton>
+          )}
+        </InfoRow>
         <InfoRow label="Управляющий признак">
           {data.documentProcessCode}
         </InfoRow>
