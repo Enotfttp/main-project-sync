@@ -1,13 +1,24 @@
 import { StyledPageBack } from "./PageBack.styled";
 import { SystemArrowLeftOutline } from "@admiral-ds/icons";
 import { Link, T } from "@admiral-ds/react-ui";
-import { resolvePageNavigation } from "@shared/lib";
+import { resolvePageNavigation, TPageNavigation } from "@shared/lib";
 import { FC, useMemo } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 
-export const PageBack: FC = () => {
+interface IProps {
+  navigation?: TPageNavigation;
+  onBack?: () => void;
+}
+
+export const PageBack: FC<IProps> = ({
+  navigation: navigationOverride,
+  onBack,
+}) => {
   const { pathname } = useLocation();
-  const navigation = useMemo(() => resolvePageNavigation(pathname), [pathname]);
+  const navigation = useMemo(
+    () => navigationOverride ?? resolvePageNavigation(pathname),
+    [navigationOverride, pathname],
+  );
 
   if (!navigation) return null;
 
@@ -18,6 +29,14 @@ export const PageBack: FC = () => {
         to={navigation.to}
         dimension="m"
         appearance="primary"
+        onClick={
+          onBack
+            ? (event) => {
+                event.preventDefault();
+                onBack();
+              }
+            : undefined
+        }
       >
         <SystemArrowLeftOutline />
         {navigation.backLabel}

@@ -1,4 +1,5 @@
 import { ModalButtonBlock } from "./DocumentDetails.styled";
+import { openDocumentUnion } from "../../lib/documentUnion";
 import {
   DocumentsAccountDetailOutline,
   FinancePercentSolid,
@@ -10,10 +11,10 @@ import { Button, IconButton } from "@admiral-ds/react-ui";
 import { routesPath } from "@app/routes";
 import { useGetDocument } from "@entities/document/api/hook";
 import { Modal } from "@features/modal";
-import { normalizedDate, resolveChildPath } from "@shared/lib";
+import { normalizedDate } from "@shared/lib";
 import { InfoRow, SectionInfo } from "@shared/ui";
 import React, { FC } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 interface IProps {
   id: string;
@@ -22,16 +23,14 @@ interface IProps {
 
 const DocumentInfo: FC<{ id: UUID }> = ({ id }) => {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
-
+  const params = useParams();
+  const { pathname, search } = useLocation();
   const { data } = useGetDocument(id);
 
-  const documentUnionPath = resolveChildPath(pathname, "document", {
-    idOption: id,
-  });
-
   const handleRedirect = () => {
-    if (documentUnionPath) navigate(documentUnionPath);
+    if (!data?.documentId) return;
+
+    openDocumentUnion(navigate, { pathname, search }, params, data.documentId);
   };
 
   if (!data) return;

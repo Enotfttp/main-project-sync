@@ -67,6 +67,18 @@ const DocumentPages = [
   routesPath.schedule.detail.option.document.root,
   routesPath.package.detail.option.detail.document.root,
   routesPath.package.detail.document.root,
+  routesPath.request.detail.schedule.period.document.documentUnion.root,
+  routesPath.request.detail.schedule.package.document.documentUnion.root,
+  routesPath.request.detail.schedule.option.document.documentUnion.root,
+  routesPath.request.detail.package.option.detail.document.documentUnion.root,
+  routesPath.request.detail.package.document.documentUnion.root,
+  routesPath.request.detail.option.document.documentUnion.root,
+  routesPath.schedule.detail.package.option.document.documentUnion.root,
+  routesPath.schedule.detail.package.document.documentUnion.root,
+  routesPath.schedule.detail.option.document.documentUnion.root,
+  routesPath.schedule.detail.period.document.documentUnion.root,
+  routesPath.package.detail.option.detail.document.documentUnion.root,
+  routesPath.package.detail.document.documentUnion.root,
 ].map((path) => page(path, DocumentPage));
 
 const RootLayout = () => <Outlet />;

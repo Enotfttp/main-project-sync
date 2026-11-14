@@ -31,6 +31,7 @@ export type TDocumentsRequest = TFilterPaginationRequest<
   periodId?: UUID;
   packageSubscriptionId?: UUID;
   optionSubscriptionId?: UUID;
+  mergedDocumentId?: UUID;
 };
 
 export interface IDocumentInfoDetails {

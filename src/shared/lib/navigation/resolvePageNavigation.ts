@@ -183,3 +183,11 @@ export const resolveChildPath = (
 
   return compilePath(child.pattern, { ...matched.params, ...params });
 };
+
+/** Тот же маршрут с другими параметрами, без перехода на дочерний экран. */
+export const compileMatchedPath = (pathname: string, params?: Params) => {
+  const matched = matchCurrentRoute(pathname);
+  if (!matched) return null;
+
+  return compilePath(matched.route.pattern, { ...matched.params, ...params });
+};
