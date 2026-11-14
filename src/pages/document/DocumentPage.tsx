@@ -1,3 +1,4 @@
+import { useDocumentUnionBack } from "./lib/documentUnion";
 import { DocumentDetails, Table } from "./ui";
 import { FiltersView } from "@features/dynamic-filters";
 import { useModal } from "@features/modal";
@@ -7,6 +8,7 @@ import { FC, useCallback, useState } from "react";
 const DocumentPage: FC = () => {
   const [totalElements, setTotalElements] = useState<number>();
   const { id, open, close } = useModal();
+  const unionBack = useDocumentUnionBack();
 
   const handleTotalElementsChange = useCallback(
     (total?: number) => setTotalElements(total),
@@ -16,7 +18,10 @@ const DocumentPage: FC = () => {
   return (
     <>
       <Page>
-        <PageBack />
+        <PageBack
+          navigation={unionBack?.navigation}
+          onBack={unionBack?.onBack}
+        />
         <Container>
           <FiltersView totalElements={totalElements} />
           <Table

@@ -12,9 +12,10 @@ interface IProps {
 }
 
 export const Table: FC<IProps> = ({ onRowClick, onTotalElementsChange }) => {
-  const { idOption, idPackage, idPeriod } = useParams();
+  const { idOption, idPackage, idPeriod, idDocumentUnion } = useParams();
 
-  if (!idOption && !idPackage && !idPeriod) throw new Error("Нет id");
+  if (!idOption && !idPackage && !idPeriod && !idDocumentUnion)
+    throw new Error("Нет id");
 
   const [pagination, setPagination] = useState<TPaginationTable>();
 
@@ -22,6 +23,7 @@ export const Table: FC<IProps> = ({ onRowClick, onTotalElementsChange }) => {
     periodId: idPeriod,
     packageSubscriptionId: idPackage,
     optionSubscriptionId: idOption,
+    mergedDocumentId: idDocumentUnion,
     page: pagination,
   });
 

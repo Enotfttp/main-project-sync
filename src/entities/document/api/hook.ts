@@ -22,6 +22,10 @@ const getDocumentsQueryOptions = (params: TDocumentsRequest) => {
     extQueryKey = "option";
     queryFn = documentService.getDocumentsOption;
   }
+  if (params?.mergedDocumentId) {
+    extQueryKey = "merged";
+    queryFn = documentService.getDocumentsMerged;
+  }
 
   return {
     queryKey: ["documents", extQueryKey, params],

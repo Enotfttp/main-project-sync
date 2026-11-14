@@ -23,6 +23,14 @@ export const routesPath = {
             detail: {
               root: "/requests/:id/schedules/:idSchedule/periods/:idPeriod/documents?id=:idDocument",
               label: "Подробная информация о документе",
+              documentUnion: {
+                root: "/requests/:id/schedules/:idSchedule/periods/:idPeriod/documents/:idDocumentUnion/documentUnions",
+                label: "Документы объединённого документа №:idDocumentUnion",
+                detail: {
+                  root: "/requests/:id/schedules/:idSchedule/periods/:idPeriod/documents/:idDocumentUnion/documentUnions?id=:idDocument",
+                  label: "Подробная информация по объединённом документу",
+                },
+              },
             },
           },
         },
@@ -35,6 +43,39 @@ export const routesPath = {
             detail: {
               root: "/requests/:id/schedules/:idSchedule/package/:idPackage/documents?id=:idDocument",
               label: "Подробная информация о документ",
+              documentUnion: {
+                root: "/requests/:id/schedules/:idSchedule/package/:idPackage/documents/:idDocumentUnion/documentUnions",
+                label: "Документы объединённого документа №:idDocumentUnion",
+                detail: {
+                  root: "/requests/:id/schedules/:idSchedule/package/:idPackage/documents/:idDocumentUnion/documentUnions?id=:idDocument",
+                  label: "Подробная информация по объединённом документу",
+                },
+              },
+            },
+          },
+          option: {
+            root: "/requests/:id/schedules/:idSchedule/package/:idPackage/options",
+            label: "Список опций по пакету",
+            detail: {
+              root: "/requests/:id/schedules/:idSchedule/package/:idPackage/options?id=:idOption",
+              label: "Подробная информация по опции",
+              document: {
+                root: "/requests/:id/schedules/:idSchedule/package/:idPackage/options/:idOption/documents",
+                label: "Список документов по опции №:idOption",
+                detail: {
+                  root: "/requests/:id/schedules/:idSchedule/package/:idPackage/options/idOption/documents?id=:idDocument",
+                  label: "Подробная информация по документу",
+                  documentUnion: {
+                    root: "/requests/:id/schedules/:idSchedule/package/:idPackage/options/idOption/documents/:idDocumentUnion/documentUnions",
+                    label:
+                      "Документы объединённого документа №:idDocumentUnion",
+                    detail: {
+                      root: "/requests/:id/schedules/:idSchedule/package/:idPackage/options/idOption/documents/:idDocumentUnion/documentUnions?id=:idDocument",
+                      label: "Подробная информация по объединённом документу",
+                    },
+                  },
+                },
+              },
             },
           },
         },
@@ -47,6 +88,14 @@ export const routesPath = {
             detail: {
               root: "/requests/:id/schedules/:idSchedule/option/:idOption/documents?id=:idDocument",
               label: "Подробная информация по документу",
+              documentUnion: {
+                root: "/requests/:id/schedules/:idSchedule/option/:idOption/documents/:idDocumentUnion/documentUnions",
+                label: "Документы объединённого документа №:idDocumentUnion",
+                detail: {
+                  root: "/requests/:id/schedules/:idSchedule/option/:idOption/documents/:idDocumentUnion/documentUnions?id=:idDocument",
+                  label: "Подробная информация по объединённом документу",
+                },
+              },
             },
           },
         },
@@ -66,6 +115,14 @@ export const routesPath = {
               detail: {
                 root: "/requests/:id/package/:idPackage/options/:idOption/documents?id=:idDocument",
                 label: "Подробная информация по документу",
+                documentUnion: {
+                  root: "/requests/:id/package/:idPackage/options/:idOption/documents/:idDocumentUnion/documentUnions",
+                  label: "Документы объединённого документа №:idDocumentUnion",
+                  detail: {
+                    root: "/requests/:id/package/:idPackage/options/:idOption/documents/:idDocumentUnion/documentUnions?id=:idDocument",
+                    label: "Подробная информация по объединённом документу",
+                  },
+                },
               },
             },
           },
@@ -76,6 +133,14 @@ export const routesPath = {
           detail: {
             root: "/requests/:id/package/:idPackage/documents?id=:idDocument",
             label: "Подробная информация по документу",
+            documentUnion: {
+              root: "/requests/:id/package/:idPackage/documents/:idDocumentUnion/documentUnions",
+              label: "Документы объединённого документа №:idDocumentUnion",
+              detail: {
+                root: "/requests/:id/package/:idPackage/documents/:idDocumentUnion/documentUnions?id=:idDocument",
+                label: "Подробная информация по объединённом документу",
+              },
+            },
           },
         },
       },
@@ -88,6 +153,14 @@ export const routesPath = {
           detail: {
             root: "/requests/:id/option/:idOption/documents?id=:idDocument",
             label: "Подробная информация по документу",
+            documentUnion: {
+              root: "/requests/:id/option/:idOption/documents/:idDocumentUnion/documentUnions",
+              label: "Документы объединённого документа №:idDocumentUnion",
+              detail: {
+                root: "/requests/:id/option/:idOption/documents/:idDocumentUnion/documentUnions?id=:idDocument",
+                label: "Подробная информация по объединённом документу",
+              },
+            },
           },
         },
       },
@@ -109,8 +182,16 @@ export const routesPath = {
             root: "/schedules/:id/package/:idPackage/options/:idOption/documents",
             label: "Список документов по опции №:idOption",
             detail: {
-              root: "/schedules/:id/package/:idPackage/options/:idOption/documents/:idDocument",
+              root: "/schedules/:id/package/:idPackage/options/:idOption/documents?id=:idDocument",
               label: "Подробная информация по документу",
+              documentUnion: {
+                root: "/schedules/:id/package/:idPackage/options/:idOption/documents/:idDocumentUnion/documentUnions",
+                label: "Документы объединённого документа №:idDocumentUnion",
+                detail: {
+                  root: "/schedules/:id/package/:idPackage/options/:idOption/documents/:idDocumentUnion/documentUnions?id=:idDocument",
+                  label: "Подробная информация по объединённом документу",
+                },
+              },
             },
           },
         },
@@ -118,8 +199,16 @@ export const routesPath = {
           root: "/schedules/:id/package/:idPackage/documents",
           label: "Список документов по пакету №:idPackage",
           detail: {
-            root: "/schedules/:id/package/:idPackage/documents/:idDocument",
+            root: "/schedules/:id/package/:idPackage/documents?id=:idDocument",
             label: "Подробная информация по документу",
+            documentUnion: {
+              root: "/schedules/:id/package/:idPackage/documents/:idDocumentUnion/documentUnions",
+              label: "Документы объединённого документа №:idDocumentUnion",
+              detail: {
+                root: "/schedules/:id/package/:idPackage/documents/:idDocumentUnion/documentUnions?id=:idDocument",
+                label: "Подробная информация по объединённом документу",
+              },
+            },
           },
         },
       },
@@ -132,6 +221,14 @@ export const routesPath = {
           detail: {
             root: "/schedules/:id/option/:idOption/documents?id=:idDocument",
             label: "Подробная информация по документу",
+            documentUnion: {
+              root: "/schedules/:id/option/:idOption/documents/:idDocumentUnion/documentUnions",
+              label: "Документы объединённого документа №:idDocumentUnion",
+              detail: {
+                root: "/schedules/:id/option/:idOption/documents/:idDocumentUnion/documentUnions?id=:idDocument",
+                label: "Подробная информация по объединённом документу",
+              },
+            },
           },
         },
       },
@@ -144,6 +241,14 @@ export const routesPath = {
           detail: {
             root: "/schedules/:id/periods/:idPeriod/documents?id=:idDocument",
             label: "Подробная информация по документу",
+            documentUnion: {
+              root: "/schedules/:id/periods/:idPeriod/documents/:idDocumentUnion/documentUnions",
+              label: "Документы объединённого документа №:idDocumentUnion",
+              detail: {
+                root: "/schedules/:id/periods/:idPeriod/documents/:idDocumentUnion/documentUnions?id=:idDocument",
+                label: "Подробная информация по объединённом документу",
+              },
+            },
           },
         },
       },
@@ -167,6 +272,14 @@ export const routesPath = {
             detail: {
               root: "/packages/:idPackage/options/:idOption/documents?id=:idDocument",
               label: "Подробная информация по документу",
+              documentUnion: {
+                root: "/packages/:idPackage/options/:idOption/documents/:idDocumentUnion/documentUnions",
+                label: "Документы объединённого документа №:idDocumentUnion",
+                detail: {
+                  root: "/packages/:idPackage/options/:idOption/documents/:idDocumentUnion/documentUnions?id=:idDocument",
+                  label: "Подробная информация по объединённом документу",
+                },
+              },
             },
           },
         },
@@ -177,6 +290,14 @@ export const routesPath = {
         detail: {
           root: "/packages/:idPackage/documents?id=:idDocument",
           label: "Подробная информация по документу",
+          documentUnion: {
+            root: "/packages/:idPackage/documents/:idDocumentUnion/documentUnions",
+            label: "Документы объединённого документа №:idDocumentUnion",
+            detail: {
+              root: "/packages/:idPackage/documents/:idDocumentUnion/documentUnions?id=:idDocument",
+              label: "Подробная информация по объединённом документу",
+            },
+          },
         },
       },
     },

@@ -24,6 +24,7 @@ export type TDocumentMock = IDocumentInfo & {
   periodId?: UUID;
   packageSubscriptionId?: number;
   optionSubscriptionId?: number;
+  mergedDocumentId?: UUID;
   details: IDocumentInfoDetails;
 };
 
@@ -153,10 +154,29 @@ export const createDocument = (): TDocumentMock => {
 
 export const documentDb = createCollection("documentId", createDocument, 1200);
 
+const linkMergedDocuments = () => {
+  const documents = documentDb.all();
+  const mergedIds = documents
+    .filter((document) => document.documentMerged)
+    .map((document) => document.documentId);
+
+  if (!mergedIds.length) return;
+
+  documents.forEach((document, index) => {
+    const mergedDocumentId = mergedIds[index % mergedIds.length];
+    if (mergedDocumentId === document.documentId) return;
+
+    documentDb.update(document.documentId, { mergedDocumentId });
+  });
+};
+
+linkMergedDocuments();
+
 export const toDocumentInfo = ({
   details: _details,
   periodId: _periodId,
   packageSubscriptionId: _packageSubscriptionId,
   optionSubscriptionId: _optionSubscriptionId,
+  mergedDocumentId: _mergedDocumentId,
   ...document
 }: TDocumentMock) => document;
