@@ -1,4 +1,4 @@
-import { correctionalScenarioDb } from "./factory";
+import { correctionalScenarioDb, createCorrectionalScenario } from "./factory";
 import {
   IAccountInfo,
   ICorrectionalScenarioFilter,
@@ -6,25 +6,54 @@ import {
 import { apiPath, badRequest, noContent, notFound, readJson } from "@mocks/lib";
 import { delay, http, HttpResponse } from "msw";
 
+const filled = (next: string, previous: string) => next.trim() || previous;
+
+const nextAccountInfo = (
+  current: IAccountInfo,
+  fields: IAccountInfo,
+): IAccountInfo => ({
+  accountCode: current.accountCode,
+  iterimAccountId: "",
+  iterimAccountCode: "",
+  accrueAccountId: "",
+  accrueAccountCode: "",
+  iterimAccountIdOld: filled(
+    fields.iterimAccountId,
+    current.iterimAccountIdOld,
+  ),
+  iterimAccountCodeOld: filled(
+    fields.iterimAccountCode,
+    current.iterimAccountCodeOld,
+  ),
+  accrueAccountIdOld: filled(
+    fields.accrueAccountId,
+    current.accrueAccountIdOld,
+  ),
+  accrueAccountCodeOld: filled(
+    fields.accrueAccountCode,
+    current.accrueAccountCodeOld,
+  ),
+});
+
 export const handlers = [
   http.post(apiPath("/operations/accounts"), async ({ request }) => {
     await delay();
     const body = await readJson<{ filters?: ICorrectionalScenarioFilter }>(
       request,
     );
-    const filters = body?.filters;
+    const accountCode = body?.filters?.accountCode?.trim();
 
-    const found = correctionalScenarioDb
-      .all()
-      .find(
-        (item) =>
-          (!filters?.packageSubscriptionId ||
-            item.packageSubscriptionId === filters.packageSubscriptionId) &&
-          (!filters?.accountCode || item.accountCode === filters.accountCode),
-      );
+    if (!accountCode) return badRequest("Номер счёта ССК обязателен");
+
+    const [found] = correctionalScenarioDb.where(
+      (item) => item.accountCode === accountCode,
+    );
 
     return HttpResponse.json(
-      found ?? correctionalScenarioDb.create({ ...filters }),
+      found ??
+        correctionalScenarioDb.create(
+          createCorrectionalScenario({ accountCode }),
+        ),
     );
   }),
 
@@ -35,8 +64,12 @@ export const handlers = [
       const body = await readJson<{ fields?: IAccountInfo }>(request);
       if (!body?.fields) return badRequest("Поле fields обязательно");
 
+      const current = correctionalScenarioDb.find(params.id);
+      if (!current) return notFound();
+
       const updated = correctionalScenarioDb.update(params.id, {
-        accountInfo: body.fields,
+        updatedAt: new Date().toISOString() as IsoDate,
+        accountInfo: nextAccountInfo(current.accountInfo, body.fields),
       });
 
       return updated ? noContent() : notFound();

@@ -1,25 +1,52 @@
-import { ICorrectionalScenario } from "@entities/correctional-scenario/model/types";
+import {
+  IAccountInfo,
+  ICorrectionalScenario,
+} from "@entities/correctional-scenario/model/types";
 import { packageDb } from "@mocks/entities/package/factory";
-import { createCollection, fakeAccountCode, fakeUuid, faker } from "@mocks/lib";
+import {
+  createCollection,
+  fakeAccountCode,
+  fakeFutureIsoDate,
+  fakeIsoDate,
+  fakeUuid,
+  faker,
+} from "@mocks/lib";
 
-export type TCorrectionalScenarioMock = ICorrectionalScenario & { id: UUID };
+const createAccountInfo = (accountCode: string): IAccountInfo => ({
+  accountCode,
+  iterimAccountId: "",
+  iterimAccountCode: "",
+  accrueAccountId: "",
+  accrueAccountCode: "",
+  iterimAccountIdOld: fakeUuid(),
+  iterimAccountCodeOld: fakeAccountCode(),
+  accrueAccountIdOld: fakeUuid(),
+  accrueAccountCodeOld: fakeAccountCode(),
+});
 
-export const createCorrectionalScenario = (): TCorrectionalScenarioMock => {
+export const createCorrectionalScenario = (
+  overrides?: Partial<ICorrectionalScenario>,
+): ICorrectionalScenario => {
   const pkg = faker.helpers.arrayElement(packageDb.all());
+  const accountCode = overrides?.accountCode ?? pkg.details.accountCode;
+  const createdAt = fakeIsoDate();
 
   return {
-    id: fakeUuid(),
-    packageSubscriptionId: pkg.packageSubscriptionId,
-    accountCode: pkg.accountCode,
+    id: overrides?.id ?? fakeUuid(),
+    packageSubscriptionId:
+      overrides?.packageSubscriptionId ?? pkg.packageSubscriptionId,
+    accountCode,
+    updatedAt: overrides?.updatedAt ?? fakeFutureIsoDate(createdAt),
     accountInfo: {
-      iterimAccountCode: fakeAccountCode(),
-      accrueAccountCode: fakeAccountCode(),
+      ...createAccountInfo(accountCode),
+      ...overrides?.accountInfo,
+      accountCode,
     },
   };
 };
 
 export const correctionalScenarioDb = createCollection(
   "id",
-  createCorrectionalScenario,
+  () => createCorrectionalScenario(),
   30,
 );

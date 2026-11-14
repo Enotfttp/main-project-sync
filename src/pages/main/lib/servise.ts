@@ -13,7 +13,7 @@ export const mainServiceGroups: IServiceGroupConfig[] = [
   },
   {
     id: "correctional-operations",
-    title: "Исправительные сценарии",
+    title: "Исправительные операции",
     services: [{ id: "ssk-change", label: "Смена ССК" }],
   },
   {
@@ -28,16 +28,20 @@ export const mainServiceGroups: IServiceGroupConfig[] = [
 
 export const getVisibleServiceGroups = (
   searchText: string,
+  actions: Partial<Record<string, () => void>> = {},
 ): IServiceGroupConfig[] => {
   const normalizeText = searchText.trim().toLowerCase();
-  if (!normalizeText) return mainServiceGroups;
 
   return mainServiceGroups
     .map(({ services, ...group }) => ({
       ...group,
-      services: services.filter(({ label }) =>
-        label.toLowerCase().includes(normalizeText),
-      ),
+      services: services
+        .filter(({ label }) => label.toLowerCase().includes(normalizeText))
+        .map((service) =>
+          actions[service.id]
+            ? { ...service, action: actions[service.id] }
+            : service,
+        ),
     }))
     .filter(({ services }) => services.length > 0);
 };
