@@ -24,13 +24,13 @@ interface IProps {
 const DocumentInfo: FC<{ id: UUID }> = ({ id }) => {
   const navigate = useNavigate();
   const params = useParams();
-  const { pathname, search } = useLocation();
+  const { pathname } = useLocation();
   const { data } = useGetDocument(id);
 
   const handleRedirect = () => {
     if (!data?.documentId) return;
 
-    openDocumentUnion(navigate, { pathname, search }, params, data.documentId);
+    openDocumentUnion(navigate, { pathname }, params, data.documentId);
   };
 
   if (!data) return;
@@ -233,7 +233,7 @@ const DocumentInfo: FC<{ id: UUID }> = ({ id }) => {
 export const DocumentDetails: FC<IProps> = ({ id, onClose }) => {
   const { idDocumentUnion } = useParams();
   const title = idDocumentUnion
-    ? routesPath.package.detail.document.documentUnion.detail.label
+    ? routesPath.package.detail.document.detail.documentUnion.detail.label
     : routesPath.package.detail.option.detail.document.detail.label;
 
   return (

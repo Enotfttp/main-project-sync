@@ -22,7 +22,7 @@ const pageTitle = (path: string) =>
  */
 export const openDocumentUnion = (
   navigate: NavigateFunction,
-  location: { pathname: string; search: string },
+  location: { pathname: string },
   params: Params,
   documentId: string,
 ) => {
@@ -44,9 +44,7 @@ export const openDocumentUnion = (
   });
   if (!to) return;
 
-  useDocumentUnionStore
-    .getState()
-    .start(`${location.pathname}${location.search}`);
+  useDocumentUnionStore.getState().reset();
   navigate(to);
 };
 
@@ -58,43 +56,23 @@ export const useDocumentUnionBack = (): {
   const { pathname } = useLocation();
   const { idDocumentUnion } = useParams();
   const previousIds = useDocumentUnionStore((state) => state.previousIds);
-  const returnPath = useDocumentUnionStore((state) => state.returnPath);
   const pop = useDocumentUnionStore((state) => state.pop);
-  const reset = useDocumentUnionStore((state) => state.reset);
 
-  if (!idDocumentUnion) return null;
-
-  const title = pageTitle(pathname);
   const previousId = previousIds.at(-1);
+  if (!idDocumentUnion || !previousId) return null;
 
-  if (previousId) {
-    const to = compileMatchedPath(pathname, { idDocumentUnion: previousId });
-    if (!to) return null;
-
-    return {
-      navigation: {
-        to,
-        backLabel: pageTitle(to),
-        title,
-      },
-      onBack: () => {
-        pop();
-        navigate(to);
-      },
-    };
-  }
-
-  if (!returnPath) return null;
+  const to = compileMatchedPath(pathname, { idDocumentUnion: previousId });
+  if (!to) return null;
 
   return {
     navigation: {
-      to: returnPath,
-      backLabel: pageTitle(returnPath),
-      title,
+      to,
+      backLabel: pageTitle(to),
+      title: pageTitle(pathname),
     },
     onBack: () => {
-      reset();
-      navigate(returnPath);
+      pop();
+      navigate(to);
     },
   };
 };

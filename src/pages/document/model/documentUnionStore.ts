@@ -2,52 +2,36 @@ import { create } from "zustand";
 
 const STORAGE_KEY = "document-union-history";
 
-type TDocumentUnionHistory = {
-  returnPath: string | null;
+interface DocumentUnionStore {
   previousIds: string[];
-};
-
-interface DocumentUnionStore extends TDocumentUnionHistory {
-  start: (returnPath: string) => void;
   push: (documentId: string) => void;
   pop: () => string | undefined;
   reset: () => void;
 }
 
-const emptyHistory = (): TDocumentUnionHistory => ({
-  returnPath: null,
-  previousIds: [],
-});
-
-const readHistory = (): TDocumentUnionHistory => {
+const readPreviousIds = (): string[] => {
   try {
     const raw = sessionStorage.getItem(STORAGE_KEY);
-    if (!raw) return emptyHistory();
+    if (!raw) return [];
 
     const parsed: unknown = JSON.parse(raw);
-    if (typeof parsed !== "object" || parsed === null) return emptyHistory();
+    const ids = Array.isArray(parsed)
+      ? parsed
+      : parsed &&
+          typeof parsed === "object" &&
+          "previousIds" in parsed &&
+          Array.isArray(parsed.previousIds)
+        ? parsed.previousIds
+        : [];
 
-    const record = parsed as Partial<TDocumentUnionHistory>;
-
-    return {
-      returnPath:
-        typeof record.returnPath === "string" ? record.returnPath : null,
-      previousIds: Array.isArray(record.previousIds)
-        ? record.previousIds.filter((id) => typeof id === "string")
-        : [],
-    };
+    return ids.filter((id) => typeof id === "string");
   } catch {
-    return emptyHistory();
+    return [];
   }
 };
 
-const writeHistory = (history: TDocumentUnionHistory) => {
-  sessionStorage.setItem(STORAGE_KEY, JSON.stringify(history));
-};
-
 export const useDocumentUnionStore = create<DocumentUnionStore>((set, get) => ({
-  ...readHistory(),
-  start: (returnPath) => set({ returnPath, previousIds: [] }),
+  previousIds: readPreviousIds(),
   push: (documentId) =>
     set((state) => ({ previousIds: [...state.previousIds, documentId] })),
   pop: () => {
@@ -56,12 +40,9 @@ export const useDocumentUnionStore = create<DocumentUnionStore>((set, get) => ({
     set({ previousIds: previousIds.slice(0, -1) });
     return documentId;
   },
-  reset: () => set(emptyHistory()),
+  reset: () => set({ previousIds: [] }),
 }));
 
 useDocumentUnionStore.subscribe((state) => {
-  writeHistory({
-    returnPath: state.returnPath,
-    previousIds: state.previousIds,
-  });
+  sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state.previousIds));
 });
