@@ -10,6 +10,7 @@ export const useFindCorrectionalScenario = () =>
 
 export const useUpdateCorrectionalScenario = () =>
   useMutation({
-    mutationFn: ({ id, fields }: { id: UUID; fields: IAccountInfo }) =>
-      correctionalScenarioService.patchCorrectionalScenario(id, fields),
+    mutationFn: (fields: IAccountInfo) =>
+      correctionalScenarioService.updateCorrectionalScenario(fields),
+    retry: false,
   });

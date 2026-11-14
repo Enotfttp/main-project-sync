@@ -3,11 +3,12 @@ export interface ICorrectionalScenarioFilter {
 }
 
 export interface ICorrectionalScenario {
-  id: UUID;
-  packageSubscriptionId: number;
   accountCode: string;
-  updatedAt: IsoDate;
-  accountInfo: IAccountInfo;
+  iterimAccountId: string;
+  iterimAccountCode: string;
+  accrueAccountId: string;
+  accrueAccountCode: string;
+  updatedAt: IsoDateTime;
 }
 
 export interface IAccountInfo {
@@ -20,4 +21,18 @@ export interface IAccountInfo {
   iterimAccountCodeOld: string;
   accrueAccountIdOld: string;
   accrueAccountCodeOld: string;
+}
+
+export interface ICorrectionRequest {
+  correctionRequestId: UUID;
+}
+
+export type TCorrectionRequestStatus =
+  | "CREATED"
+  | "PROCESSED"
+  | "COMPLETED"
+  | "ERROR";
+
+export interface ICorrectionStatus {
+  correctionRequestStatus: TCorrectionRequestStatus;
 }
