@@ -9,7 +9,7 @@ type TDocumentUnionHistory = {
 
 interface DocumentUnionStore extends TDocumentUnionHistory {
   start: (returnPath: string) => void;
-  push: (idDocument: string) => void;
+  push: (documentId: string) => void;
   pop: () => string | undefined;
   reset: () => void;
 }
@@ -48,13 +48,13 @@ const writeHistory = (history: TDocumentUnionHistory) => {
 export const useDocumentUnionStore = create<DocumentUnionStore>((set, get) => ({
   ...readHistory(),
   start: (returnPath) => set({ returnPath, previousIds: [] }),
-  push: (idDocument) =>
-    set((state) => ({ previousIds: [...state.previousIds, idDocument] })),
+  push: (documentId) =>
+    set((state) => ({ previousIds: [...state.previousIds, documentId] })),
   pop: () => {
     const previousIds = get().previousIds;
-    const idDocument = previousIds.at(-1);
+    const documentId = previousIds.at(-1);
     set({ previousIds: previousIds.slice(0, -1) });
-    return idDocument;
+    return documentId;
   },
   reset: () => set(emptyHistory()),
 }));

@@ -231,12 +231,17 @@ const DocumentInfo: FC<{ id: UUID }> = ({ id }) => {
 };
 
 export const DocumentDetails: FC<IProps> = ({ id, onClose }) => {
+  const { idDocumentUnion } = useParams();
+  const title = idDocumentUnion
+    ? routesPath.package.detail.document.documentUnion.detail.label
+    : routesPath.package.detail.option.detail.document.detail.label;
+
   return (
     <Modal
       isOpen
       onClose={onClose}
       dimension="xl"
-      title={routesPath.package.detail.option.detail.document.detail.label}
+      title={title}
       actions={
         <ModalButtonBlock>
           <Button

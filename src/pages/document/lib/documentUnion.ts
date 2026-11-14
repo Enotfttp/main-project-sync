@@ -13,14 +13,12 @@ import {
   useParams,
 } from "react-router-dom";
 
-const originLabel = (returnPath: string) => {
-  const pathname = returnPath.split("?")[0];
-  return resolvePageNavigation(pathname)?.title ?? "Список документов";
-};
+const pageTitle = (path: string) =>
+  resolvePageNavigation(path.split("?")[0])?.title ?? "Список документов";
 
 /**
- * Сдвигает пару id в текущем маршруте.
- * Предыдущий idDocument остаётся в сторе, чтобы «Назад» собрал прежний адрес.
+ * Открывает список документов объединения.
+ * В адресе остаётся только текущий id, предыдущие лежат в сторе для возврата.
  */
 export const openDocumentUnion = (
   navigate: NavigateFunction,
@@ -28,20 +26,20 @@ export const openDocumentUnion = (
   params: Params,
   documentId: string,
 ) => {
-  const { idDocument, idDocumentUnion } = params;
+  const { idDocumentUnion } = params;
 
-  if (idDocument && idDocumentUnion) {
-    useDocumentUnionStore.getState().push(idDocument);
+  if (idDocumentUnion) {
     const to = compileMatchedPath(location.pathname, {
-      idDocument: idDocumentUnion,
       idDocumentUnion: documentId,
     });
-    if (to) navigate(to);
+    if (!to) return;
+
+    useDocumentUnionStore.getState().push(idDocumentUnion);
+    navigate(to);
     return;
   }
 
   const to = resolveChildPath(location.pathname, "documentUnion", {
-    idDocument: documentId,
     idDocumentUnion: documentId,
   });
   if (!to) return;
@@ -58,28 +56,25 @@ export const useDocumentUnionBack = (): {
 } | null => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { idDocument, idDocumentUnion } = useParams();
+  const { idDocumentUnion } = useParams();
   const previousIds = useDocumentUnionStore((state) => state.previousIds);
   const returnPath = useDocumentUnionStore((state) => state.returnPath);
   const pop = useDocumentUnionStore((state) => state.pop);
   const reset = useDocumentUnionStore((state) => state.reset);
 
-  if (!idDocument || !idDocumentUnion) return null;
+  if (!idDocumentUnion) return null;
 
-  const title = `Документы объединённого документа №${idDocumentUnion}`;
+  const title = pageTitle(pathname);
   const previousId = previousIds.at(-1);
 
   if (previousId) {
-    const to = compileMatchedPath(pathname, {
-      idDocument: previousId,
-      idDocumentUnion: idDocument,
-    });
+    const to = compileMatchedPath(pathname, { idDocumentUnion: previousId });
     if (!to) return null;
 
     return {
       navigation: {
         to,
-        backLabel: `Документ №${idDocument}`,
+        backLabel: pageTitle(to),
         title,
       },
       onBack: () => {
@@ -94,7 +89,7 @@ export const useDocumentUnionBack = (): {
   return {
     navigation: {
       to: returnPath,
-      backLabel: originLabel(returnPath),
+      backLabel: pageTitle(returnPath),
       title,
     },
     onBack: () => {
