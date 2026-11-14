@@ -12,14 +12,14 @@ interface IProps {
 }
 
 export const Table: FC<IProps> = ({ onRowClick, onTotalElementsChange }) => {
-  const { id } = useParams();
+  const { idPackage } = useParams();
 
-  if (!id) throw new Error("Нет id опции");
+  if (!idPackage) throw new Error("Нет id пакета");
 
   const [pagination, setPagination] = useState<TPaginationTable>();
 
   const { data } = useGetOptions({
-    packageSubscriptionId: id,
+    packageSubscriptionId: idPackage,
     page: pagination,
   });
 
@@ -32,7 +32,7 @@ export const Table: FC<IProps> = ({ onRowClick, onTotalElementsChange }) => {
       addIdAndHoverTableRowData("optionSubscriptionId", data?.content, true),
     [data?.content],
   );
-  //
+
   const handlePaginationChange = useCallback((pagination: TPaginationTable) => {
     setPagination(pagination);
   }, []);

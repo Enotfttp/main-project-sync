@@ -1,24 +1,27 @@
 import { columnList } from "../../lib/columns";
 import { useGetSchedulePeriods } from "@entities/schedule/api/hook";
-import { addIdAndHoverTableRowData } from "@shared/lib";
+import { addIdAndHoverTableRowData, resolveChildPath } from "@shared/lib";
 import { TPaginationTable } from "@shared/types";
 import { TableSort } from "@shared/ui";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 interface IProps {
   onTotalElementsChange: (totalElements?: number) => void;
 }
 
 export const Table: FC<IProps> = ({ onTotalElementsChange }) => {
-  const { id } = useParams();
+  const { id, idSchedule } = useParams();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const scheduleSourceGuid = id || idSchedule;
 
-  if (!id) throw new Error("Нет id периода");
+  if (!scheduleSourceGuid) throw new Error("Нет id графика");
 
   const [pagination, setPagination] = useState<TPaginationTable>();
 
   const { data } = useGetSchedulePeriods({
-    scheduleSourceGuid: id,
+    scheduleSourceGuid,
     page: pagination,
   });
 
@@ -35,9 +38,17 @@ export const Table: FC<IProps> = ({ onTotalElementsChange }) => {
     setPagination(pagination);
   }, []);
 
-  const handleRowClick = useCallback((rowId: string | number) => {
-    String(rowId);
-  }, []);
+  const handleRowClick = useCallback(
+    (rowId: string | number) => {
+      const documentPath = resolveChildPath(pathname, "document", {
+        idPeriod: String(rowId),
+      });
+
+      if (documentPath) navigate(documentPath);
+    },
+    [pathname],
+  );
+
   return (
     <TableSort
       isPagination

@@ -19,7 +19,7 @@ export const PackageInfoPage: FC = () => {
 
   const optionPath = resolveChildPath(pathname, "option");
 
-  const handlePeriods = () => {
+  const handleOptions = () => {
     if (optionPath) navigate(optionPath);
   };
 
@@ -34,7 +34,7 @@ export const PackageInfoPage: FC = () => {
           type="button"
           appearance="primary"
           dimension="m"
-          onClick={handlePeriods}
+          onClick={handleOptions}
         >
           Получить информацию по опциям
         </Button>

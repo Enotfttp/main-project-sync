@@ -5,23 +5,30 @@ import {
   SystemTuneSolid,
 } from "@admiral-ds/icons";
 import { Link } from "@admiral-ds/react-ui";
-import { routesPath } from "@app/routes";
 import { useGetSchedule } from "@entities/schedule/api/hook";
 import { mapEventType, mapProcessCode } from "@entities/schedule/model";
 import { ScheduleStatusTag } from "@entities/schedule/ui";
-import { normalizedDate } from "@shared/lib";
+import { normalizedDate, resolveChildPath } from "@shared/lib";
 import { InfoRow, SectionInfo } from "@shared/ui";
 import { FC } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 
 interface IProps {
   id: UUID;
 }
 
 export const ScheduleInfo: FC<IProps> = ({ id }) => {
+  const { pathname } = useLocation();
   const { data } = useGetSchedule(id as UUID);
 
   if (!data) return;
+
+  const optionPath = resolveChildPath(pathname, "option", {
+    idOption: String(data.packageInfo.packageSubscriptionId),
+  });
+  const packagePath = resolveChildPath(pathname, "package", {
+    idPackage: String(data.packageInfo.packageSubscriptionId),
+  });
 
   return (
     <>
@@ -55,16 +62,18 @@ export const ScheduleInfo: FC<IProps> = ({ id }) => {
         title="Информация по пакету услуг"
         icon={<ServiceHelpSolid />}
       >
-        <InfoRow label="Идентификатор">
-          <Link
-            as={RouterLink}
-            to={`${routesPath.schedule.root}/${data.scheduleSourceGuid}`}
-            dimension="s"
-            appearance="primary"
-          >
-            {data.scheduleSourceGuid}
-          </Link>
-        </InfoRow>
+        {packagePath && (
+          <InfoRow label="Идентификатор">
+            <Link
+              as={RouterLink}
+              to={packagePath}
+              dimension="s"
+              appearance="primary"
+            >
+              {data.packageInfo.packageSubscriptionId}
+            </Link>
+          </InfoRow>
+        )}
 
         <InfoRow label="Наименование">{data.packageInfo.name}</InfoRow>
         <InfoRow label="Номер">{data.packageInfo.trfNumber}</InfoRow>
@@ -73,16 +82,18 @@ export const ScheduleInfo: FC<IProps> = ({ id }) => {
         title="Информация по дополнительной опции"
         icon={<ServiceHelpSolid />}
       >
-        <InfoRow label="Идентификатор">
-          <Link
-            as={RouterLink}
-            to={`${routesPath.schedule.root}/${data.scheduleSourceGuid}`}
-            dimension="s"
-            appearance="primary"
-          >
-            {data.scheduleSourceGuid}
-          </Link>
-        </InfoRow>
+        {optionPath && (
+          <InfoRow label="Идентификатор">
+            <Link
+              as={RouterLink}
+              to={optionPath}
+              dimension="s"
+              appearance="primary"
+            >
+              {data.optionInfo?.optionSubscriptionId}
+            </Link>
+          </InfoRow>
+        )}
         <InfoRow label="Наименование">{data.optionInfo?.name}</InfoRow>
         <InfoRow label="Номер">{data.optionInfo?.trfNumber}</InfoRow>
       </SectionInfo>

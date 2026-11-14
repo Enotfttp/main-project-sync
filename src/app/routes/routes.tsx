@@ -2,6 +2,7 @@ import { routesPath } from "./routesPath";
 import { NotFoundPage } from "@app/errorBoundary/NotFoundPage";
 import { RouterErrorBoundary } from "@app/errorBoundary/RouterErrorBoundary";
 import {
+  DocumentPage,
   MainPage,
   OptionInfoPage,
   OptionPage,
@@ -33,16 +34,19 @@ const page = (
 
 const PackageInfoPages = [
   routesPath.request.detail.package.root,
+  routesPath.request.detail.schedule.package.root,
   routesPath.schedule.detail.package.root,
 ].map((path) => page(path, PackageInfoPage));
 
 const OptionInfoPages = [
   routesPath.request.detail.option.root,
+  routesPath.request.detail.schedule.option.root,
   routesPath.schedule.detail.option.root,
 ].map((path) => page(path, OptionInfoPage));
 
 const OptionPages = [
   routesPath.request.detail.package.option.root,
+  routesPath.request.detail.schedule.package.option.root,
   routesPath.schedule.detail.package.option.root,
   routesPath.package.detail.option.root,
 ].map((path) => page(path, OptionPage));
@@ -51,6 +55,37 @@ const PeriodPages = [
   routesPath.request.detail.schedule.period.root,
   routesPath.schedule.detail.period.root,
 ].map((path) => page(path, PeriodPage));
+
+const DocumentPages = [
+  routesPath.request.detail.schedule.period.document.root,
+  routesPath.request.detail.schedule.package.document.root,
+  routesPath.request.detail.schedule.package.option.detail.document.root,
+  routesPath.request.detail.schedule.option.document.root,
+  routesPath.request.detail.package.option.detail.document.root,
+  routesPath.request.detail.package.document.root,
+  routesPath.request.detail.option.document.root,
+  routesPath.schedule.detail.period.document.root,
+  routesPath.schedule.detail.package.option.document.root,
+  routesPath.schedule.detail.package.document.root,
+  routesPath.schedule.detail.option.document.root,
+  routesPath.package.detail.option.detail.document.root,
+  routesPath.package.detail.document.root,
+  routesPath.request.detail.schedule.period.document.detail.documentUnion.root,
+  routesPath.request.detail.schedule.package.document.detail.documentUnion.root,
+  routesPath.request.detail.schedule.package.option.detail.document.detail
+    .documentUnion.root,
+  routesPath.request.detail.schedule.option.document.detail.documentUnion.root,
+  routesPath.request.detail.package.option.detail.document.detail.documentUnion
+    .root,
+  routesPath.request.detail.package.document.detail.documentUnion.root,
+  routesPath.request.detail.option.document.detail.documentUnion.root,
+  routesPath.schedule.detail.package.option.document.detail.documentUnion.root,
+  routesPath.schedule.detail.package.document.detail.documentUnion.root,
+  routesPath.schedule.detail.option.document.detail.documentUnion.root,
+  routesPath.schedule.detail.period.document.detail.documentUnion.root,
+  routesPath.package.detail.option.detail.document.detail.documentUnion.root,
+  routesPath.package.detail.document.detail.documentUnion.root,
+].map((path) => page(path, DocumentPage));
 
 const RootLayout = () => <Outlet />;
 
@@ -63,6 +98,7 @@ export const routes: RouteObject[] = [
       ...OptionInfoPages,
       ...OptionPages,
       ...PeriodPages,
+      ...DocumentPages,
       {
         path: routesPath.root,
         element: withSuspense(MainPage),

@@ -8,7 +8,7 @@ import { Modal } from "@features/modal";
 import { normalizedDate, resolveChildPath } from "@shared/lib";
 import { InfoRow, SectionInfo } from "@shared/ui";
 import { FC } from "react";
-import { generatePath, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface IProps {
   id: string;
@@ -17,12 +17,16 @@ interface IProps {
 
 const PackageInfo: FC<{ id: UUID }> = ({ id }) => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const { data } = useGetPackage(id);
 
-  const redirectToDocumentPage = () => {
-    navigate(generatePath(routesPath.package.detail.document.root));
-  };
+  const documentPath = resolveChildPath(pathname, "document", {
+    idPackage: id,
+  });
 
+  const redirectToDocumentPage = () => {
+    if (documentPath) navigate(documentPath);
+  };
   if (!data) return;
 
   return (

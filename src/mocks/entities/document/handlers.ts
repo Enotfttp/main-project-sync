@@ -1,4 +1,5 @@
-import { documentDb, IDocumentMock, toDocumentInfo } from "./factory";
+import { documentDb, TDocumentMock, toDocumentInfo } from "./factory";
+import { IDocumentInfoDetails } from "@entities/document/model";
 import {
   apiPath,
   badRequest,
@@ -10,13 +11,30 @@ import {
 } from "@mocks/lib";
 import { delay, http, HttpResponse } from "msw";
 
-const ownerKeys = ["periodId", "packageId", "optionId"] as const;
+const ownerKeys = [
+  "periodId",
+  "packageSubscriptionId",
+  "optionSubscriptionId",
+] as const;
 
 export const handlers = [
-  /** `/documents?periodId=` | `?packageId=` | `?optionId=` */
   http.post(apiPath("/documents"), async ({ request }) => {
     await delay();
     const searchParams = new URL(request.url).searchParams;
+    const mergedDocumentId = searchParams.get("mergedDocumentId");
+
+    if (mergedDocumentId) {
+      const { filters, page, sort } = await readListRequest(request);
+      const documents = documentDb
+        .where(
+          (document) => String(document.mergedDocumentId) === mergedDocumentId,
+        )
+        .map(toDocumentInfo);
+      const items = filterItems(documents, filters);
+
+      return HttpResponse.json(paginate(sortItems(items, sort), page));
+    }
+
     const ownerKey = ownerKeys.find((key) => searchParams.has(key));
     if (!ownerKey) {
       return badRequest(
@@ -27,28 +45,23 @@ export const handlers = [
     const ownerId = searchParams.get(ownerKey);
     const { filters, page, sort } = await readListRequest(request);
     const documents = documentDb
-      .where((document: IDocumentMock) => document[ownerKey] === ownerId)
+      .where(
+        (document: TDocumentMock) =>
+          String(document[ownerKey]) === String(ownerId),
+      )
       .map(toDocumentInfo);
     const items = filterItems(documents, filters);
 
     return HttpResponse.json(paginate(sortItems(items, sort), page));
   }),
 
-  http.get(apiPath("/documents/:id"), async ({ params }) => {
+  http.get(apiPath("/documents/:documentId"), async ({ params }) => {
     await delay();
-    const item = documentDb.find(params.id);
+    const document = documentDb.find(params.documentId);
+    if (!document) return notFound();
 
-    return item ? HttpResponse.json(toDocumentInfo(item)) : notFound();
-  }),
-
-  http.get(apiPath("/documents/:id/history"), async ({ params }) => {
-    await delay();
-    const item = documentDb.find(params.id);
-    if (!item) return notFound();
-
-    return HttpResponse.json({
-      documentId: item.documentId,
-      history: item.history,
+    return HttpResponse.json<IDocumentInfoDetails>({
+      ...document.details,
     });
   }),
 ];

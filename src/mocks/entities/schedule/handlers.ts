@@ -42,13 +42,16 @@ export const handlers = [
     });
   }),
 
-  http.get(apiPath("/schedules/:id/periods"), async ({ request }) => {
+  http.get(apiPath("/schedules/:id/periods"), async ({ params, request }) => {
     await delay();
 
     const { filters, page, sort } = await readListRequest<object, IPeriodInfo>(
       request,
     );
-    const items = filterItems(periodDb.all(), filters).map(toPeriodInfo);
+    const periods = periodDb.where(
+      (period) => period.scheduleSourceGuid === params.id,
+    );
+    const items = filterItems(periods, filters).map(toPeriodInfo);
 
     return HttpResponse.json<TPeriodsPaginationResponse>(
       paginate(sortItems(items, sort), page),

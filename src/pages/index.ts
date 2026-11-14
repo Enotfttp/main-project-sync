@@ -19,3 +19,4 @@ export const OptionInfoPage = lazy(
 );
 
 export const PeriodPage = lazy(() => import("@pages/period/PeriodPage"));
+export const DocumentPage = lazy(() => import("@pages/document/DocumentPage"));
