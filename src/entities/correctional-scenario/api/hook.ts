@@ -1,34 +1,16 @@
 import { correctionalScenarioService } from "./api";
-import {
-  IAccountInfo,
-  ICorrectionalScenario,
-  ICorrectionalScenarioFilter,
-} from "../model/types";
-import { useQuery, UseQueryOptions } from "@tanstack/react-query";
+import { IAccountInfo, ICorrectionalScenarioFilter } from "../model/types";
+import { useMutation } from "@tanstack/react-query";
 
-export const useGetCorrectionalScenario = (
-  filters?: ICorrectionalScenarioFilter,
-  options?: Omit<
-    UseQueryOptions<ICorrectionalScenario, Error>,
-    "queryKey" | "queryFn"
-  >,
-) => {
-  return useQuery({
-    queryKey: ["correctional-scenario", filters],
-    queryFn: () => correctionalScenarioService.getCorrectionalScenario(filters),
-    ...options,
+export const useFindCorrectionalScenario = () =>
+  useMutation({
+    mutationFn: (filters: ICorrectionalScenarioFilter) =>
+      correctionalScenarioService.getCorrectionalScenario(filters),
   });
-};
 
-export const usePatchCorrectionalScenario = (
-  id: UUID,
-  fields: IAccountInfo,
-  options?: Omit<UseQueryOptions<void, Error>, "queryKey" | "queryFn">,
-) => {
-  return useQuery({
-    queryKey: ["correctional-scenario", id, fields],
-    queryFn: () =>
-      correctionalScenarioService.patchCorrectionalScenario(id, fields),
-    ...options,
+export const useUpdateCorrectionalScenario = () =>
+  useMutation({
+    mutationFn: (fields: IAccountInfo) =>
+      correctionalScenarioService.updateCorrectionalScenario(fields),
+    retry: false,
   });
-};

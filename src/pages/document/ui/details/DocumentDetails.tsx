@@ -1,7 +1,7 @@
 import { ModalButtonBlock } from "./DocumentDetails.styled";
 import { openDocumentUnion } from "../../lib/documentUnion";
 import {
-  DocumentsAccountDetailOutline,
+  DocumentsAccountDetailSolid,
   FinancePercentSolid,
   ServiceInfoSolid,
   ServicePlusCircleSolid,
@@ -63,7 +63,7 @@ const DocumentInfo: FC<{ id: UUID }> = ({ id }) => {
               appearance="primary"
               onClick={handleRedirect}
             >
-              <DocumentsAccountDetailOutline />
+              <DocumentsAccountDetailSolid />
             </IconButton>
           )}
         </InfoRow>
