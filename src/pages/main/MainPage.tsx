@@ -1,11 +1,14 @@
 import { getVisibleServiceGroups } from "./lib/servise";
-import { PageSearch, ServiceGroup } from "./ui";
+import { PageSearch, ServiceGroup, SskChange } from "./ui";
 import { Page } from "@shared/ui";
 import { FC, useState } from "react";
 
 const MainPage: FC = () => {
   const [searchText, setSearchText] = useState("");
-  const serviceGroups = getVisibleServiceGroups(searchText);
+  const [isSskChangeOpen, setIsSskChangeOpen] = useState(false);
+  const serviceGroups = getVisibleServiceGroups(searchText, {
+    "ssk-change": () => setIsSskChangeOpen(true),
+  });
 
   return (
     <Page>
@@ -17,6 +20,9 @@ const MainPage: FC = () => {
           services={group.services}
         />
       ))}
+      {isSskChangeOpen && (
+        <SskChange onClose={() => setIsSskChangeOpen(false)} />
+      )}
     </Page>
   );
 };
