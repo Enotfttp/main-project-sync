@@ -1,4 +1,5 @@
-FROM docker.repo-ci.sfera.inno.local/comc-docker/astra/ubi18-1.8.3-nginx:1.26.3
+# Базовый образ Astra: актуальный список https://sfera.inno.local/knowledge/pages?id=1204699
+FROM docker.repo-ci.sfera.inno.local/comc-docker/astra/ubi18-1.8.7-nginx:1.30.1
 COPY entrypoint.sh /opt/entrypoint.sh
 RUN mkdir -p /opt/app/src && \
     chmod 1777 /var/lib/nginx && \
@@ -9,5 +10,6 @@ RUN mkdir -p /opt/app/src && \
 COPY ./dist/ /opt/app/src
 RUN chmod -R 777 /opt/app/src/
 WORKDIR /opt/app/src
+
 EXPOSE 8080
 ENTRYPOINT ["/bin/bash","-c","/opt/entrypoint.sh"]
