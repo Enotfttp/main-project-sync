@@ -16,7 +16,7 @@ const SchedulePage: FC = () => {
     handleRemoveField,
     handleCloseFilters,
     handleOpenFilters,
-  } = useFilters("schedule");
+  } = useFilters();
   const { id, open, close } = useModal();
 
   return (

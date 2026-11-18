@@ -1,6 +1,7 @@
 import { routesPath } from "./routesPath";
 import { NotFoundPage } from "@app/errorBoundary/NotFoundPage";
 import { RouterErrorBoundary } from "@app/errorBoundary/RouterErrorBoundary";
+import { useSyncFiltersWithRoute } from "@features/dynamic-filters";
 import {
   DocumentPage,
   MainPage,
@@ -87,7 +88,10 @@ const DocumentPages = [
   routesPath.package.detail.document.detail.documentUnion.root,
 ].map((path) => page(path, DocumentPage));
 
-const RootLayout = () => <Outlet />;
+const RootLayout = () => {
+  useSyncFiltersWithRoute();
+  return <Outlet />;
+};
 
 export const routes: RouteObject[] = [
   {

@@ -9,11 +9,13 @@ export const columnList: Column[] = [
     name: "scheduleSourceGuid",
     title: "Идентификатор",
     width: "14%",
+    sortable: true,
   },
   {
     name: "date",
     title: "Дата поступления",
     width: "13%",
+    sortable: true,
     renderCell: (date) => {
       return normalizedDate(date);
     },
@@ -22,6 +24,7 @@ export const columnList: Column[] = [
     name: "scheduleStatus",
     title: "Статус графика",
     width: "13%",
+    sortable: true,
     renderCell(status) {
       return <ScheduleStatusTag status={status} />;
     },
@@ -30,6 +33,7 @@ export const columnList: Column[] = [
     name: "startDate",
     title: "Дата начала оплаты",
     width: "13%",
+    sortable: true,
     renderCell: (date) => {
       return normalizedDate(date);
     },
@@ -38,6 +42,7 @@ export const columnList: Column[] = [
     name: "endDate",
     title: "Дата окончани оплаты",
     width: "13%",
+    sortable: true,
     renderCell: (date) => {
       return normalizedDate(date);
     },
@@ -46,16 +51,19 @@ export const columnList: Column[] = [
     name: "amountFullCur",
     title: "Сумма оплаты",
     width: "12%",
+    sortable: true,
   },
   {
     name: "priority",
     title: "Приоритет",
     width: "12%",
+    sortable: true,
   },
   {
     name: "processCode",
     title: "Код управляющего признака",
     width: "12%",
+    sortable: true,
     renderCell(status) {
       return mapProcessCode(status);
     },

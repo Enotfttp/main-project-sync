@@ -1,9 +1,9 @@
 import { columnList } from "../../lib/columns";
 import { useGetOptions } from "@entities/option/api/hook";
+import { IOptionInfo } from "@entities/option/model";
 import { addIdAndHoverTableRowData } from "@shared/lib";
-import { TPaginationTable } from "@shared/types";
-import { TableSort } from "@shared/ui";
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import { TableSort, useServerSort } from "@shared/ui";
+import { FC, useCallback, useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 
 interface IProps {
@@ -16,11 +16,13 @@ export const Table: FC<IProps> = ({ onRowClick, onTotalElementsChange }) => {
 
   if (!idPackage) throw new Error("Нет id пакета");
 
-  const [pagination, setPagination] = useState<TPaginationTable>();
+  const { page, sort, handlePaginationChange, handleSortChange } =
+    useServerSort<IOptionInfo>();
 
   const { data } = useGetOptions({
     packageSubscriptionId: idPackage,
-    page: pagination,
+    page,
+    sort,
   });
 
   useEffect(() => {
@@ -32,10 +34,6 @@ export const Table: FC<IProps> = ({ onRowClick, onTotalElementsChange }) => {
       addIdAndHoverTableRowData("optionSubscriptionId", data?.content, true),
     [data?.content],
   );
-
-  const handlePaginationChange = useCallback((pagination: TPaginationTable) => {
-    setPagination(pagination);
-  }, []);
 
   const handleRowClick = useCallback(
     (rowId: string | number) => {
@@ -50,8 +48,10 @@ export const Table: FC<IProps> = ({ onRowClick, onTotalElementsChange }) => {
       rowList={rows}
       onRowClick={handleRowClick}
       queryKey="options"
+      sort={sort}
+      handleSortChange={handleSortChange}
       handlePaginationChange={handlePaginationChange}
-      pagination={(data?.totalElements || 0) > 25 ? data : undefined}
+      pagination={data}
     />
   );
 };

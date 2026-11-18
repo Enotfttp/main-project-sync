@@ -9,16 +9,19 @@ export const columnList: Column[] = [
     name: "optionSubscriptionId",
     title: "Номер опции",
     width: "14%",
+    sortable: true,
   },
   {
     name: "optionName",
     title: "Наименование  опции",
     width: "14%",
+    sortable: true,
   },
   {
     name: "optionStatus",
     title: "Статус опции",
     width: "14%",
+    sortable: true,
     renderCell(status) {
       return <OptionStatusTag status={status} />;
     },
@@ -27,6 +30,7 @@ export const columnList: Column[] = [
     name: "activationDate",
     title: "Дата поступления",
     width: "14%",
+    sortable: true,
     renderCell: (date) => {
       return normalizedDate(date);
     },
@@ -35,6 +39,7 @@ export const columnList: Column[] = [
     name: "deactivationDate",
     title: "Дата отключения",
     width: "14%",
+    sortable: true,
     renderCell: (date) => {
       return normalizedDate(date);
     },
@@ -43,6 +48,7 @@ export const columnList: Column[] = [
     name: "amountFullCur",
     title: "Сумма оплаты",
     width: "14%",
+    sortable: true,
   },
   {
     name: "priority",

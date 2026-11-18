@@ -4,7 +4,8 @@ import { hasFilledFilter } from "../lib/hasFilledFilter";
 import { create } from "zustand";
 
 /**
- * Применённые фильтры живут вне страницы и переживают обновление вкладки.
+ * Фильтры раздела переживают обновление вкладки и переход вглубь того же
+ * раздела. Главная и другой раздел очищают стор.
  * Пустой фильтр всегда открыт.
  */
 export interface PageFilterState {
@@ -21,6 +22,7 @@ interface FiltersStore {
     variant?: string,
   ) => void;
   resetFilters: (pageId: string) => void;
+  retainFilters: (pageId: string | null) => void;
   removeField: (pageId: string, fieldId: string) => void;
   setShowFilters: (pageId: string, isShowFilters: boolean) => void;
 }
@@ -79,6 +81,21 @@ export const useFiltersStore = create<FiltersStore>((set) => ({
         })),
       ),
     ),
+  retainFilters: (pageId) =>
+    set((state) => {
+      const ids = Object.keys(state.pages);
+
+      if (!pageId) {
+        return ids.length > 0 ? savePages({}) : state;
+      }
+
+      if (ids.length === 0 || (ids.length === 1 && ids[0] === pageId)) {
+        return state;
+      }
+
+      const page = state.pages[pageId];
+      return savePages(page ? { [pageId]: page } : {});
+    }),
   removeField: (pageId, fieldId) =>
     set((state) =>
       savePages(
