@@ -62,11 +62,13 @@ export const columnList: Column[] = [
     name: "requestHistoryId",
     title: "Идентификатор запроса",
     width: "18%",
+    sortable: true,
   },
   {
     name: "eventType",
     title: "Тип события",
     width: "18%",
+    sortable: true,
     renderCell: (status) => {
       return mapEventType(status);
     },
@@ -75,6 +77,7 @@ export const columnList: Column[] = [
     name: "requestStatus",
     title: "Статус запроса",
     width: "18%",
+    sortable: true,
     renderCell(status) {
       return <RequestStatusTag status={status} />;
     },
@@ -83,6 +86,7 @@ export const columnList: Column[] = [
     name: "resultType",
     title: "Результат обработки",
     width: "18%",
+    sortable: true,
     renderCell(status) {
       return mapResultType(status);
     },
@@ -91,6 +95,7 @@ export const columnList: Column[] = [
     name: "putToOutboxStatus",
     title: "Статус отправки",
     width: "18%",
+    sortable: true,
     renderCell(status) {
       return <PutToOutboxStatusTag status={status} />;
     },

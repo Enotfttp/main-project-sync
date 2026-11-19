@@ -4,7 +4,11 @@ import {
   TDocumentsPaginationResponse,
   TDocumentsRequest,
 } from "../model";
-import { UseQueryOptions, useSuspenseQuery } from "@tanstack/react-query";
+import {
+  useQuery,
+  UseQueryOptions,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 
 const getDocumentsQueryOptions = (params: TDocumentsRequest) => {
   let extQueryKey;
@@ -40,9 +44,10 @@ export const useGetDocuments = (
     "queryKey" | "queryFn"
   >,
 ) => {
-  return useSuspenseQuery({
+  return useQuery({
     ...getDocumentsQueryOptions(params),
     ...options,
+    throwOnError: true,
   });
 };
 

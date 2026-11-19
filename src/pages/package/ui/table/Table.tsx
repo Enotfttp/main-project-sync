@@ -1,11 +1,11 @@
 import { columnList } from "../../lib/columns";
 import { toPackageFilter } from "../../lib/filters";
 import { useGetPackages } from "@entities/package/api/hook";
+import { IPackageInfo } from "@entities/package/model";
 import { hasFilledFilter, TFilterValue } from "@features/dynamic-filters";
 import { addIdAndHoverTableRowData } from "@shared/lib";
-import { TPaginationTable } from "@shared/types";
-import { TableSort } from "@shared/ui";
-import { FC, useCallback, useMemo, useState } from "react";
+import { TableSort, useServerSort } from "@shared/ui";
+import { FC, useCallback, useMemo } from "react";
 
 /**
  * Список уже загружается при применении фильтров, поэтому ответ какое-то время
@@ -20,12 +20,14 @@ interface IProps {
 }
 
 export const Table: FC<IProps> = ({ tableKey, filters, onRowClick }) => {
-  const [pagination, setPagination] = useState<TPaginationTable>();
+  const { page, sort, handlePaginationChange, handleSortChange } =
+    useServerSort<IPackageInfo>();
   const hasFilters = hasFilledFilter(filters);
   const { data } = useGetPackages(
     {
       filters: toPackageFilter(filters),
-      page: pagination,
+      page,
+      sort,
     },
     { enabled: hasFilters, staleTime: FRESH_TIME },
   );
@@ -40,10 +42,6 @@ export const Table: FC<IProps> = ({ tableKey, filters, onRowClick }) => {
         : [],
     [data?.content, hasFilters],
   );
-
-  const handlePaginationChange = useCallback((pagination: TPaginationTable) => {
-    setPagination(pagination);
-  }, []);
 
   const handleRowClick = useCallback(
     (rowId: string | number) => {
@@ -60,6 +58,8 @@ export const Table: FC<IProps> = ({ tableKey, filters, onRowClick }) => {
       rowList={rows}
       onRowClick={handleRowClick}
       queryKey="packages"
+      sort={sort}
+      handleSortChange={handleSortChange}
       handlePaginationChange={handlePaginationChange}
       pagination={hasFilters ? data : undefined}
     />

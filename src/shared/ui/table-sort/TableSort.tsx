@@ -1,202 +1,118 @@
 import { StyledPagination, StyledTableSort } from "./TableSort.styled";
-import { TPaginationData, TPaginationTable } from "../../types";
+import {
+  DEFAULT_PAGE_SIZE,
+  TPaginationData,
+  TPaginationTable,
+  TTableSort,
+} from "../../types";
 import { PaginationTable } from "./components/PaginationTable";
 import {
   Column,
   PaginationOneProps,
   Table,
   TableProps,
-  TableRow,
 } from "@admiral-ds/react-ui";
 import { Loader } from "@shared/ui";
 import { useIsFetching } from "@tanstack/react-query";
 import * as React from "react";
 
-const StrToTime = (str: string) => {
-  const res = str.split(".").reverse().join("-");
-  return new Date(res).getTime();
-};
-
+/** Один выбранный столбец. Следующий клик по другому столбцу заменяет его. */
 const MAX_SORT_LEVEL = 1;
 
-type SortColumn = { [key: string]: { sort: "asc" | "desc"; type?: string } };
+type SortChange = {
+  name: string;
+  sort: "asc" | "desc" | "initial";
+};
 
-type TableSortProps =
+type TableSortProps = {
+  queryKey: string | readonly unknown[];
+  sort?: TTableSort[];
+  handleSortChange?(sort: TTableSort[]): void;
+} & (
   | ({
-      queryKey: string;
       handlePaginationChange?(pagination: TPaginationTable): void;
       pagination?: TPaginationData;
       isPagination?: true;
       paginationProp?: PaginationOneProps;
     } & TableProps)
   | ({
-      queryKey: string;
       isPagination?: never;
-    } & TableProps);
+    } & TableProps)
+);
 
-export const TableSort = ({ queryKey, ...props }: TableSortProps) => {
-  const isFetching = useIsFetching({ queryKey: [queryKey] });
-  const [rows, setRows] = React.useState([...props.rowList]);
-  const [cols, setCols] = React.useState([...props.columnList]);
-  const [sortLevel, setSortLevel] = React.useState<number>(0);
+const hasManyRows = (totalElements?: number) =>
+  (totalElements ?? 0) > DEFAULT_PAGE_SIZE;
 
-  const calcSortOrder = (columns: Array<Column>): Array<Column> => {
-    const newCols = [...columns];
+const nextSort = (current: TTableSort[] | undefined, change: SortChange) => {
+  const list = current ?? [];
 
-    const sortColumns = [...newCols]
-      .filter((column) => !!column.sort)
-      .sort((a, b) => {
-        return (a.sortOrder || 0) - (b.sortOrder || 0);
-      });
+  if (change.sort === "initial") {
+    return list.filter((item) => item.field !== change.name);
+  }
 
-    sortColumns.forEach((col, index) => {
-      if (index < MAX_SORT_LEVEL) {
-        col.sortOrder = index + 1;
-      } else {
-        col.sortOrder = undefined;
-        col.sort = undefined;
-      }
-    });
-    setSortLevel(sortColumns.length);
-
-    return newCols;
-  };
-
-  const getOrderedSortColumns = (columns: Array<Column>): SortColumn => {
-    const sortColumns = columns
-      .filter((column) => !!column.sort)
-      .sort((a, b) => {
-        return (a.sortOrder || 0) - (b.sortOrder || 0);
-      });
-
-    return sortColumns.reduce(
-      (acc: SortColumn, { name, sort, type }: Column) => {
-        if (sort) acc[name] = { sort, type };
-        return acc;
-      },
-      {},
+  if (change.sort === "desc") {
+    return list.map((item) =>
+      item.field === change.name
+        ? { ...item, direction: "desc" as const }
+        : item,
     );
-  };
+  }
 
-  const handleSort = ({
-    name,
-    sort,
-  }: {
-    name: string;
-    sort: "asc" | "desc" | "initial";
-  }) => {
-    if (sort === "initial") {
-      const newCols = [...cols].map((col) =>
-        col.name === name
-          ? { ...col, sort: undefined, sortOrder: undefined }
-          : { ...col },
-      );
-      setCols(calcSortOrder(newCols));
-    } else {
-      if (sort === "asc") {
-        if (sortLevel === MAX_SORT_LEVEL) {
-          const firstOrderCol = cols.find((col) => col.sortOrder === 1);
-          if (firstOrderCol) {
-            if (firstOrderCol.sort) firstOrderCol.sort = undefined;
-            if (firstOrderCol.sortOrder) firstOrderCol.sortOrder = undefined;
-          }
-        }
+  const rest = list.filter((item) => item.field !== change.name);
+  const room =
+    rest.length >= MAX_SORT_LEVEL
+      ? rest.slice(rest.length - MAX_SORT_LEVEL + 1)
+      : rest;
 
-        const newCols = [...cols].map((col) => {
-          const newCol = { ...col };
+  return [...room, { field: change.name, direction: "asc" as const }];
+};
 
-          if (col.name === name) {
-            newCol.sort = "asc";
-            newCol.sortOrder = sortLevel + 1;
-          }
-
-          return newCol;
-        });
-        setCols(calcSortOrder(newCols));
-      } else {
-        setCols(
-          [...cols].map((col) =>
-            col.name === name ? { ...col, sort: "desc" } : { ...col },
-          ),
-        );
-      }
+const withSort = (columns: Column[], sort?: TTableSort[]) =>
+  columns.map((column) => {
+    const index = sort?.findIndex((item) => item.field === column.name) ?? -1;
+    if (index < 0) {
+      return { ...column, sort: undefined, sortOrder: undefined };
     }
+
+    return {
+      ...column,
+      sort: sort?.[index].direction,
+      sortOrder: index + 1,
+    };
+  });
+
+export const TableSort = ({
+  queryKey,
+  sort,
+  handleSortChange,
+  ...props
+}: TableSortProps) => {
+  const isFetching = useIsFetching({
+    queryKey: typeof queryKey === "string" ? [queryKey] : queryKey,
+  });
+  const [widths, setWidths] = React.useState<Record<string, string>>({});
+  const pagination = props.isPagination ? props.pagination : undefined;
+  const paginationProp = props.isPagination ? props.paginationProp : undefined;
+  const onPageChange = props.isPagination
+    ? props.handlePaginationChange
+    : undefined;
+
+  const cols = React.useMemo(
+    () =>
+      withSort(props.columnList, sort).map((column) =>
+        widths[column.name]
+          ? { ...column, width: widths[column.name] }
+          : column,
+      ),
+    [props.columnList, sort, widths],
+  );
+
+  const handleSort = (change: SortChange) => {
+    handleSortChange?.(nextSort(sort, change));
   };
-
-  const compare = (
-    a: TableRow,
-    b: TableRow,
-    colName: string,
-    sort: "asc" | "desc",
-    colType?: string,
-  ) => {
-    if (sort === "asc") {
-      switch (colType) {
-        case "date":
-          return StrToTime(a[colName]) - StrToTime(b[colName]);
-        case "number":
-        default:
-          return (
-            Number(a[colName].replace(/\D/g, "")) -
-            Number(b[colName].replace(/\D/g, ""))
-          );
-      }
-    } else {
-      switch (colType) {
-        case "date":
-          return StrToTime(b[colName]) - StrToTime(a[colName]);
-        case "number":
-        default:
-          return (
-            Number(b[colName].replace(/\D/g, "")) -
-            Number(a[colName].replace(/\D/g, ""))
-          );
-      }
-    }
-  };
-
-  React.useEffect(() => {
-    const sortColumns = getOrderedSortColumns(cols);
-
-    if (Object.keys(sortColumns).length === 0) {
-      setRows([...props.rowList]);
-    } else {
-      const names = Object.keys(sortColumns);
-      const newRows = [...rows].sort((a: TableRow, b: TableRow) => {
-        const result = compare(
-          a,
-          b,
-          names[0],
-          sortColumns[names[0]].sort,
-          sortColumns[names[0]].type,
-        );
-
-        if (!result && names.length > 1) {
-          return compare(
-            a,
-            b,
-            names[1],
-            sortColumns[names[1]].sort,
-            sortColumns[names[1]].type,
-          );
-        } else {
-          return result;
-        }
-      });
-
-      setRows(newRows);
-    }
-  }, [props.rowList, cols]);
 
   const handleResize = ({ name, width }: { name: string; width: string }) => {
-    const newCols = cols.map((col) =>
-      col.name === name ? { ...col, width } : col,
-    );
-    setCols(newCols);
-  };
-
-  const handleResetSortCols = () => {
-    setCols([...props.columnList]);
+    setWidths((current) => ({ ...current, [name]: width }));
   };
 
   if (isFetching) {
@@ -208,20 +124,19 @@ export const TableSort = ({ queryKey, ...props }: TableSortProps) => {
       <Table
         {...props}
         columnList={cols}
-        rowList={rows}
+        rowList={props.rowList}
         dimension="m"
         onSortChange={handleSort}
         onColumnResize={handleResize}
       />
-      {props?.isPagination && props?.pagination && (
+      {pagination && hasManyRows(pagination.totalElements) && (
         <StyledPagination>
           <PaginationTable
-            {...props?.paginationProp}
-            handlePaginationChange={props?.handlePaginationChange}
-            handleResetSortCols={handleResetSortCols}
-            pageSize={props?.pagination.size}
-            totalItems={props?.pagination.totalElements}
-            page={props?.pagination.number}
+            {...paginationProp}
+            handlePaginationChange={onPageChange}
+            pageSize={pagination.size}
+            totalItems={pagination.totalElements}
+            page={pagination.number}
           />
         </StyledPagination>
       )}

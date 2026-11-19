@@ -66,13 +66,15 @@ export const validatePackageName = (value: TValue | undefined) => {
 
 export const validateCountNum = (minCount: number, maxCount: number) => {
   return function (value: TValue | undefined) {
-    if (!value) return;
+    if (value == null || value === "") return;
 
-    if (Number(value) < minCount) {
+    const length = String(value).length;
+
+    if (length < minCount) {
       return `Допустим ввод не менее ${minCount} символов`;
     }
 
-    if (Number(value) < maxCount) {
+    if (length < maxCount) {
       return `Допустим ввод не более ${maxCount} символов`;
     }
   };

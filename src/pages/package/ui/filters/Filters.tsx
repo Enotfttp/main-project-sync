@@ -22,8 +22,6 @@ export const Filter: React.FC<FilterSectionProps> = ({
 }) => {
   const fetchRequests = useFetchPackages();
 
-  // Закрываем фильтры только после успешного ответа,
-  // иначе ошибка показывается в самой форме
   const handleApply = async (
     filterValues: TFilterValue,
     nextVariant?: string,

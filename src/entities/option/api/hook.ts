@@ -4,7 +4,11 @@ import {
   TOptionsPaginationResponse,
   TOptionsRequest,
 } from "../model";
-import { UseQueryOptions, useSuspenseQuery } from "@tanstack/react-query";
+import {
+  useQuery,
+  UseQueryOptions,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 
 export const useGetOptions = (
   params: TOptionsRequest,
@@ -13,10 +17,11 @@ export const useGetOptions = (
     "queryKey" | "queryFn"
   >,
 ) => {
-  return useSuspenseQuery({
+  return useQuery({
     queryKey: ["options", params],
     queryFn: () => optionService.getOptions(params),
     ...options,
+    throwOnError: true,
   });
 };
 

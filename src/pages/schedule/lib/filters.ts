@@ -11,7 +11,7 @@ import {
   validateReceiptDate,
 } from "@shared/lib";
 
-const validateInn = validateCountNum(36, 36);
+const validateId = validateCountNum(36, 36);
 
 export const filters: IRenderField[] = [
   {
@@ -20,7 +20,7 @@ export const filters: IRenderField[] = [
     type: "uuid",
     label: "Идентификатор графика",
     placeholder: "Введите идентификатор графика...",
-    validate: validateInn,
+    validate: validateId,
   },
   {
     id: "scheduleStatus",

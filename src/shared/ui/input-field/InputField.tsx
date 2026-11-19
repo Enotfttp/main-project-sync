@@ -16,6 +16,7 @@ type TProps = Omit<
   maxLength?: number;
   multiline?: boolean;
   width?: string;
+  precision?: number;
   type?: InputFieldProps["type"] | "uuid";
 };
 
@@ -28,6 +29,7 @@ export const InputFieldUI = ({
   min,
   max,
   step,
+  precision = 2,
   ...props
 }: TProps) => {
   const isNumber = type === "number";
@@ -47,15 +49,16 @@ export const InputFieldUI = ({
           input.onChange(value);
         };
 
-        const status = meta.touched && meta.error && "error";
-        const extraText = meta.touched && (meta.error || "");
+        const showError = (meta.touched || meta.submitFailed) && meta.error;
+        const status = showError && "error";
+        const extraText = showError && (meta.error || "");
 
         if (isNumber) {
           return (
             <StyledNumberInputField
               {...input}
               {...props}
-              precision={2}
+              precision={precision}
               thousand=""
               displayPlusMinusIcons={false}
               minValue={toLimit(min) ?? 0}

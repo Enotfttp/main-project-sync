@@ -9,11 +9,13 @@ export const columnList: Column[] = [
     name: "requestId",
     title: "Идентификатор",
     width: "20%",
+    sortable: true,
   },
   {
     name: "date",
     title: "Дата поступления",
     width: "20%",
+    sortable: true,
     renderCell: (date) => {
       return normalizedDate(date);
     },
@@ -22,6 +24,7 @@ export const columnList: Column[] = [
     name: "eventType",
     title: "Тип события",
     width: "20%",
+    sortable: true,
     renderCell: (status) => {
       return mapEventType(status);
     },
@@ -30,6 +33,7 @@ export const columnList: Column[] = [
     name: "requestStatus",
     title: "Статус запроса",
     width: "20%",
+    sortable: true,
     renderCell(status) {
       return <RequestStatusTag status={status} />;
     },
@@ -38,6 +42,7 @@ export const columnList: Column[] = [
     name: "resultType",
     title: "Результат обработки",
     width: "20%",
+    sortable: true,
     renderCell(status) {
       return mapResultType(status);
     },
