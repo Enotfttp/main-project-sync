@@ -17,7 +17,9 @@ import {
   validateReceiptDate,
 } from "@shared/lib";
 
-const validateInn = validateCountNum(36, 36);
+const validateId = validateCountNum(36, 36);
+const validateInn = validateCountNum(12, 12);
+const validateCode = validateCountNum(20, 20);
 
 const standardFields: IRenderField[] = [
   {
@@ -26,7 +28,7 @@ const standardFields: IRenderField[] = [
     type: "uuid",
     label: "Идентификатор записи",
     placeholder: "Введите идентификатор записи...",
-    validate: validateInn,
+    validate: validateId,
   },
   {
     id: "requestStatus",
@@ -67,16 +69,7 @@ const commonFields: IRenderField[] = [
     type: "number",
     label: "Номер счёта ССК",
     placeholder: "Введите номер счёта...",
-    validate: (value) => {
-      if (!value) return;
-
-      if (String(value).length > 20) {
-        return "Допустим ввод не более 20 символов";
-      }
-      if (String(value).length < 20) {
-        return "Допустим ввод не менее 20 символов";
-      }
-    },
+    validate: validateCode,
   },
   {
     id: "inn",
@@ -84,16 +77,7 @@ const commonFields: IRenderField[] = [
     type: "number",
     label: "ИНН",
     placeholder: "Введите ИНН...",
-    validate: (value) => {
-      if (!value) return;
-
-      if (String(value).length > 12) {
-        return "Допустим ввод не более 12 символов";
-      }
-      if (String(value).length < 10) {
-        return "Допустим ввод не менее 10 символов";
-      }
-    },
+    validate: validateInn,
   },
 ];
 

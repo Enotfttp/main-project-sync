@@ -1,13 +1,12 @@
 import { readJson } from "./api";
 import {
+  DEFAULT_PAGE_SIZE,
   ITableDataPaginationResponse,
   TFilterPaginationRequest,
   TPaginationTable,
   TSort,
   TSortDirection,
 } from "@shared/types";
-
-const DEFAULT_PAGE_SIZE = 25;
 
 /**
  * Сервисы отправляют фильтры в body,

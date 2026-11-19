@@ -5,6 +5,7 @@ export { InfoRow, SectionInfo } from "./modal/InfoRow";
 export { MessageText, Rows, State } from "./modal/Modal.styled";
 export { Search } from "./search/Search";
 export { TableSort } from "./table-sort/TableSort";
+export { useServerSort } from "./table-sort/useServerSort";
 export { Select } from "./select/Select";
 export { InputFieldUI } from "./input-field/InputField";
 export { isUuid } from "./input-field/uuidMask";

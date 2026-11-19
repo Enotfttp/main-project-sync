@@ -24,7 +24,7 @@ export const chooseServerUrl = () => {
   let res = origin;
 
   Object.entries(servers).forEach(([key, value]) => {
-    if (origin.includes(value)) {
+    if (key === "dev1") {
       res = API_BY_STAND[key];
     }
   });

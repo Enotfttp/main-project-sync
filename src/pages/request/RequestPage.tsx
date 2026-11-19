@@ -20,7 +20,7 @@ const RequestPage: FC = () => {
     handleRemoveField,
     handleCloseFilters,
     handleOpenFilters,
-  } = useFilters("request");
+  } = useFilters();
   const { id, open, close } = useModal();
 
   return (

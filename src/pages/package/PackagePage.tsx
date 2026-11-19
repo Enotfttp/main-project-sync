@@ -16,7 +16,7 @@ const PackagePage: FC = () => {
     handleRemoveField,
     handleCloseFilters,
     handleOpenFilters,
-  } = useFilters("package");
+  } = useFilters();
   const { id, open, close } = useModal();
 
   return (

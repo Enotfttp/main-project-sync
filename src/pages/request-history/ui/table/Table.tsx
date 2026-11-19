@@ -1,9 +1,9 @@
 import { columnList } from "../../lib/columns";
 import { useGetRequestHistory } from "@entities/request/api/hook";
+import { IRequestHistoryInfo } from "@entities/request/model";
 import { addIdAndHoverTableRowData } from "@shared/lib";
-import { TPaginationTable } from "@shared/types";
-import { TableSort } from "@shared/ui";
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import { TableSort, useServerSort } from "@shared/ui";
+import { FC, useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 
 interface IProps {
@@ -15,9 +15,10 @@ export const Table: FC<IProps> = ({ onTotalElementsChange }) => {
 
   if (!id) throw new Error("Нет id запроса");
 
-  const [pagination, setPagination] = useState<TPaginationTable>();
+  const { page, sort, handlePaginationChange, handleSortChange } =
+    useServerSort<IRequestHistoryInfo>();
 
-  const { data } = useGetRequestHistory({ id: id, page: pagination });
+  const { data } = useGetRequestHistory({ id, page, sort });
 
   useEffect(() => {
     onTotalElementsChange(data?.totalElements);
@@ -28,18 +29,16 @@ export const Table: FC<IProps> = ({ onTotalElementsChange }) => {
     [data?.content],
   );
 
-  const handlePaginationChange = useCallback((pagination: TPaginationTable) => {
-    setPagination(pagination);
-  }, []);
-
   return (
     <TableSort
       isPagination
       columnList={columnList}
       rowList={rows}
-      queryKey="request-history"
+      queryKey={["request", "history"]}
+      sort={sort}
+      handleSortChange={handleSortChange}
       handlePaginationChange={handlePaginationChange}
-      pagination={(data?.totalElements || 0) > 25 ? data : undefined}
+      pagination={data}
     />
   );
 };

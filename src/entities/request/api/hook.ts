@@ -6,6 +6,7 @@ import {
   TRequestsRequest,
 } from "../model/types";
 import {
+  useQuery,
   useQueryClient,
   UseQueryOptions,
   useSuspenseQuery,
@@ -24,9 +25,10 @@ export const useGetRequests = (
     "queryKey" | "queryFn"
   >,
 ) => {
-  return useSuspenseQuery({
+  return useQuery({
     ...getRequestsQueryOptions(request),
     ...options,
+    throwOnError: true,
   });
 };
 
@@ -63,9 +65,10 @@ export const useGetRequestHistory = (
     "queryKey" | "queryFn"
   >,
 ) => {
-  return useSuspenseQuery({
+  return useQuery({
     queryKey: ["request", "history", params],
     queryFn: () => requestService.getRequestHistory(params),
     ...options,
+    throwOnError: true,
   });
 };

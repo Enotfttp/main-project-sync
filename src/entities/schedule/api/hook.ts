@@ -7,6 +7,7 @@ import {
   TSchedulesRequest,
 } from "../model/types";
 import {
+  useQuery,
   useQueryClient,
   UseQueryOptions,
   useSuspenseQuery,
@@ -25,9 +26,10 @@ export const useGetSchedules = (
     "queryKey" | "queryFn"
   >,
 ) => {
-  return useSuspenseQuery({
+  return useQuery({
     ...getSchedulesQueryOptions(request),
     ...options,
+    throwOnError: true,
   });
 };
 
@@ -66,9 +68,10 @@ export const useGetSchedulePeriods = (
     "queryKey" | "queryFn"
   >,
 ) => {
-  return useSuspenseQuery({
+  return useQuery({
     queryKey: ["schedule", "periods", params],
     queryFn: () => scheduleService.getSchedulePeriods(params),
     ...options,
+    throwOnError: true,
   });
 };

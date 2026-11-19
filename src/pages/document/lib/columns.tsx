@@ -60,11 +60,13 @@ export const columnList: Column[] = [
     name: "documentId",
     title: "Идентификатор документа",
     width: "14%",
+    sortable: true,
   },
   {
     name: "documentDate",
     title: "Дата документа",
     width: "12%",
+    sortable: true,
     renderCell: (date) => {
       return normalizedDate(date);
     },
@@ -73,6 +75,7 @@ export const columnList: Column[] = [
     name: "documentType",
     title: "Вид документа",
     width: "13%",
+    sortable: true,
     renderCell: (_, row) => (
       <DocumentTypeMerge row={row as unknown as IDocumentInfo} />
     ),
@@ -81,11 +84,13 @@ export const columnList: Column[] = [
     name: "documentProcessCode",
     title: "Управляющий признак",
     width: "13%",
+    sortable: true,
   },
   {
     name: "documentStatus",
     title: "Статус документа",
     width: "13%",
+    sortable: true,
     renderCell: (status) => {
       return mapDocumentStatus(status);
     },
@@ -94,6 +99,7 @@ export const columnList: Column[] = [
     name: "orderStatus",
     title: "Статус исполнения РОЮЛ",
     width: "13%",
+    sortable: true,
     renderCell: (status) => {
       return mapOrderStatus(status);
     },
@@ -102,11 +108,13 @@ export const columnList: Column[] = [
     name: "amountFullCur",
     title: "Сумма документа",
     width: "12%",
+    sortable: true,
   },
   {
     name: "purpose",
     title: "Назначение платежа",
     width: "10%",
+    sortable: true,
     renderCell: (_, row) => <Purpose row={row as unknown as IDocumentInfo} />,
   },
 ];

@@ -1,9 +1,9 @@
 import { columnList } from "../../lib/columns";
 import { useGetDocuments } from "@entities/document/api/hook";
+import { IDocumentInfo } from "@entities/document/model";
 import { addIdAndHoverTableRowData } from "@shared/lib";
-import { TPaginationTable } from "@shared/types";
-import { TableSort } from "@shared/ui";
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import { TableSort, useServerSort } from "@shared/ui";
+import { FC, useCallback, useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 
 interface IProps {
@@ -17,14 +17,16 @@ export const Table: FC<IProps> = ({ onRowClick, onTotalElementsChange }) => {
   if (!idOption && !idPackage && !idPeriod && !idDocumentUnion)
     throw new Error("Нет id");
 
-  const [pagination, setPagination] = useState<TPaginationTable>();
+  const { page, sort, handlePaginationChange, handleSortChange } =
+    useServerSort<IDocumentInfo>();
 
   const { data } = useGetDocuments({
     periodId: idPeriod,
     packageSubscriptionId: idPackage,
     optionSubscriptionId: idOption,
     mergedDocumentId: idDocumentUnion,
-    page: pagination,
+    page,
+    sort,
   });
 
   useEffect(() => {
@@ -35,10 +37,6 @@ export const Table: FC<IProps> = ({ onRowClick, onTotalElementsChange }) => {
     () => addIdAndHoverTableRowData("documentId", data?.content, true),
     [data?.content],
   );
-
-  const handlePaginationChange = useCallback((pagination: TPaginationTable) => {
-    setPagination(pagination);
-  }, []);
 
   const handleRowClick = useCallback(
     (rowId: string | number) => {
@@ -53,8 +51,10 @@ export const Table: FC<IProps> = ({ onRowClick, onTotalElementsChange }) => {
       rowList={rows}
       onRowClick={handleRowClick}
       queryKey="documents"
+      sort={sort}
+      handleSortChange={handleSortChange}
       handlePaginationChange={handlePaginationChange}
-      pagination={(data?.totalElements || 0) > 25 ? data : undefined}
+      pagination={data}
     />
   );
 };

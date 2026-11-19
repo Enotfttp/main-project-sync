@@ -1,4 +1,5 @@
 export { useFilters } from "./hooks/useFilters";
+export { useSyncFiltersWithRoute } from "./hooks/useSyncFiltersWithRoute";
 export { formatFilterValue } from "./lib/formatFilterValue";
 export { getVariantFields } from "./lib/getVariantFields";
 export { hasFilledFilter } from "./lib/hasFilledFilter";

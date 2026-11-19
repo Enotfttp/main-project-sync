@@ -35,6 +35,8 @@ export interface IRenderField {
   min?: number;
   max?: number;
   step?: number;
+  /** Знаков после запятой у числового поля */
+  precision?: number;
   required?: boolean;
   /**
    * Проверка значения поля. Возвращает текст ошибки или ничего, если значение подходит.

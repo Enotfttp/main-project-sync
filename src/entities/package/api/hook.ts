@@ -5,6 +5,7 @@ import {
   TPackagesRequest,
 } from "@entities/package/model";
 import {
+  useQuery,
   useQueryClient,
   UseQueryOptions,
   useSuspenseQuery,
@@ -23,9 +24,10 @@ export const useGetPackages = (
     "queryKey" | "queryFn"
   >,
 ) => {
-  return useSuspenseQuery({
+  return useQuery({
     ...getPackagesQueryOptions(request),
     ...options,
+    throwOnError: true,
   });
 };
 
