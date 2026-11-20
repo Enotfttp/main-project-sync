@@ -3,6 +3,7 @@ import { NotFoundPage } from "@app/errorBoundary/NotFoundPage";
 import { RouterErrorBoundary } from "@app/errorBoundary/RouterErrorBoundary";
 import { useSyncFiltersWithRoute } from "@features/dynamic-filters";
 import {
+  DocumentInfoPage,
   DocumentPage,
   MainPage,
   OptionInfoPage,
@@ -88,6 +89,16 @@ const DocumentPages = [
   routesPath.package.detail.document.detail.documentUnion.root,
 ].map((path) => page(path, DocumentPage));
 
+const DocumentInfoPages = [
+  routesPath.report.notIncomedMonthsComissions.documentInfo.root,
+  routesPath.report.notIncomedAdvancedComissions.documentInfo.root,
+  routesPath.report.notIncomedPackageChangeComissions.documentInfo.root,
+  routesPath.report.errorComcRequests.documentInfo.root,
+  routesPath.report.cardIndexControl.documentInfo.root,
+  routesPath.report.validationErrorDocuments.documentInfo.root,
+  routesPath.report.createdOrAcceptedDocuments.documentInfo.root,
+].map((path) => page(path, DocumentInfoPage));
+
 const RootLayout = () => {
   useSyncFiltersWithRoute();
   return <Outlet />;
@@ -103,6 +114,7 @@ export const routes: RouteObject[] = [
       ...OptionPages,
       ...PeriodPages,
       ...DocumentPages,
+      ...DocumentInfoPages,
       {
         path: routesPath.root,
         element: withSuspense(MainPage),

@@ -302,4 +302,64 @@ export const routesPath = {
       },
     },
   },
+  report: {
+    root: "/reports",
+    label: "Отчёты",
+    notIncomedMonthsComissions: {
+      root: "/reports/notIncomedMonthsComissions",
+      label: "Комиссии с ежемесячной оплатой без отнесения на доходы",
+      documentInfo: {
+        root: "/reports/notIncomedMonthsComissions/:idDocument",
+        label: "Информация по документу",
+      },
+    },
+    notIncomedAdvancedComissions: {
+      root: "/reports/notIncomedAdvancedComissions",
+      label: "Авансовые комиссии без отнесения на доходы",
+      documentInfo: {
+        root: "/reports/notIncomedAdvancedComissions/:idDocument",
+        label: "Информация по документу",
+      },
+    },
+    notIncomedPackageChangeComissions: {
+      root: "/reports/notIncomedPackageChangeComissions",
+      label: "Комиссии за смену пакета без отнесения на доходы",
+      documentInfo: {
+        root: "/reports/notIncomedPackageChangeComissions/:idDocument",
+        label: "Информация по документу",
+      },
+    },
+    errorComcRequests: {
+      root: "/reports/errorComcRequests",
+      label: 'Запросы в статусе "Ошибка" с указанием причины',
+      documentInfo: {
+        root: "/reports/errorComcRequests/:idDocument",
+        label: "Информация по документу",
+      },
+    },
+    cardIndexControl: {
+      root: "/reports/cardIndexControl",
+      label: "Контроль постановки в картотеку",
+      documentInfo: {
+        root: "/reports/cardIndexControl/:idDocument",
+        label: "Информация по документу",
+      },
+    },
+    validationErrorDocuments: {
+      root: "/reports/validationErrorDocuments",
+      label: 'Документы в статусе "Ошибка валидации"',
+      documentInfo: {
+        root: "/reports/validationErrorDocuments/:idDocument",
+        label: "Информация по документу",
+      },
+    },
+    createdOrAcceptedDocuments: {
+      root: "/reports/createdOrAcceptedDocuments",
+      label: 'Документы в статусе "Создан или Принят"',
+      documentInfo: {
+        root: "/reports/createdOrAcceptedDocuments/:idDocument",
+        label: "Информация по документу",
+      },
+    },
+  },
 };
