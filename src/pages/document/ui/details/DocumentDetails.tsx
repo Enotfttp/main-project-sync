@@ -17,7 +17,7 @@ import React, { FC } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 interface IProps {
-  id: string;
+  id: UUID;
   onClose: () => void;
 }
 
