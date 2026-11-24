@@ -1,10 +1,11 @@
 import { columnList } from "../../lib/columns";
-import { IDocumentInfo } from "@entities/document/model";
 import { useGetReports } from "@entities/report/api/hook";
-import { renderMissingDocumentsRow } from "@pages/report/ui/missing-documents-row/renderMissingDocumentsRow";
-import { addIdAndHoverTableRowData, resolveChildPath } from "@shared/lib";
+import { IReportInfo } from "@entities/report/model";
+import { renderMissingDocumentsDetails } from "@pages/report/ui/missing-documents-row/MissingDocumentsRow";
+import { MissingDocumentsTable } from "@pages/report/ui/missing-documents-row/MissingDocumentsRow.styled";
+import { resolveChildPath } from "@shared/lib";
 import { TableSort, useServerSort } from "@shared/ui";
-import { FC, useCallback, useEffect, useMemo } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 interface IProps {
@@ -15,8 +16,9 @@ export const Table: FC<IProps> = ({ onTotalElementsChange }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
+  const [expandedIds, setExpandedIds] = useState<Record<string, boolean>>({});
   const { page, sort, handlePaginationChange, handleSortChange } =
-    useServerSort<IDocumentInfo>();
+    useServerSort<IReportInfo>();
 
   const { data } = useGetReports({
     pathname: pathname,
@@ -29,31 +31,60 @@ export const Table: FC<IProps> = ({ onTotalElementsChange }) => {
   }, [data?.totalElements, onTotalElementsChange]);
 
   const rows = useMemo(
-    () => addIdAndHoverTableRowData("documentId", data?.content, true),
-    [data?.content],
+    () =>
+      data?.content.map((item) => {
+        const id = item.documentId ?? `${item.requestId}:${item.scheduleSourceGuid}`;
+        const missing = !item.documentId;
+
+        return {
+          ...item,
+          id,
+          hover: !missing,
+          expanded: Boolean(expandedIds[id]),
+          expandedRowRender: renderMissingDocumentsDetails,
+          ...(missing ? { className: "missing-documents" } : {}),
+        };
+      }) ?? [],
+    [data?.content, expandedIds],
   );
 
-  const handleRowClick = useCallback((rowId: string | number) => {
-    const documentInfoPath = resolveChildPath(pathname, "documentInfo", {
-      idDocument: String(rowId),
-    });
+  const handleExpansionChange = (ids: Record<string, boolean>) => {
+    setExpandedIds(ids);
+  };
 
-    if (documentInfoPath) navigate(documentInfoPath);
-  }, []);
+  const handleRowClick = useCallback(
+    (rowId: string | number) => {
+      const item = data?.content.find(
+        (row) =>
+          (row.documentId ?? `${row.requestId}:${row.scheduleSourceGuid}`) ===
+          String(rowId),
+      );
+      if (!item?.documentId) return;
+
+      const documentInfoPath = resolveChildPath(pathname, "documentInfo", {
+        idDocument: item.documentId,
+      });
+
+      if (documentInfoPath) navigate(documentInfoPath);
+    },
+    [data?.content, navigate, pathname],
+  );
 
   return (
-    <TableSort
-      isPagination
-      columnList={columnList}
-      rowList={rows}
-      onRowClick={handleRowClick}
-      queryKey="documents"
-      sort={sort}
-      handleSortChange={handleSortChange}
-      handlePaginationChange={handlePaginationChange}
-      pagination={data}
-      renderRowWrapper={renderMissingDocumentsRow}
-      displayRowExpansionColumn
-    />
+    <MissingDocumentsTable>
+      <TableSort
+        isPagination
+        columnList={columnList}
+        rowList={rows}
+        onRowClick={handleRowClick}
+        queryKey="documents"
+        sort={sort}
+        handleSortChange={handleSortChange}
+        handlePaginationChange={handlePaginationChange}
+        pagination={data}
+        displayRowExpansionColumn
+        onRowExpansionChange={handleExpansionChange}
+      />
+    </MissingDocumentsTable>
   );
 };

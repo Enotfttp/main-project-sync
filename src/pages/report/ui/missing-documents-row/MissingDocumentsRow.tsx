@@ -1,72 +1,48 @@
-import {
-  Chevron,
-  Details,
-  ExpandButton,
-  IdLink,
-  Line,
-  MissingHeader,
-  MissingRow,
-} from "./MissingDocumentsRow.styled";
-import { T } from "@admiral-ds/react-ui";
-import { FC, MouseEvent, useState } from "react";
+import { Details, IdLink, Line } from "./MissingDocumentsRow.styled";
+import { T, TableRow } from "@admiral-ds/react-ui";
+import { routesPath } from "@app/routes";
+import { IReportInfo } from "@entities/report/model";
+import { MouseEvent } from "react";
+import { generatePath, Link as RouterLink } from "react-router-dom";
 
-interface IProps {
-  requestId: string;
-  scheduleId: string;
-  defaultOpened?: boolean;
-}
-
-export const stopNavigation = (event: MouseEvent<HTMLAnchorElement>) => {
-  event.preventDefault();
+const stopRowClick = (event: MouseEvent<HTMLAnchorElement>) => {
+  event.stopPropagation();
 };
 
-export const MissingDocumentsRow: FC<IProps> = ({
-  requestId,
-  scheduleId,
-  defaultOpened = false,
-}) => {
-  const [isOpened, setIsOpened] = useState(defaultOpened);
+export const renderMissingDocumentsDetails = (row: TableRow) => {
+  const { requestId, scheduleSourceGuid } = row as unknown as IReportInfo;
 
   return (
-    <MissingRow>
-      <MissingHeader>
-        <ExpandButton
-          dimension="mBig"
-          highlightFocus={false}
-          aria-expanded={isOpened}
-          aria-label={isOpened ? "Свернуть строку" : "Раскрыть строку"}
-          onClick={() => setIsOpened((opened) => !opened)}
+    <Details>
+      <Line>
+        <T font="Body/Body 2 Long">Идентификатор запроса:</T>
+        <IdLink
+          as={RouterLink}
+          to={generatePath(routesPath.request.detail.history.root, {
+            id: requestId,
+          })}
+          dimension="s"
+          appearance="primary"
+          onClick={stopRowClick}
         >
-          <Chevron $isOpened={isOpened} aria-hidden />
-        </ExpandButton>
-        Документы отсутствуют
-      </MissingHeader>
-      {isOpened && (
-        <Details>
-          <Line>
-            <T font="Body/Body 2 Long">Идентификатор запроса:</T>
-            <IdLink
-              href="#"
-              dimension="s"
-              appearance="primary"
-              onClick={stopNavigation}
-            >
-              {requestId}
-            </IdLink>
-          </Line>
-          <Line>
-            <T font="Body/Body 2 Long">Идентификатор графика:</T>
-            <IdLink
-              href="#"
-              dimension="s"
-              appearance="primary"
-              onClick={stopNavigation}
-            >
-              {scheduleId}
-            </IdLink>
-          </Line>
-        </Details>
-      )}
-    </MissingRow>
+          {requestId}
+        </IdLink>
+      </Line>
+      <Line>
+        <T font="Body/Body 2 Long">Идентификатор графика:</T>
+        <IdLink
+          as={RouterLink}
+          to={generatePath(routesPath.request.detail.schedule.root, {
+            id: requestId,
+            idSchedule: scheduleSourceGuid,
+          })}
+          dimension="s"
+          appearance="primary"
+          onClick={stopRowClick}
+        >
+          {scheduleSourceGuid}
+        </IdLink>
+      </Line>
+    </Details>
   );
 };
