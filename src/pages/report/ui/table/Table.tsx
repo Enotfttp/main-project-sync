@@ -1,31 +1,25 @@
 import { columnList } from "../../lib/columns";
-import { useGetDocuments } from "@entities/document/api/hook";
 import { IDocumentInfo } from "@entities/document/model";
+import { useGetReports } from "@entities/report/api/hook";
 import { renderMissingDocumentsRow } from "@pages/report/ui/missing-documents-row/renderMissingDocumentsRow";
-import { addIdAndHoverTableRowData } from "@shared/lib";
+import { addIdAndHoverTableRowData, resolveChildPath } from "@shared/lib";
 import { TableSort, useServerSort } from "@shared/ui";
 import { FC, useCallback, useEffect, useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface IProps {
-  onRowClick: (id: string) => void;
   onTotalElementsChange: (totalElements?: number) => void;
 }
 
-export const Table: FC<IProps> = ({ onRowClick, onTotalElementsChange }) => {
-  const { idOption, idPackage, idPeriod, idDocumentUnion } = useParams();
-
-  if (!idOption && !idPackage && !idPeriod && !idDocumentUnion)
-    throw new Error("Нет id");
+export const Table: FC<IProps> = ({ onTotalElementsChange }) => {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const { page, sort, handlePaginationChange, handleSortChange } =
     useServerSort<IDocumentInfo>();
 
-  const { data } = useGetDocuments({
-    periodId: idPeriod,
-    packageSubscriptionId: idPackage,
-    optionSubscriptionId: idOption,
-    mergedDocumentId: idDocumentUnion,
+  const { data } = useGetReports({
+    pathname: pathname,
     page,
     sort,
   });
@@ -39,12 +33,14 @@ export const Table: FC<IProps> = ({ onRowClick, onTotalElementsChange }) => {
     [data?.content],
   );
 
-  const handleRowClick = useCallback(
-    (rowId: string | number) => {
-      onRowClick(String(rowId));
-    },
-    [onRowClick],
-  );
+  const handleRowClick = useCallback((rowId: string | number) => {
+    const documentInfoPath = resolveChildPath(pathname, "documentInfo", {
+      idDocument: String(rowId),
+    });
+
+    if (documentInfoPath) navigate(documentInfoPath);
+  }, []);
+
   return (
     <TableSort
       isPagination
@@ -57,6 +53,7 @@ export const Table: FC<IProps> = ({ onRowClick, onTotalElementsChange }) => {
       handlePaginationChange={handlePaginationChange}
       pagination={data}
       renderRowWrapper={renderMissingDocumentsRow}
+      displayRowExpansionColumn
     />
   );
 };

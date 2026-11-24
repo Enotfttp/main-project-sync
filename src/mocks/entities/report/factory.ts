@@ -9,18 +9,24 @@ export const createReportItem = (): IReportInfo => {
   const req = faker.helpers.arrayElement(requestDb.all());
   const doc = faker.helpers.arrayElement(documentDb.all());
 
+  const notRequiredFields = faker.datatype.boolean()
+    ? {
+        documentId: doc.documentId,
+        documentDate: doc.documentDate,
+        documentType: doc.documentType,
+        documentProcessCode: doc.documentProcessCode,
+        documentStatus: doc.documentStatus,
+        orderStatus: doc.orderStatus,
+        amountFullCur: fakeAmount(),
+        documentMerged: doc.documentMerged,
+        purpose: doc.purpose,
+      }
+    : {};
+
   return {
     requestId: req.requestId,
     scheduleSourceGuid: sch.scheduleSourceGuid,
-    documentId: doc.documentId,
-    documentDate: doc.documentDate,
-    documentType: doc.documentType,
-    documentProcessCode: doc.documentProcessCode,
-    documentStatus: doc.documentStatus,
-    orderStatus: doc.orderStatus,
-    amountFullCur: fakeAmount(),
-    documentMerged: doc.documentMerged,
-    purpose: doc.purpose,
+    ...notRequiredFields,
   };
 };
 

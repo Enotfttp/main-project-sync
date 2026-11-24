@@ -1,11 +1,22 @@
+import { Table } from "./ui";
+import { FiltersView } from "@features/dynamic-filters";
 import { Container, Page, PageBack } from "@shared/ui";
-import { FC } from "react";
+import { FC, useCallback, useState } from "react";
 
 const ReportPage: FC = () => {
+  const [totalElements, setTotalElements] = useState<number>();
+
+  const handleTotalElementsChange = useCallback(
+    (total?: number) => setTotalElements(total),
+    [],
+  );
   return (
     <Page>
       <PageBack />
-      <Container>ReportChartPage</Container>
+      <Container>
+        <FiltersView totalElements={totalElements} />
+        <Table onTotalElementsChange={handleTotalElementsChange} />
+      </Container>
     </Page>
   );
 };
