@@ -23,3 +23,7 @@ export const DocumentPage = lazy(() => import("@pages/document/DocumentPage"));
 export const DocumentInfoPage = lazy(
   () => import("@pages/document-info/DocumentInfoPage"),
 );
+export const ReportPage = lazy(() => import("@pages/report/ReportPage"));
+export const ReportChartPage = lazy(
+  () => import("@pages/report-chart/ReportChartPage"),
+);
