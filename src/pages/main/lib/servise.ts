@@ -20,7 +20,7 @@ export const mainServiceGroups: IServiceGroupConfig[] = [
     id: "reports",
     title: "Отчёты",
     services: [
-      { id: "common-reports", label: "Общие" },
+      { id: "common-reports", label: "Общие", to: routesPath.report.root },
       { id: "ready-scenarios", label: "Готовые сценарии" },
     ],
   },

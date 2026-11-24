@@ -16,6 +16,8 @@ const Purpose: FC<{ row: IDocumentInfo }> = ({ row }) => {
 
   const handleVisibility = (visible: boolean) => setVisible(visible);
 
+  if (!row?.purpose) return null;
+
   return (
     <Hint
       renderContent={() => row.purpose}

@@ -11,6 +11,8 @@ import {
   PackageInfoPage,
   PackagePage,
   PeriodPage,
+  ReportChartPage,
+  ReportPage,
   RequestHistoryPage,
   RequestPage,
   ScheduleInfoPage,
@@ -99,6 +101,16 @@ const DocumentInfoPages = [
   routesPath.report.createdOrAcceptedDocuments.documentInfo.root,
 ].map((path) => page(path, DocumentInfoPage));
 
+const ReportPages = [
+  routesPath.report.notIncomedMonthsComissions.root,
+  routesPath.report.notIncomedAdvancedComissions.root,
+  routesPath.report.notIncomedPackageChangeComissions.root,
+  routesPath.report.errorComcRequests.root,
+  routesPath.report.cardIndexControl.root,
+  routesPath.report.validationErrorDocuments.root,
+  routesPath.report.createdOrAcceptedDocuments.root,
+].map((path) => page(path, ReportPage));
+
 const RootLayout = () => {
   useSyncFiltersWithRoute();
   return <Outlet />;
@@ -115,6 +127,7 @@ export const routes: RouteObject[] = [
       ...PeriodPages,
       ...DocumentPages,
       ...DocumentInfoPages,
+      ...ReportPages,
       {
         path: routesPath.root,
         element: withSuspense(MainPage),
@@ -138,6 +151,10 @@ export const routes: RouteObject[] = [
       {
         path: routesPath.package.root,
         element: withSuspense(PackagePage),
+      },
+      {
+        path: routesPath.report.root,
+        element: withSuspense(ReportChartPage),
       },
     ],
   },

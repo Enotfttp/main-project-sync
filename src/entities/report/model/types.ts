@@ -10,20 +10,22 @@ import {
 } from "@shared/types";
 
 export interface IReportInfo {
-  documentId: UUID;
+  documentId?: UUID;
   requestId: UUID;
   scheduleSourceGuid: UUID;
-  documentDate: IsoDate;
-  documentType: TDocumentType;
-  documentProcessCode: TDocumentProcessCode;
-  documentStatus: TDocumentStatus;
-  orderStatus: TOrderStatus;
-  amountFullCur: number;
-  documentMerged: boolean;
-  purpose: string;
+  documentDate?: IsoDate;
+  documentType?: TDocumentType;
+  documentProcessCode?: TDocumentProcessCode;
+  documentStatus?: TDocumentStatus;
+  orderStatus?: TOrderStatus;
+  amountFullCur?: number;
+  documentMerged?: boolean;
+  purpose?: string;
 }
 
 export type TReportsPaginationResponse =
   ITableDataPaginationResponse<IReportInfo>;
 
-export type TReportsRequest = TFilterPaginationRequest<object, IReportInfo>;
+export type TReportsRequest = TFilterPaginationRequest<object, IReportInfo> & {
+  pathname: Location["pathname"];
+};
