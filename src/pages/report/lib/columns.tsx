@@ -63,6 +63,8 @@ export const columnList: Column[] = [
     title: "Идентификатор документа",
     width: "14%",
     sortable: true,
+    renderCell: (documentId?: string) =>
+      documentId || "Документы отсутствуют",
   },
   {
     name: "documentDate",

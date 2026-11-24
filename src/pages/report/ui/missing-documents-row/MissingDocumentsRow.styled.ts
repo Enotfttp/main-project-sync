@@ -1,37 +1,32 @@
-import { SystemChevronDownOutline } from "@admiral-ds/icons";
-import { IconPlacement, Link } from "@admiral-ds/react-ui";
+import { Link } from "@admiral-ds/react-ui";
 import styled from "styled-components";
 
-export const MissingRow = styled.div`
-  border-bottom: 1px solid ${({ theme }) => theme.color["Neutral/Neutral 20"]};
-`;
+export const MissingDocumentsTable = styled.div`
+  display: contents;
 
-export const MissingHeader = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 4px 12px 3px 4px;
-  color: ${({ theme }) => theme.color["Neutral/Neutral 90"]};
-  font-size: 14px;
-  line-height: 20px;
-`;
+  .missing-documents .tr-simple {
+    position: relative;
+  }
 
-export const ExpandButton = styled(IconPlacement)`
-  margin: 0;
-  flex-shrink: 0;
-`;
-
-export const Chevron = styled(SystemChevronDownOutline)<{
-  $isOpened?: boolean;
-}>`
-  transition: transform 0.3s ease-in-out;
-  transform: rotate(${({ $isOpened }) => ($isOpened ? 180 : 0)}deg);
+  .missing-documents .td[data-column="documentId"] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 44px;
+    z-index: 1;
+    width: auto !important;
+    overflow: visible;
+    white-space: nowrap;
+    background: inherit;
+  }
 `;
 
 export const Details = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 4px 12px 12px 44px;
+  padding: 4px 12px 12px 32px;
 `;
 
 export const Line = styled.div`
